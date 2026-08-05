@@ -44,6 +44,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3043455', stampSeed: { bangin: 68, funky: 45, dark: 40 } },
       { artist: 'Above The Law', title: "Livin' Like Hustlers", year: 1989, label: 'Ruthless/Epic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7217751', stampSeed: { funky: 57, bangin: 44, dark: 30 } },
+      { artist: 'H.W.A.', title: "Livin' in a Hoe House", year: 1990, label: 'Drive-By', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3597493', stampSeed: { doro: 19, bangin: 15, dark: 11 } },
+      { artist: "Compton's Most Wanted", title: "It's a Compton Thang", year: 1990, label: 'Orpheus Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4522759', stampSeed: { bangin: 33, dark: 25, doro: 20 } },
+      { artist: 'CPO', title: 'To Hell and Black', year: 1990, label: 'Capitol', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20932873', stampSeed: { dark: 28, bangin: 21, doro: 17 } },
     ],
   },
   {
@@ -56,6 +62,8 @@ const REGIONS = [
         stampSeed: { mellow: 91, smooth: 80, laidbk: 68, aishu: 40 } },
       { artist: 'Domino', title: 'Domino', year: 1993, label: 'Outburst', youtubeId: null,
         stampSeed: { smooth: 22, party: 18, funky: 15 } },
+      { artist: 'Tairrie B.', title: 'The Power of a Woman', year: 1990, label: 'MCA', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/184856', stampSeed: { bangin: 20, funky: 14, dark: 10 } },
     ],
   },
   {
@@ -70,6 +78,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9510142', stampSeed: { bangin: 51, dark: 33, funky: 27 } },
       { artist: 'Ice-T', title: 'The Iceberg (Freedom of Speech... Just Watch What You Say)', year: 1989, label: 'Sire', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/460162', stampSeed: { dark: 55, bangin: 42, doro: 30 } },
+      { artist: 'Everlast', title: 'Forever Everlasting', year: 1990, label: 'Warner Bros.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17766007', stampSeed: { bangin: 22, funky: 16, dark: 12 } },
+      { artist: 'Low Profile', title: "We're in This Together", year: 1989, label: 'CBS Associated', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/99225', stampSeed: { funky: 24, dark: 16, bangin: 13 } },
+      { artist: 'Ice Cube', title: "AmeriKKKa's Most Wanted", year: 1990, label: 'Priority', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35861755', stampSeed: { bangin: 89, dark: 66, doro: 44, funky: 38 } },
     ],
   },
   {
@@ -94,6 +108,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/319314', stampSeed: { funky: 29, laidbk: 22, party: 18 } },
       { artist: 'A.P.G. Crew', title: 'On the Rise', year: 1989, label: 'Metro', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1076546', stampSeed: { funky: 8, laidbk: 6, doro: 5 } },
+      { artist: '415', title: '41Fivin', year: 1990, label: 'Big League', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4189785', stampSeed: { funky: 21, laidbk: 15, party: 12 } },
+      { artist: 'Richie Rich', title: "Don't Do It", year: 1990, label: 'Big League', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3196664', stampSeed: { funky: 26, bangin: 18, party: 14 } },
+      { artist: 'Too $hort', title: "Short Dog's in the House", year: 1990, label: 'Jive', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16819746', stampSeed: { funky: 41, laidbk: 30, party: 24 } },
     ],
   },
   {
@@ -122,6 +142,8 @@ const REGIONS = [
         stampSeed: { horror: 94, dark: 78, doro: 62 } },
       { artist: 'Tommy Wright III', title: 'On the Run', year: 1996, label: 'Street Smart', youtubeId: null,
         stampSeed: { horror: 11, doro: 9, dark: 7 } },
+      { artist: 'Gangsta Pat', title: '#1 Suspect', year: 1991, label: 'On Top Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4749203', stampSeed: { dark: 24, bangin: 18, doro: 14 } },
     ],
   },
   {
@@ -173,6 +195,8 @@ const REGIONS = [
         stampSeed: { dark: 28, bangin: 23, doro: 17 } },
       { artist: 'Kool G Rap & DJ Polo', title: 'Road to the Riches', year: 1989, label: 'Cold Chillin\'', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1050334', stampSeed: { dark: 21, bangin: 17, doro: 13 } },
+      { artist: 'Kool G Rap & DJ Polo', title: 'Wanted: Dead or Alive', year: 1990, label: 'Cold Chillin\'', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11354462', stampSeed: { dark: 33, bangin: 26, doro: 19 } },
     ],
   },
   {
@@ -187,6 +211,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12250631', stampSeed: { doro: 22, dark: 18, horror: 12 } },
       { artist: 'Schoolly D', title: 'Am I Black Enough for You?', year: 1989, label: 'Jive', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/815457', stampSeed: { dark: 25, bangin: 19, doro: 15 } },
+      { artist: 'Cool C', title: 'Life in the Ghetto', year: 1990, label: 'Atlantic', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/572921', stampSeed: { funky: 22, bangin: 17, doro: 13 } },
     ],
   },
   {
@@ -219,6 +245,8 @@ const REGIONS = [
     albums: [
       { artist: 'Sir Mix-A-Lot', title: 'Swass', year: 1988, label: 'Nastymix', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1453446', stampSeed: { funky: 44, party: 39, bangin: 26 } },
+      { artist: 'Criminal Nation', title: 'Release the Pressure', year: 1990, label: 'Nastymix', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1060371', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
     ],
   },
   {
@@ -227,6 +255,39 @@ const REGIONS = [
     albums: [
       { artist: 'Tony M.F. Rock', title: 'Let Me Take You to the Rock House', year: 1989, label: 'Luke Skyywalker', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/29833837', stampSeed: { funky: 12, party: 10, bangin: 7 } },
+    ],
+  },
+  {
+    id: 'sanantonio', name: 'San Antonio', area: 'Texas',
+    lng: -98.4951, lat: 29.4246,
+    albums: [
+      { artist: 'Choice', title: 'The Big Payback', year: 1990, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13031925', stampSeed: { bangin: 16, dark: 11, doro: 8 } },
+    ],
+  },
+  {
+    id: 'detroit', name: 'Detroit', area: 'Michigan',
+    lng: -83.0458, lat: 42.3314,
+    albums: [
+      { artist: 'Esham', title: 'Boomin\' Words from Hell', year: 1989, label: 'Reel Life Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/789568', stampSeed: { horror: 41, doro: 33, dark: 28 } },
+    ],
+  },
+  {
+    // 「世界のG-RAP」— Discogs Gangstaタグ確認済みの海外作品
+    id: 'saopaulo', name: 'São Paulo', area: 'Brazil — 世界のG-RAP',
+    lng: -46.6334, lat: -23.5507,
+    albums: [
+      { artist: "Racionais MC's", title: 'Holocausto Urbano', year: 1990, label: 'Zambia', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2748182', stampSeed: { dark: 37, doro: 29, bangin: 22 } },
+    ],
+  },
+  {
+    id: 'manila', name: 'Manila', area: 'Philippines — 世界のG-RAP',
+    lng: 120.9804, lat: 14.5904,
+    albums: [
+      { artist: 'Francis M.', title: 'Yo!', year: 1990, label: 'OctoArts International', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9153877', stampSeed: { funky: 18, party: 14, bangin: 10 } },
     ],
   },
 ];
