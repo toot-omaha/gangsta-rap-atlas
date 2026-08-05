@@ -86,6 +86,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5358780', stampSeed: { bangin: 14, funky: 11, dark: 8 } },
       { artist: 'Arabian Prince', title: "Where's My Bytches", year: 1993, label: 'Da Bozak', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5784861', stampSeed: { funky: 19, party: 14, bangin: 11 } },
+      { artist: 'Hi-C', title: "Swing'n", year: 1993, label: 'Skanless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4656917', stampSeed: { funky: 20, bangin: 14, party: 11 } },
+      { artist: 'Mel-Low', title: '18 Lbs. of Phunk', year: 1993, label: 'DJ West', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29324143', stampSeed: { funky: 17, bangin: 12, party: 9 } },
+      { artist: 'G Len', title: 'Why da Hell U Wanna Be a Basehead', year: 1993, label: 'Tandem Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3820677', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -226,6 +232,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4869628', stampSeed: { doro: 20, dark: 15, bangin: 11 } },
       { artist: 'Pooh-Man', title: 'Judgement Day', year: 1993, label: 'Righteous Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1552759', stampSeed: { dark: 17, bangin: 13, doro: 10 } },
+      { artist: 'Female Fonk', title: 'Sucka Free', year: 1993, label: 'Buck Fifty Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10055850', stampSeed: { funky: 21, bangin: 15, party: 12 } },
+      { artist: 'Ant Banks', title: "Sittin' on Somethin' Phat", year: 1993, label: 'Jive', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7796425', stampSeed: { funky: 32, party: 24, bangin: 18 } },
+      { artist: 'Dru Down', title: 'Fools from the Streets', year: 1993, label: 'C-Note Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4746683', stampSeed: { funky: 25, bangin: 18, doro: 14 } },
     ],
   },
   {
@@ -264,6 +276,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/22474649', stampSeed: { dark: 45, doro: 36, aishu: 26 } },
       { artist: 'Ganksta N-I-P', title: 'Psychic Thoughts', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/501707', stampSeed: { horror: 42, dark: 33, doro: 24 } },
+      { artist: 'Too Much Trouble', title: "Player's Choice", year: 1993, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4456564', stampSeed: { funky: 22, bangin: 16, party: 13 } },
+      { artist: '2 Low', title: 'Funky Lil Brotha', year: 1993, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3915991', stampSeed: { funky: 20, bangin: 14, doro: 11 } },
     ],
   },
   {
@@ -294,6 +310,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4172157', stampSeed: { dark: 20, doro: 16, bangin: 12 } },
       { artist: 'DJ Paul', title: 'Vol.15 "For Them Niggaz W/ Anna"', year: 1993, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9285471', stampSeed: { horror: 24, dark: 19, doro: 14 } },
+      { artist: 'Domiyen', title: 'Just Anotha Ghetto Nigga', year: 1993, label: 'Strong Arm Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13952928', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -314,6 +332,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1456067', stampSeed: { party: 24, funky: 18, bangin: 12 } },
       { artist: 'TRU', title: "Who's da Killer?", year: 1993, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1864242', stampSeed: { bangin: 24, dark: 18, doro: 14 } },
+      { artist: 'U.N.L.V.', title: '6th & Baronne', year: 1993, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15869120', stampSeed: { bangin: 17, party: 13, doro: 10 } },
     ],
   },
   {
@@ -330,6 +350,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3851547', stampSeed: { funky: 22, bangin: 16, party: 13 } },
       { artist: 'San Quinn', title: "Don't Cross Me", year: 1993, label: 'Buck Fifty Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1135700', stampSeed: { funky: 19, bangin: 14, party: 11 } },
+      { artist: 'Cold World Hustlers', title: 'Cold Streets', year: 1993, label: '21 Jump Street Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1136865', stampSeed: { dark: 18, bangin: 13, doro: 10 } },
+      { artist: 'I.M.P.', title: 'Back in the Days', year: 1993, label: 'In-A-Minute Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4817629', stampSeed: { funky: 16, bangin: 12, party: 9 } },
     ],
   },
   {
@@ -369,6 +393,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7322714', stampSeed: { dark: 17, bangin: 13, doro: 10 } },
       { artist: 'BWP', title: 'The Bytches', year: 1991, label: 'No Face', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/527825', stampSeed: { bangin: 16, funky: 11, doro: 9 } },
+      { artist: 'BWP', title: "Life's a Bitch", year: 1993, label: 'Def Jam Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10475478', stampSeed: { bangin: 20, funky: 14, doro: 11 } },
     ],
   },
   {
@@ -407,6 +433,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1126548', stampSeed: { bangin: 30, dark: 22, doro: 16 } },
       { artist: 'Just-Ice', title: 'Gun Talk', year: 1993, label: 'Savage Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/21918118', stampSeed: { bangin: 21, dark: 16, doro: 12 } },
+      { artist: 'Tim Dog', title: 'Do or Die', year: 1993, label: 'Columbia', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/416448', stampSeed: { bangin: 24, dark: 18, doro: 13 } },
     ],
   },
   {
@@ -525,6 +553,8 @@ const REGIONS = [
     albums: [
       { artist: 'Poison Clan', title: 'Poisonous Mentality', year: 1992, label: 'Effect Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/552995', stampSeed: { bangin: 24, funky: 18, party: 14 } },
+      { artist: 'Poison Clan', title: 'Ruff Town Behavior', year: 1993, label: 'Luke Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/553004', stampSeed: { bangin: 22, funky: 16, party: 13 } },
     ],
   },
   {
@@ -533,6 +563,30 @@ const REGIONS = [
     albums: [
       { artist: 'Naughty By Nature', title: '19 Naughty III', year: 1993, label: 'Tommy Boy', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/241357', stampSeed: { bangin: 36, party: 28, funky: 22 } },
+    ],
+  },
+  {
+    id: 'riverside', name: 'Riverside', area: 'California',
+    lng: -117.3961, lat: 33.9806,
+    albums: [
+      { artist: 'New Breed of Hustlas', title: 'Ratha B a Hustla', year: 1993, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4171694', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+    ],
+  },
+  {
+    id: 'chicago', name: 'Chicago', area: 'Illinois',
+    lng: -87.6298, lat: 41.8781,
+    albums: [
+      { artist: 'Figure Uv Speech', title: 'U Already Know', year: 1993, label: 'Onyx Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1205306', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+    ],
+  },
+  {
+    id: 'pittsburgca', name: 'Pittsburg', area: 'California',
+    lng: -121.8847, lat: 38.0280,
+    albums: [
+      { artist: 'Gelo', title: "Havin' It My Way", year: 1993, label: 'SMG Solar Music Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/854037', stampSeed: { funky: 20, bangin: 14, doro: 10 } },
     ],
   },
 ];
