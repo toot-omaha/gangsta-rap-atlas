@@ -77,11 +77,11 @@ body::before {
 #stage { position: fixed; inset: 58px 0 74px 0; z-index: 1; }
 
 /* 地図は常にフルスクリーンの背景 */
-#mapWrap {
-  position: absolute; inset: 0; overflow: hidden;
-  filter: grayscale(1) contrast(1.25);
-}
+#mapWrap { position: absolute; inset: 0; overflow: hidden; }
 #map { position: absolute; inset: 0; }
+/* 白黒印刷風フィルタはタイルのキャンバスだけに掛ける
+ * (マーカーまで掛けると赤い弾痕が灰色になってしまう) */
+#map .maplibregl-canvas { filter: grayscale(1) contrast(1.25); }
 
 /* 地図の上にかぶせる印刷ノイズ */
 #mapWrap::after {
@@ -139,13 +139,13 @@ body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
 
 /* 一度撃った土地には弾痕が残る(墓石の背後) */
 .marker .bh {
-  position: absolute; inset: -55%;
-  background: url('assets/bullet-hole-clean.svg?v=2') center / contain no-repeat;
-  transform: rotate(var(--rot, 0deg)) translate(-8%, -6%);
+  position: absolute; inset: -95%;
+  background: url('assets/bullet-red-clean.png') center / contain no-repeat;
+  transform: rotate(var(--rot, 0deg)) translate(-4%, -3%);
   opacity: 0; transition: opacity .3s;
   pointer-events: none;
 }
-.marker.hit .bh { opacity: .9; }
+.marker.hit .bh { opacity: .95; }
 .marker.hit .mk { animation: hit .3s steps(3); }
 @keyframes hit {
   0% { transform: scale(calc(var(--s, 1) * 2.4)); }
