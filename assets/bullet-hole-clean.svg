@@ -20,7 +20,10 @@
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
      id="defs18972"><clipPath
        clipPathUnits="userSpaceOnUse"
-       id="clipPath18984"></clipPath></defs><sodipodi:namedview
+       id="clipPath18984"><path
+         d="M 0,800 H 800 V 0 H 0 Z"
+         id="path18982"
+         inkscape:connector-curvature="0" /></clipPath></defs><sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1"

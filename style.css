@@ -136,6 +136,16 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
 }
 body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
 .marker.dimmed { opacity: .22; }
+
+/* 一度撃った土地には弾痕が残る(墓石の背後) */
+.marker .bh {
+  position: absolute; inset: -55%;
+  background: url('assets/bullet-hole-clean.svg?v=2') center / contain no-repeat;
+  transform: rotate(var(--rot, 0deg)) translate(-8%, -6%);
+  opacity: 0; transition: opacity .3s;
+  pointer-events: none;
+}
+.marker.hit .bh { opacity: .9; }
 .marker.hit .mk { animation: hit .3s steps(3); }
 @keyframes hit {
   0% { transform: scale(calc(var(--s, 1) * 2.4)); }
@@ -144,15 +154,15 @@ body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
 
 /* ---------- 着弾エフェクト(クリック地点に弾痕→画面が揺れる) ---------- */
 #shot {
-  position: fixed; z-index: 40; width: 180px; height: 180px;
-  margin: -90px 0 0 -90px; pointer-events: none; opacity: 0;
+  position: fixed; z-index: 40; width: 260px; height: 260px;
+  margin: -130px 0 0 -130px; pointer-events: none; opacity: 0;
 }
 #shot img { width: 100%; height: 100%; display: block; }
-#shot.fire { animation: shotIn .5s steps(4) forwards; }
+#shot.fire { animation: shotIn .7s steps(5) forwards; }
 @keyframes shotIn {
-  0%   { opacity: 1; transform: scale(2.6); }
-  35%  { opacity: 1; transform: scale(1); }
-  80%  { opacity: 1; transform: scale(1); }
+  0%   { opacity: 1; transform: scale(2.4); }
+  30%  { opacity: 1; transform: scale(1); }
+  85%  { opacity: 1; transform: scale(1); }
   100% { opacity: 0; transform: scale(1); }
 }
 /* シェイクは地図だけに掛ける(#stage に transform を掛けると

@@ -120,6 +120,7 @@ REGIONS.forEach((region) => {
   el.style.setProperty('--rot', `${rot}deg`);
   el.innerHTML = `
     <div class="mk">
+      <div class="bh"></div>
       <svg class="grave" viewBox="0 0 24 26" aria-hidden="true">
         <path d="M5 24 V10 a7 7 0 0 1 14 0 V24 Z"/>
         <rect x="2.5" y="23" width="19" height="2.6"/>
@@ -190,7 +191,7 @@ function openRegion(region) {
   refreshMarkers();
   renderList(region);
   // 着弾→揺れを見せてから誌面ポップアップ
-  setTimeout(() => document.body.classList.add('detail'), 380);
+  setTimeout(() => document.body.classList.add('detail'), 450);
 }
 
 function closeList() {
