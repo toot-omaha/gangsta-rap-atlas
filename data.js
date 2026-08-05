@@ -126,6 +126,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/750888', stampSeed: { bangin: 40, dark: 28, doro: 20, funky: 24 } },
       { artist: 'MC Ren', title: 'The Villain in Black', year: 1996, label: 'Ruthless Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/227397', stampSeed: { bangin: 26, dark: 19, doro: 14 } },
+      { artist: 'Eazy-E', title: 'Eternal E', year: 1996, label: 'Priority Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16828782', stampSeed: { bangin: 30, dark: 22, doro: 16, funky: 18 } },
     ],
   },
   {
@@ -244,6 +246,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7153173', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
       { artist: 'Westside Connection', title: 'Bow Down', year: 1996, label: 'Priority Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/457689', stampSeed: { bangin: 62, dark: 42, doro: 30, funky: 34 } },
+      { artist: 'Terror', title: "It's Whateva", year: 1996, label: 'Snubnoze Muzik', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15532158', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Young Murder Squad', title: "How We Livin'", year: 1996, label: 'G.W.K. Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2502188', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
     ],
   },
   {
@@ -296,6 +302,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/566064', stampSeed: { funky: 30, bangin: 22, party: 16 } },
       { artist: 'B-Legit', title: 'The Hemp Museum', year: 1996, label: 'Jive', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/33652554', stampSeed: { funky: 26, bangin: 19, party: 14 } },
+      { artist: 'Celly Cel', title: 'Killa Kali', year: 1996, label: "Sick Wid' It Records", youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1793211', stampSeed: { funky: 24, bangin: 18, party: 13 } },
+      { artist: 'Game Related', title: '$oak Game', year: 1996, label: 'Robbins', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6201862', stampSeed: { funky: 18, bangin: 13, party: 10 } },
     ],
   },
   {
@@ -404,6 +414,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/606113', stampSeed: { funky: 26, bangin: 19, party: 14 } },
       { artist: '2Pac', title: 'All Eyez on Me', year: 1996, label: 'Death Row Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3043538', stampSeed: { doro: 60, bangin: 50, aishu: 40, funky: 35 } },
+      { artist: 'The Conscious Daughters', title: 'Gamers (Clean Edited Version)', year: 1996, label: 'Priority Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4772324', stampSeed: { funky: 22, bangin: 16, doro: 12 } },
+      { artist: 'Richie Rich', title: 'Seasoned Veteran', year: 1996, label: 'Def Jam Music Group Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3166235', stampSeed: { funky: 28, bangin: 20, party: 15 } },
     ],
   },
   {
@@ -492,6 +506,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6491147', stampSeed: { dark: 16, doro: 13, bangin: 9 } },
       { artist: 'Precise', title: 'Da Soul', year: 1995, label: 'Large Investment Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/989630', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+      { artist: 'Wreckless Klan', title: "Blowin' Up Tha Scene", year: 1996, label: 'Bigtyme Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/862878', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
+      { artist: 'Big Mello', title: 'Southside Story', year: 1996, label: 'N-Terrorgation Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4730861', stampSeed: { funky: 20, bangin: 15, dark: 11 } },
+      { artist: 'Facemob', title: 'The Other Side of the Law', year: 1996, label: 'Interface', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/504341', stampSeed: { dark: 24, doro: 18, bangin: 14 } },
+      { artist: '20-2-Life', title: 'Twenty-Two-Life', year: 1996, label: 'Inmate Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3617015', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -502,6 +524,8 @@ const REGIONS = [
         stampSeed: { doro: 26, funky: 19, aishu: 14 } },
       { artist: 'DJ DMD', title: 'Eleven', year: 1996, label: 'Inner Soul Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7031666', stampSeed: { funky: 18, bangin: 13, party: 10 } },
+      { artist: 'UGK', title: "Ridin' Dirty", year: 1996, label: 'Jive', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22664243', stampSeed: { funky: 40, doro: 30, dark: 24, aishu: 18 } },
     ],
   },
   {
@@ -572,6 +596,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13220572', stampSeed: { funky: 20, laidbk: 16, dark: 12 } },
       { artist: 'M.C. Mack', title: "Talez from da MACK-SIDE (Bass-Mix 95'-96')", year: 1996, label: 'Devil Shit Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/16552581', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Playa G', title: 'Pimp Sh*t', year: 1996, label: 'East Wood Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4168920', stampSeed: { funky: 18, party: 14, bangin: 10 } },
+      { artist: 'Kingpin Skinny Pimp', title: 'Skinny but Dangerous - The Legendary Underground Tapes', year: 1996, label: 'Basix Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12666745', stampSeed: { dark: 22, doro: 17, horror: 12 } },
+      { artist: 'Criminal Manne', title: 'Criminal Manne', year: 1996, label: 'DJ Squeeky Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9140687', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
+      { artist: 'Lil Yo', title: "Youngsta's on a Come Up", year: 1996, label: 'Crime Lordz Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3784169', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -654,6 +686,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1452317', stampSeed: { party: 18, funky: 14, bangin: 10 } },
       { artist: 'TRU', title: 'TRU 2 da Game', year: 1996, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/19494823', stampSeed: { bangin: 30, dark: 22, doro: 16 } },
+      { artist: 'Ceaser', title: 'The Life and Times', year: 1996, label: 'Fat Bank Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3783648', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -742,6 +776,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/508265', stampSeed: { funky: 15, bangin: 11, party: 9 } },
       { artist: 'Triple 6', title: "Hustlin' 4 My Paper", year: 1996, label: 'Graveyard Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1865630', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'N.O.H. Mafia', title: 'Niggaz on High', year: 1996, label: 'The Rightway Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6122679', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
+      { artist: 'Brotha Moe', title: 'You Reap What You Sow', year: 1996, label: 'Trigga Lock', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/775505', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -877,6 +915,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1479781', stampSeed: { funky: 14, dark: 11, bangin: 8 } },
       { artist: 'Young Dre D', title: 'Troubled Mind', year: 1996, label: 'Recognize Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1201605', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: 'Lokee', title: 'Voodoo Gangsta Funk', year: 1996, label: 'Tombstone Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1490327', stampSeed: { funky: 20, bangin: 15, dark: 11 } },
+      { artist: 'Hollow Tip', title: 'Takin No Shortz', year: 1996, label: 'High Side Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5404455', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
+      { artist: 'C.R.I.S.I.S.', title: 'Crazy Real Insane Soldiers in Sacramento', year: 1996, label: 'N-Season Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2077829', stampSeed: { funky: 17, bangin: 13, doro: 9 } },
     ],
   },
   {
@@ -931,6 +975,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5829980', stampSeed: { bangin: 15, dark: 11, doro: 9 } },
       { artist: 'Ghetto Mafia', title: 'Straight from the Dec', year: 1996, label: 'Down South Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1473822', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
+      { artist: 'Kollision', title: 'High Performance', year: 1996, label: 'Bomb Shelter Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1873790', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
+      { artist: 'Royal C', title: 'Roll Out the Red Carpet', year: 1996, label: 'Epic Street', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/688781', stampSeed: { funky: 18, bangin: 13, party: 10 } },
     ],
   },
   {
@@ -951,6 +999,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3608271', stampSeed: { bangin: 14, dark: 10, doro: 8 } },
       { artist: 'C-Ordell', title: 'Under Investigation', year: 1995, label: 'BLVD Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9942187', stampSeed: { bangin: 13, dark: 9, doro: 7 } },
+      { artist: 'P.K.O.', title: 'No Pain No Gain', year: 1996, label: 'Youngsta Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1874256', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -975,6 +1025,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2322174', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
       { artist: 'Tre-8', title: 'Fright Night', year: 1995, label: 'Smoke 1 Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3850015', stampSeed: { horror: 20, dark: 16, doro: 12 } },
+      { artist: 'Menace to Society', title: 'Pure & Uncut', year: 1996, label: 'Triple X Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16717635', stampSeed: { dark: 20, bangin: 15, doro: 12 } },
     ],
   },
   {
@@ -1051,6 +1103,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/553004', stampSeed: { bangin: 22, funky: 16, party: 13 } },
       { artist: 'Gangsta Shorties', title: 'Point of No Return', year: 1994, label: 'Stress Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6935495', stampSeed: { bangin: 15, funky: 11, party: 9 } },
+      { artist: 'G-Shorties', title: '44 Ways', year: 1996, label: 'Stress Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1873237', stampSeed: { bangin: 16, funky: 12, party: 9 } },
+      { artist: 'Poison Clan', title: 'Strait Zooism', year: 1996, label: 'Warlock Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2848254', stampSeed: { bangin: 26, funky: 19, party: 15 } },
     ],
   },
   {
@@ -1069,8 +1125,6 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4171694', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Kokane', title: 'Funk Upon a Rhyme', year: 1994, label: 'Ruthless Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/591619', stampSeed: { funky: 29, bangin: 20, party: 15 } },
-      { artist: 'P.K.O.', title: 'No Pain No Gain', year: 1996, label: 'Youngsta Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/1874256', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -1083,6 +1137,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1857972', stampSeed: { dark: 13, doro: 10, horror: 8 } },
       { artist: 'D-Fly', title: 'Redrum', year: 1996, label: 'Chi-Funk Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7304274', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+      { artist: 'Do or Die', title: 'Picture This', year: 1996, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/744271', stampSeed: { funky: 26, party: 19, bangin: 15 } },
+      { artist: 'Crucial Conflict', title: 'The Final Tic', year: 1996, label: 'Pallas Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15904847', stampSeed: { funky: 30, party: 22, bangin: 16 } },
+      { artist: 'Hitcha', title: 'The Life I Lead', year: 1996, label: 'Hi Jack Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3634414', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -1174,6 +1234,8 @@ const REGIONS = [
     albums: [
       { artist: 'Wildliffe Society', title: 'Jacktown (601)', year: 1995, label: 'Blunt Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9587158', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+      { artist: 'Mississippi Mafia', title: 'Southern Funk III', year: 1996, label: 'Sir Captain Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1880153', stampSeed: { funky: 20, dark: 15, bangin: 11 } },
     ],
   },
   {
@@ -1200,6 +1262,8 @@ const REGIONS = [
     albums: [
       { artist: 'Above the Law', title: 'Time Will Reveal', year: 1996, label: 'Tommy Boy', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10808984', stampSeed: { bangin: 22, dark: 16, funky: 13 } },
+      { artist: 'Neighborhood Clicc', title: 'Neighborhood Clicc', year: 1996, label: 'Clicc House Ent.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13091061', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
 ];
