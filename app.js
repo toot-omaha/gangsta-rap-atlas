@@ -8,6 +8,10 @@ const I18N = {
     intro: '撃チ込メ ─ 地図ヲ クリック',
     releases: 'RELEASES', discs: 'DISCS',
     favs: 'MY FAVS', favSub: 'お気に入りディスク',
+    have: '持ッテル', want: 'ホシイ',
+    haveSection: '持ッテルディスク', wantSection: 'ホシイディスク',
+    exportCsv: '⬇ CSV保存', importCsv: '⬆ CSV読込',
+    importOk: (n) => `${n}件反映シタ`, importNone: '一致スルディスクガナカッタ',
     favEmpty: 'まだ空。ディスクの☆を押して集めよう。',
     noMatch: 'この絞り込みに合うリリースはありません。',
     rarity: '発掘度',
@@ -28,6 +32,10 @@ const I18N = {
     intro: 'SHOOT THE MAP — CLICK A CITY',
     releases: 'RELEASES', discs: 'DISCS',
     favs: 'MY FAVS', favSub: 'Favorite discs',
+    have: 'HAVE', want: 'WANT',
+    haveSection: 'Discs I have', wantSection: 'Discs I want',
+    exportCsv: '⬇ Export CSV', importCsv: '⬆ Import CSV',
+    importOk: (n) => `${n} matched and applied`, importNone: 'No matching discs found',
     favEmpty: 'Empty. Hit ☆ on a disc to collect.',
     noMatch: 'No releases match this filter.',
     rarity: 'DIG LEVEL',
@@ -130,11 +138,24 @@ function rarity(album) {
   return { score, stars: '★'.repeat(n) + '☆'.repeat(5 - n), total: t };
 }
 
-// ---------- お気に入り(ディスク単位) ----------
-const FAV_KEY = 'gra.favs.v1';
-const favs = new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]'));
-const saveFavs = () => localStorage.setItem(FAV_KEY, JSON.stringify([...favs]));
-const updateFavCount = () => { document.getElementById('favCount').textContent = favs.size; };
+// ---------- お気に入り(ディスク単位) — 持ってる/ほしい の2系統 ----------
+const HAVE_KEY = 'gra.favs.have.v1';
+const WANT_KEY = 'gra.favs.want.v1';
+// 旧・単一★お気に入り(gra.favs.v1)は「持ってる」として引き継ぐ
+const legacyFavs = JSON.parse(localStorage.getItem('gra.favs.v1') || 'null');
+const favsHave = new Set(legacyFavs || JSON.parse(localStorage.getItem(HAVE_KEY) || '[]'));
+const favsWant = new Set(JSON.parse(localStorage.getItem(WANT_KEY) || '[]'));
+if (legacyFavs) { localStorage.setItem(HAVE_KEY, JSON.stringify([...favsHave])); localStorage.removeItem('gra.favs.v1'); }
+
+const saveFavs = () => {
+  localStorage.setItem(HAVE_KEY, JSON.stringify([...favsHave]));
+  localStorage.setItem(WANT_KEY, JSON.stringify([...favsWant]));
+};
+const toggleFav = (set, key) => { set.has(key) ? set.delete(key) : set.add(key); saveFavs(); };
+const updateFavCount = () => {
+  const all = new Set([...favsHave, ...favsWant]);
+  document.getElementById('favCount').textContent = all.size;
+};
 
 // ---------- 状態 ----------
 let activeFilters = new Set();
@@ -331,7 +352,10 @@ function albumCard(album) {
         <p class="a">${album.artist}</p>
         <p class="m">${album.year} / ${album.label} / ${album.format || 'CD'}</p>
       </div>
-      <button class="fav-btn${favs.has(albumKey(album)) ? ' on' : ''}" title="お気に入り">${favs.has(albumKey(album)) ? '★' : '☆'}</button>
+      <div class="fav-pair">
+        <button class="fav-btn have-btn${favsHave.has(albumKey(album)) ? ' on' : ''}" title="${t('have')}">${t('have')}</button>
+        <button class="fav-btn want-btn${favsWant.has(albumKey(album)) ? ' on' : ''}" title="${t('want')}">${t('want')}</button>
+      </div>
       <button class="play-btn" title="このディスクをキューに追加">▶</button>
     </div>
     <div class="rarity">
@@ -355,12 +379,11 @@ function albumCard(album) {
   });
 
   card.querySelector('.play-btn').addEventListener('click', () => playAlbum(album));
-  card.querySelector('.fav-btn').addEventListener('click', () => {
-    const k = albumKey(album);
-    favs.has(k) ? favs.delete(k) : favs.add(k);
-    saveFavs();
-    updateFavCount();
-    rerender();
+  card.querySelector('.have-btn').addEventListener('click', () => {
+    toggleFav(favsHave, albumKey(album)); updateFavCount(); rerender();
+  });
+  card.querySelector('.want-btn').addEventListener('click', () => {
+    toggleFav(favsWant, albumKey(album)); updateFavCount(); rerender();
   });
   return card;
 }
@@ -372,7 +395,7 @@ function renderDisc(album) {
   const r = rarity(album);
   const region = REGIONS.find((rr) => rr.albums.includes(album));
   const art = artUrl(e, 600);
-  const fav = favs.has(albumKey(album));
+  const key = albumKey(album);
   const rerender = () => renderDisc(album);
   const tracks = e?.tracks || [];
 
@@ -392,7 +415,8 @@ function renderDisc(album) {
         <p class="m">${album.year} / ${album.label} / ${album.format || 'CD'}${
           e?.link ? ` / <a class="apple" href="${e.link}" target="_blank" rel="noopener">Apple Music ↗</a>` : ''}</p>
         <div class="disc-actions">
-          <button class="tr-toggle fav-d">${fav ? '★' : '☆'} FAV</button>
+          <button class="tr-toggle have-d${favsHave.has(key) ? ' on' : ''}">${t('have')}</button>
+          <button class="tr-toggle want-d${favsWant.has(key) ? ' on' : ''}">${t('want')}</button>
           <button class="tr-toggle play-d">${t('queueAll')}</button>
         </div>
         <div class="rarity">
@@ -422,44 +446,149 @@ function renderDisc(album) {
   }
 
   listEl.querySelector('.play-d').addEventListener('click', () => playAlbum(album));
-  listEl.querySelector('.fav-d').addEventListener('click', () => {
-    const k = albumKey(album);
-    favs.has(k) ? favs.delete(k) : favs.add(k);
-    saveFavs();
-    updateFavCount();
-    rerender();
+  listEl.querySelector('.have-d').addEventListener('click', () => {
+    toggleFav(favsHave, key); updateFavCount(); rerender();
+  });
+  listEl.querySelector('.want-d').addEventListener('click', () => {
+    toggleFav(favsWant, key); updateFavCount(); rerender();
   });
 
   const tracksEl = listEl.querySelector('.tracks');
   tracks.forEach((t, i) => tracksEl.appendChild(trackRow(album, t, i, rerender)));
 }
 
-// ---------- お気に入りリスト表示 ----------
+// ---------- お気に入りリスト表示(持ってる/ほしい の2セクション) ----------
+function allKnownAlbums() {
+  const out = [];
+  REGIONS.forEach((r) => r.albums.forEach((a) => out.push({ a, r })));
+  return out;
+}
+
 function renderFavs() {
   listView = 'favs';
   currentDisc = null;
   document.body.classList.add('detail');
   activeRegion = null;
   refreshMarkers();
-  const items = [];
-  REGIONS.forEach((r) => r.albums.forEach((a) => { if (favs.has(albumKey(a))) items.push({ a, r }); }));
+  const all = allKnownAlbums();
+  const haveItems = all.filter(({ a }) => favsHave.has(albumKey(a)));
+  const wantItems = all.filter(({ a }) => favsWant.has(albumKey(a)));
+  const total = new Set([...favsHave, ...favsWant]).size;
+
+  const section = (title, items) => `
+    <div class="fav-section">
+      <h3>${title} <span class="cnt">${items.length} ${t('discs')}</span></h3>
+      <div class="grid"></div>
+    </div>`;
+
   listEl.innerHTML = `
-    ${listHead(t('favs'), t('favSub'), `${items.length} ${t('discs')}`)}
-    <div class="grid"></div>`;
+    ${listHead(t('favs'), t('favSub'), `${total} ${t('discs')}`)}
+    <div class="fav-io">
+      <button class="tr-toggle" id="favExport">${t('exportCsv')}</button>
+      <button class="tr-toggle" id="favImportBtn">${t('importCsv')}</button>
+      <input type="file" id="favImportFile" accept=".csv,text/csv" hidden>
+      <span class="form-msg" id="favIoMsg"></span>
+    </div>
+    ${section(t('haveSection'), haveItems)}
+    ${section(t('wantSection'), wantItems)}`;
   listEl.querySelector('.close').addEventListener('click', closeList);
-  const grid = listEl.querySelector('.grid');
-  if (!items.length) {
-    grid.innerHTML = `<p style="font-size:12px">${t('favEmpty')}</p>`;
-    return;
-  }
-  items.forEach(({ a, r }) => {
-    const c = albumCard(a);
-    c.querySelector('.album-info .m').insertAdjacentHTML('beforeend', ` / <b>${r.name}</b>`);
-    grid.appendChild(c);
+
+  const [haveGrid, wantGrid] = listEl.querySelectorAll('.fav-section .grid');
+  const fillGrid = (grid, items) => {
+    if (!items.length) { grid.innerHTML = `<p style="font-size:12px">${t('favEmpty')}</p>`; return; }
+    items.forEach(({ a, r }) => {
+      const c = albumCard(a);
+      c.querySelector('.album-info .m').insertAdjacentHTML('beforeend', ` / <b>${r.name}</b>`);
+      grid.appendChild(c);
+    });
+  };
+  fillGrid(haveGrid, haveItems);
+  fillGrid(wantGrid, wantItems);
+
+  listEl.querySelector('#favExport').addEventListener('click', exportFavsCsv);
+  const fileInput = listEl.querySelector('#favImportFile');
+  listEl.querySelector('#favImportBtn').addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    const n = importFavsCsv(await file.text());
+    listEl.querySelector('#favIoMsg').textContent = n > 0 ? t('importOk')(n) : t('importNone');
+    updateFavCount();
+    renderFavs();
   });
 }
+document.getElementById('brandHome').addEventListener('click', () => location.reload());
 document.getElementById('favBtn').addEventListener('click', renderFavs);
 updateFavCount();
+
+// ---------- CSV エクスポート/インポート(ブラウザ内完結・サーバー送信なし) ----------
+const csvField = (s) => `"${String(s ?? '').replace(/"/g, '""')}"`;
+
+function exportFavsCsv() {
+  const rows = [['status', 'artist', 'title', 'year', 'label', 'region']];
+  allKnownAlbums().forEach(({ a, r }) => {
+    const key = albumKey(a);
+    const statuses = [favsHave.has(key) && 'have', favsWant.has(key) && 'want'].filter(Boolean);
+    if (!statuses.length) return;
+    rows.push([statuses.join(';'), a.artist, a.title, a.year ?? '', a.label ?? '', r.name]);
+  });
+  const csv = rows.map((row) => row.map(csvField).join(',')).join('\r\n');
+  const blob = new Blob([`﻿${csv}`], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'gangsta-rap-atlas-favs.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// 簡易CSVパーサ(ダブルクォート囲み・""エスケープに対応)
+function parseCsv(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') inQuotes = false;
+      else field += c;
+    } else if (c === '"') inQuotes = true;
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(field); field = '';
+      if (row.some((f) => f !== '')) rows.push(row);
+      row = [];
+    } else field += c;
+  }
+  if (field !== '' || row.length) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+function importFavsCsv(text) {
+  const rows = parseCsv(text.replace(/^﻿/, ''));
+  if (!rows.length) return 0;
+  const header = rows[0].map((h) => h.trim().toLowerCase());
+  const idx = (name) => header.indexOf(name);
+  const iStatus = idx('status'), iArtist = idx('artist'), iTitle = idx('title');
+  if (iArtist < 0 || iTitle < 0) return 0;
+
+  const norm_ = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const byKey = new Map(allKnownAlbums().map(({ a }) => [norm_(a.artist) + '|' + norm_(a.title), albumKey(a)]));
+  let matched = 0;
+  rows.slice(1).forEach((row) => {
+    const artist = row[iArtist], title = row[iTitle];
+    if (!artist || !title) return;
+    const k = byKey.get(norm_(artist) + '|' + norm_(title));
+    if (!k) return;
+    const status = (iStatus >= 0 ? row[iStatus] : 'have').toLowerCase();
+    if (status.includes('have')) favsHave.add(k);
+    if (status.includes('want')) favsWant.add(k);
+    matched++;
+  });
+  saveFavs();
+  return matched;
+}
 
 // 墓石メニュー(狭い画面): スタンプ絞り込みの開閉
 document.getElementById('stampMenuBtn').addEventListener('click', () => {

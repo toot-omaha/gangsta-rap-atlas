@@ -71,8 +71,8 @@ norm = lambda s: re.sub(r'[^a-z0-9]+', '', s.lower())
 
 
 # ---------- 1. Discogs: G-RAP判定の一次データベース ----------
-def discogs_harvest(pages=4, per_page=100, fmt='Album'):
-    """style=Gangsta のリリースを人気順(community have数)に取得し、
+def discogs_harvest(pages=4, per_page=100, fmt='Album', sort='year', sort_order='asc'):
+    """style=Gangsta のリリースを取得し(デフォルトは古い年代順)、
     master_id で重複プレスを除去して (artist, title, year, label, country) を返す。"""
     seen_master = set()
     out = []
@@ -80,7 +80,7 @@ def discogs_harvest(pages=4, per_page=100, fmt='Album'):
         url = (
             'https://api.discogs.com/database/search'
             f'?genre=Hip%20Hop&style=Gangsta&type=release&format={fmt}'
-            f'&sort=have&sort_order=desc&per_page={per_page}&page={page}'
+            f'&sort={sort}&sort_order={sort_order}&per_page={per_page}&page={page}'
         )
         data = discogs.get(url)
         for r in data.get('results', []):

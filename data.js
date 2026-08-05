@@ -143,13 +143,12 @@ const REGIONS = [
     ],
   },
   {
+    // DS455 / OZROSAURUS は Discogs監査で style に Gangsta タグが
+    // 一切付いていないことを確認したため削除(2026-08-06)。
+    // 「世界のG-RAP」の枠自体は残し、条件を満たす盤が見つかり次第補充する。
     id: 'yokohama', name: 'Yokohama', area: 'Japan — 世界のG-RAP',
     lng: 139.6380, lat: 35.4437,
     albums: [
-      { artist: 'DS455', title: 'DabStar Clique', year: 2002, label: 'Universal J', youtubeId: null,
-        stampSeed: { laidbk: 19, mellow: 15, smooth: 13 } },
-      { artist: 'OZROSAURUS', title: 'Rollin\'045', year: 2001, label: 'Street Flava/Polystar', youtubeId: null,
-        stampSeed: { bangin: 17, aishu: 12, funky: 9 } },
     ],
   },
   {
