@@ -170,6 +170,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5415563', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'K-Dee', title: 'Ass, Gas or Cash (No One Rides for Free)', year: 1994, label: 'Lench Mob Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3191778', stampSeed: { bangin: 22, funky: 16, dark: 12 } },
+      { artist: "Lil' 1/2 Dead", title: 'The Dead Has Arisen', year: 1994, label: 'Priority Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2037830', stampSeed: { doro: 24, dark: 19, bangin: 15 } },
     ],
   },
   {
@@ -280,6 +282,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/615712', stampSeed: { funky: 23, party: 18, bangin: 13 } },
       { artist: 'Seagram', title: 'Reality Check', year: 1994, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4311077', stampSeed: { doro: 25, dark: 20, aishu: 15 } },
+      { artist: 'Dangerous Dame', title: 'Make Room 4 Daddy', year: 1994, label: 'Snake Pit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1455851', stampSeed: { funky: 14, party: 11, bangin: 8 } },
+      { artist: '2Pac', title: 'Me Against the World', year: 1995, label: 'Interscope Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8910685', stampSeed: { doro: 68, aishu: 55, dark: 42, bangin: 30 } },
     ],
   },
   {
@@ -390,6 +396,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10195148', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
       { artist: 'N.O.T.S.', title: 'True Blue II: You Only Live Once', year: 1994, label: "Ain't Jokin Records", youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1904898', stampSeed: { dark: 12, doro: 10, bangin: 7 } },
+      { artist: 'D.J. Squeeky', title: 'Summer Mix', year: 1994, label: 'Gangsta Shit Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19941607', stampSeed: { dark: 16, doro: 13, bangin: 9 } },
     ],
   },
   {
@@ -428,6 +436,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2690754', stampSeed: { dark: 20, doro: 16, aishu: 12 } },
       { artist: 'Lower Level Organization', title: "Straight from Tha' Woods", year: 1994, label: 'Mobo Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1492281', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: 'Cheeky Blakk', title: 'Gots 2 Be Cheeky', year: 1994, label: 'Mobo Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5911797', stampSeed: { party: 22, funky: 16, bangin: 11 } },
+      { artist: 'Dog House Posse', title: 'Dope Gets No Heavier', year: 1994, label: 'Mobo Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1456165', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
     ],
   },
   {
@@ -460,6 +472,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5865193', stampSeed: { funky: 17, bangin: 13, party: 10 } },
       { artist: 'Get Low Playaz', title: 'Straight Out the Labb', year: 1994, label: 'Get Low Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3967574', stampSeed: { funky: 19, bangin: 14, party: 11 } },
+      { artist: 'Psycho Gangsta', title: 'Stories of the Jack', year: 1994, label: 'Rat-Ta-Tat Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1864252', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -765,6 +779,8 @@ const REGIONS = [
     albums: [
       { artist: 'Section 8 Mob', title: 'Controlled Dangerous Substance', year: 1994, label: 'Dark City Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1876692', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
+      { artist: 'Section 8 Mob', title: 'Section 8 Mob', year: 1994, label: 'Dark City Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/581389', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
     ],
   },
   {
@@ -774,6 +790,14 @@ const REGIONS = [
     albums: [
       { artist: 'Rödelheim Hartreim Projekt', title: 'Direkt Aus Rödelheim', year: 1994, label: 'MCA Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/809331', stampSeed: { bangin: 21, dark: 16, doro: 12 } },
+    ],
+  },
+  {
+    id: 'cleveland', name: 'Cleveland', area: 'Ohio',
+    lng: -81.6944, lat: 41.4993,
+    albums: [
+      { artist: 'Bone Thugs-N-Harmony', title: 'E. 1999 Eternal', year: 1995, label: 'Ruthless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17072769', stampSeed: { doro: 65, dark: 50, aishu: 38, horror: 24 } },
     ],
   },
 ];
