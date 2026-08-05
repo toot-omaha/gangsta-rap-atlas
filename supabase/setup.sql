@@ -16,8 +16,7 @@ create table public.submissions (
   label      text,
   region     text,          -- 地域名(自由記述)
   format     text,          -- CD / CDS / Tape など
-  comment    text,          -- 補足・出典など
-  contact    text,          -- 任意(連絡先やハンドル)
+  comment    text,          -- 補足・出典など(個人情報は収集しない方針)
   status     text not null default 'pending'
 );
 

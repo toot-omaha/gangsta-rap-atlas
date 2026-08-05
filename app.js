@@ -18,7 +18,8 @@ const I18N = {
     clear: 'クリア', credit: '試聴・ジャケ写: Apple Music',
     submit: '✚ 投稿', submitTitle: 'タレコミ', submitSub: 'ディスク情報ヲ投稿(承認後ニ掲載)',
     fArtist: 'アーティスト *', fTitle: 'タイトル *', fYear: '年', fLabel: 'レーベル',
-    fRegion: '地域(例: Compton)', fFormat: 'フォーマット', fComment: 'コメント・出典など', fContact: '連絡先/ハンドル(任意)',
+    fRegion: '地域(例: Compton)', fFormat: 'フォーマット', fComment: 'コメント・出典など',
+    noPii: '⚠ 個人情報(名前・連絡先など)ハ書キ込マナイコト',
     send: '送信スル', sending: '送信中…', sent: '感謝!承認後ニ地図ニ刻マレル。', sendErr: '送信失敗。時間ヲ置イテ再度。',
     needFields: 'アーティストとタイトルは必須です',
   },
@@ -37,7 +38,8 @@ const I18N = {
     clear: 'CLEAR', credit: 'Previews & artwork: Apple Music',
     submit: '✚ SUBMIT', submitTitle: 'DROP A DIME', submitSub: 'Submit a disc (published after review)',
     fArtist: 'Artist *', fTitle: 'Title *', fYear: 'Year', fLabel: 'Label',
-    fRegion: 'Region (e.g. Compton)', fFormat: 'Format', fComment: 'Comment / source', fContact: 'Contact / handle (optional)',
+    fRegion: 'Region (e.g. Compton)', fFormat: 'Format', fComment: 'Comment / source',
+    noPii: '⚠ Do not include personal information (names, contacts, etc.)',
     send: 'SEND', sending: 'Sending…', sent: 'Respect! It will be carved on the map after review.', sendErr: 'Failed. Try again later.',
     needFields: 'Artist and Title are required',
   },
@@ -77,9 +79,11 @@ async function loadSharedStamps() {
 
 function bumpShared(key, id) {
   (SHARED[key] ||= {})[id] = (SHARED[key]?.[id] || 0) + 1;
-  fetch(`${SB_URL}/stamps?on_conflict=client_id,target_key,stamp_id`, {
+  // 素のINSERT。重複はunique制約が409で弾くので無視する
+  // (on_conflict方式はSELECT権限が必要になり、生データ公開につながるため使わない)
+  fetch(`${SB_URL}/stamps`, {
     method: 'POST',
-    headers: { ...SB_HEADERS, Prefer: 'resolution=ignore-duplicates,return=minimal' },
+    headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
     body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, stamp_id: id }),
   }).catch(() => {});
 }
@@ -604,7 +608,7 @@ function renderSubmit() {
       <label>${t('fLabel')}<input name="label" maxlength="120"></label>
       <label>${t('fRegion')}<input name="region" maxlength="120"></label>
       <label>${t('fComment')}<textarea name="comment" maxlength="1000" rows="4"></textarea></label>
-      <label>${t('fContact')}<input name="contact" maxlength="120"></label>
+      <p class="form-note">${t('noPii')}</p>
       <button type="submit" class="tr-toggle send">${t('send')}</button>
       <p class="form-msg"></p>
     </form>`;
@@ -623,7 +627,6 @@ function renderSubmit() {
       region: (f.get('region') || '').trim() || null,
       format: f.get('format'),
       comment: (f.get('comment') || '').trim() || null,
-      contact: (f.get('contact') || '').trim() || null,
     };
     if (!body.artist || !body.title) { msg.textContent = t('needFields'); return; }
     msg.textContent = t('sending');
