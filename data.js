@@ -252,6 +252,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2502188', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
       { artist: 'Big Syke', title: "Be Yo' Self", year: 1996, label: 'Rideonum Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4012690', stampSeed: { bangin: 22, dark: 16, doro: 12 } },
+      { artist: 'Teardrop', title: 'I Got My Baby', year: 1996, label: 'Smooth Sailing Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7745297', stampSeed: { funky: 16, party: 12, bangin: 9 } },
     ],
   },
   {
@@ -434,6 +436,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1813668', stampSeed: { funky: 18, bangin: 13, party: 10 } },
       { artist: 'StreeThugs', title: 'Not to Be Fu*ked With', year: 1996, label: 'Snake Pit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/486543', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
+      { artist: 'Richie Rich', title: '1/2 (Half Thang)', year: 1996, label: 'Shot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/996501', stampSeed: { funky: 24, bangin: 17, party: 13 } },
+      { artist: 'Mr. ILL', title: 'The Rebirth', year: 1996, label: 'Cell Block Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4359173', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -532,6 +538,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3617015', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Fesu', title: 'Life Goes On', year: 1996, label: 'Albatross Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7217360', stampSeed: { funky: 16, bangin: 12, dark: 9 } },
+      { artist: 'Ace Deuce', title: "Comin' Up N' Da Ghetto", year: 1996, label: 'Ballers Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/989653', stampSeed: { funky: 16, bangin: 12, party: 9 } },
+      { artist: 'Shorty Mac', title: 'Shorty Mac', year: 1996, label: 'Vertex Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2487627', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -622,6 +632,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9140687', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
       { artist: 'Lil Yo', title: "Youngsta's on a Come Up", year: 1996, label: 'Crime Lordz Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3784169', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+      { artist: 'Kingpin Skinny Pimp', title: 'King of da Playaz Ball', year: 1996, label: 'Prophet Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/480938', stampSeed: { dark: 24, doro: 19, horror: 13 } },
+      { artist: 'Gangsta Blac', title: 'Can It Be?', year: 1996, label: 'Prophet Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10656168', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
     ],
   },
   {
@@ -712,6 +726,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2255825', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { artist: 'Ms. Tee', title: 'Female Baller', year: 1996, label: 'Cash Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7091311', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
+      { artist: 'Kane & Abel', title: 'The 7 Sins', year: 1996, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1029777', stampSeed: { bangin: 26, dark: 19, doro: 14 } },
     ],
   },
   {
@@ -814,6 +830,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7041702', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Mr. Sandman', title: "10% Love Me... 90% Hate Me", year: 1996, label: 'Above All Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4820631', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+      { artist: 'Gee-Que', title: 'Catch Me in the Wind', year: 1996, label: 'Half Ounz Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4118873', stampSeed: { funky: 16, bangin: 12, party: 9 } },
     ],
   },
   {
@@ -854,6 +872,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9295119', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
       { artist: 'Skanless', title: 'The Book of Skanless', year: 1996, label: '50150 Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8225795', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Marvaless', title: 'Wiccked', year: 1996, label: 'AWOL Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1149098', stampSeed: { doro: 24, dark: 19, aishu: 14 } },
     ],
   },
   {
@@ -931,6 +951,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/416448', stampSeed: { bangin: 24, dark: 18, doro: 13 } },
       { artist: 'Children of the Corn', title: 'The Single', year: 1995, label: 'Graveyard Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8317450', stampSeed: { dark: 18, doro: 14, horror: 10 } },
+      { artist: 'Children of the Corn', title: 'The Last Chapter', year: 1996, label: 'Not On Label (Children Of The Corn (4) Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9140562', stampSeed: { dark: 20, doro: 16, horror: 12 } },
     ],
   },
   {
