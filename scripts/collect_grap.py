@@ -104,7 +104,11 @@ nominatim = RateLimited('nominatim', 1.1)
 itunes = RateLimited('itunes', 3.2)        # enrich.py と同じ目安
 wikipedia = RateLimited('wikipedia', 1.1)
 
-norm = lambda s: re.sub(r'[^a-z0-9]+', '', s.lower())
+def norm(s):
+    # "&" と "and" のような表記ゆれで同じ盤が重複扱いされない事故を防ぐため、
+    # 記号を落とす前に "&" を "and" へ統一しておく。
+    s = s.lower().replace('&', ' and ')
+    return re.sub(r'[^a-z0-9]+', '', s)
 
 
 # ---------- 1. Discogs: G-RAP判定の一次データベース ----------
