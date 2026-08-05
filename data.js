@@ -224,6 +224,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/30394532', stampSeed: { funky: 21, mellow: 16, party: 12 } },
       { artist: 'Da Nayborhoodz', title: 'Afta Dark... Illa Than Expected', year: 1995, label: 'React Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3520877', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Black 9', title: 'Black 9', year: 1995, label: 'Scotti Bros. Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1909687', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
     ],
   },
   {
@@ -446,6 +448,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10024568', stampSeed: { dark: 16, bangin: 12, doro: 9 } },
       { artist: 'Gangsta Profile', title: 'Fire Redrum', year: 1995, label: 'Relentless Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10597041', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Askari X', title: 'Message to the Black Man', year: 1995, label: 'Slow Motion Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6491147', stampSeed: { dark: 16, doro: 13, bangin: 9 } },
+      { artist: 'Precise', title: 'Da Soul', year: 1995, label: 'Large Investment Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/989630', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
     ],
   },
   {
@@ -516,6 +522,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/523374', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
       { artist: 'D.J. Squeeky', title: 'Gotta Get the Bass, Part III', year: 1995, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10195212', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: 'H.O.H.', title: 'Livin in a Casket', year: 1995, label: 'Unlimited Funk Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3533968', stampSeed: { dark: 16, doro: 13, horror: 9 } },
     ],
   },
   {
@@ -574,6 +582,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5663808', stampSeed: { party: 20, funky: 15, bangin: 10 } },
       { artist: 'Ghetto Twinz', title: 'Surrounded by Criminals', year: 1995, label: 'Big Boy Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3783621', stampSeed: { dark: 17, doro: 14, bangin: 10 } },
+      { artist: 'Mia X', title: 'Mommie Dearest', year: 1995, label: 'Slaughterhouse Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10143325', stampSeed: { bangin: 26, dark: 19, doro: 15 } },
+      { artist: 'Mia X', title: 'Good Girl Gone Bad', year: 1995, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1144382', stampSeed: { bangin: 24, funky: 18, dark: 14 } },
+      { artist: 'Kilo-G', title: 'The Bloody City', year: 1995, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7197497', stampSeed: { dark: 19, doro: 15, bangin: 11 } },
+      { artist: 'Pimps & Playas', title: 'Volume I', year: 1995, label: 'Party House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11702399', stampSeed: { funky: 14, party: 11, bangin: 8 } },
     ],
   },
   {
@@ -640,6 +656,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1492085', stampSeed: { funky: 16, bangin: 12, party: 9 } },
       { artist: 'T-Lowe', title: 'Keep It Real', year: 1995, label: 'Black Power Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5246631', stampSeed: { dark: 13, doro: 10, bangin: 7 } },
+      { artist: 'Dush Tray', title: "I'll Rather Lounge", year: 1995, label: 'Night Time Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/610424', stampSeed: { mellow: 15, funky: 12, laidbk: 9 } },
     ],
   },
   {
@@ -751,6 +769,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/21918118', stampSeed: { bangin: 21, dark: 16, doro: 12 } },
       { artist: 'Tim Dog', title: 'Do or Die', year: 1993, label: 'Columbia', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/416448', stampSeed: { bangin: 24, dark: 18, doro: 13 } },
+      { artist: 'Children of the Corn', title: 'The Single', year: 1995, label: 'Graveyard Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8317450', stampSeed: { dark: 18, doro: 14, horror: 10 } },
     ],
   },
   {
@@ -787,6 +807,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/509828', stampSeed: { funky: 24, party: 18, laidbk: 13 } },
       { artist: 'Squeek Nutty Bug', title: "Really Cheat'n", year: 1995, label: 'CD Raised Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15739570', stampSeed: { funky: 13, party: 10, bangin: 7 } },
+      { artist: 'Funk Daddy', title: 'Funk U Right on Up', year: 1995, label: 'Shot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8134306', stampSeed: { funky: 20, party: 15, laidbk: 11 } },
     ],
   },
   {

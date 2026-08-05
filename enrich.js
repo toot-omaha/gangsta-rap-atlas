@@ -4126,6 +4126,17 @@ const ENRICH = {
    }
   ]
  },
+ "Black 9|Black 9": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c9/10/22/c91022b8-2106-2100-2ee7-d882c122065c/artwork.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/black-9-single/1673916043?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Black 9",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/ee/75/da/ee75da4e-6ca6-af2d-1787-450f2798f51f/mzaf_17776795775154236221.plus.aac.p.m4a"
+   }
+  ]
+ },
  "E-40|In a Major Way": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/35/89/a2/3589a279-e04d-cb78-0255-43503344b5f5/012414155825.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/in-a-major-way/254949867?uo=4",
@@ -8637,6 +8648,77 @@ const ENRICH = {
    }
   ]
  },
+ "Askari X|Message to the Black Man": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/15/70/01/15700154-2813-2b5a-0eba-b1bd16f7bdb5/199350796364.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/message-to-the-black-man/1823294165?uo=4",
+  "genre": "West Coast Rap",
+  "tracks": [
+   {
+    "name": "Intro (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/44/64/6d/44646d06-b88a-5dd5-9817-51fc1c7f9c42/mzaf_13064038688847028714.plus.aac.p.m4a"
+   },
+   {
+    "name": "Oakland Streets (feat. Plesor) [2025 Remaster]",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/97/35/32/9735321c-b138-2a9e-977e-dfb574215bca/mzaf_12762005737366967890.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ward of the State II (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/91/88/6d/91886d26-6b20-68b3-ab17-3c374cc3e2a8/mzaf_1877074801921426658.plus.aac.p.m4a"
+   },
+   {
+    "name": "Who's That Man (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/30/cc/e1/30cce1fb-3354-3bd8-7904-22b00b1cb966/mzaf_11384158969873649255.plus.aac.p.m4a"
+   },
+   {
+    "name": "Message to the Black Man (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/9a/de/3a/9ade3a99-88b6-ac80-3fce-81c2669db020/mzaf_11018881158360216222.plus.aac.p.m4a"
+   },
+   {
+    "name": "Hear The Science (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1d/34/89/1d34892b-7620-247d-a75c-8a6fb6a484c1/mzaf_17308983718781138583.plus.aac.p.m4a"
+   },
+   {
+    "name": "City Life (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6d/c7/92/6dc792d8-7a7e-0055-d82b-06ec530afbd7/mzaf_2416983450573814330.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mohammed's Army March (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c5/e5/fd/c5e5fd14-598a-caed-ca95-81b527fc7915/mzaf_512256966135686247.plus.aac.p.m4a"
+   },
+   {
+    "name": "Glory Be (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f2/09/3d/f2093d04-5ae5-3065-79d0-bf0eeeb3ea66/mzaf_2756107952628475097.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bite The Dust (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ae/88/5d/ae885daf-cd69-d93a-36b6-2da410c74fac/mzaf_14832634837287184946.plus.aac.p.m4a"
+   },
+   {
+    "name": "Moma (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/20/91/f6/2091f6eb-3b84-26f1-d2d0-b5c24c8267e6/mzaf_11558476740681987726.plus.aac.p.m4a"
+   },
+   {
+    "name": "Concrete Jungle (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/63/c2/bd/63c2bdeb-6bf4-b552-5660-f0e4b610b66e/mzaf_1837289468193824998.plus.aac.p.m4a"
+   },
+   {
+    "name": "Tippy Toe Soldier (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/38/00/ba/3800ba8a-ff3a-ab7e-80c0-2c1aa992cba5/mzaf_9393133296638755607.plus.aac.p.m4a"
+   },
+   {
+    "name": "Down So Long (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/81/92/e2/8192e298-3ba0-8ea1-67bb-9ef9a507715e/mzaf_2745977353260789317.plus.aac.p.m4a"
+   },
+   {
+    "name": "3 Strikes (feat. 3X Krazy, Bad-n-fluenz, Brotha M.O.E., Seagram, Mr. Ill, The Delinquents, Keak da Sneak & Mike Mike) [2025 Remaster]",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c5/df/64/c5df6492-ebe6-6a62-147d-0fb28a486e97/mzaf_15982161424844345055.plus.aac.p.m4a"
+   },
+   {
+    "name": "Outro (2025 Remaster)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7c/51/3b/7c513b9b-51a7-d339-3836-4d78aa627907/mzaf_10004044669165921839.plus.aac.p.m4a"
+   }
+  ]
+ },
  "UGK|Too Hard to Swallow": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/39/ef/0039ef78-12fc-9992-95c8-5cb8cbd9af45/mzi.cbiquvfn.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/too-hard-to-swallow/304746993?uo=4",
@@ -10056,6 +10138,69 @@ const ENRICH = {
    }
   ]
  },
+ "Mia X|Good Girl Gone Bad": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/ec/c7/84/ecc7842c-fa55-74cf-2764-b604126dad96/05099962636155.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/good-girl-gone-bad/713506136?uo=4",
+  "genre": "Hip-Hop",
+  "tracks": [
+   {
+    "name": "Ghetto Sarah Lee",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/83/62/88/8362884b-28e9-13cf-d026-4e2b00556efb/mzaf_4969130172412698753.plus.aac.p.m4a"
+   },
+   {
+    "name": "Yo Boyz",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/20/06/a3/2006a36e-d523-94ce-1c26-d9b5974b3ee6/mzaf_5739200918850831595.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mission 2 Get Paid",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f2/46/d4/f246d42c-c15c-eac6-9cdc-8d64b3253e14/mzaf_10101526389385279331.plus.aac.p.m4a"
+   },
+   {
+    "name": "Commercial 1",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview118/v4/a6/33/2b/a6332bbf-9ab1-79a5-a5d0-1c70d76e4c5a/mzaf_3706533264467061789.plus.aac.p.m4a"
+   },
+   {
+    "name": "Can't Trust a Man",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/79/32/57/79325707-10f9-10a8-7ba1-0f713fc2a3c1/mzaf_5600622939972541285.plus.aac.p.m4a"
+   },
+   {
+    "name": "Commercial 2",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e9/aa/66/e9aa6601-be8c-3189-d032-f0fecaa6a226/mzaf_4949127696478983048.plus.aac.p.m4a"
+   },
+   {
+    "name": "Payback II",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/41/bd/c1/41bdc196-a49c-d570-a83b-9763d9e6f99d/mzaf_11469881077375805644.plus.aac.p.m4a"
+   },
+   {
+    "name": "Here Comes the Drama",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2a/55/a3/2a55a327-64cf-6002-6224-ed54a77fca3a/mzaf_4300983210181974425.plus.aac.p.m4a"
+   },
+   {
+    "name": "My Everything",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/9a/4b/a2/9a4ba26a-d276-8b10-bfa6-e4c992ee07c2/mzaf_3972976262692449504.plus.aac.p.m4a"
+   },
+   {
+    "name": "Good Girl Gone Bad",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f0/6f/e6/f06fe6ae-55b4-09e5-8e4e-8316c9ef8512/mzaf_1783186910470291946.plus.aac.p.m4a"
+   },
+   {
+    "name": "Commercial 3",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b9/80/79/b98079bb-7e33-0a73-ae5c-3256eb733569/mzaf_15190199420348296571.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ghetto Ties",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/98/bc/6c/98bc6c0f-1ed8-08ce-b7b1-db0053d63551/mzaf_8641074945412206484.plus.aac.p.m4a"
+   },
+   {
+    "name": "Wanna Be Wit You",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/9c/5e/ee/9c5eee1c-754e-59b0-9117-a17e24a06504/mzaf_17641801872135883737.plus.aac.p.m4a"
+   },
+   {
+    "name": "R.I.P. Jil'",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/dd/a7/8b/dda78b68-54cf-021e-e51c-dab6e1d41816/mzaf_10624978420371741192.plus.aac.p.m4a"
+   }
+  ]
+ },
  "RBL Posse|A Lesson to Be Learned": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/58/41/bd/5841bdf0-5a84-9181-ff33-b387651e1239/600285800021_cover.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/a-lesson-to-be-learned/1860061332?uo=4",
@@ -11266,6 +11411,65 @@ const ENRICH = {
    {
     "name": "Outro",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/77/3d/2c/mzm.tobiihqt.aac.p.m4a"
+   }
+  ]
+ },
+ "Dush Tray|I'll Rather Lounge": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/1f/72/e2/1f72e2b3-6306-9b00-8622-36450492d8cd/mzi.yksvhqzf.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/ill-rather-lounge/317948838?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro (Feat. TC)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/81/10/49/81104961-5948-2870-1645-cedb9e5fbe72/mzaf_1374912790388969910.plus.aac.p.m4a"
+   },
+   {
+    "name": "Natural Born Playas (Feat. Scoop a Dollar)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/6d/ff/06/6dff062f-0aab-6a16-a28f-ec9036f7099a/mzaf_16497068117725549044.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mission Complete (Feat. TayDaTay, E-Sick & Hennessy)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/95/69/47/95694728-f94c-c0ab-6cfd-6fed9d600037/mzaf_3112906889324124145.plus.aac.p.m4a"
+   },
+   {
+    "name": "Commercial 1",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/1a/6a/8c/1a6a8c5a-77d8-7efa-e021-e31be3602add/mzaf_5496524638345203654.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Funk Is On (Feat. Aisha)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b1/15/8f/b1158ff4-03cb-6720-f7de-8d2737686c9d/mzaf_15789503213226665671.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pick and Choose",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c9/19/1c/c9191c07-2cac-5ca9-8911-1e64b4a5592a/mzaf_15588684052659181726.plus.aac.p.m4a"
+   },
+   {
+    "name": "Land of Sucka Free (Feat. Nomad, L-Man & 11/5)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/32/1a/fd/321afdc0-3eff-06d3-f25f-2f89fdcd378b/mzaf_10132957039837417313.plus.aac.p.m4a"
+   },
+   {
+    "name": "Commercial 2",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/43/70/9d/43709dca-e005-54fd-d544-94e8d14b03e8/mzaf_7652193857010862582.plus.aac.p.m4a"
+   },
+   {
+    "name": "I'll Rather Lounge",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/fa/8f/47/fa8f473a-c3d1-21e4-e594-9d47c060bb4b/mzaf_2119356806428718181.plus.aac.p.m4a"
+   },
+   {
+    "name": "Brick Walls (Feat. 11/5)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/cc/a5/84/cca58470-11b9-f9af-264a-a5e171f8ed9a/mzaf_3519461452146618882.plus.aac.p.m4a"
+   },
+   {
+    "name": "Hood Life (Feat. Maino & Scoop-A-Dollar)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/14/13/a0/1413a007-a2a5-6285-12c1-25786ca14fed/mzaf_6155835053904958251.plus.aac.p.m4a"
+   },
+   {
+    "name": "20 Degrees Below (Feat. Big Vic, TayDaTay & UDI)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2e/cb/22/2ecb22a5-69d4-f2cd-d096-c26170cdd52c/mzaf_14820743906373471511.plus.aac.p.m4a"
+   },
+   {
+    "name": "Shit Don't Stop",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/4b/6b/4c/4b6b4cb5-b94b-b387-23d2-8b99b7417b5b/mzaf_5524584193867748932.plus.aac.p.m4a"
    }
   ]
  },
