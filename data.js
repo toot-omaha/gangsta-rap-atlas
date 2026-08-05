@@ -68,6 +68,16 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/474030', stampSeed: { dark: 19, bangin: 15, doro: 11 } },
       { artist: 'Toddy Tee', title: 'Living on the Edge of Insanity (The Life Album)', year: 1992, label: 'Pump Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1833009', stampSeed: { funky: 16, bangin: 12, dark: 9 } },
+      { artist: 'Mel-Low', title: 'Return of the Player', year: 1993, label: 'Rush Associated Labels', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/23848199', stampSeed: { funky: 18, bangin: 13, party: 10 } },
+      { artist: 'Kam', title: 'Neva Again', year: 1993, label: 'EastWest', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/801308', stampSeed: { bangin: 26, dark: 20, doro: 15 } },
+      { artist: 'DMG', title: 'Rigormortiz', year: 1993, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1148409', stampSeed: { dark: 22, doro: 17, bangin: 13 } },
+      { artist: 'Rodney O & Joe Cooley', title: 'F**k New York', year: 1993, label: 'Psychotic Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11413386', stampSeed: { bangin: 20, funky: 15, dark: 11 } },
+      { artist: 'A.L.T.', title: 'Stone Cold World', year: 1993, label: 'Par Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1354525', stampSeed: { funky: 17, bangin: 12, party: 9 } },
     ],
   },
   {
@@ -118,6 +128,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/633770', stampSeed: { bangin: 78, dark: 60, doro: 41, funky: 35 } },
       { artist: 'Da Lench Mob', title: 'Guerillas in tha Mist', year: 1992, label: 'EastWest Records America', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/361812', stampSeed: { bangin: 48, dark: 38, doro: 26 } },
+      { artist: 'Ice-T', title: 'Home Invasion', year: 1993, label: 'Sire', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29661217', stampSeed: { bangin: 43, dark: 34, doro: 24 } },
+      { artist: 'Ice Cube', title: 'Lethal Injection', year: 1993, label: 'Priority Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10681890', stampSeed: { bangin: 55, funky: 42, dark: 33 } },
     ],
   },
   {
@@ -132,6 +146,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/654929', stampSeed: { funky: 35, bangin: 24, party: 19 } },
       { artist: 'Mac Dre', title: "What's Really Going On?", year: 1992, label: 'Strictly Business Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10152027', stampSeed: { funky: 24, party: 18, laidbk: 14 } },
+      { artist: 'Funky Aztecs', title: 'Chicano Blues', year: 1992, label: 'TNT Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16362855', stampSeed: { funky: 19, doro: 14, bangin: 11 } },
+      { artist: 'The Click', title: 'Down & Dirty', year: 1993, label: "Sick Wid' It Records", youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13405376', stampSeed: { funky: 26, party: 20, bangin: 14 } },
+      { artist: 'D-Shot', title: 'The Shot Calla', year: 1993, label: "Sick Wid' It Records", youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/505236', stampSeed: { funky: 20, bangin: 15, doro: 11 } },
     ],
   },
   {
@@ -176,6 +196,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1982925', stampSeed: { funky: 22, bangin: 16, party: 12 } },
       { artist: 'Murder One Gangster', title: 'Exposed to the Game', year: 1992, label: 'Murder One Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4315377', stampSeed: { dark: 18, bangin: 14, doro: 11 } },
+      { artist: '2Pac', title: 'Troublesome', year: 1992, label: 'Interscope Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21221989', stampSeed: { doro: 40, aishu: 31, dark: 26 } },
+      { artist: '2Pac', title: 'Strictly 4 My N.I.G.G.A.Z.', year: 1993, label: 'Interscope Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3960276', stampSeed: { doro: 62, aishu: 47, dark: 39, bangin: 33 } },
+      { artist: 'Too $hort', title: 'Get in Where You Fit In', year: 1993, label: 'Jive', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3400257', stampSeed: { funky: 37, laidbk: 27, party: 21 } },
     ],
   },
   {
@@ -200,6 +226,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5389812', stampSeed: { dark: 21, bangin: 16, doro: 12 } },
       { artist: 'Bushwick Bill', title: 'Little Big Man', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12644309', stampSeed: { horror: 29, dark: 23, doro: 17 } },
+      { artist: 'Raheem', title: 'The Invincible', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8607968', stampSeed: { funky: 20, bangin: 15, dark: 11 } },
+      { artist: 'Geto Boys', title: 'Till Death Do Us Part', year: 1993, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14686570', stampSeed: { dark: 33, doro: 26, horror: 20 } },
     ],
   },
   {
@@ -226,6 +256,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3826172', stampSeed: { dark: 13, doro: 10, bangin: 8 } },
       { artist: 'Tommy Wright III', title: 'Memphis Massacre', year: 1992, label: 'T.W. Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3593532', stampSeed: { horror: 15, doro: 11, dark: 9 } },
+      { artist: 'Al Kapone', title: 'Street Knowledge, Chapters 1-12', year: 1992, label: 'Outlaw Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4172157', stampSeed: { dark: 20, doro: 16, bangin: 12 } },
     ],
   },
   {
@@ -256,6 +288,8 @@ const REGIONS = [
         stampSeed: { horror: 14, doro: 12, dark: 9 } },
       { artist: 'JT the Bigga Figga', title: "Don't Stop 'Til We Major", year: 1992, label: 'Lil Daddy Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1831086', stampSeed: { funky: 21, bangin: 15, party: 12 } },
+      { artist: 'JT the Bigga Figga', title: 'Playaz N the Game', year: 1993, label: 'Get Low Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3851547', stampSeed: { funky: 22, bangin: 16, party: 13 } },
     ],
   },
   {
@@ -377,6 +411,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3851942', stampSeed: { bangin: 12, dark: 9, doro: 7 } },
       { artist: 'P.K.O.', title: "They Scared of a Nigga", year: 1992, label: 'Youngsta Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/697065', stampSeed: { bangin: 14, dark: 10, doro: 8 } },
+      { artist: 'Choice', title: 'Stick-N-Moove', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26709599', stampSeed: { bangin: 15, dark: 10, doro: 8 } },
     ],
   },
   {
@@ -395,6 +431,8 @@ const REGIONS = [
     albums: [
       { artist: 'MC Breed', title: '20 Below', year: 1992, label: 'Ichiban Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3778048', stampSeed: { funky: 26, bangin: 18, party: 14 } },
+      { artist: 'Top Authority', title: "Somethin' to Blaze To", year: 1993, label: 'Trak Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5184448', stampSeed: { funky: 17, bangin: 12, party: 10 } },
     ],
   },
   {
@@ -429,6 +467,22 @@ const REGIONS = [
     albums: [
       { artist: 'Osdorp Posse', title: 'Osdorp Stijl', year: 1992, label: 'Djax Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2995060', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
+    ],
+  },
+  {
+    id: 'miami', name: 'Miami', area: 'Florida',
+    lng: -80.1918, lat: 25.7617,
+    albums: [
+      { artist: 'Poison Clan', title: 'Poisonous Mentality', year: 1992, label: 'Effect Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/552995', stampSeed: { bangin: 24, funky: 18, party: 14 } },
+    ],
+  },
+  {
+    id: 'eastorange', name: 'East Orange', area: 'New Jersey',
+    lng: -74.2107, lat: 40.7673,
+    albums: [
+      { artist: 'Naughty By Nature', title: '19 Naughty III', year: 1993, label: 'Tommy Boy', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/241357', stampSeed: { bangin: 36, party: 28, funky: 22 } },
     ],
   },
 ];
