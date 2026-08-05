@@ -171,17 +171,25 @@ new ResizeObserver(() => map.resize()).observe(document.getElementById('mapWrap'
 const markers = {};
 REGIONS.forEach((region) => {
   const el = document.createElement('div');
-  el.className = 'marker';
+  el.className = 'marker' + (region.unclassified ? ' unclassified' : '');
   // 手で押した判子風に、地域ごとに少しだけ傾ける
   const rot = (region.id.split('').reduce((n, c) => n + c.charCodeAt(0), 0) % 13) - 6;
   el.style.setProperty('--rot', `${rot}deg`);
+  // 出身地未特定の置き場だけ、墓石でなく漂流ブイ(?)にする
+  const icon = region.unclassified
+    ? `<svg class="grave buoy" viewBox="0 0 24 26" aria-hidden="true">
+         <circle cx="12" cy="12" r="9"/>
+         <rect x="10.5" y="19" width="3" height="6"/>
+       </svg>
+       <span class="q">?</span>`
+    : `<svg class="grave" viewBox="0 0 24 26" aria-hidden="true">
+         <path d="M5 24 V10 a7 7 0 0 1 14 0 V24 Z"/>
+         <rect x="2.5" y="23" width="19" height="2.6"/>
+       </svg>`;
   el.innerHTML = `
     <div class="mk">
       <div class="bh"></div>
-      <svg class="grave" viewBox="0 0 24 26" aria-hidden="true">
-        <path d="M5 24 V10 a7 7 0 0 1 14 0 V24 Z"/>
-        <rect x="2.5" y="23" width="19" height="2.6"/>
-      </svg>
+      ${icon}
       <span class="n"></span>
       <span class="nm">${region.name}</span>
     </div>`;
@@ -197,7 +205,8 @@ function refreshMarkers() {
     const size = 22 + Math.min(n, 6) * 5;
     el.style.width = el.style.height = `${size}px`;
     el.querySelector('.n').textContent = n || '';
-    el.classList.toggle('dimmed', n === 0);
+    // 未確認情報の置き場は0件でも常に見せる(まだ何も漂着していない、を示すため)
+    el.classList.toggle('dimmed', n === 0 && !r.unclassified);
     el.classList.toggle('hit', shotRegions.has(r.id));
     el.title = `${r.name} — ${n}枚`;
   });

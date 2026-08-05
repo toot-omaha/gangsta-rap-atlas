@@ -16,7 +16,18 @@ const STAMPS = [
   { id: 'party',   label: 'パーティー', en: 'party',    color: '#d4568c' },
 ];
 
+// 地域(出身地)が特定できなかった収集物の置き場。
+// 西海岸から少し離した太平洋上に浮かべ、「まだ漂着していない情報」として見せる。
+// scripts/collect_grap.py が地域を解決できなかった候補はここに集約する想定。
+const UNCLASSIFIED_REGION = {
+  id: 'unclassified', name: '未確認情報', area: 'UNCHARTED — 出身地未特定',
+  lng: -129, lat: 36,
+  unclassified: true,
+  albums: [],
+};
+
 const REGIONS = [
+  UNCLASSIFIED_REGION,
   {
     id: 'compton', name: 'Compton', area: 'Los Angeles County, CA',
     lng: -118.2201, lat: 33.8958,

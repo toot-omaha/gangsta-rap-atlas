@@ -1,6 +1,10 @@
 # APIレスポンスのローカルキャッシュ(再実行すれば再生成される)
 .cache/
 
+# collect_grap.py の生成物(レビュー用の中間ファイル。再実行すれば再生成される)
+scripts/candidates.json
+scripts/unclassified.json
+
 # 手動アップロード用の生成物(GitHub連携後は不要)
 dist/
 
