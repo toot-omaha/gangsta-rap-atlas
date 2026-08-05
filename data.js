@@ -94,6 +94,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3820677', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
       { artist: 'Coolio', title: 'It Takes a Thief', year: 1994, label: 'Tommy Boy', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35180611', stampSeed: { funky: 44, party: 35, bangin: 20 } },
+      { artist: 'Eazy-E', title: 'Temporary Insanity', year: 1994, label: 'Ruthless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37192200', stampSeed: { bangin: 30, funky: 22, dark: 17 } },
+      { artist: 'Above the Law', title: "Uncle Sam's Curse", year: 1994, label: 'Ruthless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15359810', stampSeed: { funky: 36, bangin: 27, dark: 20 } },
     ],
   },
   {
@@ -156,6 +160,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3052957', stampSeed: { bangin: 30, dark: 22, funky: 16 } },
       { artist: 'Mista Grimm', title: 'Mista Grimm', year: 1994, label: 'Epic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3624056', stampSeed: { funky: 28, mellow: 21, party: 16 } },
+      { artist: 'Young Soldierz', title: 'Young Soldierz', year: 1994, label: 'Dangerous Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/610852', stampSeed: { bangin: 24, dark: 18, doro: 14 } },
+      { artist: 'Bloods & Crips', title: "Bangin' on Wax 2...The Saga Continues", year: 1994, label: 'Dangerous Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13916836', stampSeed: { bangin: 40, dark: 32, doro: 22 } },
     ],
   },
   {
@@ -260,6 +268,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/36480709', stampSeed: { funky: 30, party: 22, bangin: 17 } },
       { artist: 'Thug Life', title: 'Volume 1', year: 1994, label: 'Interscope Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6115857', stampSeed: { bangin: 42, dark: 31, doro: 26 } },
+      { artist: 'Goldy', title: 'In the Land of Funk', year: 1994, label: 'Jive', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/615712', stampSeed: { funky: 23, party: 18, bangin: 13 } },
+      { artist: 'Seagram', title: 'Reality Check', year: 1994, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4311077', stampSeed: { doro: 25, dark: 20, aishu: 15 } },
     ],
   },
   {
@@ -314,6 +326,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/486530', stampSeed: { bangin: 19, dark: 15, doro: 11 } },
       { artist: 'Scarface', title: 'The Diary', year: 1994, label: 'Virgin', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/686015', stampSeed: { dark: 50, doro: 40, aishu: 30 } },
+      { artist: 'Lez Moné', title: "Talkin' Shit", year: 1994, label: '7 Deuce Trey', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10518865', stampSeed: { funky: 14, bangin: 10, party: 8 } },
+      { artist: 'Big Mello', title: 'Wegonefunkwichamind', year: 1994, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/531507', stampSeed: { funky: 24, bangin: 18, doro: 14 } },
+      { artist: 'Sexx Fiends', title: "Let's Get Butt-Naked", year: 1994, label: 'Too Cold Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/992854', stampSeed: { party: 16, funky: 12, bangin: 9 } },
     ],
   },
   {
@@ -348,6 +366,18 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13952928', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
       { artist: 'D.J. Squeeky', title: 'Volume #8', year: 1994, label: 'Orange Mound Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6629440', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
+      { artist: 'Big Blac', title: "Strikkly 4 da O.G. Hustlers", year: 1994, label: 'Nationwide Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5824961', stampSeed: { dark: 17, doro: 13, bangin: 9 } },
+      { artist: 'Tommy Wright III', title: 'Ashes 2 Ashes, Dust 2 Dust', year: 1994, label: 'Street Smart Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3533809', stampSeed: { horror: 16, doro: 13, dark: 10 } },
+      { artist: 'Juicy "J"', title: 'Chronicles of the Juice Manne', year: 1994, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9285488', stampSeed: { dark: 20, doro: 16, horror: 12 } },
+      { artist: 'Al Kapone', title: 'Sinista Funk', year: 1994, label: 'Basix Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1449126', stampSeed: { dark: 19, doro: 15, bangin: 11 } },
+      { artist: 'Al Kapone', title: 'Pure Ghetto Anger', year: 1994, label: 'Outlaw Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3589354', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
+      { artist: 'Gangsta Pat', title: 'Sex, Money & Murder', year: 1994, label: 'Wrap Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/478316', stampSeed: { bangin: 22, dark: 17, doro: 13 } },
     ],
   },
   {
@@ -370,6 +400,18 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1864242', stampSeed: { bangin: 24, dark: 18, doro: 14 } },
       { artist: 'U.N.L.V.', title: '6th & Baronne', year: 1993, label: 'Cash Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15869120', stampSeed: { bangin: 17, party: 13, doro: 10 } },
+      { artist: 'Mr. Ivan', title: '187 in a Hockey Mask', year: 1994, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13252212', stampSeed: { dark: 20, doro: 15, horror: 11 } },
+      { artist: 'D.J. Jimi', title: "I'm Back! I'm Back!", year: 1994, label: 'Gamtown Records Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8141507', stampSeed: { party: 20, funky: 15, bangin: 10 } },
+      { artist: 'U.N.L.V.', title: 'Straight Out Tha Gutta', year: 1994, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6551379', stampSeed: { bangin: 19, dark: 14, doro: 11 } },
+      { artist: 'U.N.L.V.', title: 'Foevawikkked', year: 1994, label: 'Mentality Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11560049', stampSeed: { bangin: 17, dark: 13, doro: 10 } },
+      { artist: 'Fila Phil', title: 'Da Hustla', year: 1994, label: 'Slaughterhouse Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14667345', stampSeed: { bangin: 16, party: 12, funky: 9 } },
+      { artist: 'Master P', title: 'The Ghettos Tryin to Kill Me!', year: 1994, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1660311', stampSeed: { bangin: 23, funky: 17, dark: 13 } },
     ],
   },
   {
@@ -396,6 +438,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1766817', stampSeed: { funky: 20, bangin: 15, doro: 12 } },
       { artist: 'Fly Mar', title: 'Ya Betta Ask Somebody', year: 1994, label: 'Fly Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5928319', stampSeed: { funky: 14, bangin: 10, party: 8 } },
+      { artist: "Rappin' 4-Tay", title: "Don't Fight the Feelin'", year: 1994, label: 'Chrysalis', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12949959', stampSeed: { funky: 30, party: 23, laidbk: 17 } },
     ],
   },
   {
@@ -410,6 +454,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7713328', stampSeed: { dark: 24, doro: 19, bangin: 14 } },
       { artist: 'Marvaless', title: 'Ghetto Blues', year: 1994, label: 'AWOL Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11088619', stampSeed: { doro: 22, dark: 17, aishu: 13 } },
+      { artist: 'C.R.I.S.I.S.', title: "Max'n in the 916", year: 1994, label: 'C.V. Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13230448', stampSeed: { funky: 16, bangin: 12, doro: 9 } },
+      { artist: 'Young Joker', title: "Who's Laughin' at Cha?", year: 1994, label: 'Death Trap Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5573593', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -459,6 +507,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/500911', stampSeed: { bangin: 20, dark: 15, doro: 12 } },
       { artist: 'Schoolly D', title: 'Welcome to America', year: 1994, label: 'Columbia', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3558772', stampSeed: { bangin: 21, dark: 16, doro: 12 } },
+      { artist: 'Rasheed', title: "Livin' in D Ghetto", year: 1994, label: 'Short Stop Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/506526', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
     ],
   },
   {
@@ -493,6 +543,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/474019', stampSeed: { dark: 22, bangin: 17, doro: 13 } },
       { artist: 'Point Blank', title: 'Mad at the World', year: 1994, label: 'Bigtyme Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/502585', stampSeed: { dark: 20, bangin: 15, doro: 11 } },
+      { artist: 'Gena Cide', title: 'Waste Uva Cular', year: 1994, label: 'Cliche Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1316781', stampSeed: { bangin: 15, dark: 11, doro: 9 } },
     ],
   },
   {
@@ -523,6 +575,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2313724', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
       { artist: 'Shādz of Lingo', title: 'A View to a Kill', year: 1994, label: 'ERG', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1452887', stampSeed: { funky: 15, bangin: 11, party: 9 } },
+      { artist: 'N.A.G.', title: 'Killaconsious', year: 1994, label: 'Fatal Funk Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10225740', stampSeed: { bangin: 14, dark: 10, doro: 8 } },
     ],
   },
   {
@@ -537,6 +591,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/697065', stampSeed: { bangin: 14, dark: 10, doro: 8 } },
       { artist: 'Choice', title: 'Stick-N-Moove', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26709599', stampSeed: { bangin: 15, dark: 10, doro: 8 } },
+      { artist: 'P.K.O.', title: 'Tha Good, Tha Bad, Tha Mafia', year: 1994, label: 'Youngsta Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4795179', stampSeed: { bangin: 13, dark: 9, doro: 7 } },
     ],
   },
   {
@@ -551,6 +607,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1162383', stampSeed: { bangin: 30, dark: 23, doro: 17 } },
       { artist: 'Menace to Society', title: 'Life of a Real One', year: 1993, label: 'CUSH Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2175784', stampSeed: { dark: 19, bangin: 14, doro: 11 } },
+      { artist: 'AWOL', title: 'Detroit 4 Life', year: 1994, label: 'BootStrap', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1449902', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
     ],
   },
   {
@@ -561,6 +619,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3778048', stampSeed: { funky: 26, bangin: 18, party: 14 } },
       { artist: 'Top Authority', title: "Somethin' to Blaze To", year: 1993, label: 'Trak Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5184448', stampSeed: { funky: 17, bangin: 12, party: 10 } },
+      { artist: 'DFC', title: 'Things in Tha Hood', year: 1994, label: 'Assault Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/744265', stampSeed: { bangin: 26, dark: 19, doro: 14 } },
+      { artist: 'MC Breed', title: 'Funkafied', year: 1994, label: 'Wrap Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1005050', stampSeed: { funky: 24, bangin: 16, party: 13 } },
     ],
   },
   {
@@ -588,6 +650,8 @@ const REGIONS = [
     albums: [
       { artist: 'Boo-Yaa T.R.I.B.E.', title: 'New Funky Nation', year: 1990, label: '4th & Broadway', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/712190', stampSeed: { bangin: 30, dark: 22, doro: 16 } },
+      { artist: 'Boo-Yaa T.R.I.B.E.', title: 'Doomsday', year: 1994, label: 'Music World', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14770173', stampSeed: { bangin: 27, dark: 20, doro: 15 } },
     ],
   },
   {
@@ -607,6 +671,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/552995', stampSeed: { bangin: 24, funky: 18, party: 14 } },
       { artist: 'Poison Clan', title: 'Ruff Town Behavior', year: 1993, label: 'Luke Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/553004', stampSeed: { bangin: 22, funky: 16, party: 13 } },
+      { artist: 'Gangsta Shorties', title: 'Point of No Return', year: 1994, label: 'Stress Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6935495', stampSeed: { bangin: 15, funky: 11, party: 9 } },
     ],
   },
   {
@@ -623,6 +689,8 @@ const REGIONS = [
     albums: [
       { artist: 'New Breed of Hustlas', title: 'Ratha B a Hustla', year: 1993, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4171694', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Kokane', title: 'Funk Upon a Rhyme', year: 1994, label: 'Ruthless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/591619', stampSeed: { funky: 29, bangin: 20, party: 15 } },
     ],
   },
   {
@@ -631,6 +699,8 @@ const REGIONS = [
     albums: [
       { artist: 'Figure Uv Speech', title: 'U Already Know', year: 1993, label: 'Onyx Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1205306', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+      { artist: 'Jako', title: 'Creepshow', year: 1994, label: 'Ponomo Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1857972', stampSeed: { dark: 13, doro: 10, horror: 8 } },
     ],
   },
   {
@@ -657,6 +727,23 @@ const REGIONS = [
     albums: [
       { artist: 'The Notorious B.I.G.', title: 'Ready to Die', year: 1994, label: 'Bad Boy Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14705744', stampSeed: { dark: 72, doro: 58, aishu: 44, bangin: 38 } },
+    ],
+  },
+  {
+    id: 'princegeorges', name: "Prince George's County", area: 'Maryland',
+    lng: -76.8756, lat: 38.8286,
+    albums: [
+      { artist: 'Section 8 Mob', title: 'Controlled Dangerous Substance', year: 1994, label: 'Dark City Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1876692', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
+    ],
+  },
+  {
+    // 「世界のG-RAP」— Discogsで確認済みのドイツ発Gangsta作品
+    id: 'frankfurt', name: 'Frankfurt', area: 'Germany — 世界のG-RAP',
+    lng: 8.6821, lat: 50.1109,
+    albums: [
+      { artist: 'Rödelheim Hartreim Projekt', title: 'Direkt Aus Rödelheim', year: 1994, label: 'MCA Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/809331', stampSeed: { bangin: 21, dark: 16, doro: 12 } },
     ],
   },
 ];
