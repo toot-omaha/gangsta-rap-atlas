@@ -118,6 +118,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7764473', stampSeed: { funky: 15, bangin: 11, party: 8 } },
       { artist: 'G" Len', title: 'Woop Woop', year: 1995, label: 'The Family Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7169676', stampSeed: { funky: 13, bangin: 10, party: 8 } },
+      { artist: 'Slow Pain', title: 'The Baby OG', year: 1995, label: 'Thump Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1719411', stampSeed: { bangin: 14, dark: 10, doro: 8 } },
     ],
   },
   {
@@ -140,6 +142,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/238368', stampSeed: { smooth: 40, funky: 33, bangin: 26 } },
       { artist: 'Jayo Felony', title: 'Take a Ride', year: 1995, label: 'JMJ', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/899863', stampSeed: { bangin: 25, dark: 19, doro: 14 } },
+      { artist: 'Battlecat', title: 'Gumbo Roots', year: 1995, label: 'Warner Bros. Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1211625', stampSeed: { funky: 24, smooth: 18, party: 14 } },
     ],
   },
   {
@@ -218,6 +222,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9815922', stampSeed: { funky: 20, bangin: 14, dark: 11 } },
       { artist: 'Mista Grimm', title: 'Things Are Looking Grimm', year: 1995, label: '550 Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/30394532', stampSeed: { funky: 21, mellow: 16, party: 12 } },
+      { artist: 'Da Nayborhoodz', title: 'Afta Dark... Illa Than Expected', year: 1995, label: 'React Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3520877', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -434,6 +440,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5614006', stampSeed: { funky: 18, bangin: 13, party: 10 } },
       { artist: 'D-1', title: 'Snake Eyes', year: 1995, label: 'Life Support Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6405460', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+      { artist: 'K-Rino', title: 'Danger Zone', year: 1995, label: 'Electric City Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7086161', stampSeed: { dark: 19, doro: 15, bangin: 11 } },
+      { artist: 'D of Trinity Garden Cartel', title: 'Game Done Changed', year: 1995, label: 'Cartel Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10024568', stampSeed: { dark: 16, bangin: 12, doro: 9 } },
+      { artist: 'Gangsta Profile', title: 'Fire Redrum', year: 1995, label: 'Relentless Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10597041', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -496,6 +508,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1875824', stampSeed: { dark: 12, doro: 10, bangin: 7 } },
       { artist: 'Radical T', title: "Bitches Ain't Shit", year: 1995, label: 'O.B. Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11561066', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Gangsta Pat', title: 'Deadly Verses', year: 1995, label: 'Power Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1598645', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
+      { artist: "Lil' E", title: "Who's Rulin'", year: 1995, label: 'Slaughterhouse Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1485269', stampSeed: { dark: 13, doro: 10, bangin: 7 } },
+      { artist: 'Al Kapone', title: 'Da Resurrection', year: 1995, label: 'Brutal Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/523374', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
+      { artist: 'D.J. Squeeky', title: 'Gotta Get the Bass, Part III', year: 1995, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10195212', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -552,6 +572,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4592969', stampSeed: { bangin: 32, funky: 24, dark: 18 } },
       { artist: 'Cheeky Blakk', title: 'Let Me Get That Outcha', year: 1995, label: 'Tombstone Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5663808', stampSeed: { party: 20, funky: 15, bangin: 10 } },
+      { artist: 'Ghetto Twinz', title: 'Surrounded by Criminals', year: 1995, label: 'Big Boy Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3783621', stampSeed: { dark: 17, doro: 14, bangin: 10 } },
     ],
   },
   {
@@ -610,6 +632,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12571653', stampSeed: { funky: 23, bangin: 16, party: 13 } },
       { artist: 'Dee-Mack', title: 'Doin It My Way', year: 1995, label: 'Untouchable Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13609353', stampSeed: { funky: 15, party: 11, bangin: 8 } },
+      { artist: 'The Fast 1', title: 'Down 4 tha Cause', year: 1995, label: 'G-Note Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1988203', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Hitman', title: 'Solo Creep', year: 1995, label: 'The Rightway Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22863587', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+      { artist: 'Guce', title: 'Pure Pressure', year: 1995, label: 'Riot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1492085', stampSeed: { funky: 16, bangin: 12, party: 9 } },
+      { artist: 'T-Lowe', title: 'Keep It Real', year: 1995, label: 'Black Power Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5246631', stampSeed: { dark: 13, doro: 10, bangin: 7 } },
     ],
   },
   {
@@ -638,6 +668,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5928782', stampSeed: { dark: 16, doro: 13, horror: 10 } },
       { artist: 'Sicx', title: 'Dead 4 Life', year: 1995, label: 'Black Market Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8928441', stampSeed: { dark: 17, doro: 14, horror: 10 } },
+      { artist: 'Mr. Doctor', title: "Setripn' Bloccstyle", year: 1995, label: 'Black Market Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/478329', stampSeed: { dark: 18, doro: 15, bangin: 11 } },
+      { artist: 'Black Menace', title: 'Drama Time', year: 1995, label: 'Big Boy Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1799967', stampSeed: { dark: 16, doro: 13, bangin: 9 } },
+      { artist: 'C-Bo', title: 'Tales from the Crypt', year: 1995, label: 'AWOL Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13582708', stampSeed: { dark: 22, doro: 18, bangin: 13 } },
+      { artist: 'X-Raided', title: 'Xorcist', year: 1995, label: 'Black Market Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5404526', stampSeed: { horror: 18, dark: 15, doro: 11 } },
     ],
   },
   {
@@ -933,6 +971,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8758265', stampSeed: { funky: 17, bangin: 12, doro: 9 } },
       { artist: 'Black Rhino', title: 'Point Blank Game', year: 1995, label: 'Phlat Line Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4486214', stampSeed: { bangin: 17, dark: 12, doro: 9 } },
+      { artist: 'Mac T', title: 'Retaliation', year: 1995, label: 'Versatile Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3882214', stampSeed: { dark: 14, bangin: 11, doro: 8 } },
     ],
   },
   {
@@ -951,6 +991,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/14705744', stampSeed: { dark: 72, doro: 58, aishu: 44, bangin: 38 } },
       { artist: 'Group Home', title: "Livin' Proof", year: 1995, label: 'Payday', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/471746', stampSeed: { dark: 24, doro: 19, mellow: 14 } },
+      { artist: 'Onyx', title: 'Afficial Nastee', year: 1995, label: 'Def Jam Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9028390', stampSeed: { bangin: 26, dark: 20, doro: 14 } },
     ],
   },
   {
@@ -961,6 +1003,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1876692', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
       { artist: 'Section 8 Mob', title: 'Section 8 Mob', year: 1994, label: 'Dark City Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/581389', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
+      { artist: 'Gary Thomas', title: 'Overkill Murder in the 1st Worst Degree + 2', year: 1995, label: 'Bamboo', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16909266', stampSeed: { dark: 15, bangin: 11, doro: 8 } },
     ],
   },
   {
@@ -998,6 +1042,14 @@ const REGIONS = [
     albums: [
       { artist: 'Wildliffe Society', title: 'Jacktown (601)', year: 1995, label: 'Blunt Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9587158', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+    ],
+  },
+  {
+    id: 'richmondca', name: 'Richmond', area: 'California',
+    lng: -122.3477, lat: 37.9358,
+    albums: [
+      { artist: 'NBG', title: 'Richmond the City That Killz', year: 1995, label: 'Infinity Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6491098', stampSeed: { dark: 17, bangin: 13, doro: 10 } },
     ],
   },
 ];
