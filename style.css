@@ -51,6 +51,9 @@ body::before {
 }
 .brand p { margin: 1px 0 0; font-size: 10px; letter-spacing: .12em; color: var(--paper-2); }
 
+/* デスクトップではドロワーは透明なラッパー(中身がヘッダーに並ぶ) */
+.drawer { display: contents; }
+.drawer-actions { display: none; }
 .stamp-filter {
   display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
   padding: 7px 12px; flex: 1; overflow-x: auto;
@@ -384,15 +387,22 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 @media (max-width: 860px) {
   .stamp-menu-btn { display: block; }
   .top-actions { gap: 6px; padding: 5px 10px; }
-  .stamp-filter {
+  /* ドロワー: スタンプ絞り込み+下部にアクションセクション */
+  .drawer {
     display: none;
-    position: fixed; top: 62px; right: 8px; left: auto; z-index: 35;
-    max-width: 320px;
+    position: fixed; top: calc(var(--topbar-h, 58px) + 4px); right: 8px; left: auto; z-index: 35;
+    max-width: 340px;
     background: var(--paper); border: 3px solid var(--ink);
     box-shadow: 6px 6px 0 rgba(20,18,15,.4);
-    padding: 10px; flex-wrap: wrap; gap: 6px;
   }
-  body.stamps-open .stamp-filter { display: flex; }
+  body.stamps-open .drawer { display: block; }
+  .drawer .stamp-filter { padding: 10px; gap: 6px; overflow: visible; }
+  .drawer-actions {
+    display: flex; gap: 8px; align-items: center;
+    border-top: 2px solid var(--ink);
+    padding: 10px; margin: 0 0 0 0;
+  }
+  .drawer-actions .fav-toggle { flex: 1; text-align: center; padding: 7px 10px; }
   #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 12px; }
   .list-head h2 { font-size: 26px; }
   .player-meta span, .player-queue .credit { display: none; }
