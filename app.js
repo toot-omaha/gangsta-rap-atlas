@@ -413,7 +413,8 @@ function renderDisc(album) {
         : `<span>${t('notOn')}</span>`}</div>
       <div class="disc-side">
         <p class="m">${album.year} / ${album.label} / ${album.format || 'CD'}${
-          e?.link ? ` / <a class="apple" href="${e.link}" target="_blank" rel="noopener">Apple Music ↗</a>` : ''}</p>
+          e?.link ? ` / <a class="apple" href="${e.link}" target="_blank" rel="noopener">Apple Music ↗</a>` : ''}${
+          album.discogsUrl ? ` / <a class="apple" href="${album.discogsUrl}" target="_blank" rel="noopener">Discogs ↗</a>` : ''}</p>
         <div class="disc-actions">
           <button class="tr-toggle have-d${favsHave.has(key) ? ' on' : ''}">${t('have')}</button>
           <button class="tr-toggle want-d${favsWant.has(key) ? ' on' : ''}">${t('want')}</button>

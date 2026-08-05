@@ -35,6 +35,17 @@ import urllib.request
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CACHE = ROOT / '.cache'
 UA = 'GangstaRapAtlas-collector/0.1 (o.takashix@gmail.com; learning project)'
+STATE_FILE = ROOT / 'scripts' / 'collect_state.json'
+
+
+def load_state():
+    if STATE_FILE.exists():
+        return json.loads(STATE_FILE.read_text())
+    return {'last_page': 0}
+
+
+def save_state(state):
+    STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=1))
 
 
 class RateLimited:
@@ -71,18 +82,22 @@ norm = lambda s: re.sub(r'[^a-z0-9]+', '', s.lower())
 
 
 # ---------- 1. Discogs: G-RAP判定の一次データベース ----------
-def discogs_harvest(pages=4, per_page=100, fmt='Album', sort='year', sort_order='asc'):
+def discogs_harvest(start_page, pages, per_page=100, fmt='Album', sort='year', sort_order='asc'):
     """style=Gangsta のリリースを取得し(デフォルトは古い年代順)、
-    master_id で重複プレスを除去して (artist, title, year, label, country) を返す。"""
+    master_id で重複プレスを除去して (artist, title, year, label, country) を返す。
+    start_page から連番で pages 件、前回の続きから取得する(同じページの
+    再走査を避けるため collect_state.json にページカーソルを永続化している)。"""
     seen_master = set()
     out = []
-    for page in range(1, pages + 1):
+    last_page = start_page - 1
+    for page in range(start_page, start_page + pages):
         url = (
             'https://api.discogs.com/database/search'
             f'?genre=Hip%20Hop&style=Gangsta&type=release&format={fmt}'
             f'&sort={sort}&sort_order={sort_order}&per_page={per_page}&page={page}'
         )
         data = discogs.get(url)
+        last_page = page
         for r in data.get('results', []):
             mid = r.get('master_id') or r.get('id')
             if mid in seen_master:
@@ -92,6 +107,7 @@ def discogs_harvest(pages=4, per_page=100, fmt='Album', sort='year', sort_order=
             if ' - ' not in title:
                 continue
             artist, disc_title = title.split(' - ', 1)
+            uri = r.get('uri') or ''
             out.append({
                 'artist': re.sub(r'\s*\(\d+\)$', '', artist).replace('*', '').strip(),
                 'title': disc_title.strip(),
@@ -99,11 +115,12 @@ def discogs_harvest(pages=4, per_page=100, fmt='Album', sort='year', sort_order=
                 'label': (r.get('label') or [None])[0],
                 'country': r.get('country'),
                 'discogs_id': r.get('id'),
+                'discogs_url': f'https://www.discogs.com{uri}' if uri else None,
                 'discogs_style': r.get('style', []),
             })
         if page >= data.get('pagination', {}).get('pages', 1):
             break
-    return out
+    return out, last_page
 
 
 # ---------- 2. iTunes: ジャケ写・試聴・実在確認(判定には使わない) ----------
@@ -192,16 +209,30 @@ def nearest_region(lng, lat, regions, max_km=60):
 
 
 def main():
-    pages = int(sys.argv[1]) if len(sys.argv) > 1 else 3
+    pages = int(sys.argv[1]) if len(sys.argv) > 1 else 2
+    state = load_state()
+    start_page = state['last_page'] + 1
     existing_albums, regions = load_existing()
     print(f'既存ディスク {len(existing_albums)} 件 / 既存地域 {len(regions)} 件')
+    print(f'前回まで {state["last_page"]} ページ処理済み → 今回は {start_page}〜{start_page + pages - 1} ページ目')
 
-    print(f'[1/4] Discogsから収集中(style=Gangsta, {pages}ページ)…')
-    harvested = discogs_harvest(pages=pages)
+    print(f'[1/4] Discogsから収集中(style=Gangsta, 年代順)…')
+    harvested, last_page = discogs_harvest(start_page, pages)
     print(f'  {len(harvested)} 件(重複プレス除去後)')
 
-    fresh = [h for h in harvested if (norm(h['artist']), norm(h['title'])) not in existing_albums]
-    print(f'  うち既存と未重複: {len(fresh)} 件')
+    fresh, skipped = [], []
+    for h in harvested:
+        if (norm(h['artist']), norm(h['title'])) in existing_albums:
+            skipped.append(h)
+        else:
+            fresh.append(h)
+    for h in skipped:
+        print(f'  [登録済みスキップ] {h["artist"]} - {h["title"]}')
+    print(f'  うち既存と重複(スキップ): {len(skipped)} 件 / 新規候補: {len(fresh)} 件')
+
+    state['last_page'] = last_page
+    save_state(state)
+    print(f'  ページカーソルを {last_page} まで進めました(次回は {last_page + 1} ページ目から)')
 
     hometown_cache = {}
     candidates, unclassified = [], []
