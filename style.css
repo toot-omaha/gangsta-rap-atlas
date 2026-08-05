@@ -140,7 +140,7 @@ body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
 /* 一度撃った土地には弾痕が残る(墓石の背後) */
 .marker .bh {
   position: absolute; inset: -95%;
-  background: url('assets/bullet-red-clean.png') center / contain no-repeat;
+  background: url('assets/bullet-ink.png') center / contain no-repeat;
   transform: rotate(var(--rot, 0deg)) translate(-4%, -3%);
   opacity: 0; transition: opacity .3s;
   pointer-events: none;
