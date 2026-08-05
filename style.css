@@ -262,6 +262,23 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .disc-actions { display: flex; gap: 8px; margin: 12px 0; }
 .disc-actions .tr-toggle { font-size: 12px; padding: 6px 12px; margin-top: 0; }
 .list-head .back { margin-right: 4px; }
+
+/* ---------- 投稿フォーム ---------- */
+.submit-form { max-width: 560px; display: flex; flex-direction: column; gap: 10px; }
+.submit-form label {
+  display: flex; flex-direction: column; gap: 4px;
+  font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--ink-2);
+}
+.submit-form input, .submit-form select, .submit-form textarea {
+  border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
+  font: inherit; font-size: 14px; padding: 7px 9px;
+}
+.submit-form input:focus, .submit-form select:focus, .submit-form textarea:focus {
+  outline: 2px solid var(--red); outline-offset: -2px;
+}
+.submit-form .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.submit-form .send { align-self: flex-start; font-size: 13px; padding: 8px 22px; }
+.submit-form .form-msg { margin: 0; font-size: 12px; font-weight: 800; color: var(--red); min-height: 1em; }
 .album-art.has-img { background: none; }
 .album-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92) contrast(1.04); }
 .album-info { flex: 1; min-width: 0; }

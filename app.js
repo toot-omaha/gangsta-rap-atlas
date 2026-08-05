@@ -16,6 +16,11 @@ const I18N = {
     qEmptyT: '再生キューハ空', qEmptyA: 'アルバムノ ▶ ヲ押ストキューニ入ル',
     preview: '30秒試聴', noAudio: '試聴音源ナシ(激レア)',
     clear: 'クリア', credit: '試聴・ジャケ写: Apple Music',
+    submit: '✚ 投稿', submitTitle: 'タレコミ', submitSub: 'ディスク情報ヲ投稿(承認後ニ掲載)',
+    fArtist: 'アーティスト *', fTitle: 'タイトル *', fYear: '年', fLabel: 'レーベル',
+    fRegion: '地域(例: Compton)', fFormat: 'フォーマット', fComment: 'コメント・出典など', fContact: '連絡先/ハンドル(任意)',
+    send: '送信スル', sending: '送信中…', sent: '感謝!承認後ニ地図ニ刻マレル。', sendErr: '送信失敗。時間ヲ置イテ再度。',
+    needFields: 'アーティストとタイトルは必須です',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -30,11 +35,54 @@ const I18N = {
     qEmptyT: 'QUEUE IS EMPTY', qEmptyA: 'Hit ▶ on a disc to queue it',
     preview: '30s preview', noAudio: 'No preview audio (rare!)',
     clear: 'CLEAR', credit: 'Previews & artwork: Apple Music',
+    submit: '✚ SUBMIT', submitTitle: 'DROP A DIME', submitSub: 'Submit a disc (published after review)',
+    fArtist: 'Artist *', fTitle: 'Title *', fYear: 'Year', fLabel: 'Label',
+    fRegion: 'Region (e.g. Compton)', fFormat: 'Format', fComment: 'Comment / source', fContact: 'Contact / handle (optional)',
+    send: 'SEND', sending: 'Sending…', sent: 'Respect! It will be carved on the map after review.', sendErr: 'Failed. Try again later.',
+    needFields: 'Artist and Title are required',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
 const t = (k) => I18N[lang][k];
 const stampName = (s) => (lang === 'ja' ? s.label : s.en.toUpperCase());
+
+// ---------- Supabase(共有データ) ----------
+// anonキーは「投稿とスタンプの書き込み+集計の読み取り」しかできない公開用キー
+const SB_URL = 'https://xqtoyvhupioztljkejnw.supabase.co/rest/v1';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxdG95dmh1cGlvenRsamtlam53Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5Mjc2MDgsImV4cCI6MjEwMTUwMzYwOH0.gW4xkwC3GzdKcnTT-490-75Sssx49wIIBcVOEW-MKHw';
+const SB_HEADERS = { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' };
+
+// 端末ごとの匿名ID(重複スタンプ防止用)
+const CLIENT_ID = (() => {
+  let v = localStorage.getItem('gra.client');
+  if (!v) { v = crypto.randomUUID(); localStorage.setItem('gra.client', v); }
+  return v;
+})();
+
+// みんなのスタンプ集計 { targetKey: { stampId: n } }
+const SHARED = {};
+
+async function loadSharedStamps() {
+  try {
+    const res = await fetch(`${SB_URL}/stamp_counts?select=target_key,stamp_id,n`, { headers: SB_HEADERS });
+    if (!res.ok) return;
+    (await res.json()).forEach((r) => { (SHARED[r.target_key] ||= {})[r.stamp_id] = r.n; });
+    // 過去にローカルだけに保存したスタンプをサーバーへ移行
+    Object.entries(myStamps).forEach(([key, ids]) =>
+      ids.forEach((id) => { if (!SHARED[key]?.[id]) bumpShared(key, id); }));
+    refreshMarkers();
+    if (activeRegion) renderList(activeRegion);
+  } catch { /* オフラインでもローカルだけで動く */ }
+}
+
+function bumpShared(key, id) {
+  (SHARED[key] ||= {})[id] = (SHARED[key]?.[id] || 0) + 1;
+  fetch(`${SB_URL}/stamps?on_conflict=client_id,target_key,stamp_id`, {
+    method: 'POST',
+    headers: { ...SB_HEADERS, Prefer: 'resolution=ignore-duplicates,return=minimal' },
+    body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, stamp_id: id }),
+  }).catch(() => {});
+}
 
 // ---------- スタンプの保存 ----------
 const STORE_KEY = 'gra.stamps.v1';
@@ -48,18 +96,23 @@ const stampsAt = (key) => myStamps[key] || [];
 function toggleStampAt(key, id) {
   const cur = myStamps[key] || (myStamps[key] = []);
   const i = cur.indexOf(id);
-  i >= 0 ? cur.splice(i, 1) : cur.push(id);
+  if (i >= 0) {
+    cur.splice(i, 1); // 取り消しはローカルのみ(共有集計には残る)
+  } else {
+    cur.push(id);
+    bumpShared(key, id); // みんなの集計へ反映
+  }
   saveStamps();
 }
 
-// ディスクの表示合計 = レビュー分析の初期値 + 曲単位で押した自分のスタンプの集計
-// (収録曲データがない激レア盤だけ、ディスク単位で直接押せるフォールバック)
+// ディスクの表示合計 = レビュー分析の初期値 + みんなのスタンプ集計(ディスク+収録曲)
 function stampCount(album, id) {
-  const seed = album.stampSeed?.[id] || 0;
-  const disc = stampsAt(albumKey(album)).includes(id) ? 1 : 0;
-  const tracks = (enrichOf(album)?.tracks || [])
-    .filter((t) => stampsAt(trackKey(album, t.name)).includes(id)).length;
-  return seed + disc + tracks;
+  const key = albumKey(album);
+  let n = (album.stampSeed?.[id] || 0) + (SHARED[key]?.[id] || 0);
+  (enrichOf(album)?.tracks || []).forEach((tr) => { n += SHARED[trackKey(album, tr.name)]?.[id] || 0; });
+  // 共有集計に未反映のローカル分(オフライン時)を補完
+  if (!SHARED[key]?.[id] && stampsAt(key).includes(id)) n += 1;
+  return n;
 }
 const totalStamps = (a) => STAMPS.reduce((n, s) => n + stampCount(a, s.id), 0);
 const hasStamp = (a, id) => stampCount(a, id) > 0;
@@ -533,6 +586,66 @@ function syncMarkerScale() {
 map.on('zoom', syncMarkerScale);
 syncMarkerScale();
 
+// ---------- 投稿フォーム(タレコミ) ----------
+function renderSubmit() {
+  listView = 'submit';
+  currentDisc = null;
+  document.body.classList.add('detail');
+  const opt = (v) => `<option value="${v}">${v}</option>`;
+  listEl.innerHTML = `
+    ${listHead(t('submitTitle'), t('submitSub'), '')}
+    <form class="submit-form">
+      <label>${t('fArtist')}<input name="artist" maxlength="120" required></label>
+      <label>${t('fTitle')}<input name="title" maxlength="200" required></label>
+      <div class="row2">
+        <label>${t('fYear')}<input name="year" type="number" min="1970" max="2030"></label>
+        <label>${t('fFormat')}<select name="format">${['CD','CDS','Tape','Vinyl','Other'].map(opt).join('')}</select></label>
+      </div>
+      <label>${t('fLabel')}<input name="label" maxlength="120"></label>
+      <label>${t('fRegion')}<input name="region" maxlength="120"></label>
+      <label>${t('fComment')}<textarea name="comment" maxlength="1000" rows="4"></textarea></label>
+      <label>${t('fContact')}<input name="contact" maxlength="120"></label>
+      <button type="submit" class="tr-toggle send">${t('send')}</button>
+      <p class="form-msg"></p>
+    </form>`;
+  listEl.querySelector('.close').addEventListener('click', closeList);
+
+  const form = listEl.querySelector('form');
+  const msg = listEl.querySelector('.form-msg');
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const f = new FormData(form);
+    const body = {
+      artist: (f.get('artist') || '').trim(),
+      title: (f.get('title') || '').trim(),
+      year: f.get('year') ? Number(f.get('year')) : null,
+      label: (f.get('label') || '').trim() || null,
+      region: (f.get('region') || '').trim() || null,
+      format: f.get('format'),
+      comment: (f.get('comment') || '').trim() || null,
+      contact: (f.get('contact') || '').trim() || null,
+    };
+    if (!body.artist || !body.title) { msg.textContent = t('needFields'); return; }
+    msg.textContent = t('sending');
+    form.querySelector('.send').disabled = true;
+    try {
+      const res = await fetch(`${SB_URL}/submissions`, {
+        method: 'POST',
+        headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(res.status);
+      form.reset();
+      msg.textContent = t('sent');
+    } catch {
+      msg.textContent = t('sendErr');
+    } finally {
+      form.querySelector('.send').disabled = false;
+    }
+  });
+}
+document.getElementById('submitBtn').addEventListener('click', renderSubmit);
+
 // ---------- 言語切り替え ----------
 function applyLang() {
   document.documentElement.lang = lang;
@@ -541,12 +654,14 @@ function applyLang() {
   document.getElementById('clearQueue').textContent = t('clear');
   document.querySelector('.player-queue .credit').textContent = t('credit');
   document.getElementById('langBtn').textContent = lang === 'ja' ? 'EN' : 'JA';
+  document.getElementById('submitBtn').textContent = t('submit');
   buildFilterBar();
   paint();
   // 開いている画面を同じ状態のまま描き直す
   if (document.body.classList.contains('detail')) {
     if (currentDisc) renderDisc(currentDisc);
     else if (listView === 'favs') renderFavs();
+    else if (listView === 'submit') renderSubmit();
     else if (activeRegion) renderList(activeRegion);
   }
 }
@@ -556,6 +671,7 @@ document.getElementById('langBtn').addEventListener('click', () => {
   applyLang();
 });
 applyLang();
+loadSharedStamps();
 
 refreshMarkers();
 map.on('load', () => { map.resize(); refreshMarkers(); });
