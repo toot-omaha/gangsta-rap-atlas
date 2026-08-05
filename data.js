@@ -254,6 +254,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4012690', stampSeed: { bangin: 22, dark: 16, doro: 12 } },
       { artist: 'Teardrop', title: 'I Got My Baby', year: 1996, label: 'Smooth Sailing Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7745297', stampSeed: { funky: 16, party: 12, bangin: 9 } },
+      { artist: 'Nate Fox', title: "Hittin' It from the Back", year: 1996, label: 'Big Six Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36437431', stampSeed: { funky: 16, bangin: 12, party: 9 } },
     ],
   },
   {
@@ -542,6 +544,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/989653', stampSeed: { funky: 16, bangin: 12, party: 9 } },
       { artist: 'Shorty Mac', title: 'Shorty Mac', year: 1996, label: 'Vertex Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2487627', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Al-D', title: 'Mind at Ease', year: 1996, label: 'Jam Down Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6724945', stampSeed: { funky: 16, bangin: 12, party: 9 } },
+      { artist: 'Trinity Garden Cartel', title: 'Da Saga Continues', year: 1996, label: 'Cartel Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/740175', stampSeed: { dark: 17, bangin: 13, doro: 10 } },
     ],
   },
   {
@@ -636,6 +642,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/480938', stampSeed: { dark: 24, doro: 19, horror: 13 } },
       { artist: 'Gangsta Blac', title: 'Can It Be?', year: 1996, label: 'Prophet Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10656168', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
+      { artist: 'M.C. Mack', title: 'Chapters of the Mack', year: 1996, label: 'Devil Shit Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/33262842', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -728,6 +736,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7091311', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
       { artist: 'Kane & Abel', title: 'The 7 Sins', year: 1996, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1029777', stampSeed: { bangin: 26, dark: 19, doro: 14 } },
+      { artist: 'Fila Phil', title: 'Tha Hustla Returns', year: 1996, label: 'Untouchable Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1447855', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -832,6 +842,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4820631', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
       { artist: 'Gee-Que', title: 'Catch Me in the Wind', year: 1996, label: 'Half Ounz Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4118873', stampSeed: { funky: 16, bangin: 12, party: 9 } },
+      { artist: 'Young Ed', title: 'Time to Stack', year: 1996, label: 'Inner City Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/498405', stampSeed: { funky: 16, bangin: 12, party: 9 } },
     ],
   },
   {
@@ -1039,6 +1051,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1873790', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
       { artist: 'Royal C', title: 'Roll Out the Red Carpet', year: 1996, label: 'Epic Street', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/688781', stampSeed: { funky: 18, bangin: 13, party: 10 } },
+      { artist: 'G.R.I.P.', title: 'The Hip Hop Godfather', year: 1996, label: 'Money Grip Publishing', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13647741', stampSeed: { funky: 16, bangin: 12, party: 9 } },
     ],
   },
   {
@@ -1221,6 +1235,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4486214', stampSeed: { bangin: 17, dark: 12, doro: 9 } },
       { artist: 'Mac T', title: 'Retaliation', year: 1995, label: 'Versatile Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3882214', stampSeed: { dark: 14, bangin: 11, doro: 8 } },
+      { artist: 'Low Down', title: 'The Next Episode', year: 1996, label: 'Low Town Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3666658', stampSeed: { funky: 18, bangin: 13, doro: 9 } },
     ],
   },
   {
