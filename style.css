@@ -1,0 +1,372 @@
+/* Gangsta Rap Atlas — 誌面っぽいチープなドット印刷の質感 */
+
+:root {
+  --paper: #e8e4d9;
+  --paper-2: #dcd7c8;
+  --ink: #14120f;
+  --ink-2: #4a453c;
+  --red: #c1272d;
+  --gold: #b8912f;
+  --dot: rgba(20,18,15,.18);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; height: 100%; overflow: hidden;
+  background: var(--paper); color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  -webkit-font-smoothing: none;
+}
+
+/* 紙のハーフトーン地 */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 4px 4px;
+  opacity: .55;
+}
+/* 見出し用のドット網点 */
+.halftone {
+  background-image: radial-gradient(rgba(193,39,45,.55) 1.4px, transparent 1.6px);
+  background-size: 5px 5px;
+}
+
+/* ---------- 見出し ---------- */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+  display: flex; align-items: stretch; gap: 0;
+  border-bottom: 3px solid var(--ink);
+  background: var(--paper);
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 16px; border-right: 3px solid var(--ink);
+  background: var(--ink); color: var(--paper);
+}
+.brand-mark { font-size: 20px; color: var(--red); }
+.brand h1 {
+  margin: 0; font-size: 18px; font-weight: 900; letter-spacing: .18em;
+  font-stretch: condensed;
+}
+.brand p { margin: 1px 0 0; font-size: 10px; letter-spacing: .12em; color: var(--paper-2); }
+
+.stamp-filter {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  padding: 7px 12px; flex: 1; overflow-x: auto;
+}
+
+/* ---------- スタンプ(ゴム印っぽく) ---------- */
+.stamp {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 2px solid currentColor; background: transparent;
+  padding: 2px 8px; font-size: 11px; font-weight: 800; letter-spacing: .06em;
+  cursor: pointer; color: var(--ink-2);
+  transform: rotate(-1deg);
+  transition: transform .1s steps(2), background .1s, color .1s;
+}
+.stamp:nth-child(even) { transform: rotate(1deg); }
+.stamp:hover { transform: rotate(0) scale(1.05); }
+.stamp .count { font-variant-numeric: tabular-nums; opacity: .65; font-weight: 700; }
+.stamp.on { background: currentColor; }
+.stamp.on span:not(.count) { color: var(--paper); }
+.stamp.on .count { color: var(--paper); opacity: .9; }
+.stamp.mine { box-shadow: 3px 3px 0 rgba(20,18,15,.35); }
+
+/* ---------- ステージ ---------- */
+#stage { position: fixed; inset: 58px 0 74px 0; z-index: 1; }
+
+/* 地図は常にフルスクリーンの背景 */
+#mapWrap {
+  position: absolute; inset: 0; overflow: hidden;
+  filter: grayscale(1) contrast(1.25);
+}
+#map { position: absolute; inset: 0; }
+
+/* 地図の上にかぶせる印刷ノイズ */
+#mapWrap::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(20,18,15,.35) 1px, transparent 1.1px);
+  background-size: 3px 3px;
+  mix-blend-mode: multiply;
+}
+
+/* ポップアップ表示中は背面の地図を触れなくするマスク */
+#mask {
+  position: fixed; inset: 0; z-index: 15;
+  background: rgba(20,18,15,.35);
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+body.detail #mask { opacity: 1; pointer-events: auto; }
+
+/* ---------- 弾痕マーカー ----------
+ * 外側の .marker は MapLibre が transform で座標制御するため一切触らない。
+ * 拡大縮小・ホバーは内側 .mk のスケールだけで行う(--s はズーム追従、--h はホバー)。 */
+/* position は指定しない(MapLibre の .maplibregl-marker { position:absolute } を
+ * 上書きするとピンが流れて座標がずれる) */
+.marker { cursor: pointer; transition: opacity .3s; }
+.marker .mk {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  transform: scale(calc(var(--s, 1) * var(--h, 1)));
+  will-change: transform;
+}
+.marker:hover { --h: 1.18; z-index: 5; }
+/* 墓石ピン(中に枚数) */
+.marker .grave {
+  position: absolute; inset: 0;
+  fill: var(--ink);
+  stroke: var(--paper); stroke-width: .8;
+  transform: rotate(var(--rot, 0deg));
+  filter: drop-shadow(2px 2px 0 rgba(20,18,15,.3));
+}
+.marker .n {
+  position: absolute; left: 50%; top: 52%;
+  transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+  font-size: 11px; font-weight: 900; color: var(--paper);
+}
+/* 地名は密集地帯で潰れるので、寄ったときとホバー時だけ出す */
+.marker .nm {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  margin-top: 4px; white-space: nowrap;
+  font-size: 10px; font-weight: 900; letter-spacing: .1em;
+  color: var(--ink);
+  text-shadow: -1px -1px 0 var(--paper), 1px -1px 0 var(--paper), -1px 1px 0 var(--paper), 1px 1px 0 var(--paper);
+  opacity: 0; transition: opacity .2s; pointer-events: none;
+}
+body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
+.marker.dimmed { opacity: .22; }
+.marker.hit .mk { animation: hit .3s steps(3); }
+@keyframes hit {
+  0% { transform: scale(calc(var(--s, 1) * 2.4)); }
+  100% { transform: scale(calc(var(--s, 1) * var(--h, 1))); }
+}
+
+/* ---------- 着弾エフェクト(クリック地点に弾痕→画面が揺れる) ---------- */
+#shot {
+  position: fixed; z-index: 40; width: 180px; height: 180px;
+  margin: -90px 0 0 -90px; pointer-events: none; opacity: 0;
+}
+#shot img { width: 100%; height: 100%; display: block; }
+#shot.fire { animation: shotIn .5s steps(4) forwards; }
+@keyframes shotIn {
+  0%   { opacity: 1; transform: scale(2.6); }
+  35%  { opacity: 1; transform: scale(1); }
+  80%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+/* シェイクは地図だけに掛ける(#stage に transform を掛けると
+ * 中の fixed 要素(ポップアップ・マスク・着弾)の座標系が壊れる) */
+body.shake #mapWrap { animation: shake .3s steps(6); }
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-7px, 5px); }
+  50% { transform: translate(6px, -4px); }
+  75% { transform: translate(-3px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ---------- 一覧ポップアップ(誌面が地図の上に飛び出す) ---------- */
+#list {
+  position: fixed; z-index: 20;
+  top: calc(var(--topbar-h, 58px) + 10px); left: 26px; right: 26px; bottom: 92px;
+  padding: 16px 20px 20px; overflow-y: auto;
+  background: var(--paper);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 4px 4px;
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 rgba(20,18,15,.5);
+  opacity: 0; pointer-events: none;
+  transform: scale(.96) translateY(12px);
+  transition: opacity .18s steps(3), transform .18s steps(3);
+}
+body.detail #list { opacity: 1; pointer-events: auto; transform: none; }
+
+.list-head {
+  display: flex; align-items: baseline; gap: 12px;
+  border-bottom: 3px solid var(--ink); padding-bottom: 6px; margin-bottom: 14px;
+  position: sticky; top: -16px; background: var(--paper); z-index: 2; padding-top: 4px;
+}
+.list-head h2 {
+  margin: 0; font-size: 40px; font-weight: 900; letter-spacing: -.02em; line-height: .95;
+  text-transform: uppercase;
+}
+.list-head .sub { font-size: 11px; letter-spacing: .16em; color: var(--ink-2); }
+.list-head .cnt { margin-left: auto; font-size: 11px; letter-spacing: .1em; }
+.list-head .close {
+  align-self: center; flex: 0 0 auto;
+  width: 34px; height: 34px; border: 2px solid var(--ink);
+  background: var(--paper); color: var(--ink); font-size: 14px; font-weight: 900; cursor: pointer;
+}
+.list-head .close:hover { background: var(--red); border-color: var(--red); color: var(--paper); }
+
+.intro {
+  position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%);
+  z-index: 5; text-align: center; transition: opacity .3s;
+}
+body.detail .intro { opacity: 0; pointer-events: none; }
+.intro p {
+  display: inline-block; margin: 0;
+  background: var(--ink); color: var(--paper);
+  font-size: 12px; letter-spacing: .2em; padding: 6px 16px;
+}
+
+/* ---------- ディスク(1カード=CD1枚) ---------- */
+/* 画面幅に応じて段数が増える段組(開閉で高さが違ってもきれいに詰まる) */
+.grid { columns: 310px; column-gap: 14px; }
+.album {
+  border: 3px solid var(--ink); background: var(--paper);
+  padding: 10px; box-shadow: 5px 5px 0 rgba(20,18,15,.3);
+  break-inside: avoid; margin-bottom: 14px;
+}
+.album-head { display: flex; gap: 10px; align-items: stretch; }
+/* 閉:箱の縦幅いっぱいに引き伸ばした窓 / 開:フル幅の大ジャケ
+ * 画像は absolute で窓に流し込む(窓自体の高さ計算に影響させないため) */
+.album-art {
+  position: relative; display: grid; place-items: center; text-align: center;
+  flex: 0 0 auto; width: 128px; min-height: 118px; align-self: stretch;
+  border: 2px solid var(--ink); overflow: hidden;
+  font-size: 9px; font-weight: 900; letter-spacing: .14em; line-height: 1.9;
+  color: var(--ink-2); cursor: pointer;
+  background-image: radial-gradient(var(--dot) 1.2px, transparent 1.4px);
+  background-size: 5px 5px;
+}
+.album { cursor: pointer; }
+.album:hover { box-shadow: 7px 7px 0 rgba(20,18,15,.45); }
+
+/* ---------- ディスク専用ページ ---------- */
+.disc { display: flex; gap: 18px; margin-bottom: 4px; flex-wrap: wrap; }
+.disc-art {
+  position: relative; width: min(340px, 44%); min-width: 220px; aspect-ratio: 1;
+  border: 3px solid var(--ink); flex: 0 0 auto;
+  display: grid; place-items: center; text-align: center;
+  font-size: 11px; font-weight: 900; letter-spacing: .18em; line-height: 2; color: var(--ink-2);
+  background-image: radial-gradient(var(--dot) 1.2px, transparent 1.4px);
+  background-size: 5px 5px;
+  box-shadow: 6px 6px 0 rgba(20,18,15,.3);
+}
+.disc-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.disc-side { flex: 1; min-width: 240px; }
+.disc-side .m { margin: 2px 0 0; font-size: 12px; letter-spacing: .06em; color: var(--ink-2); }
+.disc-side .apple { color: var(--ink-2); }
+.disc-actions { display: flex; gap: 8px; margin: 12px 0; }
+.disc-actions .tr-toggle { font-size: 12px; padding: 6px 12px; margin-top: 0; }
+.list-head .back { margin-right: 4px; }
+.album-art.has-img { background: none; }
+.album-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92) contrast(1.04); }
+.album-info { flex: 1; min-width: 0; }
+.album-info .apple { color: var(--ink-2); }
+.tr-toggle {
+  margin-top: 6px; border: 1px solid var(--ink); background: transparent;
+  font-size: 10px; font-weight: 800; letter-spacing: .08em; padding: 2px 8px; cursor: pointer;
+}
+.tr-toggle:hover { background: var(--ink); color: var(--paper); }
+.album .tracks { display: none; }
+.album.open .tracks { display: block; }
+.album-info .t { margin: 0; font-size: 15px; font-weight: 900; line-height: 1.15; }
+.album-info .a { margin: 2px 0 0; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--red); text-transform: uppercase; }
+.album-info .m { margin: 3px 0 0; font-size: 10px; letter-spacing: .06em; color: var(--ink-2); }
+.play-btn, .fav-btn {
+  flex: 0 0 auto; width: 30px; height: 30px; border: 2px solid var(--ink);
+  background: var(--paper); cursor: pointer; font-size: 11px;
+}
+.play-btn:hover, .fav-btn:hover { background: var(--ink); color: var(--paper); }
+.fav-btn.on { background: var(--gold); border-color: var(--ink); color: var(--ink); }
+
+.top-actions {
+  display: flex; align-items: center; gap: 8px;
+  margin-left: auto; padding-right: 14px; flex: 0 0 auto; align-self: center;
+}
+.fav-toggle {
+  border: 2px solid var(--gold); background: transparent; color: var(--ink);
+  font-size: 12px; font-weight: 900; letter-spacing: .08em; padding: 4px 10px; cursor: pointer;
+}
+.fav-toggle:hover { background: var(--gold); }
+.fav-toggle.lang { border-color: var(--ink); }
+.fav-toggle.lang:hover { background: var(--ink); color: var(--paper); }
+
+/* 墓石メニュー(狭い画面のみ) */
+.stamp-menu-btn {
+  display: none; border: 2px solid var(--ink); background: transparent; color: var(--ink);
+  width: 34px; height: 34px; padding: 4px; cursor: pointer;
+}
+.stamp-menu-btn:hover, body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); }
+
+.rarity { display: flex; align-items: center; gap: 8px; margin: 9px 0 7px; font-size: 10px; letter-spacing: .08em; }
+.rarity .lab { font-weight: 900; color: var(--red); white-space: nowrap; }
+.rarity .bar { flex: 1; height: 6px; border: 2px solid var(--ink); }
+.rarity .bar i { display: block; height: 100%; background: var(--red); }
+.rarity .n { color: var(--ink-2); white-space: nowrap; }
+
+.album-stamps { display: flex; flex-wrap: wrap; gap: 4px; }
+.stamp.agg { cursor: default; }
+.stamp.agg:hover { transform: rotate(-1deg); }
+
+/* ---------- 収録曲(曲単位スタンプ) ---------- */
+.tracks { margin-top: 8px; border-top: 2px solid var(--ink); padding-top: 6px; }
+.tracks:empty { display: none; }
+.track { display: flex; align-items: center; gap: 6px; padding: 2px 0; font-size: 11px; }
+.track .tp {
+  flex: 0 0 auto; width: 18px; height: 18px; border: 1px solid var(--ink);
+  background: transparent; cursor: pointer; font-size: 8px; padding: 0;
+}
+.track .tp:hover { background: var(--ink); color: var(--paper); }
+.track .no { color: var(--ink-2); font-size: 9px; letter-spacing: .05em; }
+.track .name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.track .mini { display: flex; gap: 2px; }
+.track .mini i { width: 8px; height: 8px; border: 1px solid var(--ink); display: block; }
+.track .add {
+  flex: 0 0 auto; width: 18px; height: 18px; border: 1px dashed var(--ink-2);
+  background: transparent; color: var(--ink-2); cursor: pointer; font-size: 10px; padding: 0;
+}
+.track .add:hover { border-style: solid; color: var(--ink); }
+.track .add:disabled { opacity: .3; cursor: default; }
+.picker { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px 0 6px 24px; }
+
+/* ---------- プレイヤー ---------- */
+.player {
+  position: fixed; left: 0; right: 0; bottom: 0; height: 74px; z-index: 30;
+  display: flex; align-items: center; gap: 18px; padding: 0 16px;
+  background: var(--ink); color: var(--paper); border-top: 3px solid var(--red);
+}
+.player-now { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.player-art {
+  width: 44px; height: 44px; flex: 0 0 auto; border: 2px solid var(--paper-2);
+  display: grid; place-items: center; color: var(--paper-2);
+}
+.player-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.player-queue .credit { opacity: .6; font-size: 9px; }
+.player-meta { min-width: 0; }
+.player-meta strong { display: block; font-size: 13px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player-meta span { font-size: 10px; letter-spacing: .08em; color: var(--paper-2); }
+.player-controls { display: flex; align-items: center; gap: 8px; }
+.player-queue { display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: .1em; color: var(--paper-2); }
+
+.icon-btn {
+  background: transparent; border: 2px solid var(--paper-2); color: var(--paper);
+  width: 32px; height: 32px; cursor: pointer; font-size: 12px;
+}
+.icon-btn:hover { background: var(--red); border-color: var(--red); }
+.icon-btn.play { width: 40px; height: 40px; border-color: var(--red); color: var(--red); font-size: 14px; }
+.icon-btn.play:hover { background: var(--red); color: var(--paper); }
+.text-btn { background: none; border: none; color: var(--paper-2); cursor: pointer; font-size: 10px; text-decoration: underline; letter-spacing: .08em; }
+.yt-host { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+/* 狭い画面: スタンプ列は墓石メニューからのドロップダウンに切り替え */
+@media (max-width: 860px) {
+  .stamp-menu-btn { display: block; }
+  .top-actions { gap: 6px; padding: 5px 10px; }
+  .stamp-filter {
+    display: none;
+    position: fixed; top: 62px; right: 8px; left: auto; z-index: 35;
+    max-width: 320px;
+    background: var(--paper); border: 3px solid var(--ink);
+    box-shadow: 6px 6px 0 rgba(20,18,15,.4);
+    padding: 10px; flex-wrap: wrap; gap: 6px;
+  }
+  body.stamps-open .stamp-filter { display: flex; }
+  #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 12px; }
+  .list-head h2 { font-size: 26px; }
+  .player-meta span, .player-queue .credit { display: none; }
+  .player { gap: 10px; }
+}
