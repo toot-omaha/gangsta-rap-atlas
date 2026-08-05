@@ -54,6 +54,20 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9394940', stampSeed: { bangin: 71, dark: 54, doro: 38 } },
       { artist: 'AMG', title: 'Bitch Betta Have My Money', year: 1991, label: 'Select Street Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13748375', stampSeed: { funky: 27, party: 20, bangin: 16 } },
+      { artist: 'Dr. Dre', title: 'The Chronic', year: 1992, label: 'Interscope Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3108660', stampSeed: { funky: 97, bangin: 88, mellow: 62, dark: 55 } },
+      { artist: 'DJ Quik', title: 'Way 2 Fonky', year: 1992, label: 'Profile Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4744151', stampSeed: { funky: 62, smooth: 48, party: 37 } },
+      { artist: 'Above the Law', title: 'Black Mafia Life', year: 1992, label: 'Ruthless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29423104', stampSeed: { funky: 41, bangin: 33, dark: 24 } },
+      { artist: 'Hi-C', title: 'Skanless', year: 1991, label: 'Skanless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13018967', stampSeed: { bangin: 22, funky: 17, dark: 13 } },
+      { artist: 'Penthouse Players Clique', title: 'Paid the Cost', year: 1992, label: 'Ruthless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10402036', stampSeed: { funky: 20, bangin: 15, dark: 11 } },
+      { artist: 'OFTB', title: 'Straight Up Watts', year: 1992, label: 'Big Beat', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/474030', stampSeed: { dark: 19, bangin: 15, doro: 11 } },
+      { artist: 'Toddy Tee', title: 'Living on the Edge of Insanity (The Life Album)', year: 1992, label: 'Pump Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1833009', stampSeed: { funky: 16, bangin: 12, dark: 9 } },
     ],
   },
   {
@@ -100,6 +114,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/601270', stampSeed: { dark: 27, doro: 22, bangin: 18 } },
       { artist: 'Crazy Toones', title: 'A Touch of Maadness', year: 1991, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/34335325', stampSeed: { funky: 14, bangin: 10, dark: 8 } },
+      { artist: 'Ice Cube', title: 'The Predator', year: 1992, label: '4th & Broadway', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/633770', stampSeed: { bangin: 78, dark: 60, doro: 41, funky: 35 } },
+      { artist: 'Da Lench Mob', title: 'Guerillas in tha Mist', year: 1992, label: 'EastWest Records America', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/361812', stampSeed: { bangin: 48, dark: 38, doro: 26 } },
     ],
   },
   {
@@ -110,6 +128,10 @@ const REGIONS = [
         stampSeed: { funky: 57, bangin: 43, party: 35 } },
       { artist: 'Mac Dre', title: 'Young Black Brotha', year: 1989, label: 'Strictly Business', youtubeId: null,
         stampSeed: { funky: 21, party: 17, laidbk: 12 } },
+      { artist: 'E-40', title: 'Federal', year: 1992, label: "Sick Wid' It Records", youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/654929', stampSeed: { funky: 35, bangin: 24, party: 19 } },
+      { artist: 'Mac Dre', title: "What's Really Going On?", year: 1992, label: 'Strictly Business Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10152027', stampSeed: { funky: 24, party: 18, laidbk: 14 } },
     ],
   },
   {
@@ -144,6 +166,16 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12332239', stampSeed: { doro: 18, dark: 13, bangin: 10 } },
       { artist: 'Spice 1', title: 'Let It Be Known', year: 1991, label: 'Triad Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2263925', stampSeed: { doro: 20, dark: 15, bangin: 12 } },
+      { artist: 'Chunk', title: 'Chunk II: Still the Menace', year: 1992, label: 'Tandem Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/696084', stampSeed: { bangin: 17, dark: 12, doro: 9 } },
+      { artist: 'Chunk', title: 'Marked for Death', year: 1992, label: 'Tandem Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/696102', stampSeed: { bangin: 16, dark: 11, doro: 9 } },
+      { artist: 'Seagram', title: 'The Dark Roads', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/498343', stampSeed: { doro: 30, dark: 24, aishu: 18 } },
+      { artist: 'E-A-Ski', title: '1 Step Ahead of Yall', year: 1992, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1982925', stampSeed: { funky: 22, bangin: 16, party: 12 } },
+      { artist: 'Murder One Gangster', title: 'Exposed to the Game', year: 1992, label: 'Murder One Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4315377', stampSeed: { dark: 18, bangin: 14, doro: 11 } },
     ],
   },
   {
@@ -158,6 +190,16 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12735777', stampSeed: { bangin: 24, dark: 19, doro: 15 } },
       { artist: 'Geto Boys', title: 'Making Trouble', year: 1991, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3897370', stampSeed: { bangin: 22, dark: 16, doro: 12 } },
+      { artist: 'Willie D', title: "I'm Goin' Out Lika Soldier", year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/847702', stampSeed: { bangin: 34, dark: 26, doro: 19 } },
+      { artist: 'Big Mello', title: 'Bone Hard Zaggin', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1156304', stampSeed: { funky: 23, bangin: 17, doro: 13 } },
+      { artist: 'Geto Boys', title: 'Grip It! On That Other Level', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4174538', stampSeed: { horror: 44, dark: 38, doro: 27 } },
+      { artist: 'Trinity Garden Cartel', title: 'The Ghetto My Hood', year: 1992, label: 'Cartel Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5389812', stampSeed: { dark: 21, bangin: 16, doro: 12 } },
+      { artist: 'Bushwick Bill', title: 'Little Big Man', year: 1992, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12644309', stampSeed: { horror: 29, dark: 23, doro: 17 } },
     ],
   },
   {
@@ -180,6 +222,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4749203', stampSeed: { dark: 24, bangin: 18, doro: 14 } },
       { artist: 'Radical T', title: 'Radical but Critical', year: 1991, label: 'On Top Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2163476', stampSeed: { doro: 14, dark: 10, horror: 8 } },
+      { artist: 'N.O.T.S.', title: 'True Blue', year: 1992, label: "Ain't Jokin Records", youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3826172', stampSeed: { dark: 13, doro: 10, bangin: 8 } },
+      { artist: 'Tommy Wright III', title: 'Memphis Massacre', year: 1992, label: 'T.W. Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3593532', stampSeed: { horror: 15, doro: 11, dark: 9 } },
     ],
   },
   {
@@ -192,6 +238,12 @@ const REGIONS = [
         stampSeed: { bangin: 31, doro: 22, dark: 18 } },
       { artist: 'Master P', title: 'Get Away Clean', year: 1991, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11852898', stampSeed: { funky: 20, bangin: 15, party: 12 } },
+      { artist: 'Master P', title: "Mama's Bad Boy", year: 1992, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4778613', stampSeed: { funky: 22, bangin: 16, party: 13 } },
+      { artist: 'Ruthless Juveniles', title: "Hard as Tha' F**k", year: 1992, label: 'Mobo Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12918757', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
+      { artist: 'DJ Jimi', title: "It's Jimi", year: 1992, label: 'Soulin\' Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1456067', stampSeed: { party: 24, funky: 18, bangin: 12 } },
     ],
   },
   {
@@ -202,6 +254,8 @@ const REGIONS = [
         stampSeed: { doro: 16, bangin: 13, funky: 11 } },
       { artist: 'Dre Dog', title: 'The New Jim Jones', year: 1993, label: 'In-A-Minute', youtubeId: null,
         stampSeed: { horror: 14, doro: 12, dark: 9 } },
+      { artist: 'JT the Bigga Figga', title: "Don't Stop 'Til We Major", year: 1992, label: 'Lil Daddy Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1831086', stampSeed: { funky: 21, bangin: 15, party: 12 } },
     ],
   },
   {
@@ -283,6 +337,8 @@ const REGIONS = [
     albums: [
       { artist: 'The D.O.C.', title: 'No One Can Do It Better', year: 1989, label: 'Ruthless/Atlantic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3729520', stampSeed: { bangin: 62, funky: 41, party: 28 } },
+      { artist: 'Point Blank', title: 'Prone to Bad Dreams', year: 1992, label: 'Bigtyme Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/474019', stampSeed: { dark: 22, bangin: 17, doro: 13 } },
     ],
   },
   {
@@ -293,6 +349,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1453446', stampSeed: { funky: 44, party: 39, bangin: 26 } },
       { artist: 'Criminal Nation', title: 'Release the Pressure', year: 1990, label: 'Nastymix', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1060371', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
+      { artist: 'Sir Mix-A-Lot', title: 'Mack Daddy', year: 1992, label: 'American Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7656885', stampSeed: { funky: 51, party: 44, bangin: 30 } },
+      { artist: 'Criminal Nation', title: 'Trouble in the Hood', year: 1992, label: 'Nastymix Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1060375', stampSeed: { bangin: 21, dark: 16, doro: 11 } },
     ],
   },
   {
@@ -301,6 +361,10 @@ const REGIONS = [
     albums: [
       { artist: 'Tony M.F. Rock', title: 'Let Me Take You to the Rock House', year: 1989, label: 'Luke Skyywalker', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/29833837', stampSeed: { funky: 12, party: 10, bangin: 7 } },
+      { artist: 'Success-N-Effect', title: 'Drive By of Uh Revolutionist', year: 1992, label: 'Umoja', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1202607', stampSeed: { dark: 16, bangin: 12, doro: 9 } },
+      { artist: '1-5ive Posse', title: 'Lifestyles of the Young & Crazy', year: 1992, label: 'World Export Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6718927', stampSeed: { funky: 11, party: 9, bangin: 7 } },
     ],
   },
   {
@@ -311,6 +375,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13031925', stampSeed: { bangin: 16, dark: 11, doro: 8 } },
       { artist: 'P.K.O.', title: 'Armed & Dangerous', year: 1990, label: 'Youngsta Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3851942', stampSeed: { bangin: 12, dark: 9, doro: 7 } },
+      { artist: 'P.K.O.', title: "They Scared of a Nigga", year: 1992, label: 'Youngsta Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/697065', stampSeed: { bangin: 14, dark: 10, doro: 8 } },
     ],
   },
   {
@@ -319,6 +385,16 @@ const REGIONS = [
     albums: [
       { artist: 'Esham', title: 'Boomin\' Words from Hell', year: 1989, label: 'Reel Life Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/789568', stampSeed: { horror: 41, doro: 33, dark: 28 } },
+      { artist: 'Natas', title: 'Life After Death', year: 1992, label: 'Reel Life Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4575540', stampSeed: { horror: 33, dark: 27, doro: 21 } },
+    ],
+  },
+  {
+    id: 'flint', name: 'Flint', area: 'Michigan',
+    lng: -83.6875, lat: 43.0125,
+    albums: [
+      { artist: 'MC Breed', title: '20 Below', year: 1992, label: 'Ichiban Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3778048', stampSeed: { funky: 26, bangin: 18, party: 14 } },
     ],
   },
   {
@@ -344,6 +420,15 @@ const REGIONS = [
     albums: [
       { artist: 'Boo-Yaa T.R.I.B.E.', title: 'New Funky Nation', year: 1990, label: '4th & Broadway', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/712190', stampSeed: { bangin: 30, dark: 22, doro: 16 } },
+    ],
+  },
+  {
+    // 「世界のG-RAP」— Discogsで確認済みのオランダ発Gangsta作品
+    id: 'amsterdam', name: 'Amsterdam', area: 'Netherlands — 世界のG-RAP',
+    lng: 4.8952, lat: 52.3702,
+    albums: [
+      { artist: 'Osdorp Posse', title: 'Osdorp Stijl', year: 1992, label: 'Djax Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2995060', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
     ],
   },
 ];
