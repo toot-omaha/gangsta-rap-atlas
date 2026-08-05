@@ -50,6 +50,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4522759', stampSeed: { bangin: 33, dark: 25, doro: 20 } },
       { artist: 'CPO', title: 'To Hell and Black', year: 1990, label: 'Capitol', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/20932873', stampSeed: { dark: 28, bangin: 21, doro: 17 } },
+      { artist: 'N.W.A', title: 'Efil4zaggin', year: 1991, label: 'Ruthless', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9394940', stampSeed: { bangin: 71, dark: 54, doro: 38 } },
+      { artist: 'AMG', title: 'Bitch Betta Have My Money', year: 1991, label: 'Select Street Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13748375', stampSeed: { funky: 27, party: 20, bangin: 16 } },
     ],
   },
   {
@@ -84,6 +88,18 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/99225', stampSeed: { funky: 24, dark: 16, bangin: 13 } },
       { artist: 'Ice Cube', title: "AmeriKKKa's Most Wanted", year: 1990, label: 'Priority', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35861755', stampSeed: { bangin: 89, dark: 66, doro: 44, funky: 38 } },
+      { artist: 'Ice-T', title: 'O.G. Original Gangster', year: 1991, label: 'Sire', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/216514', stampSeed: { bangin: 74, dark: 48, doro: 35 } },
+      { artist: 'Ice Cube', title: 'Death Certificate', year: 1991, label: '4th & Broadway', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/836406', stampSeed: { bangin: 82, dark: 70, doro: 47 } },
+      { artist: 'Cypress Hill', title: 'Cypress Hill', year: 1991, label: 'Columbia', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6278083', stampSeed: { doro: 58, dark: 44, horror: 22 } },
+      { artist: 'WC and the Maad Circle', title: "Ain't a Damn Thang Changed", year: 1991, label: 'Priority', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/343920', stampSeed: { funky: 32, bangin: 24, dark: 17 } },
+      { artist: 'South Central Cartel', title: 'South Central Madness', year: 1991, label: 'Pump Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/601270', stampSeed: { dark: 27, doro: 22, bangin: 18 } },
+      { artist: 'Crazy Toones', title: 'A Touch of Maadness', year: 1991, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34335325', stampSeed: { funky: 14, bangin: 10, dark: 8 } },
     ],
   },
   {
@@ -114,6 +130,16 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3196664', stampSeed: { funky: 26, bangin: 18, party: 14 } },
       { artist: 'Too $hort', title: "Short Dog's in the House", year: 1990, label: 'Jive', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/16819746', stampSeed: { funky: 41, laidbk: 30, party: 24 } },
+      { artist: '2Pac', title: '2Pacalypse Now', year: 1991, label: 'Interscope', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4354228', stampSeed: { doro: 51, aishu: 39, dark: 33, bangin: 28 } },
+      { artist: '415', title: 'Nu Niggaz on tha Blokkk', year: 1991, label: 'Priority', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3573082', stampSeed: { funky: 19, bangin: 14, party: 11 } },
+      { artist: 'A.P.G. Crew', title: "Oaktown's Finest", year: 1991, label: 'Yo! Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/336824', stampSeed: { funky: 9, laidbk: 7, doro: 5 } },
+      { artist: 'Chunk', title: 'Menace to the Game', year: 1991, label: 'Tandem Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3063904', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Dangerous Dame', title: 'I Got What You Want', year: 1990, label: 'Atlantic', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15665840', stampSeed: { funky: 13, party: 10, laidbk: 8 } },
     ],
   },
   {
@@ -124,6 +150,10 @@ const REGIONS = [
         stampSeed: { horror: 72, dark: 66, doro: 51, aishu: 33 } },
       { artist: 'DJ Screw', title: '3 \'N the Mornin\' (Part Two)', year: 1996, label: 'Bigtyme', youtubeId: null,
         stampSeed: { doro: 38, mellow: 29, laidbk: 26 } },
+      { artist: 'Convicts', title: 'Convicts', year: 1991, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12735777', stampSeed: { bangin: 24, dark: 19, doro: 15 } },
+      { artist: 'Geto Boys', title: 'Making Trouble', year: 1991, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3897370', stampSeed: { bangin: 22, dark: 16, doro: 12 } },
     ],
   },
   {
@@ -144,6 +174,8 @@ const REGIONS = [
         stampSeed: { horror: 11, doro: 9, dark: 7 } },
       { artist: 'Gangsta Pat', title: '#1 Suspect', year: 1991, label: 'On Top Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4749203', stampSeed: { dark: 24, bangin: 18, doro: 14 } },
+      { artist: 'Radical T', title: 'Radical but Critical', year: 1991, label: 'On Top Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2163476', stampSeed: { doro: 14, dark: 10, horror: 8 } },
     ],
   },
   {
@@ -154,6 +186,8 @@ const REGIONS = [
         stampSeed: { bangin: 13, party: 10, doro: 8 } },
       { artist: 'Master P', title: 'Ice Cream Man', year: 1996, label: 'No Limit', youtubeId: null,
         stampSeed: { bangin: 31, doro: 22, dark: 18 } },
+      { artist: 'Master P', title: 'Get Away Clean', year: 1991, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11852898', stampSeed: { funky: 20, bangin: 15, party: 12 } },
     ],
   },
   {
@@ -197,6 +231,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1050334', stampSeed: { dark: 21, bangin: 17, doro: 13 } },
       { artist: 'Kool G Rap & DJ Polo', title: 'Wanted: Dead or Alive', year: 1990, label: 'Cold Chillin\'', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11354462', stampSeed: { dark: 33, bangin: 26, doro: 19 } },
+      { artist: 'Royal Flush', title: '976-DOPE', year: 1991, label: 'Yo! Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7322714', stampSeed: { dark: 17, bangin: 13, doro: 10 } },
+      { artist: 'BWP', title: 'The Bytches', year: 1991, label: 'No Face', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/527825', stampSeed: { bangin: 16, funky: 11, doro: 9 } },
     ],
   },
   {
@@ -213,6 +251,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/815457', stampSeed: { dark: 25, bangin: 19, doro: 15 } },
       { artist: 'Cool C', title: 'Life in the Ghetto', year: 1990, label: 'Atlantic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/572921', stampSeed: { funky: 22, bangin: 17, doro: 13 } },
+      { artist: 'Schoolly D', title: 'How a Blackman Feels', year: 1991, label: 'Capitol Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/500911', stampSeed: { bangin: 20, dark: 15, doro: 12 } },
     ],
   },
   {
@@ -229,6 +269,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/11179166', stampSeed: { bangin: 47, dark: 38, doro: 25 } },
       { artist: 'Donald-D', title: 'Notorious', year: 1989, label: 'Rhyme Syndicate/Rick Rubin', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/247560', stampSeed: { bangin: 14, funky: 10, dark: 8 } },
+      { artist: 'Tim Dog', title: 'Penicillin on Wax', year: 1991, label: 'Ruffhouse Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1126548', stampSeed: { bangin: 30, dark: 22, doro: 16 } },
     ],
   },
   {
@@ -263,6 +305,8 @@ const REGIONS = [
     albums: [
       { artist: 'Choice', title: 'The Big Payback', year: 1990, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13031925', stampSeed: { bangin: 16, dark: 11, doro: 8 } },
+      { artist: 'P.K.O.', title: 'Armed & Dangerous', year: 1990, label: 'Youngsta Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3851942', stampSeed: { bangin: 12, dark: 9, doro: 7 } },
     ],
   },
   {
@@ -288,6 +332,14 @@ const REGIONS = [
     albums: [
       { artist: 'Francis M.', title: 'Yo!', year: 1990, label: 'OctoArts International', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9153877', stampSeed: { funky: 18, party: 14, bangin: 10 } },
+    ],
+  },
+  {
+    id: 'carson', name: 'Carson', area: 'Los Angeles County, CA',
+    lng: -118.2817, lat: 33.8317,
+    albums: [
+      { artist: 'Boo-Yaa T.R.I.B.E.', title: 'New Funky Nation', year: 1990, label: '4th & Broadway', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/712190', stampSeed: { bangin: 30, dark: 22, doro: 16 } },
     ],
   },
 ];
