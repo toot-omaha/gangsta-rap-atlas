@@ -140,6 +140,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3063904', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { artist: 'Dangerous Dame', title: 'I Got What You Want', year: 1990, label: 'Atlantic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15665840', stampSeed: { funky: 13, party: 10, laidbk: 8 } },
+      { artist: 'Totally Insane', title: 'Direct from the Backstreet', year: 1991, label: 'RCA', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12332239', stampSeed: { doro: 18, dark: 13, bangin: 10 } },
+      { artist: 'Spice 1', title: 'Let It Be Known', year: 1991, label: 'Triad Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2263925', stampSeed: { doro: 20, dark: 15, bangin: 12 } },
     ],
   },
   {

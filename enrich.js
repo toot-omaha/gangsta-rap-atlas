@@ -2135,6 +2135,100 @@ const ENRICH = {
    }
   ]
  },
+ "Totally Insane|Direct from the Backstreet": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/0a/2a/1b/0a2a1bcc-c657-f200-13da-8666b8439e95/881034352583_cover.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/direct-from-the-backstreet/1703828657?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/a9/6e/fc/a96efce8-20ac-f9b5-c3bb-6a45b897615a/mzaf_18291283199928655743.plus.aac.p.m4a"
+   },
+   {
+    "name": "What Ya Know",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/a1/cf/90/a1cf9038-9eab-38b4-eb3a-461b2187ff90/mzaf_3059869355872423691.plus.aac.p.m4a"
+   },
+   {
+    "name": "Kiss No Ass",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/d4/db/60/d4db6055-b686-7ca2-f621-a62818eb659c/mzaf_15031191906522922170.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mo More Mr. Nice Guy",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/ad/68/c1/ad68c1bd-9c00-d960-133a-132b253b29ca/mzaf_12352119195187633042.plus.aac.p.m4a"
+   },
+   {
+    "name": "Heartless Mother F*ck*r",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/f2/dd/d1/f2ddd1bb-70f6-18ba-86fc-5af146fd73e7/mzaf_15944366373298678025.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mack Game",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/68/27/99/682799f9-7e15-bd2b-e7e5-65e0ce561a84/mzaf_2586538355380852343.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Insane",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/4e/bf/6b/4ebf6b19-a2f8-b89e-087a-5f29646681da/mzaf_3900952511361495997.plus.aac.p.m4a"
+   },
+   {
+    "name": "Smoooth",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/5f/9e/86/5f9e860a-c627-5d66-033c-68a67caf4996/mzaf_11921073168667924082.plus.aac.p.m4a"
+   },
+   {
+    "name": "-N- The Backstreets",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/e6/b1/f7/e6b1f759-22c7-ee9b-6075-188d6f39d4f9/mzaf_3027417548223092171.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Can't Be Faded",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/b1/8c/24/b18c247a-84e0-42cb-d9a6-01fc339418c2/mzaf_1430850283581731866.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Don't Even Trip",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/6e/d3/b5/6ed3b515-4c96-142b-743b-f320622298a3/mzaf_7841514103860682749.plus.aac.p.m4a"
+   },
+   {
+    "name": "Now Ya Understand",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/44/cd/2a/44cd2a47-5536-ca26-c56b-59f409c47607/mzaf_9134189358235054475.plus.aac.p.m4a"
+   },
+   {
+    "name": "Outro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/ed/d0/4d/edd04dcf-af8d-3419-a3e2-447e7c591e36/mzaf_13166580788802666240.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Spice 1|Let It Be Known": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/28/26/5c/mzi.gbjbhyjk.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/let-it-be-known/277250910?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Ghetto Thang",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/44/a5/19/44a519a8-aa8e-90c6-f3d2-8d5a607ad2d7/mzaf_12630598488772226726.plus.aac.p.m4a"
+   },
+   {
+    "name": "Let It Be Known",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/9b/e8/0a/9be80acc-d000-4c7a-7387-71931d3952c4/mzaf_11275188589668005706.plus.aac.p.m4a"
+   },
+   {
+    "name": "187 Proof, Pt.1",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/94/d9/f6/94d9f68e-f74f-17da-008a-715c872fc9ab/mzaf_11324272179479446658.plus.aac.p.m4a"
+   },
+   {
+    "name": "1-900-S.P.I.C.E.",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ed/a6/4b/eda64b06-90df-4afc-3625-f1f1fc6f2cbc/mzaf_6852334945944663672.plus.aac.p.m4a"
+   },
+   {
+    "name": "In My Neighborhood",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/57/bc/b3/57bcb31e-487e-46b9-8c0c-65826a0c1061/mzaf_10442942599285475810.plus.aac.p.m4a"
+   },
+   {
+    "name": "Break Yourself",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/9c/14/de/9c14def0-10d4-7f48-2d3c-8393355a6d50/mzaf_1449485709442085677.plus.aac.p.m4a"
+   },
+   {
+    "name": "City Streets",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/03/16/dc/0316dc60-f001-e216-7924-f6bfcef275a9/mzaf_15126554282862144135.plus.aac.p.m4a"
+   }
+  ]
+ },
  "Geto Boys|We Can't Be Stopped": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5c/c2/aa/5cc2aa89-4005-dc63-b14e-d063af1cddb0/886444200424_Cover.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/we-cant-be-stopped/1813058345?uo=4",
