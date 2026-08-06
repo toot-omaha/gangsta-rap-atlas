@@ -557,6 +557,10 @@ function closeSearch() {
 function runSearch(q) {
   const nq = norm(q);
   if (!nq) { searchResults.innerHTML = ''; return; }
+  // 地名(都市名・州名)にもヒットさせる。ヒットした地域は結果の先頭に出し、
+  // クリックでその地域の一覧を開く
+  const regionHits = REGIONS.filter(
+    (r) => !r.unclassified && (norm(r.name).includes(nq) || norm(r.area).includes(nq)) && albumsOf(r).length > 0);
   const hits = [];
   REGIONS.forEach((r) => {
     r.albums.forEach((a) => {
@@ -564,11 +568,21 @@ function runSearch(q) {
       if (norm(a.artist).includes(nq) || norm(a.title).includes(nq)) hits.push({ a, r });
     });
   });
-  if (!hits.length) {
+  if (!regionHits.length && !hits.length) {
     searchResults.innerHTML = `<p class="sr-empty">${t('noMatch')}</p>`;
     return;
   }
   searchResults.innerHTML = '';
+  regionHits.slice(0, 10).forEach((r) => {
+    const row = document.createElement('div');
+    row.className = 'sr-item sr-region';
+    row.innerHTML = `<span class="t">📍 ${r.name}</span><span class="a">${r.area}</span><span class="r">${albumsOf(r).length} ${t('discs')}</span>`;
+    row.addEventListener('click', () => {
+      closeSearch();
+      openRegion(r);
+    });
+    searchResults.appendChild(row);
+  });
   hits.slice(0, 60).forEach(({ a, r }) => {
     const row = document.createElement('div');
     row.className = 'sr-item';
