@@ -981,10 +981,29 @@ function playCurrent() {
   paint();
 }
 
+// Media Session API: ロック画面/通知領域の再生コントロールとバックグラウンド再生に対応。
+// 曲が変わるたびにメタデータを更新し、OS側の▶⏸/前後ボタンをこちらの操作につなぐ。
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.setActionHandler('play', () => { if (queue[cursor]?.preview) audio.play().catch(() => {}); });
+  navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+  navigator.mediaSession.setActionHandler('previoustrack', prev);
+  navigator.mediaSession.setActionHandler('nexttrack', next);
+}
+function syncMediaSession(q) {
+  if (!('mediaSession' in navigator)) return;
+  if (!q) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; return; }
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: q.title, artist: q.artist, album: 'GANGSTA RAP ATLAS',
+    artwork: q.art ? [{ src: q.art, sizes: '100x100', type: 'image/jpeg' }] : [],
+  });
+  navigator.mediaSession.playbackState = audio.paused ? 'paused' : 'playing';
+}
+
 function paint() {
   const q = queue[cursor];
   $count.textContent = `${queue.length} 曲`;
   $play.textContent = audio.paused ? '▶' : '⏸';
+  syncMediaSession(q);
   if (!q) {
     $title.textContent = t('qEmptyT');
     $artist.textContent = t('qEmptyA');
