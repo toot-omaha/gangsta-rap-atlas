@@ -37,7 +37,7 @@ const REGIONS = [
       { artist: 'DJ Quik', title: 'Quik Is the Name', year: 1991, label: 'Profile', youtubeId: null,
         stampSeed: { funky: 88, smooth: 71, party: 55, laidbk: 44 } },
       { artist: "Compton's Most Wanted", title: 'Music to Driveby', year: 1992, label: 'Orpheus', youtubeId: null,
-        stampSeed: { doro: 74, aishu: 58, dark: 49, mellow: 31 } },
+        stampSeed: { dark: 2, smooth: 2, funky: 2, doro: 1, laidbk: 1 }, seedSrc: ['https://albumism.com/features/comptons-most-wanted-music-to-driveby-album-anniversary', 'https://en.wikipedia.org/wiki/Music_to_Driveby', 'https://rateyourmusic.com/release/album/comptons-most-wanted/music-to-driveby/'] },
       { artist: 'MC Eiht', title: 'We Come Strapped', year: 1994, label: 'Epic Street', youtubeId: null,
         stampSeed: { doro: 41, dark: 33, bangin: 27 } },
       { artist: 'Eazy-E', title: 'Eazy-Duz-It', year: 1988, label: 'Ruthless', youtubeId: null,
