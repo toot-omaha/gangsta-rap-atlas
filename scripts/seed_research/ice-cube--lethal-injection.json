@@ -1,0 +1,16 @@
+{
+  "artist": "Ice Cube",
+  "title": "Lethal Injection",
+  "album": { "funky": 2, "bangin": 1, "dark": 1 },
+  "tracks": {
+    "You Know How We Do It": { "smooth": 2, "laidbk": 2 },
+    "Ghetto Bird": { "bangin": 1, "dark": 1 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/lethal-injection-mw0000181050",
+    "https://albumism.com/features/ice-cube-lethal-injection-album-anniversary",
+    "https://www.albumoftheyear.org/album/14023-ice-cube-lethal-injection/user-reviews/",
+    "https://en.wikipedia.org/wiki/Lethal_Injection_(album)"
+  ],
+  "notes": "funky: G-Funkへの路線転換に各ソース言及。You Know How We Do It=one of the smoothest songs・perfect rider music(smooth/laidbk)。Ghetto Bird=ハードな代表曲。"
+}

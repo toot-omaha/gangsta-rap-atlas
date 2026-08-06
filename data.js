@@ -221,7 +221,7 @@ const REGIONS = [
       { artist: 'Ice-T', title: 'Home Invasion', year: 1993, label: 'Sire', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/29661217', stampSeed: { bangin: 43, dark: 34, doro: 24 } },
       { artist: 'Ice Cube', title: 'Lethal Injection', year: 1993, label: 'Priority Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/10681890', stampSeed: { bangin: 55, funky: 42, dark: 33 } },
+        discogsUrl: 'https://www.discogs.com/release/10681890', stampSeed: { funky: 2, bangin: 2, dark: 2, smooth: 2, laidbk: 2 }, seedSrc: ['https://www.allmusic.com/album/lethal-injection-mw0000181050', 'https://albumism.com/features/ice-cube-lethal-injection-album-anniversary', 'https://www.albumoftheyear.org/album/14023-ice-cube-lethal-injection/user-reviews/', 'https://en.wikipedia.org/wiki/Lethal_Injection_(album)'] },
       { artist: 'Bloods & Crips', title: 'Bangin\' on Wax', year: 1993, label: 'Dangerous Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/308831', stampSeed: { bangin: 45, dark: 36, doro: 25 } },
       { artist: 'Ice-T', title: 'Check This Out', year: 1993, label: 'International Broadcast Recordings', youtubeId: null,
