@@ -537,6 +537,7 @@ function albumCard(album) {
   // ディスクのスタンプ = 曲スタンプ+分析初期値の集計(表示のみ。押すのは専用ページで)
   const wrap = card.querySelector('.album-stamps');
   STAMPS.filter((s) => stampCount(album, s.id) > 0)
+    .sort((a, b) => stampCount(album, b.id) - stampCount(album, a.id))
     .forEach((s) => wrap.appendChild(discChip(album, s, true, null)));
 
   // カードのどこを押してもディスク専用ページへ(ボタン類は除く)
@@ -607,6 +608,7 @@ function renderDisc(album) {
   if (tracks.length) {
     // スタンプは曲側で押す(ここは集計表示)
     STAMPS.filter((s) => stampCount(album, s.id) > 0)
+      .sort((a, b) => stampCount(album, b.id) - stampCount(album, a.id))
       .forEach((s) => wrap.appendChild(discChip(album, s, true, null)));
   } else {
     // 曲データのない激レア盤はディスクに直接押せる
