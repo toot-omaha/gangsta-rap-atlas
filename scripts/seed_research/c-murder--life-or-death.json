@@ -1,0 +1,15 @@
+{
+  "artist": "C-Murder",
+  "title": "Life or Death",
+  "album": { "dark": 3, "doro": 2, "bangin": 1 },
+  "tracks": {
+    "A 2nd Chance": { "aishu": 1, "doro": 1 }
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Life_or_Death_(C-Murder_album)",
+    "https://www.albumoftheyear.org/album/40745-c-murder-life-or-death.php",
+    "https://medium.com/@wdm625/revisiting-c-murders-life-or-death-93d54fa91bdd",
+    "https://anywherethedopego.com/c-murder-life-or-death-throwback-thursday-review/"
+  ],
+  "notes": "dark/doro: dark, harrowing gangsta rap・serious toneの言及(複数ソース)。bangin: Beats By the Poundのhard-hitting production。A 2nd Chance=2Pac的な内省(哀愁)。"
+}

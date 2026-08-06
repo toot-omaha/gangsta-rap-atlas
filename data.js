@@ -1027,7 +1027,7 @@ const REGIONS = [
       { artist: 'Gambino Family', title: 'Ghetto Organized', year: 1998, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15164915', stampSeed: { dark: 20, doro: 16, bangin: 13 } },
       { artist: 'C-Murder', title: 'Life or Death', year: 1998, label: 'No Limit Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/2144073', stampSeed: { dark: 30, doro: 24, bangin: 18 } },
+        discogsUrl: 'https://www.discogs.com/release/2144073', stampSeed: { dark: 3, doro: 3, bangin: 1, aishu: 1 }, seedSrc: ['https://en.wikipedia.org/wiki/Life_or_Death_(C-Murder_album)', 'https://www.albumoftheyear.org/album/40745-c-murder-life-or-death.php', 'https://medium.com/@wdm625/revisiting-c-murders-life-or-death-93d54fa91bdd', 'https://anywherethedopego.com/c-murder-life-or-death-throwback-thursday-review/'] },
       { artist: 'Juvenile', title: '400 Degreez', year: 1998, label: 'Cash Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12494013', stampSeed: { party: 7, funky: 2, bangin: 3 }, seedSrc: ['https://www.stereogum.com/2021327/juvenile-400-degreez/reviews/the-anniversary/', 'https://www.udiscovermusic.com/stories/juvenile-400-degreez-feature/', 'https://www.albumoftheyear.org/album/52193-juvenile-400-degreez/user-reviews/', 'https://karlaclifton666.medium.com/review-470-400-degreez-juvenile-c42dda47ae60'] },
       { artist: 'Code 6', title: "Let's Go Get'Em", year: 1998, label: 'Ice Mike Entertainment', youtubeId: null,
