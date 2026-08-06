@@ -148,10 +148,19 @@ function stampCount(album, id) {
 const totalStamps = (a) => STAMPS.reduce((n, s) => n + stampCount(a, s.id), 0);
 const hasStamp = (a, id) => stampCount(a, id) > 0;
 
-// 発掘度 — スタンプが少ないほど高い(まだ誰も掘っていない)
+// 発掘度 — Discogsのコレクション登録数(have)による実測レア度。
+// have が少ない盤ほど現物を持っている人が少ない=発掘し甲斐がある。
+// have<=10 ≒ ★5 / 100前後 ≒ ★2-3 / 1000超のメジャー盤 ≒ ★1。
+// rarity.js 未取得の盤はスタンプ数による旧ロジックへフォールバック。
 const MAX_REF = 300;
 function rarity(album) {
   const t = totalStamps(album);
+  const r = (typeof RARITY !== 'undefined') ? RARITY[albumKey(album)] : null;
+  if (r) {
+    const score = Math.max(0, Math.min(1, 1 - Math.log10(r.have + 1) / Math.log10(5000)));
+    const n = Math.max(1, Math.round(score * 5));
+    return { score, stars: '★'.repeat(n) + '☆'.repeat(5 - n), total: t, have: r.have };
+  }
   const score = Math.max(0, Math.min(1, 1 - Math.log10(t + 1) / Math.log10(MAX_REF)));
   const n = Math.max(1, Math.round(score * 5));
   return { score, stars: '★'.repeat(n) + '☆'.repeat(5 - n), total: t };
