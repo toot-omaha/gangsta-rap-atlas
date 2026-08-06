@@ -56,6 +56,15 @@ body::before {
 /* デスクトップではドロワーは透明なラッパー(中身がヘッダーに並ぶ) */
 .drawer { display: contents; }
 .drawer-actions { display: none; }
+/* 年代フィルター(デスクトップ: ヘッダー内にインライン表示) */
+.era-filter { display: flex; gap: 10px; align-items: center; padding: 0 10px; flex: 0 0 auto; }
+.era-chk {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 900; letter-spacing: .06em;
+  color: var(--ink-2); cursor: pointer; white-space: nowrap; user-select: none;
+}
+.era-chk input { accent-color: var(--ink); margin: 0; cursor: pointer; }
+.era-chk.on { color: var(--ink); }
 .stamp-filter {
   display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
   padding: 7px 12px; flex: 1; overflow-x: auto;
@@ -512,6 +521,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
     box-shadow: 6px 6px 0 rgba(20,18,15,.4);
   }
   body.stamps-open .drawer { display: block; }
+  /* 年代フィルターはドロワー最上段のセクションにする */
+  .drawer .era-filter { border-bottom: 2px solid var(--ink); padding: 10px; gap: 12px; }
+  .drawer .era-chk { font-size: 12px; }
   .drawer .stamp-filter { padding: 10px; gap: 6px; overflow: visible; }
   .drawer-actions {
     display: flex; gap: 8px; align-items: center;

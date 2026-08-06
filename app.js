@@ -223,11 +223,19 @@ const genStreetNameCandidate = () => `${randPick(SN_ADJ)}-${randPick(SN_NOUN)}`;
 // DBのunique制約が衝突を弾く(重複登録の防止だけが目的。衝突自体は稀で許容)
 async function reserveStreetName(name) {
   try {
-    const res = await fetch(`${SB_URL}/fav_sync`, {
+    let res = await fetch(`${SB_URL}/fav_sync`, {
       method: 'POST',
       headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant] }),
+      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant], eras: [...eraFilters] }),
     });
+    if (res.status === 400) {
+      // eras列のマイグレーション未実施のDBへのフォールバック
+      res = await fetch(`${SB_URL}/fav_sync`, {
+        method: 'POST',
+        headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+        body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant] }),
+      });
+    }
     return res.ok || res.status === 201;
   } catch { return false; }
 }
@@ -249,16 +257,28 @@ async function pushFavSync() {
   if (!streetName) await ensureStreetName();
   if (!streetName) return;
   try {
-    await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+    const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
       method: 'PATCH',
       headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-      body: JSON.stringify({ have: [...favsHave], want: [...favsWant], updated_at: new Date().toISOString() }),
+      body: JSON.stringify({ have: [...favsHave], want: [...favsWant], eras: [...eraFilters], updated_at: new Date().toISOString() }),
     });
+    if (!res.ok) {
+      // eras列のマイグレーション未実施のDBでもhave/want同期は壊さない
+      await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+        method: 'PATCH',
+        headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+        body: JSON.stringify({ have: [...favsHave], want: [...favsWant], updated_at: new Date().toISOString() }),
+      });
+    }
   } catch { /* オフラインでもローカルは正常に動く */ }
 }
 
 async function pullFavSync(name) {
-  const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want`, { headers: SB_HEADERS });
+  let res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want,eras`, { headers: SB_HEADERS });
+  if (!res.ok) {
+    // eras列のマイグレーション未実施のDBへのフォールバック
+    res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want`, { headers: SB_HEADERS });
+  }
   if (!res.ok) return null;
   const rows = await res.json();
   return rows[0] || null;
@@ -275,6 +295,7 @@ async function autoPullFavSync() {
   if (!streetName) return;
   const row = await pullFavSync(streetName);
   if (!row) return;
+  applyErasFromRow(row);
   const newHave = new Set(row.have || []);
   const newWant = new Set(row.want || []);
   const changed = newHave.size !== favsHave.size || newWant.size !== favsWant.size
@@ -285,6 +306,19 @@ async function autoPullFavSync() {
   saveFavs();
   updateFavCount();
   if (listView === 'favs') renderFavs(false);
+}
+
+// サーバー行のeras(年代フィルター)をローカルへ反映する。列が無い/空なら何もしない
+function applyErasFromRow(row) {
+  if (!Array.isArray(row.eras) || !row.eras.length) return;
+  const same = row.eras.length === eraFilters.size && row.eras.every((e) => eraFilters.has(e));
+  if (same) return;
+  eraFilters.clear();
+  row.eras.forEach((e) => eraFilters.add(e));
+  saveEras();
+  buildEraBar();
+  refreshMarkers();
+  if (activeRegion) renderList(activeRegion);
 }
 
 // サイコロ: 現在の行を新しい名前へリネーム(持ってる/ほしいはサーバー上のrowがそのまま引き継ぐ)
@@ -328,12 +362,16 @@ async function issueLinkCode() {
 async function linkStreetName(name, code) {
   if (!code) return false;
   const now = new Date().toISOString();
-  const res = await fetch(
-    `${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&link_code=eq.${encodeURIComponent(code)}&link_code_expires_at=gt.${encodeURIComponent(now)}&select=have,want`,
-    { headers: SB_HEADERS });
+  const base = `${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&link_code=eq.${encodeURIComponent(code)}&link_code_expires_at=gt.${encodeURIComponent(now)}`;
+  let res = await fetch(`${base}&select=have,want,eras`, { headers: SB_HEADERS });
+  if (!res.ok) {
+    // eras列のマイグレーション未実施のDBへのフォールバック
+    res = await fetch(`${base}&select=have,want`, { headers: SB_HEADERS });
+  }
   if (!res.ok) return false;
   const row = (await res.json())[0];
   if (!row) return false;
+  applyErasFromRow(row);
   favsHave.clear(); (row.have || []).forEach((k) => favsHave.add(k));
   favsWant.clear(); (row.want || []).forEach((k) => favsWant.add(k));
   saveFavs();
@@ -353,8 +391,25 @@ let activeFilters = new Set();
 let activeRegion = null;
 const shotRegions = new Set(); // 一度クリックした土地は弾痕が残る
 
-const albumsOf = (r) =>
-  activeFilters.size === 0 ? r.albums : r.albums.filter((a) => [...activeFilters].every((f) => hasStamp(a, f)));
+// ---------- 年代フィルター ----------
+// 3区分のチェックボックス(デフォルト全ON)。外した年代のディスクは
+// 地図・一覧・検索すべてから除外される。チェック状態はlocalStorageに保存し、
+// Street Name同期(fav_sync.eras列)で他端末とも共有する。
+const ERA_KEY = 'gra.eraFilters.v1';
+const ERAS = [
+  { id: 'pre2000', label: '〜1999' },
+  { id: 'y2000s', label: '2000〜2009' },
+  { id: 'y2010s', label: '2010〜' },
+];
+const eraFilters = new Set(JSON.parse(localStorage.getItem(ERA_KEY) || 'null') || ERAS.map((e) => e.id));
+const saveEras = () => localStorage.setItem(ERA_KEY, JSON.stringify([...eraFilters]));
+const eraOf = (a) => (a.year <= 1999 ? 'pre2000' : a.year <= 2009 ? 'y2000s' : 'y2010s');
+
+const albumsOf = (r) => {
+  let list = r.albums.filter((a) => eraFilters.has(eraOf(a)));
+  if (activeFilters.size) list = list.filter((a) => [...activeFilters].every((f) => hasStamp(a, f)));
+  return list;
+};
 
 // ---------- 地図 ----------
 const map = new maplibregl.Map({
@@ -450,6 +505,28 @@ function buildFilterBar() {
 }
 buildFilterBar();
 
+// ---------- 年代フィルターUI ----------
+const eraBar = document.getElementById('eraFilter');
+function buildEraBar() {
+  eraBar.innerHTML = '';
+  ERAS.forEach((e) => {
+    const label = document.createElement('label');
+    label.className = 'era-chk' + (eraFilters.has(e.id) ? ' on' : '');
+    label.innerHTML = `<input type="checkbox"${eraFilters.has(e.id) ? ' checked' : ''}><span>${e.label}</span>`;
+    label.querySelector('input').addEventListener('change', (ev) => {
+      if (ev.target.checked) eraFilters.add(e.id); else eraFilters.delete(e.id);
+      label.classList.toggle('on', ev.target.checked);
+      saveEras();
+      pushFavSync(); // チェック状態もStreet Nameに載せて他端末と同期
+      refreshMarkers();
+      if (activeRegion) renderList(activeRegion);
+      if (searchOverlay.classList.contains('open')) runSearch(searchInput.value);
+    });
+    eraBar.appendChild(label);
+  });
+}
+buildEraBar();
+
 // ---------- 検索 ----------
 const searchOverlay = document.getElementById('searchOverlay');
 const searchInput = document.getElementById('searchInput');
@@ -482,6 +559,7 @@ function runSearch(q) {
   const hits = [];
   REGIONS.forEach((r) => {
     r.albums.forEach((a) => {
+      if (!eraFilters.has(eraOf(a))) return; // 年代フィルターは検索にも適用
       if (norm(a.artist).includes(nq) || norm(a.title).includes(nq)) hits.push({ a, r });
     });
   });
