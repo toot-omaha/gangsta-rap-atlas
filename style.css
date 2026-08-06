@@ -311,9 +311,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .album-actions { display: flex; align-items: stretch; gap: 6px; margin-top: 8px; }
 .play-btn {
   flex: 0 0 auto; width: 60px; border: 2px solid var(--ink);
-  background: var(--paper); cursor: pointer; font-size: 11px;
+  background: var(--ink); color: var(--paper); cursor: pointer; font-size: 11px;
 }
-.play-btn:hover { background: var(--ink); color: var(--paper); }
+.play-btn:hover { background: var(--paper); color: var(--ink); }
 
 /* 持ってる/ほしい の2ボタン */
 .fav-pair { display: flex; flex-direction: row; gap: 6px; flex: 0 0 auto; }
@@ -442,7 +442,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   .list-head { flex-wrap: wrap; row-gap: 2px; }
   .list-head h2 { font-size: 26px; flex: 1 1 auto; }
   .list-head .close { order: 1; }
-  .list-head .sub { order: 2; }
+  .list-head .sub { order: 2; flex: 1 1 100%; min-width: 100%; }
   .list-head .cnt { order: 3; margin-left: auto; }
   .player-meta span, .player-queue .credit { display: none; }
   .player { gap: 10px; }
