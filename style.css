@@ -468,11 +468,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   .drawer-actions .fav-toggle { flex: 1; text-align: center; padding: 7px 10px; }
   #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 0 12px 12px; }
   .list-head { padding-top: 12px; }
-  .list-head { flex-wrap: wrap; row-gap: 2px; }
-  .list-head h2 { font-size: 26px; order: 1; flex: 0 1 auto; }
-  .list-head .cnt { order: 2; margin-left: 8px; }
-  .list-head .close { order: 3; margin-left: auto; }
-  .list-head .sub { order: 4; flex: 1 1 100%; min-width: 100%; }
+  .list-head h2 { font-size: 26px; }
   .player-meta span, .player-queue .credit { display: none; }
   .player { gap: 10px; }
 }
