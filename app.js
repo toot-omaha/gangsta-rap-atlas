@@ -153,13 +153,29 @@ const hasStamp = (a, id) => stampCount(a, id) > 0;
 // have<=10 ≒ ★5 / 100前後 ≒ ★2-3 / 1000超のメジャー盤 ≒ ★1。
 // rarity.js 未取得の盤はスタンプ数による旧ロジックへフォールバック。
 const MAX_REF = 300;
+// Discogs最安値(USD)を円換算し、実際の取引価格帯で発掘度を判定する。
+// 円レートは目安(実勢の概算、都度APIは叩かない)。出品が無い盤=市場に出回っていない
+// ということなので最高評価とする。
+const USD_JPY = 150;
+const PRICE_BANDS_JPY = [2000, 5000, 10000, 30000]; // これを超えるごとに★+1、最後を超えたら★5
 function rarity(album) {
   const t = totalStamps(album);
   const r = (typeof RARITY !== 'undefined') ? RARITY[albumKey(album)] : null;
   if (r) {
-    const score = Math.max(0, Math.min(1, 1 - Math.log10(r.have + 1) / Math.log10(5000)));
-    const n = Math.max(1, Math.round(score * 5));
-    return { score, stars: '★'.repeat(n) + '☆'.repeat(5 - n), total: t, have: r.have };
+    const priceJpy = r.price > 0 ? r.price * USD_JPY : null;
+    let n;
+    if (priceJpy == null) {
+      // 出品なし。ただしhaveが多い(=よく知られた盤)場合はただの一時的な品切れの
+      // 可能性が高いので、have数のログスケールにフォールバックして誤って★5にしない。
+      n = r.have <= 15
+        ? 5
+        : Math.max(1, Math.round((1 - Math.log10(r.have + 1) / Math.log10(500)) * 4) + 1);
+    } else {
+      n = 1;
+      for (const band of PRICE_BANDS_JPY) { if (priceJpy > band) n++; }
+    }
+    const score = (n - 1) / 4;
+    return { score, stars: '★'.repeat(n) + '☆'.repeat(5 - n), total: t, have: r.have, sale: r.sale, price: r.price, priceJpy };
   }
   const score = Math.max(0, Math.min(1, 1 - Math.log10(t + 1) / Math.log10(MAX_REF)));
   const n = Math.max(1, Math.round(score * 5));
@@ -537,9 +553,9 @@ function albumCard(album) {
       </div>
     </div>
     <div class="rarity">
-      <span class="lab">${t('rarity')} ${r.stars}</span>
+      <span class="lab">${t('rarity')} ${r.stars}${r.priceJpy == null && r.have <= 15 ? ' <span class="hot-badge" title="Discogsに出品なし">🔥出品なし</span>' : ''}</span>
       <span class="bar"><i style="width:${Math.round(r.score * 100)}%"></i></span>
-      <span class="n">STAMP ${r.total}</span>
+      <span class="n">${r.priceJpy != null ? `¥${Math.round(r.priceJpy).toLocaleString()}〜` : `STAMP ${r.total}`}</span>
     </div>
     <div class="album-stamps"></div>`;
 
@@ -600,7 +616,8 @@ function renderDisc(album) {
           <button class="tr-toggle play-d">${t('queueAll')}</button>
         </div>
         <div class="rarity">
-          <span class="lab">${t('rarity')} ${r.stars}</span>
+          <span class="lab">${t('rarity')} ${r.stars}${r.priceJpy == null && r.have <= 15 ? ' <span class="hot-badge" title="Discogsに出品なし">🔥出品なし</span>' : ''}</span>
+          ${r.priceJpy != null ? `<span class="n">参考価格 ¥${Math.round(r.priceJpy).toLocaleString()}〜</span>` : ''}
           <span class="bar"><i style="width:${Math.round(r.score * 100)}%"></i></span>
           <span class="n">STAMP ${r.total}</span>
         </div>

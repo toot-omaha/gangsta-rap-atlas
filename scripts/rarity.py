@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Discogsのcommunityデータ(have/want・出品数・最安値)から実測レア度を作る。
 
+発掘度は「実際にいくらで売買されているか」を基準にする(高値/出品ほぼ無し=レア)。
+うちがカタログしている具体的なプレス(discogsUrl)自体のcommunity/価格情報を見る
+(マスター配下の別プレスの安い相場を拾って原盤の希少性を薄めないよう、1プレス限定)。
+
 data.js の discogsUrl を持つ全アルバムについて
   https://api.discogs.com/releases/{id}
 を叩き、rarity.js に { "artist|title": {have, want, sale, price} } を書き出す。
-発掘度の計算はフロント側(app.js)が have数の対数スケールで行う。
+発掘度の計算はフロント側(app.js)が price(最安値)の円換算バンドで行う。
 
 レートリミット: 未認証 25/分(2.6s間隔)。全件で30分程度。
 レスポンスは .cache/discogs_release/ にキャッシュされ、再実行は差分のみ。
@@ -40,10 +44,6 @@ def fetch(release_id):
 
 def main():
     src = (ROOT / 'data.js').read_text()
-    entries = re.findall(
-        r"artist: (['\"])(.*?)\1, title: (['\"])(.*?)\3,.*?discogs\.com/release/(\d+)",
-        src, re.DOTALL)
-    # 正規表現の.*?が隣のエントリまで跨がないよう、エントリ単位で拾い直す
     entries = []
     for m in re.finditer(r"\{ artist: (['\"])((?:\\.|(?!\1).)*)\1, title: (['\"])((?:\\.|(?!\3).)*)\3[^}]*?discogsUrl: '[^']*?/release/(\d+)'", src):
         artist = m.group(2).replace("\\'", "'")
@@ -66,7 +66,7 @@ def main():
             'price': (d.get('lowest_price') or 0),
         }
         if i % 25 == 0 or i == len(entries):
-            print(f'  [{i}/{len(entries)}] {artist} - {title}: have={c.get("have",0)} want={c.get("want",0)}')
+            print(f'  [{i}/{len(entries)}] {artist} - {title}: have={c.get("have",0)} want={c.get("want",0)} price={d.get("lowest_price")}')
 
     js = 'const RARITY = ' + json.dumps(out, ensure_ascii=False) + ';\n'
     (ROOT / 'rarity.js').write_text(js)
