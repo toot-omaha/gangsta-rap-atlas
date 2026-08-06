@@ -710,7 +710,8 @@ function renderFavs() {
     if (ok) { $sname.textContent = streetName; updateFavCount(); renderFavs(); }
   });
 
-  const [haveGrid, wantGrid] = listEl.querySelectorAll('.fav-section .grid');
+  // セクションの表示順は ホシイ→持ッテル(DOM上の1つ目がwant)
+  const [wantGrid, haveGrid] = listEl.querySelectorAll('.fav-section .grid');
   const fillGrid = (grid, items) => {
     if (!items.length) { grid.innerHTML = `<p style="font-size:12px">${t('favEmpty')}</p>`; return; }
     items.forEach(({ a, r }) => {
