@@ -13961,6 +13961,77 @@ const ENRICH = {
    }
   ]
  },
+ "Three 6 Mafia|The End": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/14/0f/ce/140fce3b-2bbf-266d-695e-9358dcd94a6e/mzi.pryzqznk.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/the-end/120657936?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Our Arrival",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/14/8a/75/148a7590-f1f2-a54b-aaed-b65609afa475/mzaf_10716460629233341106.plus.aac.p.m4a"
+   },
+   {
+    "name": "Stomp",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/76/ba/10/76ba1056-833d-2a32-1428-7e570e5ded44/mzaf_15773847965201912503.plus.aac.p.m4a"
+   },
+   {
+    "name": "Money Flow",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/23/2a/25/232a25e1-169b-717f-8b9a-573c1b064ae1/mzaf_6038774511706992850.plus.aac.p.m4a"
+   },
+   {
+    "name": "Late Night Tip",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/23/3e/44/233e445a-1bae-2f30-6018-377b919c348a/mzaf_11094531193091853402.plus.aac.p.m4a"
+   },
+   {
+    "name": "Gotcha Shakin'",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f5/38/60/f5386020-7fc2-1836-42b8-294e32e6cb36/mzaf_9719442257736498768.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Aint Goin'",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/08/ca/1c/08ca1c5b-0d0f-0282-be7e-e268d89ad99f/mzaf_5442688511437472178.plus.aac.p.m4a"
+   },
+   {
+    "name": "Good Stuff",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d2/15/c0/d215c049-ad82-83d4-8be8-36aebdbdf07d/mzaf_5398740259061491607.plus.aac.p.m4a"
+   },
+   {
+    "name": "Walk Up 2 Yo House",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/45/0d/7b/450d7b41-49b0-791b-209b-3aa065665816/mzaf_12168840333967448302.plus.aac.p.m4a"
+   },
+   {
+    "name": "In-2-Deep",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b9/43/e4/b943e49b-977c-f4fe-5821-0c8492549222/mzaf_14533128820340235675.plus.aac.p.m4a"
+   },
+   {
+    "name": "Last Man Standing",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f6/31/87/f6318778-0234-d29a-ba04-89d3977fb5e9/mzaf_18359511428400258328.plus.aac.p.m4a"
+   },
+   {
+    "name": "Destruction Terror",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/78/f7/93/78f793b4-f0c0-88f1-d437-0c2f52737d8e/mzaf_8890536840077193649.plus.aac.p.m4a"
+   },
+   {
+    "name": "Body Parts",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/08/1a/cf/081acf7b-7ee7-036e-0c5b-bf9f5adcda8b/mzaf_7058549481869436897.plus.aac.p.m4a"
+   },
+   {
+    "name": "Where's Da Bud",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/87/01/86/870186d4-8aff-a5b0-7721-3067076c353c/mzaf_16366579996733752629.plus.aac.p.m4a"
+   },
+   {
+    "name": "Gette'm Crunk",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/0c/3b/11/0c3b116e-d9cd-18f0-3c62-4d3abdfa95c2/mzaf_14234159762934628561.plus.aac.p.m4a"
+   },
+   {
+    "name": "Where Da Killaz Hang (feat. Project Pat)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/de/84/10/de84106d-ca48-e59b-503f-c87263eebe05/mzaf_1137784324171933003.plus.aac.p.m4a"
+   },
+   {
+    "name": "The End",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/40/f1/08/40f10843-7c5a-6ae7-ed14-fc99a66fe92b/mzaf_8187144148899159996.plus.aac.p.m4a"
+   }
+  ]
+ },
  "UNLV|Uptown 4 Life": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/f6/75/4e/f6754ea8-ea4c-0b84-927a-42d0b7d90c2f/69.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/uptown-4-life/1447705186?uo=4",
@@ -24174,6 +24245,69 @@ const ENRICH = {
    {
     "name": "Terror Dome",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/3a/18/c7/3a18c785-9913-b2c3-467f-ef3c03d0e04e/mzaf_8215388476290274860.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Young Bleed|My Balls and My Word": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bd/da/65/bdda6539-b9dd-c092-a8fc-b8b736f1f36b/05099962660655.rgb.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/all-i-have-in-the-world-are-my-balls-and-my-word/713440797?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Keep It Real (feat. C-Loc & Master P)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c1/43/e8/c143e89d-f8d9-c4da-3d31-52157849ea4d/mzaf_8121691268641729219.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bring the Noise (feat. Master P & Mystikal)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c5/d6/12/c5d612de-7685-40f9-b181-a628ba6faa4d/mzaf_10544146707457514178.plus.aac.p.m4a"
+   },
+   {
+    "name": "An Offer U Can't Refuse",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/5a/d7/b4/5ad7b497-976a-25f6-a8f0-b4c9b8b6bdae/mzaf_3336388508084061238.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Day They Make Me Boss",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/1b/4f/03/1b4f03b7-f5da-2213-f85f-59397b0f8e4f/mzaf_16867208524541255911.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mo Money",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/07/14/00/07140028-aaae-f9bf-947f-73c7bb817ce6/mzaf_14137468562270146398.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pull It Off (feat. C-Loc, Laylow, Lee Tyme & Lucky Knuckles)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2c/7e/df/2c7edf70-7e07-1da8-4767-abd644c8b3a5/mzaf_15191131114390922383.plus.aac.p.m4a"
+   },
+   {
+    "name": "Times So Hard (feat. Young Bleed & Master P)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7f/61/f6/7f61f6d3-2882-48ed-ba61-b61386edd9af/mzaf_6404265055737755654.plus.aac.p.m4a"
+   },
+   {
+    "name": "How Ya Do Dat (feat. C-Loc & Master P)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/03/fc/f4/03fcf49c-0707-de90-841b-14cea1827d6e/mzaf_1340458237129243100.plus.aac.p.m4a"
+   },
+   {
+    "name": "Better Than Last Time (feat. C-Loc & Maxminelli)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/55/9a/42/559a42a1-edc1-8711-2754-5a3a106a2f57/mzaf_16897395182879444251.plus.aac.p.m4a"
+   },
+   {
+    "name": "Lil Poppa Got a Brand New Bag (feat. Maxminelli)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2f/f5/27/2ff527de-577d-0cc4-2fa7-b1f1fab5cf14/mzaf_4858295240384867539.plus.aac.p.m4a"
+   },
+   {
+    "name": "Confedi (feat. C-Loc & Maxminelli)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/01/c3/42/01c342f9-6724-ecc5-c932-dd6d31254fd6/mzaf_12563253068094812299.plus.aac.p.m4a"
+   },
+   {
+    "name": "Da Last Outlaw",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/0c/ec/98/0cec9843-509a-c21b-b89c-5303253bdd7c/mzaf_9061245584361199873.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ghostrider",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f7/6c/14/f76c140a-af35-e2a1-e058-763de557f284/mzaf_2234966874417188578.plus.aac.p.m4a"
+   },
+   {
+    "name": "We Don't Stop",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/14/43/82/14438247-4560-4c3f-50a8-d38a74ab80b0/mzaf_10543544941484114125.plus.aac.p.m4a"
    }
   ]
  },

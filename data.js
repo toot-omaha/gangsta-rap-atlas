@@ -638,6 +638,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10040427', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: "Lil' O", title: "Lil' O", year: 1997, label: 'MCA Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13289703', stampSeed: { bangin: 18, dark: 14, doro: 10 } },
+      { artist: 'Minds of Mischief', title: 'Unexpected Changes', year: 1997, label: 'Evolution Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10372289', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -752,6 +754,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4202407', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
       { artist: '2nd Family', title: 'Killaz from the Blackside', year: 1997, label: 'Playalistic Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5620032', stampSeed: { dark: 17, doro: 13, bangin: 10 } },
+      { artist: 'Three 6 Mafia', title: 'The End', year: 1997, label: 'Prophet Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/514215', stampSeed: { dark: 38, doro: 30, horror: 24 } },
     ],
   },
   {
@@ -868,6 +872,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2411183', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Ceaser', title: 'The Life and Times Volume II', year: 1997, label: 'Fat Bank Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1452241', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: '211', title: 'My Hood', year: 1997, label: 'Tru Biz Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13765293', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -1054,6 +1060,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2077829', stampSeed: { funky: 17, bangin: 13, doro: 9 } },
       { artist: 'Brotha Lynch Hung', title: 'Loaded', year: 1997, label: 'Black Market Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13707241', stampSeed: { horror: 32, doro: 27, dark: 22 } },
+      { artist: 'Sub-Zero', title: "S.M.D. (Sacramento's Most Dangerous) Vol. I", year: 1997, label: 'Sub-Groove Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10818049', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -1510,6 +1518,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2302601', stampSeed: { bangin: 19, dark: 14, doro: 10 } },
       { artist: 'Bottom Posse', title: 'Thay "Gotta" Pop Me 2 Stop Me', year: 1997, label: 'Formaldehyde Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10292266', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Young Bleed', title: 'My Balls and My Word', year: 1997, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15680725', stampSeed: { dark: 24, doro: 19, bangin: 16 } },
     ],
   },
   {
@@ -1554,6 +1564,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/32887155', stampSeed: { funky: 30, laidbk: 24, party: 18 } },
       { artist: 'Big B', title: 'Nothing but Game', year: 1997, label: 'Jackpot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13670922', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Big B', title: 'Platinum Package', year: 1997, label: 'DAPP Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15858640', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
     ],
   },
 ];
