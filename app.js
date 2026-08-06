@@ -30,9 +30,11 @@ const I18N = {
     reroll: '🎲 再生成', linkTitle: '別端末ノSTREET NAMEヲ入力シテ連携',
     linkPlaceholder: '例: SHADOW-REAPER', link: '連携スル',
     syncOk: '同期完了', syncErr: '同期失敗。時間ヲ置イテ再度。', linking: '連携中…',
-    linkNotFound: 'ソノSTREET NAMEハ見ツカラナカッタ',
+    linkNotFound: 'STREET NAMEカ連携コードガ違ウ(コードハ発行後10分有効)',
     rerollConfirm: '再生成スルト今ノSTREET NAMEハ無効ニナル(持ッテル/ホシイハ引キ継ガレル)。ヨロシイ？',
     noPii2: '⚠ コノ名前ニ個人情報(本名・連絡先など)ハ使ワナイコト',
+    issueCode: '連携コード発行', codeHint: '他端末デ連携スルニハ、元端末デ発行シタコードモ必要(10分有効・1回限リ)',
+    codePlaceholder: '連携コード', codeIssued: (c) => `連携コード: ${c} (10分有効)`,
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -61,9 +63,11 @@ const I18N = {
     reroll: '🎲 Reroll', linkTitle: 'Enter another device\'s Street Name to link',
     linkPlaceholder: 'e.g. SHADOW-REAPER', link: 'Link',
     syncOk: 'Synced', syncErr: 'Sync failed. Try again later.', linking: 'Linking…',
-    linkNotFound: 'That Street Name was not found',
+    linkNotFound: 'Street Name or link code is wrong (codes last 10 min)',
     rerollConfirm: 'Rerolling retires your current Street Name (have/want carry over). Continue?',
     noPii2: '⚠ Do not use personal information (real name, contacts, etc.) here',
+    issueCode: 'Issue link code', codeHint: 'Linking on another device also requires a code issued on this one (valid 10 min, single use)',
+    codePlaceholder: 'Link code', codeIssued: (c) => `Link code: ${c} (valid 10 min)`,
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -269,15 +273,44 @@ async function rerollStreetName() {
   return null;
 }
 
-// 別端末のStreet Nameを入力して連携(サーバー側のhave/wantでローカルを上書き)
-async function linkStreetName(name) {
-  const row = await pullFavSync(name);
+// 元端末で発行するワンタイム連携コード(10分有効・1回使い切り)
+// 名前を偶然知られても/衝突しても、コードが一致しない限り他端末からは連携できない
+async function issueLinkCode() {
+  if (!streetName) await ensureStreetName();
+  if (!streetName) return null;
+  const code = Array.from(crypto.getRandomValues(new Uint8Array(6)))
+    .map((b) => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b % 32]).join('');
+  try {
+    const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+      body: JSON.stringify({ link_code: code, link_code_expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() }),
+    });
+    return res.ok ? code : null;
+  } catch { return null; }
+}
+
+// 別端末のStreet Name+連携コードを入力して連携(両方一致したときだけ読み込む)
+async function linkStreetName(name, code) {
+  if (!code) return false;
+  const now = new Date().toISOString();
+  const res = await fetch(
+    `${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&link_code=eq.${encodeURIComponent(code)}&link_code_expires_at=gt.${encodeURIComponent(now)}&select=have,want`,
+    { headers: SB_HEADERS });
+  if (!res.ok) return false;
+  const row = (await res.json())[0];
   if (!row) return false;
   favsHave.clear(); (row.have || []).forEach((k) => favsHave.add(k));
   favsWant.clear(); (row.want || []).forEach((k) => favsWant.add(k));
   saveFavs();
   streetName = name;
   localStorage.setItem(STREET_KEY, streetName);
+  // コードは1回使い切り: 使用後すぐ無効化
+  fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}`, {
+    method: 'PATCH',
+    headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+    body: JSON.stringify({ link_code: null, link_code_expires_at: null }),
+  }).catch(() => {});
   return true;
 }
 
@@ -618,20 +651,28 @@ function renderFavs() {
 
   listEl.innerHTML = `
     ${listHead(t('favs'), t('favSub'), `${total} ${t('discs')}`)}
-    <div class="street-sync">
-      <div class="street-sync-row">
+    <details class="street-sync">
+      <summary class="street-sync-row">
         <span class="lab">${t('streetName')}</span>
         <span class="street-name-val" id="streetNameVal">…</span>
-        <button class="tr-toggle" id="streetReroll">${t('reroll')}</button>
+        <span class="street-sync-caret">▼</span>
+      </summary>
+      <div class="street-sync-body">
+        <p class="street-sync-hint">${t('streetNameHint')}</p>
+        <p class="street-sync-hint">${t('codeHint')}</p>
+        <p class="form-note">${t('noPii2')}</p>
+        <div class="street-sync-row">
+          <button class="tr-toggle" id="streetReroll">${t('reroll')}</button>
+          <button class="tr-toggle" id="streetIssueCode">${t('issueCode')}</button>
+        </div>
+        <div class="street-sync-row">
+          <input type="text" id="streetLinkInput" placeholder="${t('linkPlaceholder')}" title="${t('linkTitle')}">
+          <input type="text" id="streetLinkCode" placeholder="${t('codePlaceholder')}">
+          <button class="tr-toggle" id="streetLinkBtn">${t('link')}</button>
+        </div>
+        <span class="form-msg" id="streetSyncMsg"></span>
       </div>
-      <p class="street-sync-hint">${t('streetNameHint')}</p>
-      <p class="form-note">${t('noPii2')}</p>
-      <div class="street-sync-row">
-        <input type="text" id="streetLinkInput" placeholder="${t('linkPlaceholder')}" title="${t('linkTitle')}">
-        <button class="tr-toggle" id="streetLinkBtn">${t('link')}</button>
-      </div>
-      <span class="form-msg" id="streetSyncMsg"></span>
-    </div>
+    </details>
     <div class="fav-io">
       <button class="tr-toggle" id="favExport">${t('exportCsv')}</button>
       <button class="tr-toggle" id="favImportBtn">${t('importCsv')}</button>
@@ -652,11 +693,17 @@ function renderFavs() {
     $syncMsg.textContent = n ? t('syncOk') : t('syncErr');
     if (n) $sname.textContent = n;
   });
+  listEl.querySelector('#streetIssueCode').addEventListener('click', async () => {
+    $syncMsg.textContent = t('linking');
+    const code = await issueLinkCode();
+    $syncMsg.textContent = code ? t('codeIssued')(code) : t('syncErr');
+  });
   listEl.querySelector('#streetLinkBtn').addEventListener('click', async () => {
     const name = listEl.querySelector('#streetLinkInput').value.trim().toUpperCase();
-    if (!name) return;
+    const code = listEl.querySelector('#streetLinkCode').value.trim().toUpperCase();
+    if (!name || !code) return;
     $syncMsg.textContent = t('linking');
-    const ok = await linkStreetName(name);
+    const ok = await linkStreetName(name, code);
     $syncMsg.textContent = ok ? t('syncOk') : t('linkNotFound');
     if (ok) { $sname.textContent = streetName; updateFavCount(); renderFavs(); }
   });

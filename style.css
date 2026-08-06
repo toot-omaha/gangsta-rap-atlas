@@ -329,11 +329,16 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .disc-actions .have-d.on { background: var(--gold); }
 .disc-actions .want-d.on { background: var(--red); color: var(--paper); border-color: var(--red); }
 
-/* お気に入りページ: Street Name同期 */
+/* お気に入りページ: Street Name同期(アコーディオン) */
 .street-sync {
   border: 2px solid var(--ink); background: var(--paper);
-  padding: 10px 12px; margin: 14px 0; display: flex; flex-direction: column; gap: 6px;
+  padding: 10px 12px; margin: 14px 0;
 }
+.street-sync summary { cursor: pointer; list-style: none; }
+.street-sync summary::-webkit-details-marker { display: none; }
+.street-sync-caret { margin-left: auto; font-size: 10px; transition: transform .15s; }
+.street-sync[open] .street-sync-caret { transform: rotate(180deg); }
+.street-sync-body { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
 .street-sync-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .street-sync .lab { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: var(--ink-2); }
 .street-name-val { font-size: 14px; font-weight: 900; letter-spacing: .04em; }
