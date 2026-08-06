@@ -1,0 +1,18 @@
+{
+  "artist": "N.W.A",
+  "title": "Straight Outta Compton",
+  "album": { "bangin": 3, "dark": 1 },
+  "tracks": {
+    "Straight Outta Compton": { "bangin": 2, "dark": 1 },
+    "Fuck tha Police": { "bangin": 1, "doro": 1 },
+    "Gangsta Gangsta": { "bangin": 2, "party": 1 },
+    "Express Yourself": { "funky": 2, "party": 2 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/straight-outta-compton-mw0000653426",
+    "https://www.billboard.com/music/rb-hip-hop/nwa-straight-outta-compton-at-25-classic-track-by-track-review-5645274/",
+    "https://hiphopgoldenage.com/n-w-a-straight-outta-compton-1988-review/",
+    "https://audioxide.com/reviews/nwa-straight-outta-compton"
+  ],
+  "notes": "bangin: AllMusic/HipHopGoldenAge/Billboardがアグレッシブ・ハードヒッティングと言及。funky/party(Express Yourself): Billboard/HipHopGoldenAgeがファンク・サンプルと軽快さに言及。dark: HipHopGoldenAgeがmenacingなプロダクションに言及。"
+}

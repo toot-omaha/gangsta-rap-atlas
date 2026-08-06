@@ -135,10 +135,13 @@ function toggleStampAt(key, id) {
   saveStamps();
 }
 
-// ディスクの表示合計 = レビュー分析の初期値 + みんなのスタンプ集計(ディスク+収録曲)
+// ディスクの表示合計 = レビュー実測シード + みんなのスタンプ集計(ディスク+収録曲)
+// stampSeed は seedSrc(出典URL群)を持つアルバムのみ有効。
+// 出典なしのシードは推定値なのでカウントしない(実測データが揃い次第 seedSrc 付きで再生成される)
 function stampCount(album, id) {
   const key = albumKey(album);
-  let n = (album.stampSeed?.[id] || 0) + (SHARED[key]?.[id] || 0);
+  const seed = (album.seedSrc?.length ? album.stampSeed?.[id] : 0) || 0;
+  let n = seed + (SHARED[key]?.[id] || 0);
   (enrichOf(album)?.tracks || []).forEach((tr) => { n += SHARED[trackKey(album, tr.name)]?.[id] || 0; });
   // 共有集計に未反映のローカル分(オフライン時)を補完
   if (!SHARED[key]?.[id] && stampsAt(key).includes(id)) n += 1;
