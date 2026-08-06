@@ -126,7 +126,15 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
   font: inherit; font-size: 15px; padding: 10px 40px 10px 12px;
   border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
 }
-.search-box .close { position: absolute; top: 14px; right: 14px; }
+/* ✕は検索窓(input)内の右端に枠なしで重ねる */
+.search-box .close {
+  position: absolute; top: 16px; right: 18px;
+  width: 36px; height: 36px;
+  border: none; background: transparent;
+  color: var(--ink); font-size: 16px; font-weight: 900; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.search-box .close:hover { color: var(--red); }
 .search-results { overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
 .search-results .sr-item {
   display: flex; align-items: baseline; gap: 8px; padding: 8px 6px;
@@ -494,7 +502,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
     position: absolute; right: 10px; top: calc(100% + 8px); z-index: 29;
     background: var(--paper);
   }
-  body.detail .fav-toggle.search { display: none; }
+  body.detail .fav-toggle.search, body.search-open .fav-toggle.search { display: none; }
   /* ドロワー: スタンプ絞り込み+下部にアクションセクション */
   .drawer {
     display: none;

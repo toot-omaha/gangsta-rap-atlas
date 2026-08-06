@@ -466,12 +466,14 @@ function clearStampFilter() {
 function openSearch() {
   clearStampFilter(); // スタンプ絞り込み中に検索を開いたら解除し、全件対象で探せるようにする
   searchOverlay.classList.add('open');
+  document.body.classList.add('search-open'); // スマホでは虫眼鏡ボタン自体を隠す
   searchInput.value = '';
   searchResults.innerHTML = '';
   setTimeout(() => searchInput.focus(), 50);
 }
 function closeSearch() {
   searchOverlay.classList.remove('open');
+  document.body.classList.remove('search-open');
 }
 
 function runSearch(q) {
