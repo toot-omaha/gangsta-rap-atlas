@@ -7,16 +7,15 @@
 --   * 投稿は status='pending' でしか作れない(公開はあなたの承認後に手動)。
 
 -- ---------- 投稿(承認待ちディスク情報) ----------
+-- 2026-08-06: URL方式に変更。artist/titleは手入力させず、投稿されたURLを
+-- scripts/review_submissions.py が定期的にoEmbed等で裏取りして埋める運用にした。
 create table public.submissions (
   id         uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
-  artist     text not null,
-  title      text not null,
-  year       int,
-  label      text,
-  region     text,          -- 地域名(自由記述)
-  format     text,          -- CD / CDS / Tape など
-  comment    text,          -- 補足・出典など(個人情報は収集しない方針)
+  url        text not null,  -- iTunes/YouTube/Spotifyなどのリンク
+  artist     text,           -- 投稿者がわかれば入力(裏取り前の参考情報)
+  title      text,
+  comment    text,           -- 補足・出典など(個人情報は収集しない方針)
   status     text not null default 'pending'
 );
 
@@ -25,7 +24,10 @@ grant insert on public.submissions to anon;
 
 create policy "anon can submit pending" on public.submissions
   for insert to anon
-  with check (status = 'pending');
+  with check (status = 'pending' and char_length(url) < 500);
+
+-- review_submissions.py はSERVICE ROLEキーで実行し、pending分を読み取って
+-- oEmbed裏取り後にstatusを更新する想定(anonにはselect/updateを与えない)。
 
 -- ---------- 共有スタンプ ----------
 -- target_key は "Artist|Title"(ディスク) または "Artist|Title#TrackName"(曲)

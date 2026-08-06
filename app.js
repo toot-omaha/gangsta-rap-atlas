@@ -21,11 +21,12 @@ const I18N = {
     preview: '30秒試聴', noAudio: '試聴音源ナシ(激レア)',
     clear: 'クリア', credit: '試聴・ジャケ写: Apple Music',
     submit: '✚ 投稿', submitTitle: 'タレコミ', submitSub: 'ディスク情報ヲ投稿(承認後ニ掲載)',
-    fArtist: 'アーティスト *', fTitle: 'タイトル *', fYear: '年', fLabel: 'レーベル',
-    fRegion: '地域(例: Compton)', fFormat: 'フォーマット', fComment: 'コメント・出典など',
+    fUrl: 'URL(iTunes/YouTube/Spotifyなど) *', fUrlHint: 'アルバム・曲・動画のリンクを貼るダケでOK。詳細ハこちらで裏取りシマス。',
+    fArtistOpt: 'アーティスト(わかれば)', fTitleOpt: 'タイトル(わかれば)',
+    fComment: 'コメント・出典など',
     noPii: '⚠ 個人情報(名前・連絡先など)ハ書キ込マナイコト',
     send: '送信スル', sending: '送信中…', sent: '感謝!承認後ニ地図ニ刻マレル。', sendErr: '送信失敗。時間ヲ置イテ再度。',
-    needFields: 'アーティストとタイトルは必須です',
+    needFields: 'URLは必須です',
     streetName: 'STREET NAME', streetNameHint: 'コレデ他端末ト持ッテル/ホシイヲ同期デキル',
     reroll: '🎲 再生成', linkTitle: '別端末ノSTREET NAMEヲ入力シテ連携',
     linkPlaceholder: '例: SHADOW-REAPER', link: '連携スル',
@@ -53,11 +54,12 @@ const I18N = {
     preview: '30s preview', noAudio: 'No preview audio (rare!)',
     clear: 'CLEAR', credit: 'Previews & artwork: Apple Music',
     submit: '✚ SUBMIT', submitTitle: 'DROP A DIME', submitSub: 'Submit a disc (published after review)',
-    fArtist: 'Artist *', fTitle: 'Title *', fYear: 'Year', fLabel: 'Label',
-    fRegion: 'Region (e.g. Compton)', fFormat: 'Format', fComment: 'Comment / source',
+    fUrl: 'URL (iTunes/YouTube/Spotify etc.) *', fUrlHint: 'Just paste a link to the album/track/video — we\'ll look up the details.',
+    fArtistOpt: 'Artist (if known)', fTitleOpt: 'Title (if known)',
+    fComment: 'Comment / source',
     noPii: '⚠ Do not include personal information (names, contacts, etc.)',
     send: 'SEND', sending: 'Sending…', sent: 'Respect! It will be carved on the map after review.', sendErr: 'Failed. Try again later.',
-    needFields: 'Artist and Title are required',
+    needFields: 'URL is required',
     streetName: 'STREET NAME', streetNameHint: 'Use this to sync have/want across devices',
     reroll: '🎲 Reroll', linkTitle: 'Enter another device\'s Street Name to link',
     linkPlaceholder: 'e.g. SHADOW-REAPER', link: 'Link',
@@ -1076,18 +1078,13 @@ function renderSubmit(push = true) {
   if (push) navGoto(1);
   document.body.classList.remove('stamps-open'); // ドロワーから開いた場合は閉じる
   document.body.classList.add('detail');
-  const opt = (v) => `<option value="${v}">${v}</option>`;
   listEl.innerHTML = `
     ${listHead(t('submitTitle'), t('submitSub'), '')}
     <form class="submit-form">
-      <label>${t('fArtist')}<input name="artist" maxlength="120" required></label>
-      <label>${t('fTitle')}<input name="title" maxlength="200" required></label>
-      <div class="row2">
-        <label>${t('fYear')}<input name="year" type="number" min="1970" max="2030"></label>
-        <label>${t('fFormat')}<select name="format">${['CD','CDS','Tape','Vinyl','Other'].map(opt).join('')}</select></label>
-      </div>
-      <label>${t('fLabel')}<input name="label" maxlength="120"></label>
-      <label>${t('fRegion')}<input name="region" maxlength="120"></label>
+      <label>${t('fUrl')}<input name="url" type="url" maxlength="500" required placeholder="https://..."></label>
+      <p class="form-note">${t('fUrlHint')}</p>
+      <label>${t('fArtistOpt')}<input name="artist" maxlength="120"></label>
+      <label>${t('fTitleOpt')}<input name="title" maxlength="200"></label>
       <label>${t('fComment')}<textarea name="comment" maxlength="1000" rows="4"></textarea></label>
       <p class="form-note">${t('noPii')}</p>
       <button type="submit" class="tr-toggle send">${t('send')}</button>
@@ -1101,15 +1098,12 @@ function renderSubmit(push = true) {
     ev.preventDefault();
     const f = new FormData(form);
     const body = {
-      artist: (f.get('artist') || '').trim(),
-      title: (f.get('title') || '').trim(),
-      year: f.get('year') ? Number(f.get('year')) : null,
-      label: (f.get('label') || '').trim() || null,
-      region: (f.get('region') || '').trim() || null,
-      format: f.get('format'),
+      url: (f.get('url') || '').trim(),
+      artist: (f.get('artist') || '').trim() || null,
+      title: (f.get('title') || '').trim() || null,
       comment: (f.get('comment') || '').trim() || null,
     };
-    if (!body.artist || !body.title) { msg.textContent = t('needFields'); return; }
+    if (!body.url) { msg.textContent = t('needFields'); return; }
     msg.textContent = t('sending');
     form.querySelector('.send').disabled = true;
     try {
