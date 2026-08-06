@@ -1,0 +1,16 @@
+{
+  "artist": "Juvenile",
+  "title": "400 Degreez",
+  "album": { "party": 3, "funky": 2, "bangin": 2 },
+  "tracks": {
+    "Back That Azz Up": { "party": 3 },
+    "Ha": { "bangin": 1, "party": 1 }
+  },
+  "sources": [
+    "https://www.stereogum.com/2021327/juvenile-400-degreez/reviews/the-anniversary/",
+    "https://www.udiscovermusic.com/stories/juvenile-400-degreez-feature/",
+    "https://www.albumoftheyear.org/album/52193-juvenile-400-degreez/user-reviews/",
+    "https://karlaclifton666.medium.com/review-470-400-degreez-juvenile-c42dda47ae60"
+  ],
+  "notes": "party/funky: NOLAバウンス由来のenergetic party nature・Mannie Freshのbounceビート(Stereogum/uDiscover)。bangin: playful and hardの両面評。Back That Azz Up=定番パーティーアンセム。"
+}
