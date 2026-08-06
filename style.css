@@ -209,7 +209,7 @@ body.detail #list { opacity: 1; pointer-events: auto; transform: none; }
 .list-head {
   display: flex; align-items: baseline; gap: 12px;
   border-bottom: 3px solid var(--ink); padding-bottom: 6px; margin-bottom: 14px;
-  position: sticky; top: -16px; background: var(--paper); z-index: 2; padding-top: 4px;
+  position: sticky; top: 0; background: var(--paper); z-index: 2; padding-top: 4px;
 }
 .list-head h2 {
   margin: 0; font-size: 40px; font-weight: 900; letter-spacing: -.02em; line-height: .95;
@@ -456,10 +456,10 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   .drawer-actions .fav-toggle { flex: 1; text-align: center; padding: 7px 10px; }
   #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 12px; }
   .list-head { flex-wrap: wrap; row-gap: 2px; }
-  .list-head h2 { font-size: 26px; flex: 1 1 auto; }
-  .list-head .close { order: 1; }
-  .list-head .sub { order: 2; flex: 1 1 100%; min-width: 100%; }
-  .list-head .cnt { order: 3; margin-left: auto; }
+  .list-head h2 { font-size: 26px; order: 1; flex: 0 1 auto; }
+  .list-head .cnt { order: 2; margin-left: 8px; }
+  .list-head .close { order: 3; margin-left: auto; }
+  .list-head .sub { order: 4; flex: 1 1 100%; min-width: 100%; }
   .player-meta span, .player-queue .credit { display: none; }
   .player { gap: 10px; }
 }
