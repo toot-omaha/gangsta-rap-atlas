@@ -987,7 +987,7 @@ const REGIONS = [
       { artist: 'Mystikal', title: 'Unpredictable', year: 1997, label: 'Jive', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7920621', stampSeed: { bangin: 34, dark: 24, doro: 18 } },
       { artist: 'Master P', title: 'Ghetto D', year: 1997, label: 'No Limit Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/16731531', stampSeed: { bangin: 42, dark: 30, doro: 22 } },
+        discogsUrl: 'https://www.discogs.com/release/16731531', stampSeed: { bangin: 4, doro: 1, funky: 2, party: 2, aishu: 2, mellow: 1 }, seedSrc: ['https://www.udiscovermusic.com/stories/master-p-ghetto-d-feature/', 'https://www.popmatters.com/master-p-ghetto-d-2496234814.html', 'https://www.albumoftheyear.org/album/35648-master-p-ghetto-d.php', 'https://en.wikipedia.org/wiki/Ghetto_D'] },
       { artist: 'Sporty T', title: 'Chromed Out', year: 1997, label: 'Ruff Era Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2831731', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
       { artist: 'Ruthless Juveniles', title: 'The New Beginning', year: 1997, label: 'Mobo Records', youtubeId: null,

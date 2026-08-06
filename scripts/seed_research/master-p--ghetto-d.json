@@ -1,0 +1,16 @@
+{
+  "artist": "Master P",
+  "title": "Ghetto D",
+  "album": { "bangin": 2, "doro": 1, "funky": 2 },
+  "tracks": {
+    "Make Em Say Uhh!": { "bangin": 2, "party": 2 },
+    "I Miss My Homies": { "aishu": 2, "mellow": 1 }
+  },
+  "sources": [
+    "https://www.udiscovermusic.com/stories/master-p-ghetto-d-feature/",
+    "https://www.popmatters.com/master-p-ghetto-d-2496234814.html",
+    "https://www.albumoftheyear.org/album/35648-master-p-ghetto-d.php",
+    "https://en.wikipedia.org/wiki/Ghetto_D"
+  ],
+  "notes": "bangin/funky: G-funk, jittery basslines, guttural shouts・gritty, bass-rich sound(uDiscover/PopMatters)。Make Em Say Uhh=bounceアンセム(party)。I Miss My Homies=追悼曲(哀愁)。"
+}
