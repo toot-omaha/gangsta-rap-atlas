@@ -1,0 +1,14 @@
+{
+  "artist": "Cypress Hill",
+  "title": "Cypress Hill",
+  "album": { "doro": 2, "dark": 2, "funky": 1 },
+  "tracks": {
+    "How I Could Just Kill a Man": { "dark": 2, "doro": 1, "bangin": 1 }
+  },
+  "sources": [
+    "https://hiphopgoldenage.com/cypress-hill-cypress-hill-1991-review/",
+    "https://cypresshill.com/2018/10/16/cypress-hill-30-years-stoned-and-more-insane-than-ever/",
+    "https://www.loudersound.com/features/every-cypress-hill-album-ranked-from-worst-to-best"
+  ],
+  "notes": "doro/dark: hazy, off-kilter sound・grimy・stoned individualsの言及。How I Could Just Kill a Man=stone cold classicの脅威的トラック。funky: DJ Muggsのプロダクションへの言及。"
+}

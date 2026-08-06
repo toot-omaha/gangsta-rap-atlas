@@ -412,6 +412,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3102398', stampSeed: { funky: 15, party: 11, bangin: 8 } },
       { artist: 'Ray Luv', title: "Coup D' Etat (Betrayal, Trickery, & Deceit)", year: 1998, label: 'Big Eddie Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4952078', stampSeed: { funky: 17, bangin: 13, doro: 10 } },
+      { artist: 'Biaje', title: 'Strictly Sickly', year: 1998, label: 'High Powered Music Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9462560', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -568,6 +570,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10789791', stampSeed: { bangin: 26, dark: 19, doro: 14 } },
       { artist: 'Goldy', title: 'The Golden Rules', year: 1998, label: 'Cool Cats Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4751506', stampSeed: { funky: 16, bangin: 12, party: 9 } },
+      { artist: 'Mr. D.O.G.', title: 'Wet', year: 1998, label: 'Bow Wow Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11328547', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -734,6 +738,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8908476', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Ganksta N-I-P', title: 'Interview With a Killa', year: 1998, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/500025', stampSeed: { horror: 30, dark: 24, doro: 17 } },
+      { artist: 'K-Rino', title: 'K-Rino', year: 1998, label: 'Alexia Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/502580', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
+      { artist: 'Da Herb Man', title: "Blowin' Big/Mafia Melodies", year: 1998, label: 'Cartel Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/781405', stampSeed: { funky: 15, dark: 11, bangin: 9 } },
     ],
   },
   {
@@ -876,6 +884,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4330704', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
       { artist: 'Kingpin Skinny Pimp', title: 'The New Beginning', year: 1998, label: '40 Street Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8141419', stampSeed: { dark: 20, doro: 16, horror: 11 } },
+      { artist: 'Manson Family', title: 'Cursed - Part 1', year: 1998, label: 'Image Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8076110', stampSeed: { horror: 18, dark: 15, doro: 11 } },
+      { artist: 'Luciano Crime Family', title: 'Down in the Dungeon', year: 1998, label: 'DJ Sound Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24054587', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+      { artist: 'Tela', title: 'Now or Never', year: 1998, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11570368', stampSeed: { funky: 18, laidbk: 14, dark: 10 } },
     ],
   },
   {
@@ -1034,6 +1048,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7945441', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
       { artist: 'Ghetto Commission', title: 'Wise Guys', year: 1998, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4783103', stampSeed: { dark: 20, doro: 16, bangin: 13 } },
+      { artist: 'Prime Suspects', title: 'Guilty Til Proven Innocent', year: 1998, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4789251', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
+      { artist: 'Smoke-A-Lot', title: 'NOLA Soldier', year: 1998, label: 'Mobb Status Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10828266', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Big Tymers', title: 'Big Tymers', year: 1998, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13510023', stampSeed: { funky: 22, party: 17, bangin: 13 } },
     ],
   },
   {
@@ -1533,6 +1553,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5168981', stampSeed: { funky: 16, bangin: 12, party: 9 } },
       { artist: 'Jake the Flake', title: 'Out 2 Get Rich: The Album', year: 1998, label: 'Hitman Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10106375', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Jake the Flake', title: 'Jake the Flake & the Flint Thugs', year: 1998, label: 'Power Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4754547', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -1720,6 +1742,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3017050', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
       { artist: 'Big Shot', title: "Time'll Tell", year: 1998, label: 'Game Time Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7732045', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Side By Side', title: 'Everyday Thangz', year: 1998, label: 'Rock On Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10770188', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
