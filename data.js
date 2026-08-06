@@ -335,7 +335,7 @@ const REGIONS = [
     lng: -122.2566, lat: 38.1041,
     albums: [
       { artist: 'E-40', title: 'In a Major Way', year: 1995, label: 'Sick Wid It/Jive', youtubeId: null,
-        stampSeed: { funky: 57, bangin: 43, party: 35 } },
+        stampSeed: { funky: 5, doro: 1, laidbk: 1, party: 1 }, seedSrc: ['https://www.allmusic.com/album/in-a-major-way-mw0000123118', 'https://au.rollingstone.com/music/music-lists/-40803/e-40-in-a-major-way-1995-40827/', 'https://www.albumoftheyear.org/album/12641-e-40-in-a-major-way.php', 'https://en.wikipedia.org/wiki/In_a_Major_Way'] },
       { artist: 'Mac Dre', title: 'Young Black Brotha', year: 1989, label: 'Strictly Business', youtubeId: null,
         stampSeed: { funky: 21, party: 17, laidbk: 12 } },
       { artist: 'E-40', title: 'Federal', year: 1992, label: "Sick Wid' It Records", youtubeId: null,

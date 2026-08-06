@@ -1,0 +1,15 @@
+{
+  "artist": "E-40",
+  "title": "In a Major Way",
+  "album": { "funky": 3, "doro": 1, "laidbk": 1 },
+  "tracks": {
+    "Sprinkle Me": { "funky": 2, "party": 1 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/in-a-major-way-mw0000123118",
+    "https://au.rollingstone.com/music/music-lists/-40803/e-40-in-a-major-way-1995-40827/",
+    "https://www.albumoftheyear.org/album/12641-e-40-in-a-major-way.php",
+    "https://en.wikipedia.org/wiki/In_a_Major_Way"
+  ],
+  "notes": "funky: funky but smoky melodies・Bay Area mobb musicのslow-creeping pulse(Rolling Stone AU/AOTY)。doro: hyper-specificなドラッグ売買譚。Sprinkle Me=代表シングル。"
+}
