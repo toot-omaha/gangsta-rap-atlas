@@ -360,6 +360,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4806231', stampSeed: { funky: 18, bangin: 13, party: 10 } },
       { artist: 'Mac Shawn', title: "Music Fo' Tha' Mobb", year: 1997, label: 'Swerve Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2714063', stampSeed: { funky: 16, bangin: 12, party: 9 } },
+      { artist: 'Khayree', title: 'The Blackalation', year: 1997, label: 'Young Black Brotha Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/895746', stampSeed: { funky: 18, bangin: 13, party: 10 } },
     ],
   },
   {
@@ -500,6 +502,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/854048', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
       { artist: 'Seagram', title: 'Souls on Ice', year: 1997, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/623240', stampSeed: { dark: 26, doro: 21, aishu: 15 } },
+      { artist: 'No the Piper', title: 'Nojokeland', year: 1997, label: 'Last Legion Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7169837', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'D.T.L.', title: "Dyin' 2 Live", year: 1997, label: 'Above All Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6756881', stampSeed: { dark: 17, doro: 13, bangin: 10 } },
     ],
   },
   {
@@ -628,6 +634,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8909690', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
       { artist: "God's Original Gangstaz", title: 'Resurrected Gangstaz', year: 1997, label: 'Grapetree Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5250133', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
+      { artist: 'Big Love', title: "Representin' Real", year: 1997, label: 'Unlimited Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10040427', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: "Lil' O", title: "Lil' O", year: 1997, label: 'MCA Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13289703', stampSeed: { bangin: 18, dark: 14, doro: 10 } },
     ],
   },
   {
@@ -740,6 +750,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10817055', stampSeed: { funky: 15, party: 11, bangin: 8 } },
       { artist: 'Lil Ced', title: "Playin' by the Rules", year: 1997, label: 'Icywhite Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4202407', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+      { artist: '2nd Family', title: 'Killaz from the Blackside', year: 1997, label: 'Playalistic Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5620032', stampSeed: { dark: 17, doro: 13, bangin: 10 } },
     ],
   },
   {
@@ -854,6 +866,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10830075', stampSeed: { bangin: 26, dark: 19, doro: 14 } },
       { artist: 'Sporty-T', title: 'Street Soldier', year: 1997, label: 'Big Boy Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2411183', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Ceaser', title: 'The Life and Times Volume II', year: 1997, label: 'Fat Bank Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1452241', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -1038,6 +1052,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5404455', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
       { artist: 'C.R.I.S.I.S.', title: 'Crazy Real Insane Soldiers in Sacramento', year: 1996, label: 'N-Season Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2077829', stampSeed: { funky: 17, bangin: 13, doro: 9 } },
+      { artist: 'Brotha Lynch Hung', title: 'Loaded', year: 1997, label: 'Black Market Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13707241', stampSeed: { horror: 32, doro: 27, dark: 22 } },
     ],
   },
   {
@@ -1145,6 +1161,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1660367', stampSeed: { dark: 18, bangin: 14, doro: 10 } },
       { artist: '1 Gud Cide', title: 'Contradictions', year: 1997, label: 'Scarred For Life Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3758104', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+      { artist: 'Klondike Kat', title: "Mobbin' Muzik Melodies", year: 1997, label: 'Beatbox Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5505892', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
