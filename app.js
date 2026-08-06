@@ -32,7 +32,6 @@ const I18N = {
     syncOk: '同期完了', syncErr: '同期失敗。時間ヲ置イテ再度。', linking: '連携中…',
     linkNotFound: 'STREET NAMEカ連携コードガ違ウ(コードハ発行後10分有効)',
     rerollConfirm: '再生成スルト今ノSTREET NAMEハ無効ニナル(持ッテル/ホシイハ引キ継ガレル)。ヨロシイ？',
-    noPii2: '⚠ コノ名前ニ個人情報(本名・連絡先など)ハ使ワナイコト',
     issueCode: '連携コード発行', codeHint: '他端末デ連携スルニハ、元端末デ発行シタコードモ必要(10分有効・1回限リ)',
     codePlaceholder: '連携コード', codeIssued: (c) => `連携コード: ${c} (10分有効)`,
   },
@@ -65,7 +64,6 @@ const I18N = {
     syncOk: 'Synced', syncErr: 'Sync failed. Try again later.', linking: 'Linking…',
     linkNotFound: 'Street Name or link code is wrong (codes last 10 min)',
     rerollConfirm: 'Rerolling retires your current Street Name (have/want carry over). Continue?',
-    noPii2: '⚠ Do not use personal information (real name, contacts, etc.) here',
     issueCode: 'Issue link code', codeHint: 'Linking on another device also requires a code issued on this one (valid 10 min, single use)',
     codePlaceholder: 'Link code', codeIssued: (c) => `Link code: ${c} (valid 10 min)`,
   },
@@ -665,7 +663,6 @@ function renderFavs() {
       <div class="street-sync-body">
         <p class="street-sync-hint">${t('streetNameHint')}</p>
         <p class="street-sync-hint">${t('codeHint')}</p>
-        <p class="form-note">${t('noPii2')}</p>
         <div class="street-sync-row">
           <button class="tr-toggle" id="streetReroll">${t('reroll')}</button>
           <button class="tr-toggle" id="streetIssueCode">${t('issueCode')}</button>
