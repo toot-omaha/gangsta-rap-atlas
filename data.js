@@ -485,7 +485,7 @@ const REGIONS = [
       { artist: 'Dangerous Dame', title: 'Make Room 4 Daddy', year: 1994, label: 'Snake Pit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1455851', stampSeed: { funky: 14, party: 11, bangin: 8 } },
       { artist: '2Pac', title: 'Me Against the World', year: 1995, label: 'Interscope Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/8910685', stampSeed: { doro: 68, aishu: 55, dark: 42, bangin: 30 } },
+        discogsUrl: 'https://www.discogs.com/release/8910685', stampSeed: { aishu: 7, doro: 2, mellow: 3, smooth: 1, dark: 1 }, seedSrc: ['https://consequence.net/2020/03/classic-album-review-2pac-ascended-to-icon-with-me-against-the-world/', 'https://albumism.com/features/2pac-me-against-the-world-album-anniversary', 'https://www.allmusic.com/album/me-against-the-world-mw0000625486', 'https://medium.com/@martimmendes2017/album-review-me-against-the-world-by-2pac-5d10cee6f2d2'] },
       { artist: '2Pac', title: 'Fuck the World', year: 1995, label: 'Interscope Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/25521442', stampSeed: { bangin: 44, dark: 32, doro: 26 } },
       { artist: 'Luniz', title: 'Operation Stackola', year: 1995, label: 'Noo Trybe Records', youtubeId: null,
@@ -747,7 +747,7 @@ const REGIONS = [
     lng: -90.0490, lat: 35.1495,
     albums: [
       { artist: 'Three 6 Mafia', title: 'Mystic Stylez', year: 1995, label: 'Prophet', youtubeId: null,
-        stampSeed: { horror: 94, dark: 78, doro: 62 } },
+        stampSeed: { horror: 2, dark: 2, doro: 1, laidbk: 1, smooth: 1 }, seedSrc: ['https://en.wikipedia.org/wiki/Mystic_Stylez', 'https://www.amazon.com/Mystic-Stylez-THREE-6-MAFIA/dp/B000003L71', 'https://music.apple.com/us/album/mystic-stylez/332165657'] },
       { artist: 'Tommy Wright III', title: 'On the Run', year: 1996, label: 'Street Smart', youtubeId: null,
         stampSeed: { horror: 11, doro: 9, dark: 7 } },
       { artist: 'Gangsta Pat', title: '#1 Suspect', year: 1991, label: 'On Top Records', youtubeId: null,

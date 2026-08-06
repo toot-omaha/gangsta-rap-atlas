@@ -1,0 +1,14 @@
+{
+  "artist": "Three 6 Mafia",
+  "title": "Mystic Stylez",
+  "album": { "horror": 2, "dark": 2, "doro": 1 },
+  "tracks": {
+    "Da Summa": { "laidbk": 1, "smooth": 1 }
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Mystic_Stylez",
+    "https://www.amazon.com/Mystic-Stylez-THREE-6-MAFIA/dp/B000003L71",
+    "https://music.apple.com/us/album/mystic-stylez/332165657"
+  ],
+  "notes": "horror/dark: ジャンル分類にhorrorcore明記(Wikipedia)+one of the darkest rap albums of all time・low-fi/heavy bass/dark lyricsの言及。Da Summa=恐怖感なしで楽しめる曲として言及。"
+}

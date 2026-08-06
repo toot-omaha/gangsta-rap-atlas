@@ -1,0 +1,16 @@
+{
+  "artist": "2Pac",
+  "title": "Me Against the World",
+  "album": { "aishu": 3, "doro": 2, "mellow": 2, "smooth": 1 },
+  "tracks": {
+    "Dear Mama": { "aishu": 3, "mellow": 1 },
+    "So Many Tears": { "aishu": 1, "dark": 1 }
+  },
+  "sources": [
+    "https://consequence.net/2020/03/classic-album-review-2pac-ascended-to-icon-with-me-against-the-world/",
+    "https://albumism.com/features/2pac-me-against-the-world-album-anniversary",
+    "https://www.allmusic.com/album/me-against-the-world-mw0000625486",
+    "https://medium.com/@martimmendes2017/album-review-me-against-the-world-by-2pac-5d10cee6f2d2"
+  ],
+  "notes": "aishu/mellow: melancholic yet introspective atmosphere・soulful samples and smooth groovesの言及(複数ソース)。Dear Mama=母への感謝と貧困の記憶(哀愁の代表曲、Grammyノミネート)。"
+}
