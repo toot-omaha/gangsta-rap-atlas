@@ -1,0 +1,15 @@
+{
+  "artist": "Geto Boys",
+  "title": "We Can't Be Stopped",
+  "album": { "doro": 2, "dark": 1 },
+  "tracks": {
+    "Mind Playing Tricks on Me": { "doro": 3, "dark": 2, "aishu": 1 }
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Mind_Playing_Tricks_on_Me",
+    "https://esquaredshiphopblog.wordpress.com/2023/05/13/analysis-my-mind-playing-tricks-on-me-by-geto-boys/",
+    "https://kutx.org/words-on-music/deep-dives/we-still-cant-be-stopped-a-geto-retrospective/",
+    "https://www.rapreviews.com/2008/01/geto-boys-we-cant-be-stopped/"
+  ],
+  "notes": "doro/dark: Mind Playing Tricks on MeのPTSD・パラノイア・自殺念慮の描写に各ソース言及。哀愁: mental anguish/lonelinessの内省性。"
+}

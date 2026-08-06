@@ -199,7 +199,7 @@ const REGIONS = [
       { artist: 'Low Profile', title: "We're in This Together", year: 1989, label: 'CBS Associated', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/99225', stampSeed: { funky: 24, dark: 16, bangin: 13 } },
       { artist: 'Ice Cube', title: "AmeriKKKa's Most Wanted", year: 1990, label: 'Priority', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/35861755', stampSeed: { bangin: 89, dark: 66, doro: 44, funky: 38 } },
+        discogsUrl: 'https://www.discogs.com/release/35861755', stampSeed: { bangin: 3, dark: 2, doro: 1 }, seedSrc: ['https://www.albumoftheyear.org/album/14019-ice-cube-amerikkkas-most-wanted.php', 'https://www.udiscovermusic.com/stories/amerikkkas-most-wanted-ice-cube-debut-album/', 'https://1001albumsgenerator.com/albums/0TTt6Qm26MyMKv0EM2BKAa/amerikkkas-most-wanted', 'https://timeisillmatic.me/2012/03/15/ice-cube-amerikkkas-most-wanted-may-16-1990/'] },
       { artist: 'Ice-T', title: 'O.G. Original Gangster', year: 1991, label: 'Sire', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/216514', stampSeed: { bangin: 74, dark: 48, doro: 35 } },
       { artist: 'Ice Cube', title: 'Death Certificate', year: 1991, label: '4th & Broadway', youtubeId: null,
@@ -569,7 +569,7 @@ const REGIONS = [
     lng: -95.3698, lat: 29.7604,
     albums: [
       { artist: 'Geto Boys', title: "We Can't Be Stopped", year: 1991, label: 'Rap-A-Lot', youtubeId: null,
-        stampSeed: { horror: 72, dark: 66, doro: 51, aishu: 33 } },
+        stampSeed: { doro: 5, dark: 3, aishu: 1 }, seedSrc: ['https://en.wikipedia.org/wiki/Mind_Playing_Tricks_on_Me', 'https://esquaredshiphopblog.wordpress.com/2023/05/13/analysis-my-mind-playing-tricks-on-me-by-geto-boys/', 'https://kutx.org/words-on-music/deep-dives/we-still-cant-be-stopped-a-geto-retrospective/', 'https://www.rapreviews.com/2008/01/geto-boys-we-cant-be-stopped/'] },
       { artist: 'DJ Screw', title: '3 \'N the Mornin\' (Part Two)', year: 1996, label: 'Bigtyme', youtubeId: null,
         stampSeed: { doro: 38, mellow: 29, laidbk: 26 } },
       { artist: 'Convicts', title: 'Convicts', year: 1991, label: 'Rap-A-Lot Records', youtubeId: null,
