@@ -423,7 +423,7 @@ const REGIONS = [
       { artist: 'Too $hort', title: 'Life Is...Too $hort', year: 1988, label: 'Dangerous Music/Jive', youtubeId: null,
         stampSeed: { funky: 48, laidbk: 39, party: 30 } },
       { artist: 'Spice 1', title: 'Spice 1', year: 1992, label: 'Jive', youtubeId: null,
-        stampSeed: { doro: 33, dark: 26, bangin: 24 } },
+        stampSeed: { doro: 4, dark: 3, bangin: 2 }, seedSrc: ['https://en.wikipedia.org/wiki/Spice_1_(album)', 'https://timeisillmatic.me/2015/12/30/spice-1-spice-1-april-14-1992/', 'https://rateyourmusic.com/release/album/spice-1/spice-1/'] },
       { artist: 'Too $hort', title: 'Born to Mack', year: 1987, label: 'Dangerous Music/Jive', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/319314', stampSeed: { funky: 29, laidbk: 22, party: 18 } },
       { artist: 'A.P.G. Crew', title: 'On the Rise', year: 1989, label: 'Metro', youtubeId: null,

@@ -1,0 +1,14 @@
+{
+  "artist": "Spice 1",
+  "title": "Spice 1",
+  "album": { "doro": 2, "dark": 2, "bangin": 2 },
+  "tracks": {
+    "187 Proof": { "doro": 2, "dark": 1 }
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Spice_1_(album)",
+    "https://timeisillmatic.me/2015/12/30/spice-1-spice-1-april-14-1992/",
+    "https://rateyourmusic.com/release/album/spice-1/spice-1/"
+  ],
+  "notes": "doro/dark: gunplay and ghetto storytelling・murderous taleの言及。bangin: E-A-Ski/Ant Banksのbass-heavy beats。187 Proof=酒を登場人物にした殺しの寓話(ドロドロ)。"
+}
