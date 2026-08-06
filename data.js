@@ -180,6 +180,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1409706', stampSeed: { bangin: 32, dark: 24, doro: 18 } },
       { artist: 'Snoop Dogg', title: 'Da Game Is to Be Sold, Not to Be Told', year: 1998, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1134760', stampSeed: { smooth: 44, funky: 36, bangin: 28 } },
+      { artist: 'Nate Dogg', title: 'G-Funk Classics Vol. 1 & 2', year: 1998, label: 'Breakaway Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4441013', stampSeed: { smooth: 30, mellow: 24, funky: 18 } },
     ],
   },
   {
@@ -324,6 +326,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7868189', stampSeed: { funky: 16, bangin: 12, party: 9 } },
       { artist: 'Chronic Side Crew', title: 'Focus', year: 1998, label: 'Dub Sac Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13441826', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'DJ Aladdin', title: 'Ward Time', year: 1998, label: 'Unfadable Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2159158', stampSeed: { bangin: 17, funky: 13, dark: 10 } },
     ],
   },
   {
@@ -406,6 +410,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10445302', stampSeed: { funky: 22, party: 17, laidbk: 13 } },
       { artist: 'Pimp-P Mack', title: 'The Total Package', year: 1998, label: 'Extra Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3102398', stampSeed: { funky: 15, party: 11, bangin: 8 } },
+      { artist: 'Ray Luv', title: "Coup D' Etat (Betrayal, Trickery, & Deceit)", year: 1998, label: 'Big Eddie Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4952078', stampSeed: { funky: 17, bangin: 13, doro: 10 } },
     ],
   },
   {
@@ -726,6 +732,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6365762', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
       { artist: 'Big Face Tulu', title: 'Danger!', year: 1998, label: 'Alpha II Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8908476', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Ganksta N-I-P', title: 'Interview With a Killa', year: 1998, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/500025', stampSeed: { horror: 30, dark: 24, doro: 17 } },
     ],
   },
   {
@@ -1242,6 +1250,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5257371', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
       { artist: 'Gangsta Dre', title: 'Inner City Poet', year: 1998, label: 'Ace High Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12558552', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Marvaless', title: 'Fearless', year: 1998, label: 'AWOL Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4310921', stampSeed: { doro: 20, dark: 15, aishu: 12 } },
     ],
   },
   {
@@ -1540,6 +1550,17 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/306482', stampSeed: { dark: 20, doro: 16, bangin: 12 } },
       { artist: 'Rashid', title: 'The Game', year: 1997, label: 'E&R Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5116185', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
+      { artist: 'Criminal Bass', title: 'O GUETO DESTROI SONHOS', year: 1998, label: 'N. World Produções', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22475108', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+    ],
+  },
+  {
+    // MV Billはリオデジャネイロのシダーヂ・ヂ・デウス(CDD)出身の代表的ブラジルG-RAPアーティスト
+    id: 'riodejaneiro', name: 'Rio de Janeiro', area: 'Brazil — 世界のG-RAP',
+    lng: -43.1729, lat: -22.9068,
+    albums: [
+      { artist: 'MV Bill', title: 'CDD. Mandando Fechado', year: 1998, label: 'Zambia', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6267695', stampSeed: { dark: 20, doro: 16, bangin: 12 } },
     ],
   },
   {
@@ -1665,6 +1686,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1277687', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Suga Bear', title: 'On the Road to Riches', year: 1998, label: 'Big Block Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1749992', stampSeed: { funky: 15, bangin: 11, party: 9 } },
+      { artist: 'Lunatik', title: "Tired of Being' Broke", year: 1998, label: 'Untamed Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12068401', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Mr. Peebodie', title: 'Make It Happen', year: 1998, label: 'Seedless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3378659', stampSeed: { funky: 15, bangin: 11, party: 8 } },
     ],
   },
   {
@@ -1760,6 +1785,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/15680725', stampSeed: { dark: 24, doro: 19, bangin: 16 } },
       { artist: 'Concentration Camp', title: 'Da Holocaust', year: 1998, label: 'C-Loc Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11997651', stampSeed: { dark: 26, doro: 21, horror: 14 } },
+      { artist: 'C-Loc', title: 'Ya Heard Me', year: 1998, label: 'C-Loc Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1452445', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
     ],
   },
   {
@@ -1812,6 +1839,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/435639', stampSeed: { funky: 36, smooth: 28, party: 20 } },
       { artist: 'Above the Law', title: 'Legends', year: 1998, label: 'Tommy Boy', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/712173', stampSeed: { bangin: 24, dark: 18, funky: 14 } },
+      { artist: 'Big B', title: 'Let the Games Begin', year: 1998, label: 'Dirty Harry Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4625819', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
 ];
