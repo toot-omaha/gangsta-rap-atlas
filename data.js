@@ -617,7 +617,7 @@ const REGIONS = [
       { artist: '20-2-Life', title: 'Up 4 Parole', year: 1994, label: 'Bigtyme Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/486530', stampSeed: { bangin: 19, dark: 15, doro: 11 } },
       { artist: 'Scarface', title: 'The Diary', year: 1994, label: 'Virgin', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/686015', stampSeed: { dark: 50, doro: 40, aishu: 30 } },
+        discogsUrl: 'https://www.discogs.com/release/686015', stampSeed: { doro: 4, dark: 4, aishu: 3, laidbk: 1 }, seedSrc: ['https://www.npr.org/2009/01/27/99242701/scarfaces-the-diary-a-southern-classic', 'https://albumism.com/features/scarface-the-diary-album-anniversary', 'https://www.billboard.com/music/rb-hip-hop/scarface-the-diary-anniversary-8533473/', 'https://www.rapreviews.com/2010/04/scarface-the-diary/'] },
       { artist: 'Lez Moné', title: "Talkin' Shit", year: 1994, label: '7 Deuce Trey', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10518865', stampSeed: { funky: 14, bangin: 10, party: 8 } },
       { artist: 'Big Mello', title: 'Wegonefunkwichamind', year: 1994, label: 'Rap-A-Lot Records', youtubeId: null,

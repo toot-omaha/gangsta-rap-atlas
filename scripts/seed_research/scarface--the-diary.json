@@ -1,0 +1,15 @@
+{
+  "artist": "Scarface",
+  "title": "The Diary",
+  "album": { "doro": 3, "dark": 2, "aishu": 2, "laidbk": 1 },
+  "tracks": {
+    "I Seen a Man Die": { "dark": 2, "aishu": 1, "doro": 1 }
+  },
+  "sources": [
+    "https://www.npr.org/2009/01/27/99242701/scarfaces-the-diary-a-southern-classic",
+    "https://albumism.com/features/scarface-the-diary-album-anniversary",
+    "https://www.billboard.com/music/rb-hip-hop/scarface-the-diary-anniversary-8533473/",
+    "https://www.rapreviews.com/2010/04/scarface-the-diary/"
+  ],
+  "notes": "doro/dark: grief and rage・murder/drug tradeの因果への内省(NPR/Billboard: haunting)。aishu: emotional depth・introspection。laidbk: laid-back tempos/G-Funk調のプロダクション言及。"
+}
