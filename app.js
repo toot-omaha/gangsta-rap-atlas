@@ -231,6 +231,24 @@ async function pullFavSync(name) {
   return rows[0] || null;
 }
 
+// ページ読込時: 既にStreet Nameがあればサーバー側と突き合わせて自動で取り込む
+// (プッシュは変更のたびに即時実行されるので、ここは主に「他端末での変更」を拾うためのプル)
+async function autoPullFavSync() {
+  if (!streetName) return;
+  const row = await pullFavSync(streetName);
+  if (!row) return;
+  const before = favsHave.size + favsWant.size;
+  (row.have || []).forEach((k) => favsHave.add(k));
+  (row.want || []).forEach((k) => favsWant.add(k));
+  if (favsHave.size + favsWant.size !== before) {
+    saveFavs();
+    updateFavCount();
+    if (listView === 'favs') renderFavs();
+  }
+  // マージ後の和集合をサーバーへ書き戻し、両端末を完全に揃える
+  pushFavSync();
+}
+
 // サイコロ: 現在の行を新しい名前へリネーム(持ってる/ほしいはサーバー上のrowがそのまま引き継ぐ)
 async function rerollStreetName() {
   for (let i = 0; i < 3; i++) {
@@ -983,6 +1001,7 @@ document.getElementById('langBtn').addEventListener('click', () => {
 });
 applyLang();
 loadSharedStamps();
+autoPullFavSync();
 
 refreshMarkers();
 map.on('load', () => { map.resize(); refreshMarkers(); });
