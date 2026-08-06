@@ -15,7 +15,6 @@ const I18N = {
     favEmpty: 'まだ空。ディスクの☆を押して集めよう。',
     noMatch: 'この絞り込みに合うリリースはありません。',
     rarity: '発掘度',
-    popularity: '人気度',
     notOn: 'NOT ON<br>STREAMING<br>─ 激レア ─',
     queueAll: '▶ 全曲キューニ入レル',
     qEmptyT: '再生キューハ空', qEmptyA: 'アルバムノ ▶ ヲ押ストキューニ入ル',
@@ -48,7 +47,6 @@ const I18N = {
     favEmpty: 'Empty. Hit ☆ on a disc to collect.',
     noMatch: 'No releases match this filter.',
     rarity: 'DIG LEVEL',
-    popularity: 'POPULARITY',
     notOn: 'NOT ON<br>STREAMING<br>─ RARE ─',
     queueAll: '▶ QUEUE ALL TRACKS',
     qEmptyT: 'QUEUE IS EMPTY', qEmptyA: 'Hit ▶ on a disc to queue it',
@@ -182,17 +180,6 @@ function rarity(album) {
   const score = Math.max(0, Math.min(1, 1 - Math.log10(t + 1) / Math.log10(MAX_REF)));
   const n = Math.max(1, Math.round(score * 5));
   return { score, stars: '★'.repeat(n) + '☆'.repeat(5 - n), total: t };
-}
-
-// 人気度 — 発掘度(実売価格)とは別軸で「どれだけ知られているか」を見る指標。
-// Discogsのコレクション登録数(have)が多いほど、実際に持っている人が多い=人気。
-// have>=1000 ≒ ★5 / 30前後 ≒ ★2-3 / 1件も無い ≒ ★1。
-function popularity(album) {
-  const r = (typeof RARITY !== 'undefined') ? RARITY[albumKey(album)] : null;
-  if (!r) return null;
-  const score = Math.max(0, Math.min(1, Math.log10(r.have + 1) / Math.log10(1000)));
-  const n = Math.max(1, Math.round(score * 5));
-  return { score, stars: '★'.repeat(n) + '☆'.repeat(5 - n), have: r.have, want: r.want };
 }
 
 // ---------- お気に入り(ディスク単位) — 持ってる/ほしい の2系統 ----------
@@ -591,7 +578,6 @@ function albumCard(album) {
   const card = document.createElement('div');
   card.className = 'album';
   const r = rarity(album);
-  const p = popularity(album);
   const e = enrichOf(album);
   const art = artUrl(e, 300);
   const artHtml = art
@@ -624,11 +610,6 @@ function albumCard(album) {
       <span class="bar"><i style="width:${Math.round(r.score * 100)}%"></i></span>
       <span class="n">${r.priceJpy != null ? `¥${Math.round(r.priceJpy).toLocaleString()}〜` : `STAMP ${r.total}`}</span>
     </div>
-    ${p ? `<div class="rarity pop">
-      <span class="lab">${t('popularity')} ${p.stars}</span>
-      <span class="bar"><i style="width:${Math.round(p.score * 100)}%"></i></span>
-      <span class="n">have ${p.have}</span>
-    </div>` : ''}
     <div class="album-stamps"></div>`;
 
   const rerender = () => { card.replaceWith(albumCard(album)); refreshMarkers(); };
@@ -661,7 +642,6 @@ function renderDisc(album, push = true) {
   currentDisc = album;
   const e = enrichOf(album);
   const r = rarity(album);
-  const p = popularity(album);
   const region = REGIONS.find((rr) => rr.albums.includes(album));
   lastDiscRegion = region;
   if (push) navGoto(2);
@@ -697,11 +677,6 @@ function renderDisc(album, push = true) {
           <span class="bar"><i style="width:${Math.round(r.score * 100)}%"></i></span>
           <span class="n">STAMP ${r.total}</span>
         </div>
-        ${p ? `<div class="rarity pop">
-          <span class="lab">${t('popularity')} ${p.stars}</span>
-          <span class="bar"><i style="width:${Math.round(p.score * 100)}%"></i></span>
-          <span class="n">have ${p.have} / want ${p.want}</span>
-        </div>` : ''}
         <div class="album-stamps"></div>
       </div>
     </div>
