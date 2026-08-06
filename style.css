@@ -488,6 +488,13 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 @media (max-width: 860px) {
   .stamp-menu-btn { display: block; }
   .top-actions { gap: 6px; padding: 5px 10px; }
+  /* 検索ボタンはヘッダー右下に独立配置(✕ボタンと被りやすいので
+     詳細ページ・一覧が開いている間は隠す) */
+  .fav-toggle.search {
+    position: absolute; right: 10px; top: calc(100% + 8px); z-index: 29;
+    background: var(--paper);
+  }
+  body.detail .fav-toggle.search { display: none; }
   /* ドロワー: スタンプ絞り込み+下部にアクションセクション */
   .drawer {
     display: none;
