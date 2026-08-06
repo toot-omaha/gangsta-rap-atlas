@@ -1,0 +1,14 @@
+{
+  "artist": "DJ Quik",
+  "title": "Quik Is the Name",
+  "album": { "funky": 3, "smooth": 2, "party": 2, "laidbk": 1 },
+  "tracks": {
+    "Tonite": { "party": 2, "funky": 1 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/quik-is-the-name-mw0000272541",
+    "https://en.wikipedia.org/wiki/Quik_Is_the_Name",
+    "https://www.albumoftheyear.org/album/20637-dj-quik-quik-is-the-name.php"
+  ],
+  "notes": "funky/smooth: smooth, melodic P-Funk samples・G-Funk前夜のマスタークラス評。party: EWのwarmth・Toniteの週末譚。laidbk: effortless, rhythmic storytelling。"
+}

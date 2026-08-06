@@ -35,7 +35,7 @@ const REGIONS = [
       { artist: 'N.W.A', title: 'Straight Outta Compton', year: 1988, label: 'Ruthless', youtubeId: null,
         stampSeed: { bangin: 8, dark: 2, doro: 1, party: 3, funky: 2 }, seedSrc: ['https://www.allmusic.com/album/straight-outta-compton-mw0000653426', 'https://www.billboard.com/music/rb-hip-hop/nwa-straight-outta-compton-at-25-classic-track-by-track-review-5645274/', 'https://hiphopgoldenage.com/n-w-a-straight-outta-compton-1988-review/', 'https://audioxide.com/reviews/nwa-straight-outta-compton'] },
       { artist: 'DJ Quik', title: 'Quik Is the Name', year: 1991, label: 'Profile', youtubeId: null,
-        stampSeed: { funky: 88, smooth: 71, party: 55, laidbk: 44 } },
+        stampSeed: { funky: 4, smooth: 2, party: 4, laidbk: 1 }, seedSrc: ['https://www.allmusic.com/album/quik-is-the-name-mw0000272541', 'https://en.wikipedia.org/wiki/Quik_Is_the_Name', 'https://www.albumoftheyear.org/album/20637-dj-quik-quik-is-the-name.php'] },
       { artist: "Compton's Most Wanted", title: 'Music to Driveby', year: 1992, label: 'Orpheus', youtubeId: null,
         stampSeed: { dark: 2, smooth: 2, funky: 2, doro: 1, laidbk: 1 }, seedSrc: ['https://albumism.com/features/comptons-most-wanted-music-to-driveby-album-anniversary', 'https://en.wikipedia.org/wiki/Music_to_Driveby', 'https://rateyourmusic.com/release/album/comptons-most-wanted/music-to-driveby/'] },
       { artist: 'MC Eiht', title: 'We Come Strapped', year: 1994, label: 'Epic Street', youtubeId: null,
