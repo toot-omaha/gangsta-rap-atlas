@@ -1,0 +1,15 @@
+{
+  "name": "GANGSTA RAP ATLAS",
+  "short_name": "G-RAP ATLAS",
+  "description": "地図カラ掘ル、地域別ディスコグラフィ — G-RAPの発掘型情報サイト",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#e8e4d9",
+  "theme_color": "#14120f",
+  "lang": "ja",
+  "icons": [
+    { "src": "assets/icon/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -1214,3 +1214,10 @@ autoPullFavSync();
 
 refreshMarkers();
 map.on('load', () => { map.resize(); refreshMarkers(); });
+
+// PWAとしてインストール可能にするための最小Service Worker登録
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
