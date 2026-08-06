@@ -1,0 +1,18 @@
+{
+  "artist": "The Notorious B.I.G.",
+  "title": "Ready to Die",
+  "album": { "dark": 3, "doro": 2, "aishu": 1 },
+  "tracks": {
+    "Juicy": { "party": 1, "aishu": 1 },
+    "Big Poppa": { "smooth": 2, "party": 1 },
+    "Everyday Struggle": { "doro": 2, "aishu": 1 },
+    "Suicidal Thoughts": { "dark": 3, "doro": 1 }
+  },
+  "sources": [
+    "https://www.billboard.com/music/rb-hip-hop/the-notorious-bigs-ready-to-die-at-20-classic-track-by-track-6251376/",
+    "https://hiphopdx.com/reviews/id.761/title.the-notorious-b-i-g-ready-to-die",
+    "https://www.allmusic.com/album/ready-to-die-mw0000118068",
+    "https://www.albumoftheyear.org/album/4247-the-notorious-big-ready-to-die.php"
+  ],
+  "notes": "dark/doro: Everyday Struggle/Suicidal Thoughtsのdespair描写に各ソース言及。Big Poppa=smoothなシングル。Juicy=成功譚(祝祭+painful recollections)。"
+}

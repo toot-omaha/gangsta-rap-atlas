@@ -1258,7 +1258,7 @@ const REGIONS = [
     lng: -73.9430, lat: 40.7550,
     albums: [
       { artist: 'Mobb Deep', title: 'The Infamous', year: 1995, label: 'Loud', youtubeId: null,
-        stampSeed: { dark: 88, doro: 69, aishu: 57, horror: 30 } },
+        stampSeed: { dark: 5, doro: 3, bangin: 1 }, seedSrc: ['https://theneedledrop.com/album-reviews/mobb-deep-the-infamous-album-review/', 'https://hiphopgoldenage.com/mobb-deep-the-infamous-1995-review/', 'https://www.albumoftheyear.org/album/14799-mobb-deep-the-infamous.php', 'https://www.allmusic.com/album/shook-ones-pt-2-mw0000628236'] },
       { artist: 'Kool G Rap & DJ Polo', title: 'Live and Let Die', year: 1992, label: 'Cold Chillin\'', youtubeId: null,
         stampSeed: { dark: 28, bangin: 23, doro: 17 } },
       { artist: 'Kool G Rap & DJ Polo', title: 'Road to the Riches', year: 1989, label: 'Cold Chillin\'', youtubeId: null,
@@ -1682,7 +1682,7 @@ const REGIONS = [
     lng: -73.9442, lat: 40.6782,
     albums: [
       { artist: 'The Notorious B.I.G.', title: 'Ready to Die', year: 1994, label: 'Bad Boy Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/14705744', stampSeed: { dark: 72, doro: 58, aishu: 44, bangin: 38 } },
+        discogsUrl: 'https://www.discogs.com/release/14705744', stampSeed: { dark: 6, doro: 5, aishu: 3, party: 2, smooth: 2 }, seedSrc: ['https://www.billboard.com/music/rb-hip-hop/the-notorious-bigs-ready-to-die-at-20-classic-track-by-track-6251376/', 'https://hiphopdx.com/reviews/id.761/title.the-notorious-b-i-g-ready-to-die', 'https://www.allmusic.com/album/ready-to-die-mw0000118068', 'https://www.albumoftheyear.org/album/4247-the-notorious-big-ready-to-die.php'] },
       { artist: 'Group Home', title: "Livin' Proof", year: 1995, label: 'Payday', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/471746', stampSeed: { dark: 24, doro: 19, mellow: 14 } },
       { artist: 'Onyx', title: 'Afficial Nastee', year: 1995, label: 'Def Jam Recordings', youtubeId: null,

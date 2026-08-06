@@ -1,0 +1,15 @@
+{
+  "artist": "Mobb Deep",
+  "title": "The Infamous",
+  "album": { "dark": 3, "doro": 2 },
+  "tracks": {
+    "Shook Ones, Pt. II": { "dark": 2, "doro": 1, "bangin": 1 }
+  },
+  "sources": [
+    "https://theneedledrop.com/album-reviews/mobb-deep-the-infamous-album-review/",
+    "https://hiphopgoldenage.com/mobb-deep-the-infamous-1995-review/",
+    "https://www.albumoftheyear.org/album/14799-mobb-deep-the-infamous.php",
+    "https://www.allmusic.com/album/shook-ones-pt-2-mw0000628236"
+  ],
+  "notes": "dark: 全ソースがhaunting/dark and ominous atmosphereに言及。doro: grittiness・クイーンズブリッジの現実描写。Shook Ones=haunting piano+hard-hitting drums。"
+}
