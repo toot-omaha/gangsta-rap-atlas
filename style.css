@@ -207,20 +207,17 @@ body.shake #mapWrap { animation: shake .3s steps(6); }
 }
 body.detail #list { opacity: 1; pointer-events: auto; transform: none; }
 
-/* 1行目: 都市名 + 閉じるボタン / 2行目: 州名 + DISCS数 */
 .list-head {
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px;
+  display: flex; align-items: baseline; gap: 12px;
   border-bottom: 3px solid var(--ink); padding-bottom: 6px; margin-bottom: 14px;
   position: sticky; top: -16px; background: var(--paper); z-index: 2; padding-top: 4px;
 }
 .list-head h2 {
   margin: 0; font-size: 40px; font-weight: 900; letter-spacing: -.02em; line-height: .95;
   text-transform: uppercase;
-  flex: 0 0 100%; padding-right: 48px; /* 閉じるボタンと重ならない余白 */
 }
-.list-head .close { position: absolute; right: 0; top: 8px; }
 .list-head .sub { font-size: 11px; letter-spacing: .16em; color: var(--ink-2); }
-.list-head .cnt { font-size: 11px; letter-spacing: .1em; }
+.list-head .cnt { margin-left: auto; font-size: 11px; letter-spacing: .1em; }
 .list-head .close {
   align-self: center; flex: 0 0 auto;
   width: 34px; height: 34px; border: 2px solid var(--ink);
@@ -470,7 +467,11 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   }
   .drawer-actions .fav-toggle { flex: 1; text-align: center; padding: 7px 10px; }
   #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 12px; }
-  .list-head h2 { font-size: 26px; }
+  /* スマホ: 1行目=都市名(+右上の閉じる) / 2行目=州名+DISCS数 */
+  .list-head { flex-wrap: wrap; gap: 2px 12px; }
+  .list-head h2 { font-size: 26px; flex: 0 0 100%; padding-right: 44px; }
+  .list-head .close { position: absolute; right: 0; top: 6px; }
+  .list-head .cnt { margin-left: 0; }
   .player-meta span, .player-queue .credit { display: none; }
   .player { gap: 10px; }
 }
