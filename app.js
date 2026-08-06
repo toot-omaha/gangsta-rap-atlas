@@ -185,10 +185,9 @@ const SN_NOUN = ['REAPER', 'HUSTLA', 'PHANTOM', 'OUTLAW', 'RIDER', 'PREACHER', '
   'VANDAL', 'ROLLER', 'MENACE', 'STALKER', 'CRUSADER', 'MOBSTER', 'BANDIT', 'WARLORD', 'JUDGE',
   'DEALER', 'LEGEND', 'ASSASSIN', 'SURVIVOR', 'MAVERICK', 'PIRATE', 'SHOOTER', 'HITTA', 'CHIEF'];
 const randPick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-const genStreetNameCandidate = (withDigits) =>
-  `${randPick(SN_ADJ)}-${randPick(SN_NOUN)}${withDigits ? '-' + String(Math.floor(Math.random() * 900) + 100) : ''}`;
+const genStreetNameCandidate = () => `${randPick(SN_ADJ)}-${randPick(SN_NOUN)}`;
 
-// DBへの実INSERTを衝突判定として使う(既存rowなら409で弾かれる=既に予約済み)
+// DBのunique制約が衝突を弾く(重複登録の防止だけが目的。衝突自体は稀で許容)
 async function reserveStreetName(name) {
   try {
     const res = await fetch(`${SB_URL}/fav_sync`, {
@@ -202,8 +201,8 @@ async function reserveStreetName(name) {
 
 async function ensureStreetName() {
   if (streetName) return streetName;
-  for (let i = 0; i < 8; i++) {
-    const candidate = genStreetNameCandidate(i >= 5); // 5回衝突したら3桁数字を足す
+  for (let i = 0; i < 3; i++) {
+    const candidate = genStreetNameCandidate();
     if (await reserveStreetName(candidate)) {
       streetName = candidate;
       localStorage.setItem(STREET_KEY, streetName);
@@ -234,8 +233,8 @@ async function pullFavSync(name) {
 
 // サイコロ: 現在の行を新しい名前へリネーム(持ってる/ほしいはサーバー上のrowがそのまま引き継ぐ)
 async function rerollStreetName() {
-  for (let i = 0; i < 8; i++) {
-    const candidate = genStreetNameCandidate(i >= 5);
+  for (let i = 0; i < 3; i++) {
+    const candidate = genStreetNameCandidate();
     try {
       const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
         method: 'PATCH',
