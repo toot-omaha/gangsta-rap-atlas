@@ -4,14 +4,18 @@
   "album": { "smooth": 3, "funky": 3, "laidbk": 2, "party": 1 },
   "tracks": {
     "Gin And Juice": { "party": 2, "funky": 1, "laidbk": 1 },
-    "Who Am I (What's My Name)?": { "funky": 1, "smooth": 1 }
+    "Who Am I (What's My Name)?": { "funky": 1, "smooth": 1 },
+    "Lodi Dodi": { "laidbk": 2, "smooth": 1 },
+    "Murder Was The Case (DeathAfterVisualizingEternity)": { "dark": 2, "doro": 1 }
   },
   "sources": [
     "https://www.allmusic.com/album/doggystyle-mw0000106179",
     "https://wknc.org/2020/05/15/classic-album-review-snoop-dogg-doggystyle/",
     "https://albumism.com/features/snoop-dogg-debut-album-doggystyle-album-anniversary",
     "https://www.dubcnn.com/2002/11/23/snoop-doggy-dogg-doggystyle-album-review/",
-    "https://www.slantmagazine.com/music/snoop-dogg-doggystyle-retrospective-review/"
+    "https://www.slantmagazine.com/music/snoop-dogg-doggystyle-retrospective-review/",
+    "https://www.rap-reviews.com/post/snoop-dogg-doggystyle-review-the-greatest-west-coast-debut-album-ever-made",
+    "https://timeisillmatic.me/2017/12/19/snoop-doggy-dogg-doggystyle-november-23-1993/"
   ],
-  "notes": "smooth/funky/laidbk: DubCNN(smooth, ultra funky, laid back production)ほか複数ソースがG-Funkのメロディアスさに言及。party: Gin and Juiceのパーティーアンセム性(WKNC/Albumism)。"
+  "notes": "smooth/funky/laidbk: DubCNN(smooth, ultra funky, laid back production)ほか複数ソースがG-Funkのメロディアスさに言及。party: Gin and Juiceのパーティーアンセム性(WKNC/Albumism)。Lodi Dodi=jazzyでlaid-backな語り(rap-reviews/TimeIsIllmatic)。Murder Was the Case=悪魔との取引を描くdarker turn(両ソース)。"
 }
