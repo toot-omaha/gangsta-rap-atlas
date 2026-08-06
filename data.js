@@ -513,7 +513,7 @@ const REGIONS = [
       { artist: 'Underground Rebellion', title: 'A1 Immaculate Funktism', year: 1995, label: 'Treasure Line Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3216551', stampSeed: { funky: 18, bangin: 13, party: 10 } },
       { artist: 'Makaveli', title: 'The Don Killuminati (The 7 Day Theory)', year: 1996, label: "The New And \"Untouchable\" Death Row Records", youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/3043643', stampSeed: { doro: 55, dark: 44, aishu: 38, bangin: 30 } },
+        discogsUrl: 'https://www.discogs.com/release/3043643', stampSeed: { dark: 5, doro: 3, bangin: 1 }, seedSrc: ['https://www.allmusic.com/album/the-don-killuminati-the-7-day-theory-mw0000007004', 'https://www.rapreviews.com/2002/05/2pacmakaveli-the-don-killuminati-the-7-day-theory/', 'https://www.albumoftheyear.org/album/23657-2pac-the-don-killuminati-the-7-day-theory.php', 'https://en.debaser.it/makaveli/the-don-killuminati-the-7-day-theory/review'] },
       { artist: 'SK-1', title: 'All Grounds Covered', year: 1996, label: 'L.A.D.E. Back Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8855320', stampSeed: { funky: 16, bangin: 12, party: 9 } },
       { artist: 'Closed Caption', title: 'Greens', year: 1996, label: 'Dogday Records', youtubeId: null,
@@ -1776,7 +1776,7 @@ const REGIONS = [
     lng: -81.6944, lat: 41.4993,
     albums: [
       { artist: 'Bone Thugs-N-Harmony', title: 'E. 1999 Eternal', year: 1995, label: 'Ruthless Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/17072769', stampSeed: { doro: 65, dark: 50, aishu: 38, horror: 24 } },
+        discogsUrl: 'https://www.discogs.com/release/17072769', stampSeed: { doro: 2, dark: 3, horror: 1, mellow: 2, aishu: 2 }, seedSrc: ['https://www.grammy.com/news/bone-thugs-n-harmony-e-1999-eternal-transformed-rap-anniversary/', 'https://www.treblezine.com/bone-thugs-n-harmony-e-1999-eternal-hall-of-fame-review/', 'https://everythingisnoise.net/features/a-scene-in-retrospect-bone-thugs-n-harmony-e-1999-eternal/', 'https://www.shatterthestandards.com/p/milestones-e-1999-eternal-by-bone-thugs-n-harmony'] },
       { artist: 'Ronnie Raw', title: 'Ghetto Bastard', year: 1995, label: 'Straight Ballin Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10689197', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { artist: 'Mo Thugs', title: 'Family Scriptures', year: 1996, label: 'Mo Thugs Records', youtubeId: null,

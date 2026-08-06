@@ -1,0 +1,15 @@
+{
+  "artist": "Makaveli",
+  "title": "The Don Killuminati (The 7 Day Theory)",
+  "album": { "dark": 3, "doro": 2, "bangin": 1 },
+  "tracks": {
+    "Hail Mary": { "dark": 2, "doro": 1 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/the-don-killuminati-the-7-day-theory-mw0000007004",
+    "https://www.rapreviews.com/2002/05/2pacmakaveli-the-don-killuminati-the-7-day-theory/",
+    "https://www.albumoftheyear.org/album/23657-2pac-the-don-killuminati-the-7-day-theory.php",
+    "https://en.debaser.it/makaveli/the-don-killuminati-the-7-day-theory/review"
+  ],
+  "notes": "dark: Pac's creepiest album・dark and moody Hail Mary(AllMusic/RapReviews)。doro: 怒りと復讐心のraw emotional power。bangin: violent and aggressiveなパフォーマンス言及。"
+}
