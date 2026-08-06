@@ -421,7 +421,7 @@ const REGIONS = [
     lng: -122.2712, lat: 37.8044,
     albums: [
       { artist: 'Too $hort', title: 'Life Is...Too $hort', year: 1988, label: 'Dangerous Music/Jive', youtubeId: null,
-        stampSeed: { funky: 48, laidbk: 39, party: 30 } },
+        stampSeed: { funky: 2, laidbk: 2, party: 1 }, seedSrc: ['https://en.wikipedia.org/wiki/Life_Is..._Too_Short', 'https://www.albumoftheyear.org/album/23835-too-short-life-is-too-short.php'] },
       { artist: 'Spice 1', title: 'Spice 1', year: 1992, label: 'Jive', youtubeId: null,
         stampSeed: { doro: 4, dark: 3, bangin: 2 }, seedSrc: ['https://en.wikipedia.org/wiki/Spice_1_(album)', 'https://timeisillmatic.me/2015/12/30/spice-1-spice-1-april-14-1992/', 'https://rateyourmusic.com/release/album/spice-1/spice-1/'] },
       { artist: 'Too $hort', title: 'Born to Mack', year: 1987, label: 'Dangerous Music/Jive', youtubeId: null,
