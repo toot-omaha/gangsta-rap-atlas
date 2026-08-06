@@ -123,7 +123,7 @@ const REGIONS = [
       { artist: 'Yella', title: 'One Mo Nigga Ta Go - Dedicated to the Memory of Eazy-E', year: 1996, label: 'Street Life Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6561954', stampSeed: { funky: 22, bangin: 16, dark: 12 } },
       { artist: 'Eazy-E', title: 'Str8 Off Tha Streetz Of Muthaphukkin Compton', year: 1996, label: 'Ruthless Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/750888', stampSeed: { bangin: 40, dark: 28, doro: 20, funky: 24 } },
+        discogsUrl: 'https://www.discogs.com/release/750888', stampSeed: { bangin: 2, dark: 1, funky: 1, horror: 1 }, seedSrc: ['https://en.wikipedia.org/wiki/Str8_off_tha_Streetz_of_Muthaphukkin_Compton', 'https://www.albumoftheyear.org/album/39169-eazy-e-str8-off-tha-streetz-of-muthaphukkin-compton.php', 'https://timeisillmatic.me/2022/01/11/eazy-e-str8-off-tha-streetz-of-muthaphukkin-compton-january-30-1996/'] },
       { artist: 'MC Ren', title: 'The Villain in Black', year: 1996, label: 'Ruthless Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/227397', stampSeed: { bangin: 26, dark: 19, doro: 14 } },
       { artist: 'Eazy-E', title: 'Eternal E', year: 1996, label: 'Priority Records', youtubeId: null,
