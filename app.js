@@ -243,7 +243,10 @@ function buildFilterBar() {
     b.style.color = s.color;
     b.innerHTML = `<span>${stampName(s)}</span>`;
     b.addEventListener('click', () => {
-      activeFilters.has(s.id) ? activeFilters.delete(s.id) : activeFilters.add(s.id);
+      const wasOn = activeFilters.has(s.id);
+      activeFilters.clear();
+      if (!wasOn) activeFilters.add(s.id);
+      filterBar.querySelectorAll('.stamp').forEach((el) => el.classList.remove('on'));
       b.classList.toggle('on', activeFilters.has(s.id));
       refreshMarkers();
       if (activeRegion) renderList(activeRegion);
