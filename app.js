@@ -281,7 +281,7 @@ async function autoPullFavSync() {
   favsWant.clear(); newWant.forEach((k) => favsWant.add(k));
   saveFavs();
   updateFavCount();
-  if (listView === 'favs') renderFavs();
+  if (listView === 'favs') renderFavs(false);
 }
 
 // サイコロ: 現在の行を新しい名前へリネーム(持ってる/ほしいはサーバー上のrowがそのまま引き継ぐ)
@@ -465,21 +465,49 @@ function fireShot(region) {
   document.body.classList.add('shake');
 }
 
-function openRegion(region) {
+// ---------- 戻る操作(スワイプ/ブラウザの戻るボタン)対応 ----------
+// 地図(0) → 地域一覧/お気に入り(1) → ディスク詳細(2) の3階層をhistoryに積む。
+// 同じ階層内の遷移(別の地域を開く等)はreplaceStateで上書きし、
+// 「戻る」1回で必ず1階層だけ上がるようにする。
+let navLevel = 0;
+history.replaceState({ level: 0 }, '');
+function navGoto(level) {
+  if (level > navLevel) history.pushState({ level }, '');
+  else if (level < navLevel) { /* 呼び出し元(popstate)側でhistory側は既に動いている */ }
+  else history.replaceState({ level }, '');
+  navLevel = level;
+}
+function navBack() {
+  if (navLevel > 0) history.back();
+}
+window.addEventListener('popstate', (e) => {
+  const level = e.state?.level ?? 0;
+  navLevel = level;
+  if (level === 0) closeListUI();
+  else if (level === 1) {
+    if (listView === 'favs') renderFavs(false);
+    else if (listView === 'submit') renderSubmit(false);
+    else renderList(activeRegion || lastDiscRegion);
+  }
+});
+
+function openRegion(region, push = true) {
   activeRegion = region;
   shotRegions.add(region.id);
   fireShot(region);
   refreshMarkers();
+  if (push) navGoto(1);
   renderList(region);
   // 着弾→揺れを見せてから誌面ポップアップ
   setTimeout(() => document.body.classList.add('detail'), 450);
 }
 
-function closeList() {
+function closeListUI() {
   document.body.classList.remove('detail');
   activeRegion = null;
   refreshMarkers(); // 地図の位置はリセットせずそのまま
 }
+function closeList() { navBack(); }
 
 // ヘッダーの実高さをCSS変数に反映(ポップアップがヘッダーに被らないように)
 const topbar = document.getElementById('topbar');
@@ -507,6 +535,7 @@ const listHead = (title, sub, cnt) => `
 
 let listView = 'region'; // ディスクページの「◀ 戻る」の行き先
 let currentDisc = null;  // 表示中のディスク(言語切替時の再描画用)
+let lastDiscRegion = null; // ディスクを開いた時点の地域(戻る操作の行き先解決用)
 
 function renderList(region) {
   listView = 'region';
@@ -591,14 +620,16 @@ function albumCard(album) {
 }
 
 // ---------- ディスク専用ページ(大ジャケ+曲一覧+曲単位スタンプ) ----------
-function renderDisc(album) {
+function renderDisc(album, push = true) {
   currentDisc = album;
   const e = enrichOf(album);
   const r = rarity(album);
   const region = REGIONS.find((rr) => rr.albums.includes(album));
+  lastDiscRegion = region;
+  if (push) navGoto(2);
   const art = artUrl(e, 600);
   const key = albumKey(album);
-  const rerender = () => renderDisc(album);
+  const rerender = () => renderDisc(album, false);
   const tracks = e?.tracks || [];
 
   listEl.innerHTML = `
@@ -633,11 +664,11 @@ function renderDisc(album) {
     </div>
     <div class="tracks"></div>`;
 
-  // ◀ も ✕ も「元のディスク一覧」へ戻る(地図まで一気に閉じない)
-  const backToList = () =>
-    listView === 'favs' ? renderFavs() : renderList(activeRegion || region);
-  listEl.querySelector('.back').addEventListener('click', backToList);
-  listEl.querySelector('.x').addEventListener('click', backToList);
+  // ◀ も ✕ も「元のディスク一覧」へ戻る(地図まで一気に閉じない)。
+  // historyを1つ戻すことでpopstateハンドラに実際の描画を任せる
+  // (スワイプ/ブラウザの戻るボタンと同じ経路に揃える)。
+  listEl.querySelector('.back').addEventListener('click', navBack);
+  listEl.querySelector('.x').addEventListener('click', navBack);
 
   const wrap = listEl.querySelector('.album-stamps');
   if (tracks.length) {
@@ -669,9 +700,10 @@ function allKnownAlbums() {
   return out;
 }
 
-function renderFavs() {
+function renderFavs(push = true) {
   listView = 'favs';
   currentDisc = null;
+  if (push) navGoto(1);
   document.body.classList.add('detail');
   activeRegion = null;
   refreshMarkers();
@@ -741,7 +773,7 @@ function renderFavs() {
     $syncMsg.textContent = t('linking');
     const ok = await linkStreetName(name, code);
     $syncMsg.textContent = ok ? t('syncOk') : t('linkNotFound');
-    if (ok) { $sname.textContent = streetName; updateFavCount(); renderFavs(); }
+    if (ok) { $sname.textContent = streetName; updateFavCount(); renderFavs(false); }
   });
 
   // セクションの表示順は ホシイ→持ッテル(DOM上の1つ目がwant)
@@ -766,7 +798,7 @@ function renderFavs() {
     const n = importFavsCsv(await file.text());
     listEl.querySelector('#favIoMsg').textContent = n > 0 ? t('importOk')(n) : t('importNone');
     updateFavCount();
-    renderFavs();
+    renderFavs(false);
   });
 }
 document.getElementById('brandHome').addEventListener('click', () => location.reload());
@@ -1000,9 +1032,10 @@ map.on('zoom', syncMarkerScale);
 syncMarkerScale();
 
 // ---------- 投稿フォーム(タレコミ) ----------
-function renderSubmit() {
+function renderSubmit(push = true) {
   listView = 'submit';
   currentDisc = null;
+  if (push) navGoto(1);
   document.body.classList.remove('stamps-open'); // ドロワーから開いた場合は閉じる
   document.body.classList.add('detail');
   const opt = (v) => `<option value="${v}">${v}</option>`;
@@ -1072,9 +1105,9 @@ function applyLang() {
   paint();
   // 開いている画面を同じ状態のまま描き直す
   if (document.body.classList.contains('detail')) {
-    if (currentDisc) renderDisc(currentDisc);
-    else if (listView === 'favs') renderFavs();
-    else if (listView === 'submit') renderSubmit();
+    if (currentDisc) renderDisc(currentDisc, false);
+    else if (listView === 'favs') renderFavs(false);
+    else if (listView === 'submit') renderSubmit(false);
     else if (activeRegion) renderList(activeRegion);
   }
 }
