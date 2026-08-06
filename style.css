@@ -329,6 +329,22 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .disc-actions .have-d.on { background: var(--gold); }
 .disc-actions .want-d.on { background: var(--red); color: var(--paper); border-color: var(--red); }
 
+/* お気に入りページ: Street Name同期 */
+.street-sync {
+  border: 2px solid var(--ink); background: var(--paper);
+  padding: 10px 12px; margin: 14px 0; display: flex; flex-direction: column; gap: 6px;
+}
+.street-sync-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.street-sync .lab { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: var(--ink-2); }
+.street-name-val { font-size: 14px; font-weight: 900; letter-spacing: .04em; }
+.street-sync-hint { margin: 0; font-size: 10px; color: var(--ink-2); }
+.street-sync input[type="text"] {
+  border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
+  font: inherit; font-size: 12px; padding: 5px 8px; flex: 1; min-width: 140px;
+  text-transform: uppercase;
+}
+.street-sync .form-msg { margin: 0; font-size: 11px; font-weight: 800; color: var(--red); }
+
 /* お気に入りページ: 持ってる/ほしい セクション + CSV入出力 */
 .fav-io { display: flex; align-items: center; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
 .fav-io .form-msg { margin: 0; font-size: 11px; font-weight: 800; color: var(--red); }

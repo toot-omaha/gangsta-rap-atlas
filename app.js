@@ -26,6 +26,13 @@ const I18N = {
     noPii: '⚠ 個人情報(名前・連絡先など)ハ書キ込マナイコト',
     send: '送信スル', sending: '送信中…', sent: '感謝!承認後ニ地図ニ刻マレル。', sendErr: '送信失敗。時間ヲ置イテ再度。',
     needFields: 'アーティストとタイトルは必須です',
+    streetName: 'STREET NAME', streetNameHint: 'コレデ他端末ト持ッテル/ホシイヲ同期デキル',
+    reroll: '🎲 再生成', linkTitle: '別端末ノSTREET NAMEヲ入力シテ連携',
+    linkPlaceholder: '例: SHADOW-REAPER', link: '連携スル',
+    syncOk: '同期完了', syncErr: '同期失敗。時間ヲ置イテ再度。', linking: '連携中…',
+    linkNotFound: 'ソノSTREET NAMEハ見ツカラナカッタ',
+    rerollConfirm: '再生成スルト今ノSTREET NAMEハ無効ニナル(持ッテル/ホシイハ引キ継ガレル)。ヨロシイ？',
+    noPii2: '⚠ コノ名前ニ個人情報(本名・連絡先など)ハ使ワナイコト',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -50,6 +57,13 @@ const I18N = {
     noPii: '⚠ Do not include personal information (names, contacts, etc.)',
     send: 'SEND', sending: 'Sending…', sent: 'Respect! It will be carved on the map after review.', sendErr: 'Failed. Try again later.',
     needFields: 'Artist and Title are required',
+    streetName: 'STREET NAME', streetNameHint: 'Use this to sync have/want across devices',
+    reroll: '🎲 Reroll', linkTitle: 'Enter another device\'s Street Name to link',
+    linkPlaceholder: 'e.g. SHADOW-REAPER', link: 'Link',
+    syncOk: 'Synced', syncErr: 'Sync failed. Try again later.', linking: 'Linking…',
+    linkNotFound: 'That Street Name was not found',
+    rerollConfirm: 'Rerolling retires your current Street Name (have/want carry over). Continue?',
+    noPii2: '⚠ Do not use personal information (real name, contacts, etc.) here',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -151,11 +165,104 @@ const saveFavs = () => {
   localStorage.setItem(HAVE_KEY, JSON.stringify([...favsHave]));
   localStorage.setItem(WANT_KEY, JSON.stringify([...favsWant]));
 };
-const toggleFav = (set, key) => { set.has(key) ? set.delete(key) : set.add(key); saveFavs(); };
+const toggleFav = (set, key) => { set.has(key) ? set.delete(key) : set.add(key); saveFavs(); pushFavSync(); };
 const updateFavCount = () => {
   const all = new Set([...favsHave, ...favsWant]);
   document.getElementById('favCount').textContent = all.size;
 };
+
+// ---------- Street Name — 端末間で持ってる/ほしいを同期する匿名合言葉 ----------
+// 名前は完全ランダム生成のみ(手入力での新規作成は不可)。個人情報は一切紐づけない。
+const STREET_KEY = 'gra.streetName';
+let streetName = localStorage.getItem(STREET_KEY) || null;
+
+const SN_ADJ = ['SHADOW', 'CONCRETE', 'MIDNIGHT', 'SMOKE', 'RUSTY', 'COLD', 'IRON', 'SILENT',
+  'CRIMSON', 'HOLLOW', 'STREET', 'RAGGED', 'DUSTY', 'BROKEN', 'STONE', 'GOLDEN', 'RUTHLESS',
+  'LOW', 'DIRTY', 'HEAVY', 'GHOST', 'GRIMY', 'GUTTER', 'ROLLIN', 'SLICK', 'GRITTY', 'BLACKTOP',
+  'CHROME', 'ASPHALT', 'CURBSIDE', 'BACKALLEY', 'DEADEND', 'RAW', 'SAVAGE', 'FROSTBIT', 'GRAVEL'];
+const SN_NOUN = ['REAPER', 'HUSTLA', 'PHANTOM', 'OUTLAW', 'RIDER', 'PREACHER', 'SOLDIER', 'VETERAN',
+  'RENEGADE', 'DRIFTER', 'GAMBLER', 'GANGSTA', 'KINGPIN', 'SNIPER', 'PROPHET', 'WANDERER',
+  'VANDAL', 'ROLLER', 'MENACE', 'STALKER', 'CRUSADER', 'MOBSTER', 'BANDIT', 'WARLORD', 'JUDGE',
+  'DEALER', 'LEGEND', 'ASSASSIN', 'SURVIVOR', 'MAVERICK', 'PIRATE', 'SHOOTER', 'HITTA', 'CHIEF'];
+const randPick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const genStreetNameCandidate = (withDigits) =>
+  `${randPick(SN_ADJ)}-${randPick(SN_NOUN)}${withDigits ? '-' + String(Math.floor(Math.random() * 900) + 100) : ''}`;
+
+// DBへの実INSERTを衝突判定として使う(既存rowなら409で弾かれる=既に予約済み)
+async function reserveStreetName(name) {
+  try {
+    const res = await fetch(`${SB_URL}/fav_sync`, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant] }),
+    });
+    return res.ok || res.status === 201;
+  } catch { return false; }
+}
+
+async function ensureStreetName() {
+  if (streetName) return streetName;
+  for (let i = 0; i < 8; i++) {
+    const candidate = genStreetNameCandidate(i >= 5); // 5回衝突したら3桁数字を足す
+    if (await reserveStreetName(candidate)) {
+      streetName = candidate;
+      localStorage.setItem(STREET_KEY, streetName);
+      return streetName;
+    }
+  }
+  return null; // オフライン等で確保できなかった場合は同期なしで動く
+}
+
+async function pushFavSync() {
+  if (!streetName) await ensureStreetName();
+  if (!streetName) return;
+  try {
+    await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+      body: JSON.stringify({ have: [...favsHave], want: [...favsWant], updated_at: new Date().toISOString() }),
+    });
+  } catch { /* オフラインでもローカルは正常に動く */ }
+}
+
+async function pullFavSync(name) {
+  const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want`, { headers: SB_HEADERS });
+  if (!res.ok) return null;
+  const rows = await res.json();
+  return rows[0] || null;
+}
+
+// サイコロ: 現在の行を新しい名前へリネーム(持ってる/ほしいはサーバー上のrowがそのまま引き継ぐ)
+async function rerollStreetName() {
+  for (let i = 0; i < 8; i++) {
+    const candidate = genStreetNameCandidate(i >= 5);
+    try {
+      const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+        method: 'PATCH',
+        headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+        body: JSON.stringify({ gangsta_name: candidate }),
+      });
+      if (res.ok) {
+        streetName = candidate;
+        localStorage.setItem(STREET_KEY, streetName);
+        return streetName;
+      }
+    } catch { return null; }
+  }
+  return null;
+}
+
+// 別端末のStreet Nameを入力して連携(サーバー側のhave/wantでローカルを上書き)
+async function linkStreetName(name) {
+  const row = await pullFavSync(name);
+  if (!row) return false;
+  favsHave.clear(); (row.have || []).forEach((k) => favsHave.add(k));
+  favsWant.clear(); (row.want || []).forEach((k) => favsWant.add(k));
+  saveFavs();
+  streetName = name;
+  localStorage.setItem(STREET_KEY, streetName);
+  return true;
+}
 
 // ---------- 状態 ----------
 let activeFilters = new Set();
@@ -494,6 +601,20 @@ function renderFavs() {
 
   listEl.innerHTML = `
     ${listHead(t('favs'), t('favSub'), `${total} ${t('discs')}`)}
+    <div class="street-sync">
+      <div class="street-sync-row">
+        <span class="lab">${t('streetName')}</span>
+        <span class="street-name-val" id="streetNameVal">…</span>
+        <button class="tr-toggle" id="streetReroll">${t('reroll')}</button>
+      </div>
+      <p class="street-sync-hint">${t('streetNameHint')}</p>
+      <p class="form-note">${t('noPii2')}</p>
+      <div class="street-sync-row">
+        <input type="text" id="streetLinkInput" placeholder="${t('linkPlaceholder')}" title="${t('linkTitle')}">
+        <button class="tr-toggle" id="streetLinkBtn">${t('link')}</button>
+      </div>
+      <span class="form-msg" id="streetSyncMsg"></span>
+    </div>
     <div class="fav-io">
       <button class="tr-toggle" id="favExport">${t('exportCsv')}</button>
       <button class="tr-toggle" id="favImportBtn">${t('importCsv')}</button>
@@ -503,6 +624,25 @@ function renderFavs() {
     ${section(t('wantSection'), wantItems)}
     ${section(t('haveSection'), haveItems)}`;
   listEl.querySelector('.close').addEventListener('click', closeList);
+
+  const $sname = listEl.querySelector('#streetNameVal');
+  const $syncMsg = listEl.querySelector('#streetSyncMsg');
+  ensureStreetName().then((n) => { $sname.textContent = n || '—'; });
+  listEl.querySelector('#streetReroll').addEventListener('click', async () => {
+    if (!confirm(t('rerollConfirm'))) return;
+    $syncMsg.textContent = t('linking');
+    const n = await rerollStreetName();
+    $syncMsg.textContent = n ? t('syncOk') : t('syncErr');
+    if (n) $sname.textContent = n;
+  });
+  listEl.querySelector('#streetLinkBtn').addEventListener('click', async () => {
+    const name = listEl.querySelector('#streetLinkInput').value.trim().toUpperCase();
+    if (!name) return;
+    $syncMsg.textContent = t('linking');
+    const ok = await linkStreetName(name);
+    $syncMsg.textContent = ok ? t('syncOk') : t('linkNotFound');
+    if (ok) { $sname.textContent = streetName; updateFavCount(); renderFavs(); }
+  });
 
   const [haveGrid, wantGrid] = listEl.querySelectorAll('.fav-section .grid');
   const fillGrid = (grid, items) => {
