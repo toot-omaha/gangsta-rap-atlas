@@ -508,6 +508,7 @@ buildFilterBar();
 // ---------- 年代フィルターUI ----------
 const eraBar = document.getElementById('eraFilter');
 function buildEraBar() {
+  if (!eraBar) return; // 旧キャッシュのHTMLに要素が無くてもアプリ全体を巻き込んで落ちない
   eraBar.innerHTML = '';
   ERAS.forEach((e) => {
     const label = document.createElement('label');
@@ -581,12 +582,15 @@ function runSearch(q) {
   });
 }
 
-document.getElementById('searchBtn').addEventListener('click', openSearch);
-document.getElementById('searchClose').addEventListener('click', closeSearch);
-searchOverlay.addEventListener('click', (e) => { if (e.target === searchOverlay) closeSearch(); });
-searchInput.addEventListener('input', () => runSearch(searchInput.value));
+// 旧キャッシュのHTMLに検索UIが無い場合でも他機能を巻き込まないようガードする
+if (searchOverlay && searchInput) {
+  document.getElementById('searchBtn')?.addEventListener('click', openSearch);
+  document.getElementById('searchClose')?.addEventListener('click', closeSearch);
+  searchOverlay.addEventListener('click', (e) => { if (e.target === searchOverlay) closeSearch(); });
+  searchInput.addEventListener('input', () => runSearch(searchInput.value));
+}
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && searchOverlay.classList.contains('open')) closeSearch();
+  if (e.key === 'Escape' && searchOverlay?.classList.contains('open')) closeSearch();
 });
 
 // ---------- 一覧 ----------
