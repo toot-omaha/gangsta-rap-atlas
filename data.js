@@ -215,7 +215,7 @@ const REGIONS = [
       { artist: 'Crazy Toones', title: 'A Touch of Maadness', year: 1991, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/34335325', stampSeed: { funky: 14, bangin: 10, dark: 8 } },
       { artist: 'Ice Cube', title: 'The Predator', year: 1992, label: '4th & Broadway', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/633770', stampSeed: { bangin: 78, dark: 60, doro: 41, funky: 35 } },
+        discogsUrl: 'https://www.discogs.com/release/633770', stampSeed: { bangin: 4, dark: 2, laidbk: 2, mellow: 1, aishu: 1 }, seedSrc: ['https://www.allmusic.com/album/the-predator-mw0000239179', 'https://en.wikipedia.org/wiki/The_Predator_(album)', 'https://www.albumoftheyear.org/album/14022-ice-cube-the-predator.php', 'https://insidepulse.com/2003/03/17/4528/'] },
       { artist: 'Da Lench Mob', title: 'Guerillas in tha Mist', year: 1992, label: 'EastWest Records America', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/361812', stampSeed: { bangin: 48, dark: 38, doro: 26 } },
       { artist: 'Ice-T', title: 'Home Invasion', year: 1993, label: 'Sire', youtubeId: null,

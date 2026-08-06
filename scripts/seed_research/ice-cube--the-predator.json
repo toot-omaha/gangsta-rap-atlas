@@ -1,0 +1,16 @@
+{
+  "artist": "Ice Cube",
+  "title": "The Predator",
+  "album": { "bangin": 2, "dark": 2 },
+  "tracks": {
+    "It Was a Good Day": { "laidbk": 2, "mellow": 1, "aishu": 1 },
+    "Wicked": { "bangin": 2 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/the-predator-mw0000239179",
+    "https://en.wikipedia.org/wiki/The_Predator_(album)",
+    "https://www.albumoftheyear.org/album/14022-ice-cube-the-predator.php",
+    "https://insidepulse.com/2003/03/17/4528/"
+  ],
+  "notes": "bangin/dark: LA暴動直後のradiates tension・hostile mood評。It Was a Good Day=most laid-back moment(AllMusic)+quiet violent anxiety(哀愁)。Wicked=aggressiveな代表曲。"
+}
