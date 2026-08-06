@@ -207,7 +207,7 @@ const REGIONS = [
       { artist: 'Ice Cube', title: 'Death Certificate', year: 1991, label: '4th & Broadway', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/836406', stampSeed: { bangin: 82, dark: 70, doro: 47 } },
       { artist: 'Cypress Hill', title: 'Cypress Hill', year: 1991, label: 'Columbia', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/6278083', stampSeed: { doro: 58, dark: 44, horror: 22 } },
+        discogsUrl: 'https://www.discogs.com/release/6278083', stampSeed: { doro: 3, dark: 4, funky: 1, bangin: 1 }, seedSrc: ['https://hiphopgoldenage.com/cypress-hill-cypress-hill-1991-review/', 'https://cypresshill.com/2018/10/16/cypress-hill-30-years-stoned-and-more-insane-than-ever/', 'https://www.loudersound.com/features/every-cypress-hill-album-ranked-from-worst-to-best'] },
       { artist: 'WC and the Maad Circle', title: "Ain't a Damn Thang Changed", year: 1991, label: 'Priority', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/343920', stampSeed: { funky: 32, bangin: 24, dark: 17 } },
       { artist: 'South Central Cartel', title: 'South Central Madness', year: 1991, label: 'Pump Records', youtubeId: null,
