@@ -322,6 +322,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/319790', stampSeed: { bangin: 34, funky: 26, dark: 20 } },
       { artist: 'Goldfinger', title: 'Kan Open', year: 1998, label: 'Nino Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7868189', stampSeed: { funky: 16, bangin: 12, party: 9 } },
+      { artist: 'Chronic Side Crew', title: 'Focus', year: 1998, label: 'Dub Sac Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13441826', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -400,6 +402,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/24228920', stampSeed: { funky: 22, bangin: 16, party: 12 } },
       { artist: 'Young Lay', title: 'Unsolved Mysteries', year: 1998, label: '2nd Life Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5250264', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
+      { artist: 'Mac Dre', title: 'Stupid Doo Doo Dumb', year: 1998, label: 'Romp Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10445302', stampSeed: { funky: 22, party: 17, laidbk: 13 } },
     ],
   },
   {
@@ -706,6 +710,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/37074108', stampSeed: { dark: 32, doro: 26, aishu: 18 } },
       { artist: 'Precise', title: 'Cripplestylskins', year: 1998, label: 'B.E.M. Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7858709', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: '20-2-Life', title: 'Confessions', year: 1998, label: 'Inmate Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8244180', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Fesu', title: 'The Game', year: 1998, label: 'Destiny Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12572996', stampSeed: { funky: 16, bangin: 12, dark: 9 } },
+      { artist: "God's Original Gangstaz", title: 'Pawns in a Chess Game', year: 1998, label: 'Grapetree Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11179315', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
     ],
   },
   {
@@ -838,6 +848,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3828811', stampSeed: { dark: 20, doro: 16, bangin: 12 } },
       { artist: 'Prophet Posse', title: 'Body Parts', year: 1998, label: 'Prophet Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10151735', stampSeed: { dark: 24, doro: 19, horror: 14 } },
+      { artist: 'The Kaze', title: 'Kamakazie Timez Up', year: 1998, label: 'Prophet Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/514602', stampSeed: { dark: 22, doro: 17, horror: 13 } },
+      { artist: 'Playa G', title: 'U Not My Lady', year: 1998, label: 'East Wood Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5115964', stampSeed: { funky: 18, party: 14, bangin: 10 } },
+      { artist: 'Pretty Tony', title: 'Revelation', year: 1998, label: 'Reconize Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4402141', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -976,6 +992,16 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/15164915', stampSeed: { dark: 20, doro: 16, bangin: 13 } },
       { artist: 'C-Murder', title: 'Life or Death', year: 1998, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2144073', stampSeed: { dark: 30, doro: 24, bangin: 18 } },
+      { artist: 'Juvenile', title: '400 Degreez', year: 1998, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12494013', stampSeed: { bangin: 40, funky: 30, party: 22 } },
+      { artist: 'Code 6', title: "Let's Go Get'Em", year: 1998, label: 'Ice Mike Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9952625', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'UNLV', title: "Baldhead Rick & S.B. - UNLV (Underground Nation Livin' Violently)", year: 1998, label: 'Dogday Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1346919', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
+      { artist: 'S.A.C. Mafia', title: 'Socca Ballin', year: 1998, label: 'Untouchable Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3852239', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Silky Slim', title: 'Finally Here', year: 1998, label: 'K5 Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6677562', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
     ],
   },
   {
@@ -1118,6 +1144,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/14608903', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Paris', title: 'Unleashed', year: 1998, label: 'Unleashed Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2778866', stampSeed: { dark: 22, doro: 17, bangin: 13 } },
+      { artist: "Rappin' 4-Tay", title: 'Bigga Than da Game', year: 1998, label: 'Rag Top Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2057818', stampSeed: { funky: 24, party: 18, laidbk: 14 } },
+      { artist: 'Taydatay', title: 'Anticipaytion', year: 1998, label: 'Dogday Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/605386', stampSeed: { funky: 16, bangin: 12, party: 9 } },
     ],
   },
   {
@@ -1186,6 +1216,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3214652', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
       { artist: 'Herm', title: 'Solo Album', year: 1998, label: 'Black Power Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5257371', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: 'Gangsta Dre', title: 'Inner City Poet', year: 1998, label: 'Ace High Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12558552', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -1217,6 +1249,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10475478', stampSeed: { bangin: 20, funky: 14, doro: 11 } },
       { artist: 'Capone-N-Noreaga', title: 'The War Report', year: 1997, label: 'Penalty Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3291762', stampSeed: { dark: 34, doro: 27, bangin: 22 } },
+      { artist: 'Kool G Rap', title: 'Roots of Evil', year: 1998, label: 'Illstreet / Downlow', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4950108', stampSeed: { dark: 26, bangin: 20, doro: 15 } },
     ],
   },
   {
@@ -1269,6 +1303,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9140562', stampSeed: { dark: 20, doro: 16, horror: 12 } },
       { artist: 'Big Pun', title: 'Capital Punishment', year: 1998, label: 'Loud Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/704954', stampSeed: { bangin: 40, dark: 28, doro: 20, funky: 22 } },
+      { artist: 'Fat Joe', title: 'Don Cartagena', year: 1998, label: 'Atlantic', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15627572', stampSeed: { bangin: 32, dark: 22, doro: 16 } },
     ],
   },
   {
@@ -1299,6 +1335,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5505892', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Pimpsta', title: "Smokin' Big", year: 1998, label: 'Skrilla Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5154223', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
+      { artist: 'Jace', title: "Ain't No Secret", year: 1998, label: 'Uprize Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7355252', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -1325,6 +1363,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/14604393', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
       { artist: 'D-Loc', title: 'Up Close & Personal', year: 1998, label: 'Forrest Bump Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3241279', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Criminal Nation', title: 'Resurrection', year: 1998, label: 'Ocean Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3785301', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
     ],
   },
   {
@@ -1367,6 +1407,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1892684', stampSeed: { dark: 15, bangin: 12, doro: 9 } },
       { artist: 'D-Roc', title: "This Game'll Never Change", year: 1998, label: 'No Luv Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9805905', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Ghetto Mafia', title: 'On the Grind', year: 1998, label: 'Fully Loaded Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11572844', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
     ],
   },
   {
@@ -1391,6 +1433,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1874256', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: "Lil' Sin", title: 'Who Got Yo Back', year: 1998, label: 'BLVD Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10233958', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Nino', title: 'Unstoppable', year: 1998, label: 'Unstopable Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6798432', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -1547,6 +1591,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4171694', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Kokane', title: 'Funk Upon a Rhyme', year: 1994, label: 'Ruthless Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/591619', stampSeed: { funky: 29, bangin: 20, party: 15 } },
+      { artist: 'Zoo Crew', title: 'Migrate Adapt or Die', year: 1998, label: 'Zoo Life Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1770125', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -1567,6 +1613,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3634414', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
       { artist: 'J.U.I.C.E.', title: 'The Fast Life Part 1', year: 1998, label: 'Supremacy Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26776136', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Do or Die', title: 'Headz or Tailz', year: 1998, label: 'Neighborhood Watch Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2040639', stampSeed: { funky: 24, party: 18, bangin: 14 } },
     ],
   },
   {
@@ -1587,6 +1635,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2564201', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'C.O.P.S.', title: 'On Location', year: 1997, label: '2 Peace Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1865398', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { artist: 'Low Down', title: 'Up in Smoke', year: 1998, label: 'Explicit Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12423699', stampSeed: { funky: 16, bangin: 12, doro: 9 } },
     ],
   },
   {
@@ -1654,6 +1704,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/14771168', stampSeed: { doro: 55, dark: 42, aishu: 32, horror: 20 } },
       { artist: 'Mo Thugs', title: 'Family Scriptures Chapter II: Family Reunion', year: 1998, label: 'Mo Thugs Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5242291', stampSeed: { doro: 28, aishu: 22, dark: 17 } },
+      { artist: 'Killa Smoove', title: 'Kritical', year: 1998, label: 'Buchanan Recording Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1991277', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
