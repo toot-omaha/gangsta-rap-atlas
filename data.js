@@ -753,7 +753,7 @@ const REGIONS = [
       { artist: 'DJ DMD', title: 'Eleven', year: 1996, label: 'Inner Soul Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7031666', stampSeed: { funky: 18, bangin: 13, party: 10 } },
       { artist: 'UGK', title: "Ridin' Dirty", year: 1996, label: 'Jive', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/22664243', stampSeed: { funky: 40, doro: 30, dark: 24, aishu: 18 } },
+        discogsUrl: 'https://www.discogs.com/release/22664243', stampSeed: { doro: 2, aishu: 4, smooth: 3, funky: 1, laidbk: 2, mellow: 1 }, seedSrc: ['https://en.wikipedia.org/wiki/Ridin\'_Dirty', 'https://www.albumoftheyear.org/album/37676-ugk-ridin-dirty.php', 'https://rateyourmusic.com/release/album/ugk/ridin-dirty/', 'https://tdnforever.com/site-title/ugk-ridin-dirty-album-review'] },
       { artist: 'DJ DMD', title: 'Twenty-Two: P.A. World Wide', year: 1998, label: 'Inner Soul Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/806805', stampSeed: { funky: 18, bangin: 13, party: 10 } },
     ],

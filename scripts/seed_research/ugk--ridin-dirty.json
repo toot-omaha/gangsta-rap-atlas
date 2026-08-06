@@ -1,0 +1,16 @@
+{
+  "artist": "UGK",
+  "title": "Ridin' Dirty",
+  "album": { "doro": 2, "aishu": 2, "smooth": 2, "funky": 1, "laidbk": 1 },
+  "tracks": {
+    "One Day": { "aishu": 2, "mellow": 1 },
+    "Diamonds & Wood": { "smooth": 1, "laidbk": 1 }
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Ridin'_Dirty",
+    "https://www.albumoftheyear.org/album/37676-ugk-ridin-dirty.php",
+    "https://rateyourmusic.com/release/album/ugk/ridin-dirty/",
+    "https://tdnforever.com/site-title/ugk-ridin-dirty-album-review"
+  ],
+  "notes": "doro/aishu: the blues, chronicling the ups and downs of a hustler in Texas・muggy and rich malaise of soul評。One Day=喪失を歌う代表曲。smooth/laidbk: Diamonds and Woodのsmoothest beats評。Pitchfork 9.5/RapReviews 10。"
+}
