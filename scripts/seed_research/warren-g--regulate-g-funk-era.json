@@ -1,0 +1,15 @@
+{
+  "artist": "Warren G",
+  "title": "Regulate...G Funk Era",
+  "album": { "laidbk": 3, "smooth": 2, "mellow": 2, "funky": 2, "party": 1 },
+  "tracks": {
+    "Regulate": { "smooth": 2, "mellow": 1 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/regulateg-funk-era-mw0000114797",
+    "https://www.grammy.com/news/warren-g-interview-regulate-g-funk-era-nate-dogg-30th-anniversary/",
+    "https://www.albumoftheyear.org/album/5817-warren-g-regulate-g-funk-era.php",
+    "https://en.wikipedia.org/wiki/Regulate..._G_Funk_Era"
+  ],
+  "notes": "laidbk/mellow/smooth: smooth, carefree G-Funk・warm summertime album・laid back toneの言及(AOTY/Grammy)。funky: G-Funkのgroovyなベースライン。party: fun and lively。"
+}

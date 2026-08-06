@@ -157,7 +157,7 @@ const REGIONS = [
       { artist: 'Snoop Doggy Dogg', title: 'Doggystyle', year: 1993, label: 'Death Row', youtubeId: null,
         stampSeed: { smooth: 4, funky: 5, laidbk: 3, party: 3 }, seedSrc: ['https://www.allmusic.com/album/doggystyle-mw0000106179', 'https://wknc.org/2020/05/15/classic-album-review-snoop-dogg-doggystyle/', 'https://albumism.com/features/snoop-dogg-debut-album-doggystyle-album-anniversary', 'https://www.dubcnn.com/2002/11/23/snoop-doggy-dogg-doggystyle-album-review/', 'https://www.slantmagazine.com/music/snoop-dogg-doggystyle-retrospective-review/'] },
       { artist: 'Warren G', title: 'Regulate...G Funk Era', year: 1994, label: 'Violator/RAL', youtubeId: null,
-        stampSeed: { mellow: 91, smooth: 80, laidbk: 68, aishu: 40 } },
+        stampSeed: { laidbk: 3, smooth: 4, mellow: 3, funky: 2, party: 1 }, seedSrc: ['https://www.allmusic.com/album/regulateg-funk-era-mw0000114797', 'https://www.grammy.com/news/warren-g-interview-regulate-g-funk-era-nate-dogg-30th-anniversary/', 'https://www.albumoftheyear.org/album/5817-warren-g-regulate-g-funk-era.php', 'https://en.wikipedia.org/wiki/Regulate..._G_Funk_Era'] },
       { artist: 'Domino', title: 'Domino', year: 1993, label: 'Outburst', youtubeId: null,
         stampSeed: { smooth: 22, party: 18, funky: 15 } },
       { artist: 'Tairrie B.', title: 'The Power of a Woman', year: 1990, label: 'MCA', youtubeId: null,
