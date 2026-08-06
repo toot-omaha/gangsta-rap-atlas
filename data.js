@@ -167,7 +167,7 @@ const REGIONS = [
       { artist: 'RBX', title: 'The RBX Files', year: 1995, label: 'Premeditated Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/762874', stampSeed: { dark: 28, bangin: 21, doro: 16 } },
       { artist: 'Tha Dogg Pound', title: 'Dogg Food', year: 1995, label: 'Death Row Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/238368', stampSeed: { smooth: 40, funky: 33, bangin: 26 } },
+        discogsUrl: 'https://www.discogs.com/release/238368', stampSeed: { funky: 3, smooth: 4, party: 1, laidbk: 1 }, seedSrc: ['https://en.wikipedia.org/wiki/Dogg_Food', 'https://rateyourmusic.com/release/album/tha_dogg_pound/dogg_food/', 'https://www.albumoftheyear.org/album/30409-tha-dogg-pound-dogg-food.php'] },
       { artist: 'Jayo Felony', title: 'Take a Ride', year: 1995, label: 'JMJ', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/899863', stampSeed: { bangin: 25, dark: 19, doro: 14 } },
       { artist: 'Battlecat', title: 'Gumbo Roots', year: 1995, label: 'Warner Bros. Records', youtubeId: null,

@@ -1,0 +1,15 @@
+{
+  "artist": "Tha Dogg Pound",
+  "title": "Dogg Food",
+  "album": { "funky": 2, "smooth": 2, "party": 1 },
+  "tracks": {
+    "Smooth": { "smooth": 1, "funky": 1 },
+    "Big Pimpin' 2": { "laidbk": 1, "smooth": 1 }
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Dogg_Food",
+    "https://rateyourmusic.com/release/album/tha_dogg_pound/dogg_food/",
+    "https://www.albumoftheyear.org/album/30409-tha-dogg-pound-dogg-food.php"
+  ],
+  "notes": "funky/smooth: G-Funky beats real funky and smooth・Baltimore Sunのgrowling synth-bass of Smooth評(Wikipedia保存の引用)。Big Pimpin' 2=dreamy, slightly tropical pulse評。"
+}
