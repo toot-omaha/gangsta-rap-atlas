@@ -9,3 +9,6 @@ scripts/unclassified.json
 dist/
 
 .DS_Store
+
+# APIキー(YouTube Data API v3 等)
+.env
