@@ -500,8 +500,8 @@ function renderFavs() {
       <input type="file" id="favImportFile" accept=".csv,text/csv" hidden>
       <span class="form-msg" id="favIoMsg"></span>
     </div>
-    ${section(t('haveSection'), haveItems)}
-    ${section(t('wantSection'), wantItems)}`;
+    ${section(t('wantSection'), wantItems)}
+    ${section(t('haveSection'), haveItems)}`;
   listEl.querySelector('.close').addEventListener('click', closeList);
 
   const [haveGrid, wantGrid] = listEl.querySelectorAll('.fav-section .grid');
