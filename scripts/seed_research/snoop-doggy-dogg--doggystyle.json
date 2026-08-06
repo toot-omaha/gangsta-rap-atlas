@@ -1,0 +1,17 @@
+{
+  "artist": "Snoop Doggy Dogg",
+  "title": "Doggystyle",
+  "album": { "smooth": 3, "funky": 3, "laidbk": 2, "party": 1 },
+  "tracks": {
+    "Gin And Juice": { "party": 2, "funky": 1, "laidbk": 1 },
+    "Who Am I (What's My Name)?": { "funky": 1, "smooth": 1 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/doggystyle-mw0000106179",
+    "https://wknc.org/2020/05/15/classic-album-review-snoop-dogg-doggystyle/",
+    "https://albumism.com/features/snoop-dogg-debut-album-doggystyle-album-anniversary",
+    "https://www.dubcnn.com/2002/11/23/snoop-doggy-dogg-doggystyle-album-review/",
+    "https://www.slantmagazine.com/music/snoop-dogg-doggystyle-retrospective-review/"
+  ],
+  "notes": "smooth/funky/laidbk: DubCNN(smooth, ultra funky, laid back production)ほか複数ソースがG-Funkのメロディアスさに言及。party: Gin and Juiceのパーティーアンセム性(WKNC/Albumism)。"
+}

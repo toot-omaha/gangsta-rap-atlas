@@ -1,0 +1,17 @@
+{
+  "artist": "2Pac",
+  "title": "All Eyez on Me",
+  "album": { "bangin": 2, "doro": 2, "party": 2, "aishu": 1, "dark": 1 },
+  "tracks": {
+    "Ambitionz Az A Ridah": { "bangin": 2, "dark": 1 },
+    "California Love": { "party": 2, "funky": 1 },
+    "Life Goes On": { "aishu": 2, "mellow": 1 }
+  },
+  "sources": [
+    "https://albumism.com/features/2pac-all-eyez-on-me-turns-25-anniversary-retrospective",
+    "https://www.rap-reviews.com/post/2pac-all-eyez-on-me-review-the-last-and-greatest-statement",
+    "https://www.albumoftheyear.org/album/5767-2pac-all-eyez-on-me.php",
+    "https://disidoroo.medium.com/all-eyez-on-me-by-2pac-a-review-01dd11e8e01d"
+  ],
+  "notes": "celebration and paranoia, hedonism and prophecy(Albumism/rap-reviews)からparty/doro/dark。Ambitionz=攻撃的な代表曲(bangin)。Life Goes On=introspective側(哀愁)。California Love=祝祭アンセム。"
+}

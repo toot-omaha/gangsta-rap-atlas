@@ -1,0 +1,16 @@
+{
+  "artist": "Dr. Dre",
+  "title": "The Chronic",
+  "album": { "funky": 3, "smooth": 2, "laidbk": 2, "bangin": 2 },
+  "tracks": {
+    "Nuthin' But A \"G\" Thang": { "laidbk": 2, "smooth": 2, "funky": 1 },
+    "Let Me Ride": { "laidbk": 1, "funky": 1, "smooth": 1 }
+  },
+  "sources": [
+    "https://hiphopgoldenage.com/dr-dre-the-chronic-1992-review/",
+    "https://glidemagazine.com/283162/30-years-later-revisiting-dr-dres-g-funk-defining-the-chronic/",
+    "https://www.udiscovermusic.com/stories/dr-dre-the-chronic-album/",
+    "https://www.albumoftheyear.org/album/4601-dr-dre-the-chronic.php"
+  ],
+  "notes": "funky: 全ソースがG-Funkのファンキーなベースライン/シンセに言及。laidbk/smooth: HipHopGoldenAge/GlideがG Thang・Let Me Rideをlaid-back yet hard-hitting, smooth yet streetと形容。bangin: hard-hitting言及(HipHopGoldenAge/Glide)。"
+}
