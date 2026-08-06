@@ -6296,6 +6296,65 @@ const ENRICH = {
    }
   ]
  },
+ "D-Shot|Six Figures": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/7e/7e/c8/7e7ec829-7f3d-9514-4528-f49604659241/mzi.gyfvhaxt.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/six-figures/284206675?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "They Call Him Shot",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2e/39/fb/2e39fb4a-79c2-c3e8-f9d3-ab8d4b20fee2/mzaf_13509581448494183174.plus.aac.p.m4a"
+   },
+   {
+    "name": "Duck (feat. E-40 and B-Legit)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/55/f6/cc/55f6ccbf-ab81-0afa-fc6e-3965515c199f/mzaf_13935750402918684687.plus.aac.p.m4a"
+   },
+   {
+    "name": "Out Tha' Pen",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f9/80/3b/f9803b65-3069-755d-1432-ecf4663c9b91/mzaf_10320124084408872398.plus.aac.p.m4a"
+   },
+   {
+    "name": "Great Britain International Head/Lee/Own",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/02/08/a0/0208a07c-66fa-a316-681f-144e969a0c38/mzaf_8272437355737500164.plus.aac.p.m4a"
+   },
+   {
+    "name": "I'll Be Your Friend",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c3/0f/8d/c30f8d86-581e-ffde-f889-daf72a3be17d/mzaf_10402968868089388706.plus.aac.p.m4a"
+   },
+   {
+    "name": "One More Shot (feat. Malik and Mac Shawn)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/72/a2/3f/72a23fc1-9a45-5bb2-a7b5-26e409077af8/mzaf_622744236609784261.plus.aac.p.m4a"
+   },
+   {
+    "name": "True Worldwide Playaz (feat. Too Short and Spice 1)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/4c/bb/d0/4cbbd078-635d-4528-7700-b87bc13b16dd/mzaf_8841258625327975136.plus.aac.p.m4a"
+   },
+   {
+    "name": "It's Ma Thing (feat. Kaveo and Bo-Rock)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/08/f9/10/08f910f9-97c2-1c9e-dc73-f36a7f7fc2e4/mzaf_18313569675656003697.plus.aac.p.m4a"
+   },
+   {
+    "name": "Six Figures (feat. Celly Cel)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/5e/3e/e6/5e3ee6ac-e3c9-8b66-6b3a-2cf7172c101b/mzaf_1594779523618737851.plus.aac.p.m4a"
+   },
+   {
+    "name": "Huckleberry Hotline",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/fa/04/82/fa0482bb-789a-b0c1-3a81-14a171b75c9e/mzaf_7604977563374288701.plus.aac.p.m4a"
+   },
+   {
+    "name": "(I'll Be Yo') Huckleberry (feat. E-40)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/94/66/a3/9466a33f-4a69-ff31-4988-36ae3bed21a0/mzaf_10433764681813666860.plus.aac.p.m4a"
+   },
+   {
+    "name": "Is It Cool to F**k",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/62/0b/0e/620b0e1f-9839-3c63-dfbc-adca8be24e31/mzaf_16447827909873651883.plus.aac.p.m4a"
+   },
+   {
+    "name": "Reversal Interlude",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d8/5a/20/d85a2009-1a3b-a137-dc34-8765a94881b4/mzaf_2463076779019754759.plus.aac.p.m4a"
+   }
+  ]
+ },
  "Too $hort|Life Is...Too $hort": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/1b/cb/68/1bcb689f-52a1-e092-93ae-fb401d6f8084/mzi.ycifescj.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/life-is-too-%24hort/270246707?uo=4",
@@ -8932,6 +8991,69 @@ const ENRICH = {
    {
     "name": "Only Fear of Death",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f9/f8/ef/f9f8efa0-3560-7f65-64f2-aa99f8b0fdfa/mzaf_1539145934162862928.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Neighborhood Kingpinz|Kingpin Status": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music82/v4/c8/75/e5/c875e577-23a2-86af-a150-3da4863ab64f/888915352267_cover.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/kingpin-status/1213153571?uo=4",
+  "genre": "West Coast Rap",
+  "tracks": [
+   {
+    "name": "Qp'z to Keyz (feat. Money B)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/33/19/8e/33198e7f-1f33-7d94-36c9-015236e12373/mzaf_2919501512444237994.plus.aac.p.m4a"
+   },
+   {
+    "name": "Popz Struggle",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/47/ac/0c/47ac0c1f-1380-17cb-bc00-9c9b1e1e8d04/mzaf_9209818137708329341.plus.aac.p.m4a"
+   },
+   {
+    "name": "Make a Wish (feat. Mack C)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview91/v4/a0/12/b0/a012b083-8f7d-1407-5b4b-6cdbe7833b1c/mzaf_6298420200497873678.plus.aac.p.m4a"
+   },
+   {
+    "name": "Act a Fool",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/b0/6f/06/b06f064b-c617-590f-d49b-a08e0e6901e1/mzaf_7533328116675106969.plus.aac.p.m4a"
+   },
+   {
+    "name": "44 Maggie (feat. Spice 1 & Taydatay)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/ed/bf/ab/edbfabd4-0367-8d19-ee27-fb9bb0f3c254/mzaf_846760152163554708.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Urge",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/bb/78/1b/bb781b7e-f4f9-15fc-6253-9a19c97f0e8b/mzaf_1096675694059488709.plus.aac.p.m4a"
+   },
+   {
+    "name": "For All to See (feat. Del the Funky Homosapien & Jahfear)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/47/cb/74/47cb74a8-3f3e-6655-f76b-ed26990b1f0d/mzaf_772479820775380110.plus.aac.p.m4a"
+   },
+   {
+    "name": "Outta Control",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/2e/b8/29/2eb829a0-e2ca-84b9-6c68-ae47f4442ddc/mzaf_200803521255892299.plus.aac.p.m4a"
+   },
+   {
+    "name": "True Game (feat. Gnut)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/06/f1/55/06f15545-1bc6-15e6-9ba1-4aa12e9d9314/mzaf_5956413622186608535.plus.aac.p.m4a"
+   },
+   {
+    "name": "Slip or Survive",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/18/c1/bc/18c1bc21-cb03-16f7-8d40-6be27108eb60/mzaf_2172455133738283950.plus.aac.p.m4a"
+   },
+   {
+    "name": "Kingpin Stats (feat. Vickia)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/9a/9a/f0/9a9af02e-f1fb-a197-dde1-cd6c2b773d83/mzaf_3879042664260475030.plus.aac.p.m4a"
+   },
+   {
+    "name": "Murder Stance (feat. 187 FAC)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/72/8a/19/728a1953-affc-1457-1737-feecf89f48fa/mzaf_2041942176864391135.plus.aac.p.m4a"
+   },
+   {
+    "name": "28 Out the Bag",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/c6/13/c0/c613c02c-c218-b6d4-8301-49cce8f3c00b/mzaf_272487590742759301.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pz & Downz (feat. Taydatay)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview111/v4/cb/b8/c9/cbb8c9d7-dbed-6adc-09c0-a0724893402e/mzaf_5095671917221016153.plus.aac.p.m4a"
    }
   ]
  },
@@ -11636,6 +11758,61 @@ const ENRICH = {
    }
   ]
  },
+ "2-Def|Str-8 Doin Tha Fool": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/7b/82/02/mzi.zxhqbsfr.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/str-8-doin-tha-fool/192454406?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/cb/71/d7/cb71d73d-940c-8399-9100-30a46cd60234/mzaf_12927476712630840286.plus.aac.p.m4a"
+   },
+   {
+    "name": "I'm In That World",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/69/43/ee/6943ee7e-5b25-3c6c-3d6b-1ce50cc1bcbf/mzaf_1027187681580806827.plus.aac.p.m4a"
+   },
+   {
+    "name": "Creep-N-Slide",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/78/da/5b/mzm.yhpdqwyg.aac.p.m4a"
+   },
+   {
+    "name": "There's So Many Thangs",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ec/a6/8d/mzm.dquvqawj.aac.p.m4a"
+   },
+   {
+    "name": "F**k Them Haters",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/c9/49/28/c9492840-324f-b268-a7a5-c4cd8c683302/mzaf_5753477211751323462.plus.aac.p.m4a"
+   },
+   {
+    "name": "Tha Game",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/e5/34/b4/mzm.gmazkbkt.aac.p.m4a"
+   },
+   {
+    "name": "Str8 Doin Tha Fool",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f0/60/bf/mzm.zskdqmro.aac.p.m4a"
+   },
+   {
+    "name": "We Party",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/9d/03/92/mzm.nryxqovm.aac.p.m4a"
+   },
+   {
+    "name": "Real N's Don't Luv H's",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/51/d8/68/mzm.tgsuukpl.aac.p.m4a"
+   },
+   {
+    "name": "If U Wanna Piece",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/35/75/e6/3575e6d4-b937-bb22-43b0-a3e472d3bf4f/mzaf_4203102384015171985.plus.aac.p.m4a"
+   },
+   {
+    "name": "Can I Get My Freak On",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/4d/23/f6/mzm.hawyqrdh.aac.p.m4a"
+   },
+   {
+    "name": "Gettin Down 4 Mine",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/c8/6d/60/mzm.glknngsn.aac.p.m4a"
+   }
+  ]
+ },
  "UGK|Too Hard to Swallow": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/39/ef/0039ef78-12fc-9992-95c8-5cb8cbd9af45/mzi.cbiquvfn.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/too-hard-to-swallow/304746993?uo=4",
@@ -12730,6 +12907,124 @@ const ENRICH = {
    {
     "name": "Middle Of The Night",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/95/da/95/95da95ea-9bde-bc6c-db90-397212b8157d/mzaf_16579619871592721832.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Gangsta Pat|Homicidal Lifestyle": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/2c/d0/9e/mzi.mtkiwutb.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/homicidal-lifestyle/416879047?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Instructions",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c1/a5/b8/c1a5b85c-8a9c-25e9-9592-f52687fc7553/mzaf_6676589235891431067.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Wanna Smoke (Remix)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ae/32/fd/ae32fd00-1776-7bf1-d11a-084d378a78c5/mzaf_13693942222720878647.plus.aac.p.m4a"
+   },
+   {
+    "name": "Killa (Skit)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e7/fb/09/e7fb0982-909f-2e3e-f5cb-99ae9f2f60c7/mzaf_17947838342826991918.plus.aac.p.m4a"
+   },
+   {
+    "name": "Empty tha Clip",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/3e/99/12/3e9912c8-9c33-8709-f608-b9efe4a6ebaa/mzaf_16720431625743151630.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bodies on My 9",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/1c/c1/5a/1cc15ac8-ee63-b8e3-0f55-61c8fdcbf4c3/mzaf_2013113636101344584.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dead Presidents",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8d/d1/ab/8dd1ab31-bf6f-67f4-aa6e-98ed7b217734/mzaf_9263671249708500829.plus.aac.p.m4a"
+   },
+   {
+    "name": "Blunted Up (Skit)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ef/ba/54/efba5441-b98c-d9c5-ef8c-1f51b6270113/mzaf_15908321615797977987.plus.aac.p.m4a"
+   },
+   {
+    "name": "Homicidal Lifestyle",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/57/1a/14/571a14e6-2918-8508-664c-00c558a7fa3d/mzaf_11262075364229302316.plus.aac.p.m4a"
+   },
+   {
+    "name": "Deadly Verses '97",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6a/d6/8c/6ad68c38-de75-057f-d3d4-5c1b1afa832e/mzaf_3865472594913369856.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Wanna Smoke",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/56/6d/b4/566db4d3-b6b0-3cee-bfc0-92ada3a2f197/mzaf_4679094172121875053.plus.aac.p.m4a"
+   },
+   {
+    "name": "Murder",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d0/33/b6/d033b6bd-9fe5-c5c8-f719-3dbde58d601e/mzaf_12617820747829601529.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Gangsta Pat|The Story of My Life": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/94/38/24/mzi.byiqnyuz.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/the-story-of-my-life/252459645?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "No Sympathy",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/bf/8a/2e/bf8a2e72-1029-65c0-35b5-8372d6d8be26/mzaf_12068889208277316700.plus.aac.p.m4a"
+   },
+   {
+    "name": "Sittin On Tha Porch",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/20/d3/77/20d377ff-8b05-1381-e7af-7a217fd628a4/mzaf_15317724691563841255.plus.aac.p.m4a"
+   },
+   {
+    "name": "Droppin' Bombs",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/b5/73/8cb57326-c35a-7db8-59a6-9e6eed4e0ba8/mzaf_283092839023399782.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mind On My Money",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d6/0a/bc/d60abc4e-9a0a-15ec-340a-aad040f002a8/mzaf_12261982383911439267.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mad World",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b6/ad/ce/b6adce32-c3ed-7ee7-bb91-22735ae10681/mzaf_15808030596664356241.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Story of My Life",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/7f/f4/59/7ff459b5-976e-05e3-e681-25301748a3e0/mzaf_1638609312728913574.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Wanna Smoke (Part III)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/00/af/e8/00afe8f0-4b86-e60a-7cd7-5edf9f907c28/mzaf_9768289872722937794.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bloody Murder",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/82/90/5d/82905d09-b26c-9aa3-4a52-4e2d3b58e7af/mzaf_5592820409142303885.plus.aac.p.m4a"
+   },
+   {
+    "name": "Back & Forth",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2f/b5/ae/2fb5ae84-ffcd-b017-5521-08c1a9a61449/mzaf_13568389358673065191.plus.aac.p.m4a"
+   },
+   {
+    "name": "Keep It Real",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b7/90/9c/b7909c6a-98f0-233e-c5cd-619123246c5d/mzaf_10006274938739567305.plus.aac.p.m4a"
+   },
+   {
+    "name": "Untouchable",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d6/a8/e1/d6a8e1f2-8492-0c86-2d66-45e21a238a19/mzaf_9844493357402659562.plus.aac.p.m4a"
+   },
+   {
+    "name": "G's Ain't Suppose to Cry",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/5e/d9/6a/5ed96a26-0eeb-bc69-1263-6527ba39419e/mzaf_14315258806228535637.plus.aac.p.m4a"
+   },
+   {
+    "name": "Death B-4 Dishonesty",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8f/21/7c/8f217c75-6027-ef55-78a4-5a997eb16e65/mzaf_7119556030370732371.plus.aac.p.m4a"
+   },
+   {
+    "name": "God Is Real",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/a4/44/0a/a4440a07-581c-d177-6825-5a22e9f6a51b/mzaf_7322944022732171789.plus.aac.p.m4a"
+   },
+   {
+    "name": "Real N****s Toat Glocks",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/54/0b/5f/540b5fd9-88dc-b45b-261d-e9176c697c35/mzaf_1936667644228535895.plus.aac.p.m4a"
    }
   ]
  },
@@ -14167,6 +14462,172 @@ const ENRICH = {
    {
     "name": "Bang Bang",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/aa/20/e3/aa20e3ea-d45d-a654-984a-49211fc46434/mzaf_6956076981341923969.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Mia X|Unlady Like": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/be/30/25/be30250c-03c2-b7a1-7285-c0bbbf88defe/05099962636353.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/unlady-like/713538574?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "You Don't Wanna Go 2 War",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/a3/10/ad/a310ad61-ff44-52cc-f141-0d2f5a5224ad/mzaf_5838278184282074592.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Party Don't Stop",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/66/e2/8f/66e28fa6-f9af-9ed6-9a9c-fb52c19acace/mzaf_8504342591597049607.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Pitty U",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8c/e2/ce/8ce2ce1f-3a3f-be16-54bd-629e72d47b8e/mzaf_18372063392402863433.plus.aac.p.m4a"
+   },
+   {
+    "name": "Who Got The Clout",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/5e/24/ed/5e24ed46-32b0-4357-5931-96dcdab24d40/mzaf_11392979977916009655.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ain't 2 Be Played Wit",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/bc/f3/1e/bcf31e67-e157-c5c3-ceaa-5a9a09ac56dd/mzaf_625281661003159556.plus.aac.p.m4a"
+   },
+   {
+    "name": "Unladylike",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/4b/f8/22/4bf82280-2662-5eb1-260b-3f4ed0a0f26c/mzaf_2851916259008801388.plus.aac.p.m4a"
+   },
+   {
+    "name": "Intro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c9/63/ef/c963eff8-f1d8-8574-9ac2-e4b256a08d27/mzaf_3865024780422940095.plus.aac.p.m4a"
+   },
+   {
+    "name": "I'll Take Ya Man '97",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/85/62/d7/8562d75e-b63f-2cf9-b9f6-4db9eba106b5/mzaf_16772393498784728603.plus.aac.p.m4a"
+   },
+   {
+    "name": "Let's Get It Straight",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3e/5b/d5/3e5bd5dc-cf13-d724-f8b4-ba5aff89b411/mzaf_13746505598024332284.plus.aac.p.m4a"
+   },
+   {
+    "name": "4Ever Tru",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/64/84/32/64843284-6290-43d7-748b-646175d3ebab/mzaf_16653959958358780968.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bring Da Drama",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6e/2f/ae/6e2faeb8-b0fd-777d-ee89-f1c83a5a7d00/mzaf_7784795293358074740.plus.aac.p.m4a"
+   },
+   {
+    "name": "All N's",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/a6/cf/67/a6cf67e4-8429-6b82-3148-8a975304f60b/mzaf_178098386222170016.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mama's Family",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2e/28/39/2e283944-cd8b-0e32-26e7-71a3fcb67c89/mzaf_1581446179425530845.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Don't Know Why",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/88/74/6e/88746e42-5c22-a458-8cdb-16b5f7f217f7/mzaf_17197114667461188678.plus.aac.p.m4a"
+   },
+   {
+    "name": "Hoodlum Poetry",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b4/e7/86/b4e78621-e8a9-4386-e84a-343e802e6d24/mzaf_17721869985382937993.plus.aac.p.m4a"
+   },
+   {
+    "name": "Rainy Dayz",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/15/13/c2/1513c29d-6900-8792-736a-6a00bdc6d844/mzaf_4435477162525614049.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mommie's Angels",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/44/4f/06/444f06d6-abc9-eeac-50e3-dcf9af93406b/mzaf_10578389935813421041.plus.aac.p.m4a"
+   },
+   {
+    "name": "You & Me",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/4e/fe/80/4efe8018-1373-a99f-01d5-aa118d4e1de9/mzaf_14679019056653403445.plus.aac.p.m4a"
+   },
+   {
+    "name": "RIP Jil",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/9d/76/a9/9d76a9da-f5ee-0903-cc96-8ce93156499f/mzaf_13826921884293697366.plus.aac.p.m4a"
+   },
+   {
+    "name": "Thank You",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/06/0d/40/060d4096-105f-e38b-bb6c-f67c601921aa/mzaf_15296450863048882775.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Mr. Serv-On|Life Insurance": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c0/b9/3e/c0b93e58-3e1c-e45b-3c7d-51ab4d06cb53/cover_4062851226578.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/life-insurance/1859922683?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Lets Get It Started (feat. Mia X, Master P & Silkk the Shocker)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a9/80/0d/a9800d8f-3e8e-cddf-50d9-15b7efd0e991/mzaf_14569246535245865708.plus.aac.p.m4a"
+   },
+   {
+    "name": "My Best Friend (feat. Master P)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/f7/a6/1d/f7a61d6c-1ddf-4358-968b-665d73e05365/mzaf_14735428950541012642.plus.aac.p.m4a"
+   },
+   {
+    "name": "Head & Shoulders (feat. Silkk the Shocker & Mia X)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/66/89/09/668909e2-9423-5696-a28e-33f72330bce1/mzaf_7304523021336922007.plus.aac.p.m4a"
+   },
+   {
+    "name": "Heaven Is so Close (feat. Master P, Silkk the Shocker & Kenya Miller)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7a/c4/8d/7ac48d92-cd4b-bc26-b32e-b84a5d31eaf3/mzaf_9956499668378834915.plus.aac.p.m4a"
+   },
+   {
+    "name": "It's Real (feat. Master P & Brotha Lynch Hung)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/06/58/21/065821e2-74a3-f741-4466-d69f775e1c4d/mzaf_17818192302491481013.plus.aac.p.m4a"
+   },
+   {
+    "name": "P Dreams (feat. Odell)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c1/e6/19/c1e61982-8155-250b-b526-6ea137c8959f/mzaf_5403655484560864291.plus.aac.p.m4a"
+   },
+   {
+    "name": "Die Rich (feat. Prime Suspects, Mac & Gambino Family)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/15/0f/9d/150f9d51-74e0-36d2-2d4d-d97487817b08/mzaf_9062391759796613326.plus.aac.p.m4a"
+   },
+   {
+    "name": "Who Raised Me (feat. Fiend)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/74/40/d1/7440d1b9-faf0-c822-7f83-8464c05d89a1/mzaf_13807371798629445629.plus.aac.p.m4a"
+   },
+   {
+    "name": "You Know I Would (feat. Mia X)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a6/e9/f4/a6e9f432-9e72-cf83-0089-524e2ed190fc/mzaf_12956438029026597830.plus.aac.p.m4a"
+   },
+   {
+    "name": "Hustlin (feat. Master P & Mystikal)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/37/c4/f3/37c4f311-ebb4-9b3b-5221-0e0a28299eed/mzaf_13358452887554746917.plus.aac.p.m4a"
+   },
+   {
+    "name": "Cemetery Made (feat. C-Murder)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/96/c8/66/96c8667f-6c4d-be27-7ad6-6bfa7bdb6620/mzaf_18025831864345115488.plus.aac.p.m4a"
+   },
+   {
+    "name": "5 Hollow Points (feat. Mia X, Fiend, Big Ed & Kane & Abel)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/63/dc/31/63dc3121-3cbf-1558-4f45-09d57e1de83a/mzaf_16884660719657398451.plus.aac.p.m4a"
+   },
+   {
+    "name": "Tryin' to Make It Out Da Ghetto (feat. Master P)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ab/cd/15/abcd151d-f284-828f-39b6-bdd4421e05a6/mzaf_17451865661617001710.plus.aac.p.m4a"
+   },
+   {
+    "name": "Time To Check My Fetty (feat. Master P)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e6/77/ed/e677edfc-5608-928d-760e-cdb92d124bbe/mzaf_9607241878828480954.plus.aac.p.m4a"
+   },
+   {
+    "name": "Affiliated",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b4/3e/d4/b43ed4ed-f2e4-c942-29ac-cdd07a69d681/mzaf_1432980124661164814.plus.aac.p.m4a"
+   },
+   {
+    "name": "Throw Ya City Up",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/80/1d/c8/801dc825-af54-2340-eb2c-a0dc61023ab3/mzaf_13437765239462106482.plus.aac.p.m4a"
+   },
+   {
+    "name": "We Ain't The Same",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/81/27/93/81279361-845e-76cc-1152-1c45d95a8f36/mzaf_17734977524458584156.plus.aac.p.m4a"
+   },
+   {
+    "name": "Last Wordz (feat. Mia X)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/27/87/bd/2787bd27-9489-db6a-5840-e327e2a1dfa1/mzaf_7692446205796983263.plus.aac.p.m4a"
    }
   ]
  },
@@ -16202,6 +16663,235 @@ const ENRICH = {
    {
     "name": "The S.F.C.",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview62/v4/66/da/00/66da00ae-73b5-b642-2751-d74acdf65128/mzaf_8975132565974421160.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Pho Balo|The Chosen Few": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/36/33/48/mzi.iapqqoxq.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/the-chosen-few/371979609?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro Featuring (feat. Mr. Laid)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/99/03/b0/mzm.tckeygxd.aac.p.m4a"
+   },
+   {
+    "name": "Real N****z (feat. U.D.I)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/19/a5/6a/19a56aec-1f3e-b6d6-1789-cae96aa0b362/mzaf_3350950727677361530.plus.aac.p.m4a"
+   },
+   {
+    "name": "Tint of My Shades (feat. Big Kev & Crista)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/7a/75/e5/mzm.lvbszqpw.aac.p.m4a"
+   },
+   {
+    "name": "Late Night Shift",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/d8/ea/10/mzm.rawtshul.aac.p.m4a"
+   },
+   {
+    "name": "Thanx To the Grind (feat. Nate)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/fd/a0/3a/mzm.hmldcrca.aac.p.m4a"
+   },
+   {
+    "name": "Strapped (feat. Big Kev)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/09/fc/15/mzm.azuewtey.aac.p.m4a"
+   },
+   {
+    "name": "Drastic Time (feat. Nate & Michelle)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/cf/10/66/mzm.ksoitwyl.aac.p.m4a"
+   },
+   {
+    "name": "I'm A Make It",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f7/4e/db/mzm.sgibrcvn.aac.p.m4a"
+   },
+   {
+    "name": "Stay Real",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/5b/28/18/mzm.ifofwmqm.aac.p.m4a"
+   },
+   {
+    "name": "Trapped",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/2b/13/fe/2b13fea4-9961-755f-976f-4d079acad956/mzaf_6584108058784390102.plus.aac.p.m4a"
+   },
+   {
+    "name": "Phobalo Funk",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/15/45/87/mzm.tjbnsjge.aac.p.m4a"
+   },
+   {
+    "name": "U.R. (feat. Pook)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/26/97/40/mzm.qkactdou.aac.p.m4a"
+   },
+   {
+    "name": "I think of the Past",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f5/d3/d1/mzm.hdowpqzj.aac.p.m4a"
+   },
+   {
+    "name": "A Chosen Few",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/9a/8b/5c/mzm.gonvjebc.aac.p.m4a"
+   },
+   {
+    "name": "Dank & Alize (feat. Ad Capone & Papoose)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/a4/d9/ef/mzm.wrnhtveu.aac.p.m4a"
+   },
+   {
+    "name": "Dogz & Catz",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/37/ca/46/mzm.dnctdins.aac.p.m4a"
+   },
+   {
+    "name": "Cold World",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/30/a6/e7/mzm.zfnpqlft.aac.p.m4a"
+   },
+   {
+    "name": "Strapped Remix (feat. Race)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/8f/60/39/mzm.ohjsmtst.aac.p.m4a"
+   }
+  ]
+ },
+ "Dush Tray|The Coldest": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/d9/fe/90/mzi.mkruoojj.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/the-coldest/318221937?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/99/f9/7a/99f97ad4-5e35-7fa6-e158-4a592c7197a5/mzaf_3620413010360044174.plus.aac.p.m4a"
+   },
+   {
+    "name": "Money By Any Means (Feat. Young Teak)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/41/62/b2/4162b289-62a9-15fa-7293-fa295c26482a/mzaf_9900758207134737056.plus.aac.p.m4a"
+   },
+   {
+    "name": "Separate Yours from Mine (Feat. Nomad & Scoop)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/37/d3/1b/37d31b17-6c2a-08b6-b472-2f154b43e7a7/mzaf_16316473499316799349.plus.aac.p.m4a"
+   },
+   {
+    "name": "Mr. Curiosity (Feat. Cloud Nine)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/3c/40/41/3c40410c-d06c-e191-ba2e-e4051f530dd6/mzaf_6546692060987810774.plus.aac.p.m4a"
+   },
+   {
+    "name": "Caught Up",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/d7/65/93/d7659375-612e-1186-4515-97757597e057/mzaf_4548836241040869287.plus.aac.p.m4a"
+   },
+   {
+    "name": "No Matter What It Takes (Feat. L-Man & Baby Menace)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/d2/df/29/d2df29ad-61b8-0761-6951-96647602c99a/mzaf_4119502700895010327.plus.aac.p.m4a"
+   },
+   {
+    "name": "Coldest (Feat. L-Man & Baby Menace)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/0c/7e/3f/0c7e3f12-edae-80ba-49d6-9263c2a87bb1/mzaf_17490571467332260724.plus.aac.p.m4a"
+   },
+   {
+    "name": "Lett'em Know (Feat. Big Vic)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/67/1d/91/671d917f-e9b4-6f57-6a70-e4602ebdf7fe/mzaf_4686141141531176532.plus.aac.p.m4a"
+   },
+   {
+    "name": "Gettin' Thick",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/14/c2/47/14c2478c-5f9a-b6f9-184d-424639bf459c/mzaf_7586571658943026288.plus.aac.p.m4a"
+   },
+   {
+    "name": "Climbing to the Top (Feat. Diamond-D)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/a2/ae/12/a2ae1217-06c8-a5fb-e060-757b1cae6c6b/mzaf_8181957165809182310.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bad News (Feat. 11/5)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/bc/e9/ab/bce9ab88-e2fe-72ca-b192-87a2e65de3f7/mzaf_1195135240127577038.plus.aac.p.m4a"
+   },
+   {
+    "name": "Get'cha Money",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/ef/28/0b/ef280b18-c095-55d2-8a99-db04b24709ff/mzaf_8032000693160903376.plus.aac.p.m4a"
+   },
+   {
+    "name": "Tro (Big Luck & Killa)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/97/9d/4d/979d4d5a-d354-cd83-bbf1-c5d18b520a34/mzaf_6122344604566368381.plus.aac.p.m4a"
+   },
+   {
+    "name": "Everyday Life (Feat. Big Luck, Cig & Nomad)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/a5/db/1a/a5db1a53-c11c-d4c4-1077-ffda88410208/mzaf_4726887772717270799.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Rappin' 4-Tay|4 Tha Hard Way": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music7/v4/80/65/41/80654101-ae51-c2af-8568-03f7472181b0/724385711725_cover.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/4-tha-hard-way/996693258?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Playaz Dedication",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f0/e9/42/f0e9423c-3159-19bd-4458-33cf31c739bc/mzaf_4443171353857057470.plus.aac.p.m4a"
+   },
+   {
+    "name": "One Nite",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e7/60/95/e7609585-9920-9e11-d278-db425dae1314/mzaf_960345179407467257.plus.aac.p.m4a"
+   },
+   {
+    "name": "Beats 4 Sale (Comm. Short)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/a4/26/60/a42660c0-7d0e-372c-5085-2f27283ddc72/mzaf_2860362930595972772.plus.aac.p.m4a"
+   },
+   {
+    "name": "What's Wrong Wit the Game (feat. E-40)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b6/e8/66/b6e86604-0d8d-d0cf-98a9-f42c7a6148f1/mzaf_12875590287057427281.plus.aac.p.m4a"
+   },
+   {
+    "name": "Money Makes the Man (feat. J. Mess & Sauce)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/97/fd/fe/97fdfe19-c912-f90d-f80c-e5b8f0c346fd/mzaf_11575086452432543768.plus.aac.p.m4a"
+   },
+   {
+    "name": "Where You Playin' At",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/cc/ed/7f/cced7f54-bceb-427e-a86d-139df2520445/mzaf_2588517320982012298.plus.aac.p.m4a"
+   },
+   {
+    "name": "Cold Blooded (feat. Rick James)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2c/58/c4/2c58c462-3549-2cca-dd6a-2dc63d04f650/mzaf_15871073221595717961.plus.aac.p.m4a"
+   },
+   {
+    "name": "Just Came Up (Comm. Short)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music1/v4/37/c4/f9/37c4f980-9f6e-039a-21cf-a663fe7e3c39/mzaf_8435322171757574699.plus.aac.p.m4a"
+   },
+   {
+    "name": "Back At Cha",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/58/ba/a5/58baa5e4-f3c8-02a5-3387-b1b342e54dc7/mzaf_5364657020453385137.plus.aac.p.m4a"
+   },
+   {
+    "name": "Playa 4 Life (feat. Master P)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/80/71/50/80715048-1a7b-7621-c084-2300bd587699/mzaf_630332561635297465.plus.aac.p.m4a"
+   },
+   {
+    "name": "What Fo'",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/50/36/f6/5036f6d4-7add-72d8-785d-f83c5321951b/mzaf_14612194932880482742.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ain't Nobody Coachin' (feat. Franky J)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/58/5b/10/585b1078-3051-cb12-a25f-c2cab024f6d6/mzaf_8063354026111149480.plus.aac.p.m4a"
+   },
+   {
+    "name": "Brin' the Beat Back (feat. Lil' Fly)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8e/14/e2/8e14e2ca-88d0-7f4d-ebb5-e11aa0868802/mzaf_9554185512774372113.plus.aac.p.m4a"
+   },
+   {
+    "name": "Lay Ya Gunz Down",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d3/29/2e/d3292eb5-84d4-7b8f-00d1-40bdbb0d880f/mzaf_13197931675583846053.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Biggie (Comm. Short)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music1/v4/69/f7/c1/69f7c175-cd42-8038-6b77-d24176ab432c/mzaf_9081854361505519533.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Biggie (feat. ScrewFace)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8b/09/ce/8b09ce47-ff92-88d1-dca5-b09d59905f23/mzaf_1087983386767548033.plus.aac.p.m4a"
+   },
+   {
+    "name": "Shake It (feat. Conscious Daughters)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c1/33/84/c1338491-2fda-5ee0-4f54-f9892b9516bb/mzaf_15090429172417140827.plus.aac.p.m4a"
+   },
+   {
+    "name": "Elements of Surprize (feat. San Quinn & Messy Marv)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/29/63/43/29634395-b43a-4d65-ae5f-37d67b347e5d/mzaf_3725628935580224815.plus.aac.p.m4a"
+   },
+   {
+    "name": "Thinking About You (feat. C.D.)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f0/ea/0d/f0ea0d0d-970f-6f4c-8af6-30227e166e63/mzaf_3004310077975291376.plus.aac.p.m4a"
+   },
+   {
+    "name": "4 Tha Hard Way",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3c/ff/87/3cff87dd-53a6-67a5-396a-1b751cf35b1b/mzaf_4807430677442700244.plus.aac.p.m4a"
    }
   ]
  },
@@ -18287,6 +18977,140 @@ const ENRICH = {
    }
   ]
  },
+ "Pimpsta|South Side Soldiers": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/00/a3/5c/mzi.uekasnco.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/south-side-soldiers/266474060?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Texas Playas Ride Out",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/16/f6/7d/16f67d7c-25f8-35b4-eb5f-e24bb0118ea7/mzaf_10247727993796921666.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ranson Note",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/9d/31/89/9d31898c-ba9a-0a50-447c-a5c6944ff296/mzaf_17791825316727593695.plus.aac.p.m4a"
+   },
+   {
+    "name": "Seven Signs",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/60/bb/24/60bb24f3-838d-ec21-2859-cc32ecef9333/mzaf_248157637457808289.plus.aac.p.m4a"
+   },
+   {
+    "name": "Comin Up",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ee/31/dd/ee31dd19-0551-97a6-e35c-d605b65191c4/mzaf_5099015694103455052.plus.aac.p.m4a"
+   },
+   {
+    "name": "Professional Crack Slanga",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/50/ed/2a/50ed2ac2-3fdd-daed-898e-d7460a1cd33f/mzaf_12439143620096041014.plus.aac.p.m4a"
+   },
+   {
+    "name": "United We Stand",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2d/78/80/2d7880d3-a922-4d08-8779-6ad7121f6a17/mzaf_1132232441246049247.plus.aac.p.m4a"
+   },
+   {
+    "name": "Knockin On Heavens Door",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/8e/e0/e0/8ee0e0e4-9ae3-e5da-f522-2fe058adae18/mzaf_13547292777944081347.plus.aac.p.m4a"
+   },
+   {
+    "name": "Coward Hearted",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ee/9c/bc/mzm.alqnpzuc.aac.p.m4a"
+   },
+   {
+    "name": "Lord Can You Help Us",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/14/bb/8a/mzm.rdazqhho.aac.p.m4a"
+   },
+   {
+    "name": "South Side Soldier",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/72/fe/40/mzm.qadiaydu.aac.p.m4a"
+   },
+   {
+    "name": "You Say Yall Sum Gs",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f2/84/50/f2845098-8ab8-34f6-86ae-494cb2ff0312/mzaf_12442505994499313740.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dis 4 My N****s N Da Lacs",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/94/7b/a9/947ba903-62fe-b460-f492-38703096acd0/mzaf_3980621888585734589.plus.aac.p.m4a"
+   },
+   {
+    "name": "Makin Profit",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/5f/5f/5a/mzm.zzczxith.aac.p.m4a"
+   },
+   {
+    "name": "When Da Club Close",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/d3/95/0b/mzm.jhohgnno.aac.p.m4a"
+   },
+   {
+    "name": "Rollin On Them Thangs Screwed Out",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ba/0e/65/ba0e6563-86f9-fabe-8de9-ddb218b3c614/mzaf_14897410603920326729.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Point Blank|N-Tha-Do'": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/38/bf/64/38bf6491-7815-453c-9974-c29e6cb8fb11/700613839829_Cover.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/n-tha-do/1482701809?uo=4",
+  "genre": "Hip-Hop",
+  "tracks": [
+   {
+    "name": "Intro (feat. DJ Screw)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview113/v4/e0/4b/2c/e04b2ce0-b134-e1cf-0f38-5a57cbdde9ee/mzaf_18139636821040039655.plus.aac.p.m4a"
+   },
+   {
+    "name": "N-Tha-Do' (feat. AMP Camp)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/56/3a/e9/563ae910-fd4b-994f-c973-216e41a09f9b/mzaf_16964233440288064404.plus.aac.p.m4a"
+   },
+   {
+    "name": "Get Da Point",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c8/97/0e/c8970e36-5d39-49bf-903c-063e5e4eda4f/mzaf_13997716866354722516.plus.aac.p.m4a"
+   },
+   {
+    "name": "If the World Was (feat. H.A.W.K., Lil' Keke, Klondike Kat & DJ Screw)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview113/v4/27/9b/65/279b65a0-48ce-d675-29ac-f21333f2500a/mzaf_4919981020043682448.plus.aac.p.m4a"
+   },
+   {
+    "name": "It Don't Stop (feat. PSK-13)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/94/91/13/94911353-3f58-8bc3-d21b-6c6ccbe099c3/mzaf_5702779042693880848.plus.aac.p.m4a"
+   },
+   {
+    "name": "Steppin on My Toes",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview123/v4/7d/29/b9/7d29b9d7-4090-4a71-81d5-f7daf8356305/mzaf_2523996282972492549.plus.aac.p.m4a"
+   },
+   {
+    "name": "R U Ready to Die (feat. Ice Lord, QBoy, Willie D, Ganksta Nip & K-Rino)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/38/5a/5b/385a5bc0-fdd4-e161-70ff-870f5db32700/mzaf_17878167646494726144.plus.aac.p.m4a"
+   },
+   {
+    "name": "If There Only Was a Way",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview113/v4/01/04/4c/01044c8e-9346-e3aa-c073-18518ee44341/mzaf_12427429412090240060.plus.aac.p.m4a"
+   },
+   {
+    "name": "Session",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview123/v4/90/82/2c/90822c3f-258c-ed67-a4cf-f9ec4364becf/mzaf_9065647905539122894.plus.aac.p.m4a"
+   },
+   {
+    "name": "High with Tha Blanksta (feat. PSK-13 & DJ Screw)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview113/v4/ee/d3/3c/eed33cee-0677-f200-d33d-73f6e3abab34/mzaf_8629124420917280294.plus.aac.p.m4a"
+   },
+   {
+    "name": "Hood Stars (feat. Klondike Kat)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/67/2a/bc/672abc9c-befb-3abf-16d3-9ecc382314b5/mzaf_3520252481502413290.plus.aac.p.m4a"
+   },
+   {
+    "name": "Calling (feat. Wreckless Klan)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview113/v4/2c/3b/01/2c3b0104-1b79-a1b2-d429-a849e518a7df/mzaf_4734595019196718082.plus.aac.p.m4a"
+   },
+   {
+    "name": "We Both Came from Dust (feat. Dope E, K-Rino & Fesu)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview123/v4/74/71/9b/74719b4b-af1f-243f-f475-afe736b23d19/mzaf_17778921432425705367.plus.aac.p.m4a"
+   },
+   {
+    "name": "Small Town (feat. Ganksta Nip)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview113/v4/17/45/94/174594da-ed3c-6c11-b8bd-eddc3c7521e3/mzaf_11308479265013002235.plus.aac.p.m4a"
+   },
+   {
+    "name": "Outro (feat. 411)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview113/v4/ea/c6/d1/eac6d1c5-b4db-da87-4923-67cf8702df90/mzaf_18425007115199254134.plus.aac.p.m4a"
+   }
+  ]
+ },
  "Sir Mix-A-Lot|Swass": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b8/f0/24/b8f02422-bd03-7534-d931-86517de0ce22/00602537351251.rgb.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/swass/1440818261?uo=4",
@@ -19960,6 +20784,65 @@ const ENRICH = {
    }
   ]
  },
+ "MC Breed|Flatline": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/64/c3/55/mzi.qizhtgei.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/flatline/205987227?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Floatin Through the Cosmos",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8d/be/53/8dbe539a-1ce5-d874-9a2e-69580460ce0f/mzaf_18231825457302634338.plus.aac.p.m4a"
+   },
+   {
+    "name": "My Dove",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/3d/7d/ab/3d7dab90-48d0-c4cc-7ea0-3cd6f6a651d2/mzaf_16875854006291950421.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dreamin'",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/70/25/89/702589c0-cb9a-c430-3469-c304b4e96edd/mzaf_9127438631197483843.plus.aac.p.m4a"
+   },
+   {
+    "name": "Guerrilla Pimpin'",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b8/fa/00/b8fa0052-216b-a9a4-a326-a01bf9677fba/mzaf_17511220486574894260.plus.aac.p.m4a"
+   },
+   {
+    "name": "Rule #1",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d9/8f/92/d98f92f3-07d1-ad83-2a78-906efed5b377/mzaf_14829356480686362688.plus.aac.p.m4a"
+   },
+   {
+    "name": "Café Interlude",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/56/d0/70/56d0700f-78cc-cd6a-9c5b-637def169e18/mzaf_10986738114235393202.plus.aac.p.m4a"
+   },
+   {
+    "name": "Conclusions",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e9/51/53/e95153f4-d231-f5e5-2a83-2fb0efd59cc8/mzaf_13912260418371512179.plus.aac.p.m4a"
+   },
+   {
+    "name": "Lakeside 'Lude",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ec/20/85/ec20851a-511f-89c3-f33a-ace8061b78a1/mzaf_2280955336844492823.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dear Lord",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/09/88/e3/0988e382-f994-ddc8-c44a-efe5959a4dcd/mzaf_16578308663927602405.plus.aac.p.m4a"
+   },
+   {
+    "name": "Whatcha Mad At?",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/ca/72/4a/ca724a0b-55b9-e5bc-145f-67e3c8107a5e/mzaf_3906316071870432545.plus.aac.p.m4a"
+   },
+   {
+    "name": "Flatline",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/74/83/13/74831372-a774-e038-0fd5-31ea83e74c3f/mzaf_6347136921106546818.plus.aac.p.m4a"
+   },
+   {
+    "name": "Duece Shot",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/9e/8c/d8/9e8cd83c-9d59-4f40-92de-c866231196b3/mzaf_6358236980041396284.plus.aac.p.m4a"
+   },
+   {
+    "name": "Break of Dawn",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/a1/c1/ba/a1c1ba37-6772-de10-209b-a050abb6016c/mzaf_8756766522522884855.plus.aac.p.m4a"
+   }
+  ]
+ },
  "Racionais MC's|Holocausto Urbano": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/b4/76/da/b476dad4-0f34-0f52-4aed-c1737d3f1b25/0.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/holocausto-urbano-ep/1198320169?uo=4",
@@ -20791,6 +21674,81 @@ const ENRICH = {
    }
   ]
  },
+ "Trick Daddy|Based on a True Story": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/c2/6c/0b/mzi.nlpgbqov.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/based-on-a-true-story/258479568?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Based On a True Story, Pt. 1",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/05/29/4b/05294b18-afa8-65c7-6da5-4f86e7605418/mzaf_4421593800086232192.plus.aac.p.m4a"
+   },
+   {
+    "name": "Based On a True Story, Pt. 2",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/6d/ef/e1/6defe178-f902-f7f9-ad62-14c5914e7ad4/mzaf_3450845011915577278.plus.aac.p.m4a"
+   },
+   {
+    "name": "Oh Me, Oh My",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/06/09/19/060919cd-59a7-1b66-8a3e-1dc83cd88a88/mzaf_1892709085985175236.plus.aac.p.m4a"
+   },
+   {
+    "name": "'Bout a Lotta Thangs (feat. Buddy Roe)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/d3/62/d5/d362d58b-28ae-adf4-e8f5-314fb5a7c74d/mzaf_13167426342962361871.plus.aac.p.m4a"
+   },
+   {
+    "name": "They Don't Live Long",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/6b/1c/fa/6b1cfa0c-bdd6-b710-9a19-6b2bafd67b15/mzaf_5172939803502478845.plus.aac.p.m4a"
+   },
+   {
+    "name": "Kill-A-Head",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/83/0c/78/830c782f-2335-fd62-66a5-2cc4b2f27f82/mzaf_9201241255883318944.plus.aac.p.m4a"
+   },
+   {
+    "name": "Now They Wanna Holler",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/4f/73/71/4f737117-bef0-42fe-db4a-ec0d47e43b30/mzaf_7407667281506409270.plus.aac.p.m4a"
+   },
+   {
+    "name": "Going Down Like That",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/2d/aa/9c/2daa9cfa-2c26-687f-d178-a6f5eb1df247/mzaf_10069330627366922561.plus.aac.p.m4a"
+   },
+   {
+    "name": "Snowin' In Miami (feat. Jamal)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/4b/aa/17/4baa176d-79e4-6f6b-862f-4e25e8ac0dbb/mzaf_8934911595971664878.plus.aac.p.m4a"
+   },
+   {
+    "name": "Smoke Out (feat. J.T. Money)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/fa/4f/13/fa4f132d-2939-80a5-34f1-805a056048bb/mzaf_1592817280043375386.plus.aac.p.m4a"
+   },
+   {
+    "name": "I'll Be Your Player",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/7f/95/d2/7f95d2d2-53c9-966b-0823-f315bb2510ad/mzaf_1161729466401284905.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Got Plans (feat. Buddy Roe)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ce/01/c7/ce01c710-0d9d-57e5-c37a-0f6a2ba9bcfd/mzaf_4059628644835567773.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pimp (feat. Buddy Roe & J.T. Money)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/b2/a1/a3/b2a1a35e-f80b-bbd9-af75-23eea0061ccb/mzaf_15839405143439159614.plus.aac.p.m4a"
+   },
+   {
+    "name": "Telephone Skit",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/a9/7e/97/a97e97c1-8dc6-0a86-a2d3-d9afdc16d92d/mzaf_1603578821841866432.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ho But You Can't Help It (feat. Buddy Roe)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/e9/21/ee/e921eee3-b7c3-adab-9168-587103b35037/mzaf_2613618450576005493.plus.aac.p.m4a"
+   },
+   {
+    "name": "Gone With Your Bad Self",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/c1/12/dc/c112dc4f-2b96-4fa5-d3b6-b5b0bb0e580b/mzaf_1050337132390148310.plus.aac.p.m4a"
+   },
+   {
+    "name": "Gone With Your Bad Self (Bom Bom Mix)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/00/9e/e0/009ee0ef-a5c9-bf7c-235a-8ad2c09a19a3/mzaf_6159435233619747535.plus.aac.p.m4a"
+   }
+  ]
+ },
  "Naughty By Nature|19 Naughty III": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/26/56/6e/26566ee4-d5de-e236-06f0-c50e02923d1b/081227922061.png/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/19naughtyiii/1604622949?uo=4",
@@ -21233,6 +22191,69 @@ const ENRICH = {
    {
     "name": "Indoja",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/fb/0b/8f/fb0b8fae-6b49-6929-669d-1635835794ca/mzaf_14855255118073479299.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "C.O.P.S.|On Location": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/84/53/12/845312db-d1b3-920b-5c0c-9ec0eb35f54e/756962839621.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/on-location/1537840794?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Busta Ass N****s (Fly High)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/57/f2/29/57f229a8-d94f-e831-a31b-25f89a327b33/mzaf_7093407614435418960.plus.aac.p.m4a"
+   },
+   {
+    "name": "Loc N' Up",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/75/72/2b/75722b17-0bd3-9b76-9a5c-50ce442dfebd/mzaf_18231043825056319834.plus.aac.p.m4a"
+   },
+   {
+    "name": "West Coast Swang",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/c5/57/ba/c557ba28-58a2-c9c6-427c-91cf6867efa5/mzaf_2121636380250644829.plus.aac.p.m4a"
+   },
+   {
+    "name": "Livin N' Stockton (209)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/ad/cb/4d/adcb4dfd-afeb-5c18-c3ff-2b0f3481d909/mzaf_16151673149462908240.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dollameal $$",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/6d/d0/f3/6dd0f36f-1932-16d4-9b47-bba2fdf30692/mzaf_13228828362548941442.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pack Ya Straps",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/56/51/1f/56511f29-f802-f7f0-af95-ebd71afa3f7d/mzaf_960887135744970069.plus.aac.p.m4a"
+   },
+   {
+    "name": "High Siden (Remix)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/28/47/b9/2847b9bd-c04b-5101-d526-5e102572d6c7/mzaf_4873364376269296159.plus.aac.p.m4a"
+   },
+   {
+    "name": "F****n with a Criminal",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/de/63/c6/de63c692-0417-25e0-99b6-8e1a971670ac/mzaf_883161520070984971.plus.aac.p.m4a"
+   },
+   {
+    "name": "How a Gangsta Do It",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/5a/90/91/5a909154-3774-c9d1-ce0c-5793ba29e8ae/mzaf_481934791103569949.plus.aac.p.m4a"
+   },
+   {
+    "name": "Deep N' Side",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/10/b2/9f/10b29fad-1957-cfa8-9adf-040663dc5724/mzaf_5548962077127867826.plus.aac.p.m4a"
+   },
+   {
+    "name": "Motel 6Room9",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/a7/6e/da/a76eda01-a333-310f-9bf9-25e3ae45c9df/mzaf_4191930934510912086.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dank Call",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/94/26/bc/9426bc55-db26-2ade-a0ca-0480eff692ea/mzaf_515958413331959820.plus.aac.p.m4a"
+   },
+   {
+    "name": "Where the Hoe's At",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/44/1c/78/441c78fa-b2c5-5d7a-4eb1-70f91090faf6/mzaf_6003742522483426421.plus.aac.p.m4a"
+   },
+   {
+    "name": "Criminal (Outro)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/04/c5/e0/04c5e0d7-fd51-a466-5942-6032d0219ebc/mzaf_7588963560940001759.plus.aac.p.m4a"
    }
   ]
  },
