@@ -268,6 +268,28 @@ const UNCLASSIFIED_REGION = {
         discogsUrl: 'https://www.discogs.com/release/11783622', stampSeed: {} },
       { artist: 'Duballas', title: 'Straight Drop No Whip', year: 2000, label: 'Grade A Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11577959', stampSeed: {} },
+      { artist: 'Cypress Hill', title: '(2 In 1) Skull & Bones', year: 2000, label: 'Flower Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15279978', stampSeed: {} },
+      { artist: 'Misc?', title: 'In My City', year: 2000, label: 'UniQ Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1746132', stampSeed: {} },
+      { artist: 'First Degree', title: 'Paper Stacks', year: 2000, label: 'Poetic Playa Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8001853', stampSeed: {} },
+      { artist: 'UntouchAbles', title: 'Played By Hand', year: 2000, label: 'UNT Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4335915', stampSeed: {} },
+      { artist: 'Zeek', title: 'Survival', year: 2000, label: 'Come2gether Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10497402', stampSeed: {} },
+      { artist: 'Major Pain', title: 'In the Eye Of The Hurricane', year: 2000, label: 'H.B. Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15548352', stampSeed: {} },
+      { artist: 'Arson', title: 'The Album Burnin\' Da Streets', year: 2000, label: 'Sublevel Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11560328', stampSeed: {} },
+      { artist: 'Tommy Gun', title: 'Hustlers Prayers', year: 2000, label: 'Aries Music Entertainment Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11012709', stampSeed: {} },
+      { artist: 'No Love', title: 'Bringing The Heat', year: 2000, label: 'Mind Blowing Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11020353', stampSeed: {} },
+      { artist: 'Dino', title: 'New South Sensations', year: 2000, label: 'Gatlin Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12843956', stampSeed: {} },
+      { artist: 'Warpath', title: 'Tha Conduction', year: 2000, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12227842', stampSeed: {} },
   ],
 };
 
@@ -945,6 +967,8 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { artist: 'Rebel', title: 'Volume 1: One Deep', year: 2000, label: 'South World Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4798514', stampSeed: {} },
       { artist: 'Will-Lean', title: 'The Chemist', year: 2000, label: 'Big Shot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4911532', stampSeed: {} },
       { artist: 'Latin Embassy', title: 'Southside Vatos', year: 2000, label: 'Candy Coated Records', youtubeId: null,
@@ -1445,6 +1469,8 @@ const REGIONS = [
     id: 'neworleans', name: 'New Orleans', area: 'Louisiana',
     lng: -90.0715, lat: 29.9511,
     albums: [
+      { artist: 'Lyrical', title: 'Turning Point', year: 2000, label: 'Godfather Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8207992', stampSeed: {} },
       { artist: 'Black Menace', title: 'Mo Drama', year: 2000, label: 'The Menace Entertainment Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3850455', stampSeed: {} },
       { artist: '54th Platoon', title: 'Downtown Symphony (Now...Till Forever)', year: 2000, label: 'Fearless Entertainment', youtubeId: null,
@@ -1653,6 +1679,10 @@ const REGIONS = [
     id: 'sf', name: 'San Francisco', area: 'Hunters Point / Fillmore, CA',
     lng: -122.4194, lat: 37.7749,
     albums: [
+      { artist: 'JT The Bigga Figga', title: 'Puttin It On The Map', year: 2000, label: 'Get Low Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1837731', stampSeed: {} },
+      { artist: 'The Architect', title: 'The Foundation', year: 2000, label: 'Beat Down Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12377616', stampSeed: {} },
       { artist: 'RBL Posse', title: 'Bootlegs & Bay Shit - The Resume', year: 2000, label: 'The Rightway Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10295493', stampSeed: {} },
       { artist: 'Get Low Playaz', title: 'The Family Business', year: 2000, label: 'Get Low Recordz', youtubeId: null,
@@ -1829,6 +1859,8 @@ const REGIONS = [
     id: 'sacramento', name: 'Sacramento', area: 'California',
     lng: -121.4944, lat: 38.5816,
     albums: [
+      { artist: 'Blackmail', title: 'Risk Vs. Reward', year: 2000, label: 'Lunar Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15331870', stampSeed: {} },
       { artist: 'Luni Coleone', title: 'Total Recall', year: 2000, label: 'Ideal Music Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2662816', stampSeed: {} },
       { artist: 'Sac Sin', title: 'Point Blank Range Vol. II: Hate Me Now, Love Me Later', year: 2000, label: 'Diamond Life Recordz', youtubeId: null,
@@ -2050,6 +2082,8 @@ const REGIONS = [
     id: 'dallas', name: 'Dallas', area: 'Texas',
     lng: -96.7969, lat: 32.7763,
     albums: [
+      { artist: 'B.A.C.', title: 'Millenium Ballaz', year: 2000, label: 'Cla$$ified Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11783088', stampSeed: {} },
       { artist: 'Lil Wil', title: 'Lime Life Vol. 1', year: 2000, label: 'Def Click Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5302433', stampSeed: {} },
       { artist: 'DSC', title: 'Who U Thank It Be?', year: 2000, label: 'Grasshouse Muzic', youtubeId: null,
@@ -2270,6 +2304,8 @@ const REGIONS = [
     id: 'flint', name: 'Flint', area: 'Michigan',
     lng: -83.6875, lat: 43.0125,
     albums: [
+      { artist: 'Project Born', title: 'Jack The Reaper', year: 2000, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4778712', stampSeed: {} },
       { artist: 'MC Breed', title: '20 Below', year: 1992, label: 'Ichiban Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3778048', stampSeed: { funky: 26, bangin: 18, party: 14 } },
       { artist: 'Top Authority', title: "Somethin' to Blaze To", year: 1993, label: 'Trak Records', youtubeId: null,
@@ -2425,6 +2461,8 @@ const REGIONS = [
     id: 'chicago', name: 'Chicago', area: 'Illinois',
     lng: -87.6298, lat: 41.8781,
     albums: [
+      { artist: 'George Tha Jamma', title: 'Chi Bangin 2000', year: 2000, label: 'Chi Bangin Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10887415', stampSeed: {} },
       { artist: 'Qualo', title: 'Movementality', year: 2000, label: 'The Movement', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3436072', stampSeed: {} },
       { artist: 'Snypaz', title: 'Livin In The Scope', year: 2000, label: 'Rap-A-Lot Records', youtubeId: null,
@@ -2699,6 +2737,8 @@ const REGIONS = [
     id: 'kansascity', name: 'Kansas City', area: 'Missouri',
     lng: -94.5786, lat: 39.0997,
     albums: [
+      { artist: 'Clout Nine', title: 'G To The Game', year: 2000, label: 'Bomb-As Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8644914', stampSeed: {} },
       { artist: 'T-Wes', title: 'Up Close And Personal', year: 2000, label: 'Midwest Pyramid Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9556420', stampSeed: {} },
       { artist: 'Greedy', title: 'Million Dollar Game Plan', year: 2000, label: 'Thumbs Up Entertainment', youtubeId: null,
@@ -3021,6 +3061,8 @@ const REGIONS = [
     id: 'littlerock', name: 'Little Rock', area: 'Arkansas',
     lng: -92.2896, lat: 34.7465,
     albums: [
+      { artist: 'Major League', title: 'Out Tha Park', year: 2000, label: 'Major League Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3790750', stampSeed: {} },
       { artist: 'Playboy Shane', title: 'Mob Hits', year: 2000, label: 'Ball Hawg Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7245797', stampSeed: {} },
       { artist: 'JE', title: 'Welcome To Joker Entertainment', year: 2000, label: 'Joker Entertainment', youtubeId: null,
@@ -3063,6 +3105,8 @@ const REGIONS = [
     id: 'ocala', name: 'Ocala', area: 'Florida',
     lng: -82.1206, lat: 29.1872,
     albums: [
+      { artist: 'Strangers', title: 'Money & Power', year: 2000, label: 'Majorweight Hardmouth Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8627749', stampSeed: {} },
       { artist: 'Strangers', title: 'Respect It Or Check It', year: 2000, label: 'Majorweight Hardmouth Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10426072', stampSeed: {} },
     ],
@@ -3219,6 +3263,10 @@ const REGIONS = [
     id: 'sanjose', name: 'San Jose', area: 'California',
     lng: -121.8863, lat: 37.3382,
     albums: [
+      { artist: 'Slick', title: 'U Ain\'t Slick', year: 2000, label: 'Bodacious Creations', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11160740', stampSeed: {} },
+      { artist: 'Young Life', title: 'I\'m Heated', year: 2000, label: 'Noizemaka Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3992834', stampSeed: {} },
       { artist: 'KOD', title: 'The Outcome', year: 2000, label: 'Mischieph Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/31922227', stampSeed: {} },
     ],
@@ -3245,6 +3293,46 @@ const REGIONS = [
     albums: [
       { artist: 'SCO', title: 'Anotha Day, Anotha Dollar', year: 2000, label: 'Stayin Hi Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12288358', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'montgomery', name: 'Montgomery', area: 'Alabama',
+    lng: -86.3007, lat: 32.3792,
+    albums: [
+      { artist: 'Dirty', title: 'The Pimp & Da Gangsta', year: 2000, label: 'Nfinity Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11532800', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'deerfieldbeach', name: 'Deerfield Beach', area: 'Florida',
+    lng: -80.0998, lat: 26.3184,
+    albums: [
+      { artist: 'Cheeba', title: 'Concrete Jungle', year: 2000, label: 'Platinum Groove Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11212279', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'tulsa', name: 'Tulsa', area: 'Oklahoma',
+    lng: -95.9928, lat: 36.154,
+    albums: [
+      { artist: '9-Milla', title: 'Round Duice', year: 2000, label: 'In-Capp Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3096569', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'gulfport', name: 'Gulfport', area: 'Mississippi',
+    lng: -89.0928, lat: 30.3674,
+    albums: [
+      { artist: 'Sinical', title: 'Ghetto Scriptures', year: 2000, label: 'Road Over Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9013671', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'washingtondc', name: 'Washington', area: 'D.C.',
+    lng: -77.0369, lat: 38.9072,
+    albums: [
+      { artist: 'Pablo', title: 'Thicker Than Molasses', year: 2000, label: 'Soundproof Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12065315', stampSeed: {} },
     ],
   },
 ];
