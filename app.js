@@ -384,8 +384,9 @@ function refreshMarkers() {
     const size = 22 + Math.min(n, 6) * 5;
     el.style.width = el.style.height = `${size}px`;
     el.querySelector('.n').textContent = n || '';
-    // 未確認情報の置き場は0件でも常に見せる(まだ何も漂着していない、を示すため)
-    el.classList.toggle('dimmed', n === 0 && !r.unclassified);
+    // 0件の墓標は非表示(フィルター中に該当なしの地域も消える)。
+    // 未確認情報の置き場だけは0件でも常に見せる。
+    el.classList.toggle('hidden', n === 0 && !r.unclassified);
     el.classList.toggle('hit', shotRegions.has(r.id));
     el.title = `${r.name} — ${n}枚`;
   });

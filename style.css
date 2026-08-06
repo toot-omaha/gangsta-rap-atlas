@@ -150,6 +150,7 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
 }
 body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
 .marker.dimmed { opacity: .22; }
+.marker.hidden { display: none; }
 
 /* 一度撃った土地には弾痕が残る(墓石の背後) */
 .marker .bh {
