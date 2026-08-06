@@ -359,14 +359,14 @@ function albumCard(album) {
         <p class="t">${album.title}</p>
         <p class="a">${album.artist}</p>
         <p class="m">${album.year} / ${album.label} / ${album.format || 'CD'}</p>
+        <div class="album-actions">
+          <div class="fav-pair">
+            <button class="fav-btn have-btn${favsHave.has(albumKey(album)) ? ' on' : ''}" title="${t('have')}">${t('have')}</button>
+            <button class="fav-btn want-btn${favsWant.has(albumKey(album)) ? ' on' : ''}" title="${t('want')}">${t('want')}</button>
+          </div>
+          ${playBtnHtml}
+        </div>
       </div>
-    </div>
-    <div class="album-actions">
-      <div class="fav-pair">
-        <button class="fav-btn have-btn${favsHave.has(albumKey(album)) ? ' on' : ''}" title="${t('have')}">${t('have')}</button>
-        <button class="fav-btn want-btn${favsWant.has(albumKey(album)) ? ' on' : ''}" title="${t('want')}">${t('want')}</button>
-      </div>
-      ${playBtnHtml}
     </div>
     <div class="rarity">
       <span class="lab">${t('rarity')} ${r.stars}</span>
