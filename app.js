@@ -319,7 +319,7 @@ function renderList(region) {
   currentDisc = null;
   const list = albumsOf(region).slice().sort((a, b) => a.year - b.year);
   listEl.innerHTML = `
-    ${listHead(region.name, region.area, `${list.length} ${t('releases')}`)}
+    ${listHead(region.name, region.area, `${list.length} ${t('discs')}`)}
     <div class="grid"></div>`;
   listEl.querySelector('.close').addEventListener('click', closeList);
   const grid = listEl.querySelector('.grid');
@@ -344,6 +344,11 @@ function albumCard(album) {
     ? `<div class="album-art has-img"><img src="${art}" alt="${album.title}" loading="lazy"></div>`
     : `<div class="album-art"><span>${t('notOn')}</span></div>`;
 
+  const hasPreview = !!(e?.tracks || []).some((tr) => tr.preview);
+  const playBtnHtml = hasPreview
+    ? `<button class="play-btn" title="このディスクをキューに追加">▶</button>`
+    : '';
+
   card.innerHTML = `
     <div class="album-head">
       ${artHtml}
@@ -352,11 +357,13 @@ function albumCard(album) {
         <p class="a">${album.artist}</p>
         <p class="m">${album.year} / ${album.label} / ${album.format || 'CD'}</p>
       </div>
+    </div>
+    <div class="album-actions">
       <div class="fav-pair">
         <button class="fav-btn have-btn${favsHave.has(albumKey(album)) ? ' on' : ''}" title="${t('have')}">${t('have')}</button>
         <button class="fav-btn want-btn${favsWant.has(albumKey(album)) ? ' on' : ''}" title="${t('want')}">${t('want')}</button>
       </div>
-      <button class="play-btn" title="このディスクをキューに追加">▶</button>
+      ${playBtnHtml}
     </div>
     <div class="rarity">
       <span class="lab">${t('rarity')} ${r.stars}</span>
@@ -378,7 +385,7 @@ function albumCard(album) {
     renderDisc(album);
   });
 
-  card.querySelector('.play-btn').addEventListener('click', () => playAlbum(album));
+  card.querySelector('.play-btn')?.addEventListener('click', () => playAlbum(album));
   card.querySelector('.have-btn').addEventListener('click', () => {
     toggleFav(favsHave, albumKey(album)); updateFavCount(); rerender();
   });
@@ -678,10 +685,10 @@ function playAlbum(album, startIndex = 0) {
   const e = enrichOf(album);
   const art = artUrl(e, 100);
   if (e?.tracks?.length) {
-    queue = e.tracks.map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, art }));
+    queue = e.tracks.map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, art, album }));
     cursor = Math.min(startIndex, queue.length - 1);
   } else {
-    queue = [{ title: album.title, artist: album.artist, preview: null, art: null }];
+    queue = [{ title: album.title, artist: album.artist, preview: null, art: null, album }];
     cursor = 0;
   }
   playCurrent();
@@ -725,6 +732,10 @@ document.getElementById('prevBtn').addEventListener('click', prev);
 $play.addEventListener('click', () => {
   if (!queue[cursor]?.preview) return;
   audio.paused ? audio.play().catch(() => {}) : audio.pause();
+});
+document.querySelector('.player-now').addEventListener('click', () => {
+  const album = queue[cursor]?.album;
+  if (album) renderDisc(album);
 });
 document.getElementById('clearQueue').addEventListener('click', () => {
   queue = []; cursor = -1;

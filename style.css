@@ -237,7 +237,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 
 /* ---------- ディスク(1カード=CD1枚) ---------- */
 /* 画面幅に応じて段数が増える段組(開閉で高さが違ってもきれいに詰まる) */
-.grid { columns: 310px; column-gap: 14px; }
+.grid { columns: 350px; column-gap: 14px; }
 .album {
   border: 3px solid var(--ink); background: var(--paper);
   padding: 10px; box-shadow: 5px 5px 0 rgba(20,18,15,.3);
@@ -308,6 +308,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .album-info .t { margin: 0; font-size: 15px; font-weight: 900; line-height: 1.15; }
 .album-info .a { margin: 2px 0 0; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--red); text-transform: uppercase; }
 .album-info .m { margin: 3px 0 0; font-size: 10px; letter-spacing: .06em; color: var(--ink-2); }
+.album-actions { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
 .play-btn {
   flex: 0 0 auto; width: 30px; height: 30px; border: 2px solid var(--ink);
   background: var(--paper); cursor: pointer; font-size: 11px;
@@ -315,11 +316,11 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .play-btn:hover { background: var(--ink); color: var(--paper); }
 
 /* 持ってる/ほしい の2ボタン */
-.fav-pair { display: flex; flex-direction: column; gap: 3px; flex: 0 0 auto; }
+.fav-pair { display: flex; flex-direction: row; gap: 6px; flex: 0 0 auto; }
 .fav-btn {
   border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
   cursor: pointer; font-size: 9px; font-weight: 800; letter-spacing: .04em;
-  padding: 2px 6px; line-height: 1.3;
+  padding: 4px 8px; line-height: 1.3;
 }
 .fav-btn:hover { background: var(--ink); color: var(--paper); }
 .fav-btn.have-btn.on { background: var(--gold); border-color: var(--ink); color: var(--ink); }
@@ -394,7 +395,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   display: flex; align-items: center; gap: 18px; padding: 0 16px;
   background: var(--ink); color: var(--paper); border-top: 3px solid var(--red);
 }
-.player-now { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.player-now { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; cursor: pointer; }
 .player-art {
   width: 44px; height: 44px; flex: 0 0 auto; border: 2px solid var(--paper-2);
   display: grid; place-items: center; color: var(--paper-2);
@@ -438,7 +439,11 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   }
   .drawer-actions .fav-toggle { flex: 1; text-align: center; padding: 7px 10px; }
   #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 12px; }
-  .list-head h2 { font-size: 26px; }
+  .list-head { flex-wrap: wrap; row-gap: 2px; }
+  .list-head h2 { font-size: 26px; flex: 1 1 auto; }
+  .list-head .close { order: 1; }
+  .list-head .sub { order: 2; }
+  .list-head .cnt { order: 3; margin-left: auto; }
   .player-meta span, .player-queue .credit { display: none; }
   .player { gap: 10px; }
 }
