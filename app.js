@@ -261,22 +261,27 @@ async function pullFavSync(name) {
   return rows[0] || null;
 }
 
-// ページ読込時: 既にStreet Nameがあればサーバー側と突き合わせて自動で取り込む
+// ページ読込時: 既にStreet Nameがあればサーバー側の内容で置き換える
 // (プッシュは変更のたびに即時実行されるので、ここは主に「他端末での変更」を拾うためのプル)
+// 注意: 以前はサーバー側と和集合マージしてから書き戻していたが、それだと
+// 「他端末で削除した項目」がこちらの古いローカルコピーによって復活し、
+// 削除が同期されないバグになっていた(追加は伝わるが削除が伝わらない)。
+// Street Nameは単一の共有状態を指すものなので、サーバー側を正として
+// そのまま置き換える(last-write-wins)。
 async function autoPullFavSync() {
   if (!streetName) return;
   const row = await pullFavSync(streetName);
   if (!row) return;
-  const before = favsHave.size + favsWant.size;
-  (row.have || []).forEach((k) => favsHave.add(k));
-  (row.want || []).forEach((k) => favsWant.add(k));
-  if (favsHave.size + favsWant.size !== before) {
-    saveFavs();
-    updateFavCount();
-    if (listView === 'favs') renderFavs();
-  }
-  // マージ後の和集合をサーバーへ書き戻し、両端末を完全に揃える
-  pushFavSync();
+  const newHave = new Set(row.have || []);
+  const newWant = new Set(row.want || []);
+  const changed = newHave.size !== favsHave.size || newWant.size !== favsWant.size
+    || [...newHave].some((k) => !favsHave.has(k)) || [...newWant].some((k) => !favsWant.has(k));
+  if (!changed) return;
+  favsHave.clear(); newHave.forEach((k) => favsHave.add(k));
+  favsWant.clear(); newWant.forEach((k) => favsWant.add(k));
+  saveFavs();
+  updateFavCount();
+  if (listView === 'favs') renderFavs();
 }
 
 // サイコロ: 現在の行を新しい名前へリネーム(持ってる/ほしいはサーバー上のrowがそのまま引き継ぐ)

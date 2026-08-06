@@ -44,8 +44,18 @@ PROCESSED_FILE = ROOT / 'scripts' / 'processed_ids.json'
 
 def load_state():
     if STATE_FILE.exists():
-        return json.loads(STATE_FILE.read_text())
-    return {'last_page': 0}
+        s = json.loads(STATE_FILE.read_text())
+        if 'year' not in s:
+            # 旧形式(year無指定の連番ページ)からの移行。
+            # Discogsの検索APIはヒット件数に関わらずpage<=100までしか
+            # 返さない(44216件ヒットでもpages=100止まり)ため、無指定のまま
+            # 進め続けるとpage100で404になり、それ以降を一切拾えなくなる。
+            # 実際に旧カーソルがpage100で詰まって発覚したため、
+            # year指定(=クエリごとに別枠の100ページ上限を得られる)方式へ移行し、
+            # 詰まっていた年(1999年)のpage1から再開する。
+            return {'year': 1999, 'page': 0}
+        return s
+    return {'year': 1999, 'page': 0}
 
 
 def save_state(state):
@@ -112,22 +122,28 @@ def norm(s):
 
 
 # ---------- 1. Discogs: G-RAP判定の一次データベース ----------
-def discogs_harvest(start_page, pages, per_page=100, fmt='Album', sort='year', sort_order='asc'):
-    """style=Gangsta のリリースを取得し(デフォルトは古い年代順)、
-    master_id で重複プレスを除去して (artist, title, year, label, country) を返す。
-    start_page から連番で pages 件、前回の続きから取得する(同じページの
-    再走査を避けるため collect_state.json にページカーソルを永続化している)。"""
+LATEST_YEAR = 2010  # G-RAPの実質的な最盛期はこのあたりまで。これ以降は対象外。
+
+def discogs_harvest(start_year, start_page, pages, per_page=100, fmt='Album', sort='year', sort_order='asc'):
+    """style=Gangsta のリリースを取得し、master_id で重複プレスを除去して返す。
+    Discogsの検索APIは総ヒット件数に関わらずpage<=100(=最大10000件)しか
+    返さない。無指定の年代順クエリだと総ヒット44216件のうちpage100時点で
+    早くも1999年に達してしまい、それ以降を一切拾えなくなる(2026-08-06に
+    HTTP 404で発覚)。year=を指定するとクエリごとに別枠の100ページ上限を
+    得られるため、year単位でページカーソルを回し、その年を使い切ったら
+    次の年へ進む。(year, page) の組で前回の続きから取得する。"""
     seen_master = set()
     out = []
-    last_page = start_page - 1
-    for page in range(start_page, start_page + pages):
+    year, page = start_year, start_page
+    remaining = pages
+    while remaining > 0 and year <= LATEST_YEAR:
         url = (
             'https://api.discogs.com/database/search'
-            f'?genre=Hip%20Hop&style=Gangsta&type=release&format={fmt}'
+            f'?genre=Hip%20Hop&style=Gangsta&type=release&format={fmt}&year={year}'
             f'&sort={sort}&sort_order={sort_order}&per_page={per_page}&page={page}'
         )
         data = discogs.get(url)
-        last_page = page
+        total_pages = data.get('pagination', {}).get('pages', 1)
         for r in data.get('results', []):
             mid = r.get('master_id') or r.get('id')
             if mid in seen_master:
@@ -153,9 +169,12 @@ def discogs_harvest(start_page, pages, per_page=100, fmt='Album', sort='year', s
                 'discogs_url': f'https://www.discogs.com{uri}' if uri else None,
                 'discogs_style': r.get('style', []),
             })
-        if page >= data.get('pagination', {}).get('pages', 1):
-            break
-    return out, last_page
+        remaining -= 1
+        if page >= total_pages:
+            year, page = year + 1, 1
+        else:
+            page += 1
+    return out, year, page
 
 
 # ---------- 1.5 Discogsタグの多数決確認 ----------
@@ -326,13 +345,13 @@ def nearest_region(lng, lat, regions, max_km=60):
 def main():
     pages = int(sys.argv[1]) if len(sys.argv) > 1 else 2
     state = load_state()
-    start_page = state['last_page'] + 1
+    start_year, start_page = state['year'], state['page'] + 1
     existing_albums, regions = load_existing()
     print(f'既存ディスク {len(existing_albums)} 件 / 既存地域 {len(regions)} 件')
-    print(f'前回まで {state["last_page"]} ページ処理済み → 今回は {start_page}〜{start_page + pages - 1} ページ目')
+    print(f'前回まで {start_year}年 {state["page"]} ページ処理済み → 今回は {start_year}年 {start_page} ページ目から{pages}ページ分')
 
     print(f'[1/4] Discogsから収集中(style=Gangsta, 年代順)…')
-    harvested, last_page = discogs_harvest(start_page, pages)
+    harvested, last_year, last_page = discogs_harvest(start_year, start_page, pages)
     print(f'  {len(harvested)} 件(重複プレス除去後)')
 
     processed = load_processed()
@@ -351,9 +370,11 @@ def main():
     print(f'  うち既存と重複: {len(skipped_existing)} 件 / 判断済み(前回除外等): {len(skipped_processed)} 件'
           f' / 新規候補: {len(fresh)} 件')
 
-    state['last_page'] = last_page
+    # discogs_harvestが返す(last_year, last_page)は「次回はここから」を指すので、
+    # 消費済みとして保存するpageは1つ手前(年をまたいだ直後はpage=1→0=その年未消費)。
+    state['year'], state['page'] = last_year, last_page - 1
     save_state(state)
-    print(f'  ページカーソルを {last_page} まで進めました(次回は {last_page + 1} ページ目から)')
+    print(f'  カーソルを {last_year}年 {last_page - 1} ページまで進めました(次回は {last_year}年 {last_page} ページ目から)')
 
     hometown_cache = {}
     wiki_cache = {}
