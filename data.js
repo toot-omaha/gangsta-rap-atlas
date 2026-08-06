@@ -148,6 +148,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13634865', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'King T', title: 'Thy Kingdom Come', year: 1998, label: 'Aftermath Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7504319', stampSeed: { funky: 26, bangin: 19, party: 14 } },
+      { artist: 'Dr. Dre', title: '2001', year: 1999, label: 'Aftermath Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8772692', stampSeed: { funky: 40, bangin: 34, smooth: 26, dark: 20 } },
+      { artist: 'Gospel Gangstaz', title: 'I Can See Clearly Now', year: 1999, label: 'B-Rite Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22902152', stampSeed: { funky: 16, mellow: 12, bangin: 9 } },
     ],
   },
   {
@@ -182,6 +186,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1134760', stampSeed: { smooth: 44, funky: 36, bangin: 28 } },
       { artist: 'Nate Dogg', title: 'G-Funk Classics Vol. 1 & 2', year: 1998, label: 'Breakaway Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4441013', stampSeed: { smooth: 30, mellow: 24, funky: 18 } },
+      { artist: 'Soloc', title: 'Death Before Dishonor', year: 1998, label: 'Future West Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3171933', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Warren G', title: 'I Want It All', year: 1999, label: 'Restless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10441850', stampSeed: { smooth: 28, mellow: 22, funky: 18 } },
     ],
   },
   {
@@ -414,6 +422,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4952078', stampSeed: { funky: 17, bangin: 13, doro: 10 } },
       { artist: 'Biaje', title: 'Strictly Sickly', year: 1998, label: 'High Powered Music Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9462560', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'A-1', title: 'Mash Confusion', year: 1999, label: "Sick Wid' It Records", youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3149797', stampSeed: { funky: 17, bangin: 13, party: 10 } },
+      { artist: 'Mac Mall', title: 'Illegal Business? 2000', year: 1999, label: "Don't Give Up Productions", youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9060914', stampSeed: { funky: 22, bangin: 16, party: 12 } },
     ],
   },
   {
@@ -572,6 +584,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4751506', stampSeed: { funky: 16, bangin: 12, party: 9 } },
       { artist: 'Mr. D.O.G.', title: 'Wet', year: 1998, label: 'Bow Wow Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11328547', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Agerman', title: '$uccess the Best Revenge', year: 1999, label: 'KNR Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3383633', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
     ],
   },
   {
@@ -742,6 +756,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/502580', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
       { artist: 'Da Herb Man', title: "Blowin' Big/Mafia Melodies", year: 1998, label: 'Cartel Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/781405', stampSeed: { funky: 15, dark: 11, bangin: 9 } },
+      { artist: 'T-Lee', title: 'Are You Ready?', year: 1999, label: 'Paper Chase', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11249935', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'D-Lo', title: 'Conversation', year: 1999, label: 'Big Face Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7327940', stampSeed: { funky: 15, bangin: 11, doro: 8 } },
+      { artist: '5th Ward Boyz', title: 'P.W.A. The Album Keep It Poppin', year: 1999, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6108205', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
+      { artist: 'C-Note', title: 'Third Coast Born', year: 1999, label: 'Big Shot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8346906', stampSeed: { funky: 18, laidbk: 14, bangin: 10 } },
     ],
   },
   {
@@ -890,6 +912,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/24054587', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
       { artist: 'Tela', title: 'Now or Never', year: 1998, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11570368', stampSeed: { funky: 18, laidbk: 14, dark: 10 } },
+      { artist: 'Luciano Crime Family', title: 'All About Dat Money', year: 1998, label: 'LCF Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4204976', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: 'Playa Fly', title: 'Da Game Owe Me', year: 1999, label: 'Super Sigg Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3842368', stampSeed: { dark: 19, doro: 15, bangin: 11 } },
+      { artist: 'Project Pat', title: 'Ghetty Green', year: 1999, label: 'Loud Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15796474', stampSeed: { dark: 24, doro: 19, bangin: 15 } },
     ],
   },
   {
@@ -1054,6 +1082,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10828266', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { artist: 'Big Tymers', title: 'Big Tymers', year: 1998, label: 'Cash Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13510023', stampSeed: { funky: 22, party: 17, bangin: 13 } },
+      { artist: 'C-Murder', title: 'Bossalinie', year: 1999, label: 'No Limit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4007673', stampSeed: { dark: 26, doro: 21, bangin: 15 } },
+      { artist: 'Lil Wayne', title: 'Tha Block Is Hot', year: 1999, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13135992', stampSeed: { bangin: 30, party: 22, funky: 18 } },
+      { artist: 'B.G.', title: 'True Story', year: 1999, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/454099', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
+      { artist: 'D.O.W.N.', title: 'RU?!', year: 1999, label: '4Sho Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9024961', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -1200,6 +1236,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2057818', stampSeed: { funky: 24, party: 18, laidbk: 14 } },
       { artist: 'Taydatay', title: 'Anticipaytion', year: 1998, label: 'Dogday Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/605386', stampSeed: { funky: 16, bangin: 12, party: 9 } },
+      { artist: 'GP', title: 'Finally (Looking for Those Friends Who Got Me for My Ends)', year: 1999, label: 'Just On GP Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5329452', stampSeed: { funky: 15, bangin: 11, doro: 8 } },
     ],
   },
   {
@@ -1272,6 +1310,16 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12558552', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Marvaless', title: 'Fearless', year: 1998, label: 'AWOL Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4310921', stampSeed: { doro: 20, dark: 15, aishu: 12 } },
+      { artist: 'J-Mack', title: 'Bloody Money', year: 1999, label: 'Big Grip Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2539394', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: 'U.T.G.', title: 'Unda Tha Gun', year: 1999, label: 'Golden Touch Muzik', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5292569', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: 'First Degree The D.E.', title: 'Planet Zero', year: 1999, label: 'Fahrenheit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4806181', stampSeed: { dark: 17, doro: 13, horror: 9 } },
+      { artist: 'Triple Beam', title: '28g w/o The Bag', year: 1999, label: 'Black Market Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34763549', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { artist: 'Herm', title: 'Trying to Survive in the Ghetto 2000', year: 1999, label: 'Black Power Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13389684', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
     ],
   },
   {
@@ -1305,6 +1353,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3291762', stampSeed: { dark: 34, doro: 27, bangin: 22 } },
       { artist: 'Kool G Rap', title: 'Roots of Evil', year: 1998, label: 'Illstreet / Downlow', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4950108', stampSeed: { dark: 26, bangin: 20, doro: 15 } },
+      { artist: 'Mobb Deep', title: 'Murda Muzik', year: 1999, label: 'Loud Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/329193', stampSeed: { dark: 34, doro: 27, bangin: 20 } },
     ],
   },
   {
@@ -1491,6 +1541,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10233958', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Nino', title: 'Unstoppable', year: 1998, label: 'Unstopable Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6798432', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { artist: 'Shot Callers', title: 'Ya Only Live Once', year: 1999, label: 'Big Ballin Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5685706', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
     ],
   },
   {
@@ -1638,6 +1690,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2871090', stampSeed: { bangin: 34, dark: 24, doro: 18 } },
       { artist: 'Trick Daddy', title: 'www.thug.com', year: 1998, label: 'Slip-N-Slide Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11791833', stampSeed: { bangin: 32, dark: 22, doro: 17 } },
+      { artist: 'JT Money', title: 'Pimpin on Wax', year: 1999, label: 'Priority Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/298285', stampSeed: { funky: 22, party: 17, bangin: 13 } },
     ],
   },
   {
@@ -1712,6 +1766,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12068401', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { artist: 'Mr. Peebodie', title: 'Make It Happen', year: 1998, label: 'Seedless Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3378659', stampSeed: { funky: 15, bangin: 11, party: 8 } },
+      { artist: 'Mob Figaz', title: "C-Bo's Mob Figaz", year: 1999, label: 'West Coast Mafia Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/969481', stampSeed: { bangin: 22, dark: 16, doro: 12 } },
     ],
   },
   {
@@ -1865,6 +1921,31 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/712173', stampSeed: { bangin: 24, dark: 18, funky: 14 } },
       { artist: 'Big B', title: 'Let the Games Begin', year: 1998, label: 'Dirty Harry Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4625819', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+    ],
+  },
+  {
+    // DMXはヨンカーズ出身(ブロンクスではない)
+    id: 'yonkers', name: 'Yonkers', area: 'New York',
+    lng: -73.8988, lat: 40.9312,
+    albums: [
+      { artist: 'DMX', title: '...And Then There Was X', year: 1999, label: 'Def Jam 2000', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8214247', stampSeed: { bangin: 40, dark: 30, doro: 22 } },
+    ],
+  },
+  {
+    id: 'milwaukee', name: 'Milwaukee', area: 'Wisconsin',
+    lng: -87.9065, lat: 43.0389,
+    albums: [
+      { artist: 'Coo Coo Cal', title: "Walkin' Dead", year: 1999, label: 'Infinite Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3677547', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+    ],
+  },
+  {
+    id: 'kansascity', name: 'Kansas City', area: 'Missouri',
+    lng: -94.5786, lat: 39.0997,
+    albums: [
+      { artist: '57th Street Rogue Dog Villians', title: 'My Dogs For Life', year: 1999, label: 'Hog Style Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4786266', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
 ];
