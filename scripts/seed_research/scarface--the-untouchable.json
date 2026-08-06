@@ -1,0 +1,15 @@
+{
+  "artist": "Scarface",
+  "title": "The Untouchable",
+  "album": { "dark": 2, "doro": 1, "aishu": 1 },
+  "tracks": {
+    "Smile": { "aishu": 3, "mellow": 1 }
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/The_Untouchable_(album)",
+    "https://en.wikipedia.org/wiki/Smile_(Scarface_song)",
+    "https://thesource.com/2026/03/11/today-in-hip-hop-history-scarface-dropped-his-fourth-lp-the-untouchable-29-years-ago/",
+    "https://funknstuff.net/scarface-the-untouchable-1997/"
+  ],
+  "notes": "Smile: 2Pac追悼期のsomber soundscape・weeping synthesized keyboards・haunting collaboration評(哀愁の代表曲)。dark/doro: Scarface特有の内省的ダークさ。Billboard 200首位。"
+}

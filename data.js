@@ -681,7 +681,7 @@ const REGIONS = [
       { artist: '5th Ward Boyz', title: 'Usual Suspects', year: 1997, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4371734', stampSeed: { bangin: 22, dark: 16, doro: 12 } },
       { artist: 'Scarface', title: 'The Untouchable', year: 1997, label: 'Rap-A-Lot Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/1503811', stampSeed: { dark: 40, doro: 32, aishu: 24, bangin: 28 } },
+        discogsUrl: 'https://www.discogs.com/release/1503811', stampSeed: { dark: 2, doro: 1, aishu: 4, mellow: 1 }, seedSrc: ['https://en.wikipedia.org/wiki/The_Untouchable_(album)', 'https://en.wikipedia.org/wiki/Smile_(Scarface_song)', 'https://thesource.com/2026/03/11/today-in-hip-hop-history-scarface-dropped-his-fourth-lp-the-untouchable-29-years-ago/', 'https://funknstuff.net/scarface-the-untouchable-1997/'] },
       { artist: 'Lifestyl', title: 'Deep in the Game', year: 1997, label: 'Salty Water Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3689213', stampSeed: { funky: 16, bangin: 12, dark: 9 } },
       { artist: '2-Def', title: 'Str-8 Doin Tha Fool', year: 1997, label: 'Inmate Records', youtubeId: null,
