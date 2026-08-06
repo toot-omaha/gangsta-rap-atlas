@@ -411,7 +411,9 @@ function refreshMarkers() {
   REGIONS.forEach((r) => {
     const el = markers[r.id];
     const n = albumsOf(r).length;
-    const size = 22 + Math.min(n, 6) * 5;
+    // 対数スケールで大きい地域(ヒューストン等30枚超)も差が出るようにする。
+    // 以前は Math.min(n, 6) で6枚以降が全部同じサイズになっていた。
+    const size = 22 + Math.min(Math.round(Math.log2(n + 1) * 8), 40);
     el.style.width = el.style.height = `${size}px`;
     el.querySelector('.n').textContent = n || '';
     // 0件の墓標は非表示(フィルター中に該当なしの地域も消える)。
