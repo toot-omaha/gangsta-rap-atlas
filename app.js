@@ -120,6 +120,7 @@ const myStamps = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); // { album
 const saveStamps = () => localStorage.setItem(STORE_KEY, JSON.stringify(myStamps));
 
 const albumKey = (a) => `${a.artist}|${a.title}`;
+const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9぀-ヿ一-龯]+/g, '');
 const trackKey = (a, name) => `${albumKey(a)}#${name}`;
 
 const stampsAt = (key) => myStamps[key] || [];
@@ -448,6 +449,65 @@ function buildFilterBar() {
   });
 }
 buildFilterBar();
+
+// ---------- 検索 ----------
+const searchOverlay = document.getElementById('searchOverlay');
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+function clearStampFilter() {
+  if (activeFilters.size === 0) return;
+  activeFilters.clear();
+  filterBar.querySelectorAll('.stamp').forEach((el) => el.classList.remove('on'));
+  refreshMarkers();
+  if (activeRegion) renderList(activeRegion);
+}
+
+function openSearch() {
+  clearStampFilter(); // スタンプ絞り込み中に検索を開いたら解除し、全件対象で探せるようにする
+  searchOverlay.classList.add('open');
+  searchInput.value = '';
+  searchResults.innerHTML = '';
+  setTimeout(() => searchInput.focus(), 50);
+}
+function closeSearch() {
+  searchOverlay.classList.remove('open');
+}
+
+function runSearch(q) {
+  const nq = norm(q);
+  if (!nq) { searchResults.innerHTML = ''; return; }
+  const hits = [];
+  REGIONS.forEach((r) => {
+    r.albums.forEach((a) => {
+      if (norm(a.artist).includes(nq) || norm(a.title).includes(nq)) hits.push({ a, r });
+    });
+  });
+  if (!hits.length) {
+    searchResults.innerHTML = `<p class="sr-empty">${t('noMatch')}</p>`;
+    return;
+  }
+  searchResults.innerHTML = '';
+  hits.slice(0, 60).forEach(({ a, r }) => {
+    const row = document.createElement('div');
+    row.className = 'sr-item';
+    row.innerHTML = `<span class="t">${a.title}</span><span class="a">${a.artist}</span><span class="r">${r.name}</span>`;
+    row.addEventListener('click', () => {
+      closeSearch();
+      openRegion(r);
+      setTimeout(() => { saveListScrollBeforeDisc(); renderDisc(a); }, 460);
+    });
+    searchResults.appendChild(row);
+  });
+}
+
+document.getElementById('searchBtn').addEventListener('click', openSearch);
+document.getElementById('searchClose').addEventListener('click', closeSearch);
+searchOverlay.addEventListener('click', (e) => { if (e.target === searchOverlay) closeSearch(); });
+searchInput.addEventListener('input', () => runSearch(searchInput.value));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && searchOverlay.classList.contains('open')) closeSearch();
+});
 
 // ---------- 一覧 ----------
 const listEl = document.getElementById('list');

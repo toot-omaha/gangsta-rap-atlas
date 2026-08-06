@@ -104,6 +104,41 @@ body::before {
 }
 body.detail #mask { opacity: 1; pointer-events: auto; }
 
+/* ---------- 検索ポップアップ ---------- */
+.search-overlay {
+  position: fixed; z-index: 30; inset: 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: calc(var(--topbar-h, 58px) + 20px);
+  background: rgba(20,18,15,.5);
+  opacity: 0; pointer-events: none; transition: opacity .18s;
+}
+.search-overlay.open { opacity: 1; pointer-events: auto; }
+.search-box {
+  position: relative; width: min(560px, 92vw); max-height: 76vh;
+  background: var(--paper);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 4px 4px;
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 rgba(20,18,15,.5);
+  padding: 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.search-box input {
+  font: inherit; font-size: 15px; padding: 10px 40px 10px 12px;
+  border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
+}
+.search-box .close { position: absolute; top: 14px; right: 14px; }
+.search-results { overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+.search-results .sr-item {
+  display: flex; align-items: baseline; gap: 8px; padding: 8px 6px;
+  cursor: pointer; border-bottom: 1px solid var(--dot);
+  font-size: 12px;
+}
+.search-results .sr-item:hover { background: var(--paper-2); }
+.search-results .sr-item .t { font-weight: 900; }
+.search-results .sr-item .a { color: var(--red); }
+.search-results .sr-item .r { margin-left: auto; color: var(--ink-2); white-space: nowrap; }
+.search-results .sr-empty { font-size: 12px; color: var(--ink-2); padding: 8px 6px; }
+
 /* ---------- 弾痕マーカー ----------
  * 外側の .marker は MapLibre が transform で座標制御するため一切触らない。
  * 拡大縮小・ホバーは内側 .mk のスケールだけで行う(--s はズーム追従、--h はホバー)。 */

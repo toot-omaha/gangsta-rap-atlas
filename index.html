@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GANGSTA RAP ATLAS</title>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-<link rel="stylesheet" href="style.css?v=25">
+<link rel="stylesheet" href="style.css?v=26">
 </head>
 <body>
 
@@ -22,6 +22,7 @@
     <div id="drawerActions" class="drawer-actions"></div>
   </div>
   <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">🔍</button>
     <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
     <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
     <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
@@ -47,6 +48,14 @@
   <div id="mask"></div>
   <div id="shot"><img src="assets/bullet-ink.png" alt=""></div>
   <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
 </main>
 
 <footer id="player" class="player">
@@ -74,6 +83,6 @@
 <script src="data.js?v=7"></script>
 <script src="enrich.js?v=7"></script>
 <script src="rarity.js?v=1"></script>
-<script src="app.js?v=31"></script>
+<script src="app.js?v=32"></script>
 </body>
 </html>
