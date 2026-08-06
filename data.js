@@ -985,7 +985,7 @@ const REGIONS = [
       { artist: 'Fila Phil', title: 'Tha Hustla Returns', year: 1996, label: 'Untouchable Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1447855', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { artist: 'Mystikal', title: 'Unpredictable', year: 1997, label: 'Jive', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/7920621', stampSeed: { bangin: 34, dark: 24, doro: 18 } },
+        discogsUrl: 'https://www.discogs.com/release/7920621', stampSeed: { bangin: 5, party: 2 }, seedSrc: ['https://www.allmusic.com/album/unpredictable-mw0000029224', 'https://en.wikipedia.org/wiki/Unpredictable_(Mystikal_album)', 'https://rateyourmusic.com/release/album/mystikal/unpredictable/', 'https://www.albumoftheyear.org/album/222276-mystikal-unpredictable.php'] },
       { artist: 'Master P', title: 'Ghetto D', year: 1997, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/16731531', stampSeed: { bangin: 4, doro: 1, funky: 2, party: 2, aishu: 2, mellow: 1 }, seedSrc: ['https://www.udiscovermusic.com/stories/master-p-ghetto-d-feature/', 'https://www.popmatters.com/master-p-ghetto-d-2496234814.html', 'https://www.albumoftheyear.org/album/35648-master-p-ghetto-d.php', 'https://en.wikipedia.org/wiki/Ghetto_D'] },
       { artist: 'Sporty T', title: 'Chromed Out', year: 1997, label: 'Ruff Era Records', youtubeId: null,

@@ -1,0 +1,15 @@
+{
+  "artist": "Mystikal",
+  "title": "Unpredictable",
+  "album": { "bangin": 3, "party": 1 },
+  "tracks": {
+    "Ain't No Limit": { "bangin": 2, "party": 1 }
+  },
+  "sources": [
+    "https://www.allmusic.com/album/unpredictable-mw0000029224",
+    "https://en.wikipedia.org/wiki/Unpredictable_(Mystikal_album)",
+    "https://rateyourmusic.com/release/album/mystikal/unpredictable/",
+    "https://www.albumoftheyear.org/album/222276-mystikal-unpredictable.php"
+  ],
+  "notes": "bangin: manic yelling-speed-rap style・energetic delivery(AllMusic 3/5でも熱量は絶賛)。Ain't No Limit=aggressive and rapid fire rhymesのエネルギッシュなシングル。"
+}
