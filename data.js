@@ -41,7 +41,7 @@ const REGIONS = [
       { artist: 'MC Eiht', title: 'We Come Strapped', year: 1994, label: 'Epic Street', youtubeId: null,
         stampSeed: { doro: 41, dark: 33, bangin: 27 } },
       { artist: 'Eazy-E', title: 'Eazy-Duz-It', year: 1988, label: 'Ruthless', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/3043455', stampSeed: { bangin: 68, funky: 45, dark: 40 } },
+        discogsUrl: 'https://www.discogs.com/release/3043455', stampSeed: { party: 2, bangin: 1, dark: 1, funky: 1 }, seedSrc: ['https://www.allmusic.com/album/eazy-duz-it-mw0000203892', 'https://www.albumoftheyear.org/album/37000-eazy-e-eazy-duz-it.php', 'https://en.wikipedia.org/wiki/Eazy-Duz-It'] },
       { artist: 'Above The Law', title: "Livin' Like Hustlers", year: 1989, label: 'Ruthless/Epic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7217751', stampSeed: { funky: 57, bangin: 44, dark: 30 } },
       { artist: 'H.W.A.', title: "Livin' in a Hoe House", year: 1990, label: 'Drive-By', youtubeId: null,

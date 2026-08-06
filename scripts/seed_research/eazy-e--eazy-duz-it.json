@@ -1,0 +1,12 @@
+{
+  "artist": "Eazy-E",
+  "title": "Eazy-Duz-It",
+  "album": { "party": 2, "bangin": 1, "dark": 1, "funky": 1 },
+  "tracks": {},
+  "sources": [
+    "https://www.allmusic.com/album/eazy-duz-it-mw0000203892",
+    "https://www.albumoftheyear.org/album/37000-eazy-e-eazy-duz-it.php",
+    "https://en.wikipedia.org/wiki/Eazy-Duz-It"
+  ],
+  "notes": "party: ユーモアと軽妙さ・fun voicesの言及(AllMusic/AOTY)。dark: EWのviolent, hollowed-out life in Compton評。bangin/funky: ウェストコースト初期のハードなファンク調。"
+}
