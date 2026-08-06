@@ -407,6 +407,8 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .fav-toggle:hover { background: var(--gold); }
 .fav-toggle.lang { border-color: var(--ink); }
 .fav-toggle.lang:hover { background: var(--ink); color: var(--paper); }
+.fav-toggle.search { border-color: var(--ink); display: flex; align-items: center; padding: 5px 9px; }
+.fav-toggle.search:hover { background: var(--ink); color: var(--paper); }
 
 /* 墓石メニュー(狭い画面のみ) */
 .stamp-menu-btn {
