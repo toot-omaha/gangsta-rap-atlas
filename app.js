@@ -917,6 +917,11 @@ function renderDisc(album, push = true) {
   const key = albumKey(album);
   const rerender = () => renderDisc(album, false);
   const tracks = e?.tracks || [];
+  const hasPlayable = tracks.some((tr) => tr.preview) || youtubeIdsFor(album).length > 0;
+  const playActionsHtml = hasPlayable
+    ? `<button class="play-btn disc-play" title="このディスクを今すぐ再生">▶</button>
+       <button class="tr-toggle play-d">${t('queueAll')}</button>`
+    : '';
 
   listEl.innerHTML = `
     <div class="list-head">
@@ -938,8 +943,7 @@ function renderDisc(album, push = true) {
         <div class="disc-actions">
           <button class="tr-toggle have-d${favsHave.has(key) ? ' on' : ''}">${t('have')}</button>
           <button class="tr-toggle want-d${favsWant.has(key) ? ' on' : ''}">${t('want')}</button>
-          <button class="play-btn disc-play" title="このディスクを今すぐ再生">▶</button>
-          <button class="tr-toggle play-d">${t('queueAll')}</button>
+          ${playActionsHtml}
         </div>
         <div class="rarity">
           <span class="lab">${t('rarity')} ${r.stars}${r.priceJpy == null && r.have <= 15 ? ' <span class="hot-badge" title="Discogsに出品なし">🔥出品なし</span>' : ''}</span>
@@ -970,8 +974,8 @@ function renderDisc(album, push = true) {
     STAMPS.forEach((s) => wrap.appendChild(discChip(album, s, false, rerender)));
   }
 
-  listEl.querySelector('.disc-play').addEventListener('click', () => playAlbum(album));
-  listEl.querySelector('.play-d').addEventListener('click', () => enqueueAlbum(album));
+  listEl.querySelector('.disc-play')?.addEventListener('click', () => playAlbum(album));
+  listEl.querySelector('.play-d')?.addEventListener('click', () => enqueueAlbum(album));
   listEl.querySelector('.have-d').addEventListener('click', () => {
     toggleFav(favsHave, key); updateFavCount(); rerender();
   });
@@ -1512,6 +1516,7 @@ document.querySelector('.player-now').addEventListener('click', () => {
 document.getElementById('clearQueue').addEventListener('click', () => {
   queue = []; cursor = -1;
   audio.pause(); audio.removeAttribute('src');
+  if (ytReady) ytPlayer.stopVideo();
   paint();
 });
 
