@@ -760,6 +760,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13441826', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { id: 347, artist: 'DJ Aladdin', title: 'Ward Time', year: 1998, label: 'Unfadable Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2159158', stampSeed: { bangin: 17, funky: 13, dark: 10 } },
+      { id: 1560, artist: 'South Central Cartel', title: 'Gangsta Conversation', year: 2001, label: 'PR Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3091057', stampSeed: {} },
     ],
   },
   {
@@ -1094,6 +1096,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/11328547', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { id: 508, artist: 'Agerman', title: '$uccess the Best Revenge', year: 1999, label: 'KNR Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3383633', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
+      { id: 1563, artist: 'Richie Rich', title: 'The Game', year: 2001, label: 'Ten-Six Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6135217', stampSeed: {} },
     ],
   },
   {
@@ -1434,6 +1438,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6108205', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
       { id: 673, artist: 'C-Note', title: 'Third Coast Born', year: 1999, label: 'Big Shot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8346906', stampSeed: { funky: 18, laidbk: 14, bangin: 10 } },
+      { id: 1562, artist: 'Street Military', title: 'Steel Gangstaz', year: 2001, label: 'Beatbox Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5415097', stampSeed: {} },
+      { id: 1566, artist: 'Benj', title: 'Versatility', year: 2001, label: 'Eva Cleva Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14256896', stampSeed: {} },
     ],
   },
   {
@@ -1660,6 +1668,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3842368', stampSeed: { dark: 19, doro: 15, bangin: 11 } },
       { id: 778, artist: 'Project Pat', title: 'Ghetty Green', year: 1999, label: 'Loud Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15796474', stampSeed: { dark: 24, doro: 19, bangin: 15 } },
+      { id: 1559, artist: 'D.J. Spanish Fly', title: 'Black Radio', year: 2001, label: 'Fly Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6661068', stampSeed: {} },
     ],
   },
   {
@@ -1894,6 +1904,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/454099', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
       { id: 891, artist: 'D.O.W.N.', title: 'RU?!', year: 1999, label: '4Sho Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9024961', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { id: 1567, artist: 'Black Menace', title: 'Presents: The IV Horsemen', year: 2001, label: 'The Menace Entertainment Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1451079', stampSeed: {} },
     ],
   },
   {
@@ -2393,6 +2405,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5154223', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
       { id: 1114, artist: 'Jace', title: "Ain't No Secret", year: 1998, label: 'Uprize Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7355252', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { id: 1558, artist: 'Mr. Lucci', title: 'Diabolical', year: 2001, label: 'Iconic Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12997184', stampSeed: {} },
+      { id: 1565, artist: 'I-35 Boyz', title: '100% Hata Proof', year: 2001, label: 'Hata Proof Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13234779', stampSeed: {} },
     ],
   },
   {
@@ -2902,6 +2918,15 @@ const REGIONS = [
     ],
   },
   {
+    // 「世界のG-RAP」— Discogsで確認済みのドイツ発Gangsta作品
+    id: 'berlin', name: 'Berlin', area: 'Germany — 世界のG-RAP',
+    lng: 13.3951309, lat: 52.5173885,
+    albums: [
+      { id: 1557, artist: 'King Orgasmus One', title: 'Tag Der Abrechnung', year: 2001, label: 'I Luv Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2742927', stampSeed: {} },
+    ],
+  },
+  {
     id: 'cleveland', name: 'Cleveland', area: 'Ohio',
     lng: -81.6944, lat: 41.4993,
     albums: [
@@ -3188,6 +3213,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/23372777', stampSeed: {} },
       { id: 1394, artist: 'B.C.O.', title: 'Tricky Situation', year: 1999, label: 'Ruff & Ruggit Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11111028', stampSeed: {} },
+      { id: 1561, artist: 'Royal Family', title: "Ain't No Sicca Ch. 2", year: 2001, label: 'Nati Boy Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8805850', stampSeed: {} },
     ],
   },
   {
@@ -3302,6 +3329,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/11678590', stampSeed: {} },
       { id: 1424, artist: 'Gin', title: 'Hu$$le\'n Fame Money-Sex-Game', year: 2000, label: 'Tri-5 Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13122013', stampSeed: {} },
+      { id: 1568, artist: 'Mr. Shadow', title: '13', year: 2001, label: 'Familia Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3558433', stampSeed: {} },
     ],
   },
   {
@@ -3522,6 +3551,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7072295', stampSeed: {} },
       { id: 1465, artist: 'Pistol', title: 'Greatest Mix', year: 2000, label: 'My-On Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10539441', stampSeed: {} },
+      { id: 1564, artist: 'Cowboy', title: 'Straight Off Da Block', year: 2001, label: 'Buck Wild Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8339266', stampSeed: {} },
     ],
   },
   {
