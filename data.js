@@ -580,6 +580,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/34137838', stampSeed: {} },
       { id: 1642, artist: 'Daz Dillinger', title: 'This Is The Life I Lead', year: 2002, label: 'DPG Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1290579', stampSeed: {} },
+      { id: 1740, artist: 'Daz', title: "DPGC: U Know What I'm Throwin' Up", year: 2003, label: 'Gangsta Advisory Recordingz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1291007', stampSeed: {} },
     ],
   },
   {
@@ -910,6 +912,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1245436', stampSeed: {} },
       { id: 1724, artist: 'Mac Mall', title: "Mackin' Speaks Louder Than Words", year: 2002, label: 'Sesed Out Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2207371', stampSeed: {} },
+      { id: 1737, artist: 'Reek Daddy', title: 'Wreak Havoc', year: 2003, label: 'R.E.A.L Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/32679765', stampSeed: {} },
+      { id: 1743, artist: 'J-Diggs', title: 'Both Sides Of The Gate', year: 2003, label: 'Gateway Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1248668', stampSeed: {} },
     ],
   },
   {
@@ -1148,6 +1154,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4741183', stampSeed: {} },
       { id: 1718, artist: 'Kaoz The Assassin', title: 'The Assassination Vol. 1', year: 2002, label: 'Killa Valley Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3338202', stampSeed: {} },
+      { id: 1739, artist: 'Yukmouth', title: 'Godzilla', year: 2003, label: 'Rap-A-Lot 4 Life', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/238115', stampSeed: {} },
     ],
   },
   {
@@ -1550,6 +1558,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2655858', stampSeed: {} },
       { id: 1721, artist: 'Beltway 8', title: 'Beach Party 2002 (All Wrapped Up!!)', year: 2002, label: 'Beltway 8 Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9270747', stampSeed: {} },
+      { id: 1731, artist: 'Trae', title: 'Losing Composure', year: 2003, label: 'G-Maab Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4383963', stampSeed: {} },
+      { id: 1744, artist: 'Nickel Nut', title: "No Snitchin'", year: 2003, label: 'Penthouse Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6700102', stampSeed: {} },
+      { id: 1745, artist: 'Chris Ward', title: 'Wanted', year: 2003, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4824411', stampSeed: {} },
     ],
   },
   {
@@ -1808,6 +1822,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/31280669', stampSeed: {} },
       { id: 1716, artist: 'Kingpin Skinny Pimp', title: "Pimpin' And Hustlin'", year: 2002, label: 'Rap Hustlaz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2226926', stampSeed: {} },
+      { id: 1738, artist: 'Criminal Manne', title: 'Neighborhood Dope Manne', year: 2003, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2471827', stampSeed: {} },
     ],
   },
   {
@@ -2060,6 +2076,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1348082', stampSeed: {} },
       { id: 1712, artist: '54th Platoon', title: 'Sh*t For The Streets!!!', year: 2002, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/27480855', stampSeed: {} },
+      { id: 1742, artist: 'Kane & Abel', title: 'Welcome Home', year: 2003, label: 'Most Wanted Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7415031', stampSeed: {} },
     ],
   },
   {
@@ -2440,6 +2458,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1004171', stampSeed: {} },
       { id: 1698, artist: 'X-Raided', title: 'Deadly Game', year: 2002, label: 'The Distribution Center', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1469156', stampSeed: {} },
+      { id: 1734, artist: 'C-Bo', title: 'The Mobfather (Return Of The Bald Headed Nut)', year: 2003, label: 'West Coast Mafia Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/949994', stampSeed: {} },
+      { id: 1741, artist: 'C-Bo', title: 'West Side Ryders', year: 2003, label: 'West Coast Mafia Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/968485', stampSeed: {} },
     ],
   },
   {
@@ -2511,6 +2533,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12232818', stampSeed: { bangin: 22, dark: 17, doro: 13 } },
       { id: 1641, artist: 'Mally-G', title: 'Mally-G In The Warzone - Groundzero', year: 2002, label: 'Warzone Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/24753788', stampSeed: {} },
+      { id: 1727, artist: 'Roscoe', title: 'Young Roscoe Philaphornia', year: 2003, label: 'Priority Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3002844', stampSeed: {} },
     ],
   },
   {
@@ -2611,6 +2635,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12730092', stampSeed: {} },
       { id: 1725, artist: 'Syko', title: 'Amerikkkan Syko Volume Zero', year: 2002, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/34670275', stampSeed: {} },
+      { id: 1730, artist: 'Dirty South Rydaz', title: 'United We Stand', year: 2003, label: 'DSR', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15743077', stampSeed: {} },
     ],
   },
   {
@@ -2809,6 +2835,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8137848', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
       { id: 1624, artist: 'Xzibit', title: 'Man Vs Machine', year: 2002, label: 'Columbia', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/37910220', stampSeed: {} },
+      { id: 1729, artist: '313 Mafia', title: "Mafia Livin'", year: 2003, label: 'Macklove Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24027182', stampSeed: {} },
     ],
   },
   {
@@ -3050,6 +3078,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10770316', stampSeed: {} },
       { id: 1722, artist: 'Rellik', title: '1st Of The Last Born', year: 2002, label: 'Hitt House Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12187350', stampSeed: {} },
+      { id: 1728, artist: 'Do Or Die', title: "Pimpin' Ain't Dead", year: 2003, label: 'Rap-A-Lot 4 Life', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6672274', stampSeed: {} },
     ],
   },
   {
@@ -3260,6 +3290,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1880153', stampSeed: { funky: 20, dark: 15, bangin: 11 } },
       { id: 1338, artist: "Steady Mobb'n", title: 'Black Mafia', year: 1998, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1518224', stampSeed: { dark: 22, doro: 17, bangin: 14 } },
+      { id: 1733, artist: 'David Banner', title: 'Undaground Vol. 1', year: 2003, label: 'Big Face Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1873894', stampSeed: {} },
     ],
   },
   {
@@ -3627,6 +3659,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/14145709', stampSeed: {} },
       { id: 1706, artist: 'Mr. Shadow', title: "A Name You Kan't Touch", year: 2002, label: 'Sol Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/21579025', stampSeed: {} },
+      { id: 1735, artist: 'Mr. Shadow', title: 'Southsider For Life', year: 2003, label: 'Emi Latin', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3625905', stampSeed: {} },
+      { id: 1736, artist: 'Lil Rob', title: 'The Album', year: 2003, label: 'Upstairs Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24388259', stampSeed: {} },
     ],
   },
   {
@@ -3868,6 +3904,14 @@ const REGIONS = [
     ],
   },
   {
+    id: 'birminghamal', name: 'Birmingham', area: 'Alabama',
+    lng: -86.8024, lat: 33.5207,
+    albums: [
+      { id: 1746, artist: 'KD', title: 'Up -N- Your City', year: 2003, label: 'Bluegrass Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10602515', stampSeed: {} },
+    ],
+  },
+  {
     id: 'knoxville', name: 'Knoxville', area: 'Tennessee',
     lng: -83.9210, lat: 35.9604,
     albums: [
@@ -3937,6 +3981,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2740120', stampSeed: {} },
       { id: 1700, artist: 'Sean T', title: 'Familiar Ground', year: 2002, label: 'Perrion Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3535858', stampSeed: {} },
+      { id: 1732, artist: 'Sean T', title: 'Terrain Boss', year: 2003, label: 'Get Gone Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1958677', stampSeed: {} },
     ],
   },
   {
