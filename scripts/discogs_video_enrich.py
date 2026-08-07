@@ -93,6 +93,19 @@ def pick_album_video(videos):
     return shorts, full
 
 
+def youtube_video_alive(vid):
+    """Discogsには載っているが投稿者側で削除/非公開になっている動画がある
+    ため、oEmbed(無料・キー不要)で実在確認してから採用する。"""
+    url = ('https://www.youtube.com/oembed?url=' +
+           urllib.parse.quote(f'https://www.youtube.com/watch?v={vid}', safe='') + '&format=json')
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': UA})
+        with urllib.request.urlopen(req, timeout=10) as res:
+            return res.status == 200
+    except Exception:
+        return False
+
+
 def extract_video_id(uri):
     m = re.search(r'[?&]v=([A-Za-z0-9_-]{6,})', uri)
     if m:
@@ -161,6 +174,9 @@ def main():
 
         if t['need_video']:
             short_vids, full_vid = pick_album_video(data.get('videos'))
+            short_vids = [v for v in short_vids if youtube_video_alive(v)]
+            if full_vid and not youtube_video_alive(full_vid):
+                full_vid = None
             inserts = []
             if short_vids:
                 ids_json = json.dumps(short_vids)

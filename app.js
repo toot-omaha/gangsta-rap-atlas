@@ -1009,9 +1009,16 @@ function youtubeTrackRow(album, vid, index = 0) {
     <span class="name">読込中…</span>`;
   row.querySelector('.tp').addEventListener('click', () => playAlbum(album, index));
   const url = `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}&format=json`;
-  fetch(url).then((res) => (res.ok ? res.json() : null)).then((data) => {
+  fetch(url).then((res) => (res.ok ? res.json() : Promise.reject())).then((data) => {
     if (data?.title) row.querySelector('.name').textContent = data.title;
-  }).catch(() => {});
+  }).catch(() => {
+    // Discogsには載っているがYouTube側で削除/非公開になった動画。
+    // 読込中のまま固まったり再生できないまま止まったりしないよう、
+    // 行ごと無効化してキューに入らないようにする。
+    row.querySelector('.name').textContent = '動画が見つかりません';
+    row.querySelector('.tp').disabled = true;
+    row.classList.add('yt-unavailable');
+  });
   return row;
 }
 
