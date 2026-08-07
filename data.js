@@ -30,11 +30,11 @@ const UNCLASSIFIED_REGION = {
   unclassified: true,
   albums: [
       { id: 1, artist: 'Menace', title: 'Confessing Sins', year: 1999, label: 'No Love Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/10625251', stampSeed: {} },
+        discogsUrl: 'https://www.discogs.com/release/10625251', youtubeIds: ["YgDpbwlP_LQ", "HNyHlk6VUrI", "KTNF37nOnqo", "Uf9dyoS5mG0", "FBptgfXdsqQ", "gaLdyMCzIa4", "dH0CfE65-eo", "c5fgvmpI084", "NSlG8mrwvtI", "eDbixSG4aYQ", "vAh0JAILzxo", "JqP96nKcczM", "crzs4oj3KO4", "9SCtzPFrc8k", "dKie6SF_-kg", "dARZxocZW9c"], discogsArt: "https://i.discogs.com/OdSLyyaUwGGYc_1kWmP8U8djHDJdQJy9hgjHdxseRXA/rs:fit/g:sm/q:90/h:300/w:350/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwNjI1/MjUxLTE2MzY2MzA2/MzktNDMzNC5qcGVn.jpeg", stampSeed: {} },
       { id: 2, artist: 'SandSpiders', title: 'Live II Tell', year: 1999, label: 'SandSpider Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/5622350', stampSeed: {} },
+        discogsUrl: 'https://www.discogs.com/release/5622350', youtubeIds: ["tt30gr0-Gk8", "ckaswUXpsXw", "AS5lwjr4_vk", "pV06Na3_NMc"], discogsArt: "https://i.discogs.com/gbNSTBiy28jtKvcIhFoGf7NnAAXzp09fW1TUmCA7WNM/rs:fit/g:sm/q:90/h:495/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTU2MjIz/NTAtMTM5ODIzODk2/Ny0yMTcyLmpwZWc.jpeg", stampSeed: {} },
       { id: 3, artist: 'Big Blitz', title: 'All At Once', year: 1999, label: 'Hidden Mic Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/10509325', stampSeed: {} },
+        discogsUrl: 'https://www.discogs.com/release/10509325', youtubeIds: ["STfI5Nrco0E", "TO_s2S-K8-Q"], discogsArt: "https://i.discogs.com/KpXFWIcBJ-WHYsbMPFvYjIxNCeitJyX9QnwEqp2ZzrA/rs:fit/g:sm/q:90/h:600/w:594/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwNTA5/MzI1LTE2MDYxODU0/MjEtODE5My5qcGVn.jpeg", stampSeed: {} },
       { id: 4, artist: 'D Jack', title: 'Sex Money & Murder', year: 1999, label: 'ERM', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9213568', stampSeed: {} },
       { id: 5, artist: 'Fear', title: 'Lawless Entertainment', year: 1999, label: 'Lawless Entertainment', youtubeId: null,
@@ -3064,12 +3064,9 @@ const REGIONS = [
     // 「世界のG-RAP」の枠自体は残し、条件を満たす盤が見つかり次第補充する。
     id: 'yokohama', name: 'Yokohama', area: 'Japan — 世界のG-RAP',
     lng: 139.6380, lat: 35.4437,
-    albums: [
-      { id: 1977, artist: 'L.A.Z.', title: 'The Psychadelic One', year: 1994, label: 'Ugn Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/8481760', stampSeed: {} },
-      { id: 1968, artist: 'SNAKE', title: 'GAME TIGHT', year: 2003, label: 'Cold Blooded Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/11097032', stampSeed: {} },
-    ],
+    // L.A.Z.(San Diego)とSNAKE(Knoxville, TN)が誤って収集時にここへ
+    // 割り当てられていたため除去し、正しい地域へ移設(2026-08-08)。
+    albums: [],
   },
   {
     id: 'queens', name: 'Queensbridge', area: 'New York, NY',
@@ -4405,6 +4402,8 @@ const REGIONS = [
     id: 'sandiego', name: 'San Diego', area: 'California',
     lng: -117.1611, lat: 32.7157,
     albums: [
+      { id: 1977, artist: 'L.A.Z.', title: 'The Psychadelic One', year: 1994, label: 'Ugn Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8481760', stampSeed: {} },
       { id: 2155, artist: 'Jah Word', title: 'True Testament', year: 1997, label: 'Christ Like Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11420410', stampSeed: {} },
       { id: 2104, artist: 'Cee Wee 3', title: 'Deep Heat', year: 2004, label: 'Bomb Leery Entertainment', youtubeId: null,
@@ -4735,6 +4734,8 @@ const REGIONS = [
     id: 'knoxville', name: 'Knoxville', area: 'Tennessee',
     lng: -83.9210, lat: 35.9604,
     albums: [
+      { id: 1968, artist: 'SNAKE', title: 'GAME TIGHT', year: 2003, label: 'Cold Blooded Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11097032', stampSeed: {} },
       { id: 1708, artist: 'Hard Knox', title: 'This Is Real', year: 2002, label: "Mo' Dirty Records", youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1799357', stampSeed: {} },
     ],

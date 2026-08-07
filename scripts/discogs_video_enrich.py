@@ -130,11 +130,19 @@ def main():
     # 出現順に列挙する。1エントリ = data.js中の1つの album object。
     # discogsArtフィールドは無いエントリが大半なので正規表現には含めず、
     # 個別に「id:Nの直後からstampSeed:までにdiscogsArtが無いか」を後で見る。
+    # (?!\{ id: ) で他エントリの領域へ .*? が越境しないようにガードする。
+    # 越境を許すと、対象エントリ自身にyoutubeId/discogsUrlの並びが無い
+    # (改行を挟む等)場合に、遥か先の無関係な別盤のdiscogsUrlを誤って
+    # 拾ってしまう事故が実際に発生した(例: id:1がTray Duece盤の動画/
+    # ジャケ写を誤って書き込まれた、2026-08-08)。
     entry_pat = re.compile(
         r"\{ id: (\d+), artist: ((?:'(?:[^'\\]|\\.)*')|(?:\"(?:[^\"\\]|\\.)*\")), "
-        r"title: ((?:'(?:[^'\\]|\\.)*')|(?:\"(?:[^\"\\]|\\.)*\")), .*?"
-        r"youtubeId: (null|'[A-Za-z0-9_-]+'), .*?"
-        r"discogsUrl: '(https://www\.discogs\.com/release/(\d+))'"
+        r"title: ((?:'(?:[^'\\]|\\.)*')|(?:\"(?:[^\"\\]|\\.)*\")), "
+        r"(?:(?!\{ id: ).)*?"
+        r"youtubeId: (null|'[A-Za-z0-9_-]+'),\s*"
+        r"(?:(?!\{ id: ).)*?"
+        r"discogsUrl: '(https://www\.discogs\.com/release/(\d+))'",
+        re.DOTALL
     )
 
     def unquote(s):
@@ -187,7 +195,7 @@ def main():
                 # stampSeed: の直前にまとめて差し込む(id〜stampSeedは改行を
                 # またぐため re.DOTALL が必須)。既存の youtubeId: null は
                 # 互換のため残す(app.js側はyoutubeIdsを優先して見る)。
-                pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", .*?)(stampSeed:)", re.DOTALL)
+                pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", (?:(?!\{ id: ).)*?)(stampSeed:)", re.DOTALL)
                 new_src, n = pat.subn(rf"\g<1>{', '.join(inserts)}, \g<2>", src, count=1)
                 if n == 1:
                     src = new_src
@@ -205,7 +213,7 @@ def main():
             if art_url:
                 # stampSeed: の直前に discogsArt: '<url>', を差し込む
                 # (id〜stampSeedは改行をまたぐため re.DOTALL が必須)
-                pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", .*?)(stampSeed:)", re.DOTALL)
+                pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", (?:(?!\{ id: ).)*?)(stampSeed:)", re.DOTALL)
                 new_src, n = pat.subn(rf"\g<1>discogsArt: {json.dumps(art_url)}, \g<2>", src, count=1)
                 if n == 1:
                     src = new_src

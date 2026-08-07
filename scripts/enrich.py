@@ -100,7 +100,9 @@ def find_album(artist: str, title: str):
             if r.get("wrapperType") != "collection" or not rt:
                 continue
             shorter_len = min(len(nt), len(rt))
-            if (nt in rt or rt in nt) and shorter_len >= 4:
+            # 完全一致は長さに関わらず常に許可("Yo!"のような短いタイトルが
+            # 完全一致してるのに部分一致ガードで弾かれていた事故があったため)。
+            if nt == rt or ((nt in rt or rt in nt) and shorter_len >= 4):
                 hits.append(r)
         if hits:
             break
