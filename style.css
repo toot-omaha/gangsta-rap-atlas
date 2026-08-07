@@ -504,7 +504,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .player-queue .credit { opacity: .6; font-size: 9px; }
 .player-meta { min-width: 0; }
 .player-meta strong { display: block; font-size: 13px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.player-meta span { font-size: 10px; letter-spacing: .08em; color: var(--paper-2); }
+.player-meta span { display: block; font-size: 10px; letter-spacing: .08em; color: var(--paper-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-controls { display: flex; align-items: center; gap: 8px; }
 .player-queue { display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: .1em; color: var(--paper-2); }
 
@@ -555,6 +555,6 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   .list-head .close { position: absolute; right: 0; top: 6px; }
   .list-head .share { position: absolute; right: 40px; top: 6px; }
   .list-head .cnt { margin-left: 0; }
-  .player-meta span, .player-queue .credit { display: none; }
+  .player-queue .credit { display: none; }
   .player { gap: 10px; }
 }

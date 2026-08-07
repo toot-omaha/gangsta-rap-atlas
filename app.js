@@ -1273,7 +1273,17 @@ $play.addEventListener('click', () => {
 });
 document.querySelector('.player-now').addEventListener('click', () => {
   const album = queue[cursor]?.album;
-  if (album) renderDisc(album);
+  if (!album) return;
+  // 地図に戻った後も連続再生は続くので、そこからプレイヤーバーを押すと
+  // 一覧が一段も開いていない(navLevel 0)ことがある。
+  // その状態からいきなりディスク詳細を開くと #list に body.detail が
+  // 付かないままになり、描画はされてもopacity:0で操作できなくなる。
+  // 地域一覧を経由させて階層とdetailクラスを正しく積み直す。
+  if (navLevel === 0) {
+    const region = REGIONS.find((r) => r.albums.includes(album));
+    if (region) openRegion(region, true);
+  }
+  renderDisc(album);
 });
 document.getElementById('clearQueue').addEventListener('click', () => {
   queue = []; cursor = -1;
