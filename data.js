@@ -572,6 +572,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3171933', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { id: 256, artist: 'Warren G', title: 'I Want It All', year: 1999, label: 'Restless Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10441850', stampSeed: { smooth: 28, mellow: 22, funky: 18 } },
+      { id: 1612, artist: 'Foesum', title: 'The Foefathers', year: 2002, label: 'The Perfection Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11297970', stampSeed: {} },
+      { id: 1616, artist: 'L-Love', title: 'Done...But Not Finished!(A Long Hard Road Left To Travel)', year: 2002, label: 'At Home Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34137838', stampSeed: {} },
     ],
   },
   {
@@ -1114,6 +1118,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6135217', stampSeed: {} },
       { id: 1586, artist: 'Clyde Carson', title: 'The Story Vol. 1', year: 2001, label: 'Outfit Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11203399', stampSeed: {} },
+      { id: 1607, artist: 'AP-9', title: 'World-Wide Mob Figa', year: 2002, label: 'OUT-BREAK Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4750335', stampSeed: {} },
+      { id: 1621, artist: 'Mac Dre', title: 'Thizzelle Washington', year: 2002, label: 'Thizz Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/582477', stampSeed: {} },
+      { id: 1622, artist: 'AP.9', title: 'Military Mindstate', year: 2002, label: 'Warlock Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/969451', stampSeed: {} },
+      { id: 1625, artist: 'Dru Down', title: "Gangsta Pimpin'", year: 2002, label: 'C-Note Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/950528', stampSeed: {} },
     ],
   },
   {
@@ -1466,6 +1478,24 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/29613838', stampSeed: {} },
       { id: 1594, artist: 'SK All Day', title: 'Rewind & Play', year: 2001, label: 'Cloverleaf Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3160706', stampSeed: {} },
+      { id: 1600, artist: "Lil' Flip", title: 'Undaground Legend', year: 2002, label: 'Sucka Free Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11787144', stampSeed: {} },
+      { id: 1604, artist: 'Big Moe', title: 'Purple World', year: 2002, label: 'Wreckshop Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11379307', stampSeed: {} },
+      { id: 1605, artist: 'Slim Thug', title: "Underground Hoggin'", year: 2002, label: 'Boss Hogg Outlawz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13207961', stampSeed: {} },
+      { id: 1606, artist: 'SPM', title: 'Reveille Park Screwed & Chopped', year: 2002, label: 'Dope House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17183434', stampSeed: {} },
+      { id: 1615, artist: 'Hawk', title: 'Hawk - Slowed & Chopped', year: 2002, label: 'Game Face Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3958301', stampSeed: {} },
+      { id: 1627, artist: 'South Park Coalition', title: 'Personal Vendetta', year: 2002, label: 'Full Circle Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2932060', stampSeed: {} },
+      { id: 1628, artist: 'Beltway 8', title: 'Built For War. (Eighted And Chopped)', year: 2002, label: 'Beltway 8 Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9274486', stampSeed: {} },
+      { id: 1629, artist: 'Big Pokey', title: "Da Sky's Da Limit", year: 2002, label: 'Wreckshop Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9900487', stampSeed: {} },
+      { id: 1630, artist: 'Woss Ness', title: 'Puttin In Work Part 2 (Chopped And Screwed)', year: 2002, label: 'Woss Ness Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9436764', stampSeed: {} },
     ],
   },
   {
@@ -1698,6 +1728,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/36259195', stampSeed: {} },
       { id: 1598, artist: 'Kami Kaze Inc.', title: 'Kami Kaze', year: 2001, label: 'Kami Kaze Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3627132', stampSeed: {} },
+      { id: 1610, artist: 'DJ Squeeky', title: 'Tha Legacy', year: 2002, label: 'Big Cheeze Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/505668', stampSeed: {} },
     ],
   },
   {
@@ -1936,6 +1968,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1451079', stampSeed: {} },
       { id: 1597, artist: 'Hot Boy$', title: 'Get It How U Live!!', year: 2001, label: 'Cash Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12785227', stampSeed: {} },
+      { id: 1601, artist: 'Soulja Slim', title: 'Years Later', year: 2002, label: 'Cut Throat Comitty Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8014636', stampSeed: {} },
+      { id: 1603, artist: 'Juvenile', title: '600 Degreez', year: 2002, label: 'UTP Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15538215', stampSeed: {} },
+      { id: 1613, artist: 'C-Murder', title: 'Tru Dawgs', year: 2002, label: 'D3 Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2580576', stampSeed: {} },
+      { id: 1626, artist: 'Lil Wayne', title: '500 Degreez', year: 2002, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13217122', stampSeed: {} },
     ],
   },
   {
@@ -2296,6 +2336,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3595913', stampSeed: {} },
       { id: 1591, artist: 'X-Raided', title: '...And He Shall Appear', year: 2001, label: 'Madman Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3589649', stampSeed: {} },
+      { id: 1623, artist: 'X-Raided', title: 'These Walls Can Talk...', year: 2002, label: 'Bubble Up Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3834658', stampSeed: {} },
     ],
   },
   {
@@ -2335,6 +2377,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4950108', stampSeed: { dark: 26, bangin: 20, doro: 15 } },
       { id: 1067, artist: 'Mobb Deep', title: 'Murda Muzik', year: 1999, label: 'Loud Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/329193', stampSeed: { dark: 34, doro: 27, bangin: 20 } },
+      { id: 1617, artist: 'N.O.R.E.', title: "God's Favorite", year: 2002, label: 'Def Jam Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5659095', stampSeed: {} },
+      { id: 1620, artist: 'Kool G Rap', title: 'The Giancana Story', year: 2002, label: 'Koch Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/873455', stampSeed: {} },
     ],
   },
   {
@@ -2393,6 +2439,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/704954', stampSeed: { bangin: 40, dark: 28, doro: 20, funky: 22 } },
       { id: 1090, artist: 'Fat Joe', title: 'Don Cartagena', year: 1998, label: 'Atlantic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15627572', stampSeed: { bangin: 32, dark: 22, doro: 16 } },
+      { id: 1619, artist: 'Fat Joe', title: 'Loyalty', year: 2002, label: 'Atlantic', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1632115', stampSeed: {} },
     ],
   },
   {
@@ -2451,6 +2499,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12997184', stampSeed: {} },
       { id: 1565, artist: 'I-35 Boyz', title: '100% Hata Proof', year: 2001, label: 'Hata Proof Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13234779', stampSeed: {} },
+      { id: 1602, artist: 'Dirty South Rydaz', title: 'DSR', year: 2002, label: 'T-Town Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13090000', stampSeed: {} },
     ],
   },
   {
@@ -2647,6 +2697,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/11867547', stampSeed: { dark: 18, doro: 14, bangin: 10 } },
       { id: 1197, artist: 'Al Nuke', title: 'Under Pressure', year: 1998, label: 'Sirus Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8137848', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
+      { id: 1624, artist: 'Xzibit', title: 'Man Vs Machine', year: 2002, label: 'Columbia', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37910220', stampSeed: {} },
     ],
   },
   {
@@ -2920,6 +2972,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/15326391', stampSeed: { bangin: 18, funky: 14, dark: 10 } },
       { id: 1290, artist: 'Cool Nutz', title: 'Speakin Upon a Million', year: 1998, label: 'Jus Family Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1552677', stampSeed: { bangin: 17, funky: 13, dark: 10 } },
+      { id: 1614, artist: 'Cool Nutz', title: 'Verbal Porn', year: 2002, label: 'Jus Family Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4153602', stampSeed: {} },
     ],
   },
   {
@@ -3010,6 +3064,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/14740315', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
       { id: 1318, artist: '11/11', title: "Creepin' Off to da Hide-a-Way", year: 1998, label: 'Pyya Rhythms Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11447895', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
+      { id: 1611, artist: 'Bone Thugs-N-Harmony', title: 'Thug World Order', year: 2002, label: 'Ruthless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/748070', stampSeed: {} },
     ],
   },
   {
@@ -3603,6 +3659,8 @@ const REGIONS = [
     albums: [
       { id: 1459, artist: 'Slimm Calhoun', title: 'The Skinny', year: 2000, label: 'Elektra', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15758123', stampSeed: {} },
+      { id: 1609, artist: 'Pastor Troy', title: 'Universal Soldier', year: 2002, label: 'Universal Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2422527', stampSeed: {} },
     ],
   },
   {
@@ -3921,6 +3979,8 @@ const REGIONS = [
     albums: [
       { id: 1510, artist: '1504', title: 'Do Unto Others Be-4 Them Haters Do You', year: 2001, label: 'D.T.O. Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/18826336', stampSeed: {} },
+      { id: 1608, artist: 'Y.B.', title: "Back 'N Da Dayz", year: 2002, label: 'Epicenter Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9594018', stampSeed: {} },
     ],
   },
   {
@@ -3983,6 +4043,8 @@ const REGIONS = [
     albums: [
       { id: 1519, artist: 'Armed Forces', title: 'First Strike The Hostile Takeover', year: 2001, label: 'Sova Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10501966', stampSeed: {} },
+      { id: 1618, artist: 'Clipse', title: "Lord Willin'", year: 2002, label: 'Star Trak Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/397337', stampSeed: {} },
     ],
   },
   {
