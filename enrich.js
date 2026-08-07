@@ -69862,6 +69862,65 @@ const ENRICH = {
    }
   ]
  },
+ "Playya 1000|Foe-Da-$Mill$-Ticket": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d4/f8/13/d4f8135e-2f0d-176b-f7b9-c799e74f7e2c/artwork.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/foe-da-mill-ticket/1554335583?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/9d/51/dd/9d51dd89-bb67-0e9b-a4f4-9c02c8d60302/mzaf_5632554919913793811.plus.aac.p.m4a"
+   },
+   {
+    "name": "Things Will Be",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/55/ac/bf/55acbf60-0cc9-bcfa-1934-87d37d8af932/mzaf_10786842282414030911.plus.aac.p.m4a"
+   },
+   {
+    "name": "1/2 Time Homiez",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/65/2b/85/652b8559-8c00-db88-e6c2-581a9975f65f/mzaf_2985021877558675082.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Chase",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/02/3d/09/023d098e-4298-bc6f-39a9-0690a7e5ea52/mzaf_14077617396316179004.plus.aac.p.m4a"
+   },
+   {
+    "name": "Choppin' Game",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/38/a5/fb/38a5fb87-5339-bf07-461c-2ca9456b0834/mzaf_17050346646661649281.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Lick",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/2c/f8/f0/2cf8f0d7-f0b6-d9fb-55ca-67b8f0c5fe78/mzaf_437058899549621843.plus.aac.p.m4a"
+   },
+   {
+    "name": "Boom-Boom (feat. Dramma)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/c4/10/bd/c410bd28-1ba5-c5c4-732c-52a942015b10/mzaf_677148001940546666.plus.aac.p.m4a"
+   },
+   {
+    "name": "Stressin' (feat. Theo Mcgee)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/94/d0/1a/94d01a84-c3d6-b6ed-17e0-14906a8e7773/mzaf_3945434698100353903.plus.aac.p.m4a"
+   },
+   {
+    "name": "Straight Lacin (feat. Dramma)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview114/v4/30/61/d8/3061d8ed-b7c4-67d0-359f-c6c5840430e5/mzaf_14159290758125923982.plus.aac.p.m4a"
+   },
+   {
+    "name": "On + Poppin'",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/1e/b1/c7/1eb1c785-4b3c-d6fa-aa9d-c8c13f17c560/mzaf_14472775357436739268.plus.aac.p.m4a"
+   },
+   {
+    "name": "All Day Everyday",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/52/19/6f/52196f3b-2cf5-6b83-4112-c53c6de53138/mzaf_15403499412151612591.plus.aac.p.m4a"
+   },
+   {
+    "name": "1/2 Time Homiez (Radio)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/6d/c9/b2/6dc9b27b-58eb-edd1-19ac-082b4573af26/mzaf_4059046013746877779.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Lick (Radio)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/ca/82/b1/ca82b11d-714e-80b1-6ae8-bae1f6a03624/mzaf_16998344816076291004.plus.aac.p.m4a"
+   }
+  ]
+ },
  "Dangerous Rob|Dangerous On Arrival": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/bf/dc/34/bfdc3484-6652-6937-cb85-389481264cda/198025940958.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/dangerous-on-arrival/1709166427?uo=4",

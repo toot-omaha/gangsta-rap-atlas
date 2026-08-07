@@ -1256,6 +1256,8 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 2232, artist: 'Assassin (3)', title: 'Worldwide Game', year: 1999, label: 'GMG Records / Life Or Death Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3881926', stampSeed: {} },
       { id: 2221, artist: 'Dru Down', title: 'Greatest Hits', year: 2004, label: 'C-Note Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13860818', stampSeed: {} },
       { id: 2218, artist: 'Yukmouth', title: 'Yukmouth Presents United Ghettos Of America Vol. 2 Screwed & Chopped-A-Lot', year: 2004, label: 'Rap-A-Lot 4 Life', youtubeId: null,
@@ -4976,6 +4978,8 @@ const REGIONS = [
     id: 'tulsa', name: 'Tulsa', area: 'Oklahoma',
     lng: -95.9928, lat: 36.154,
     albums: [
+      { id: 2231, artist: 'Playya 1000', title: 'Foe-Da-$Mill$-Ticket', year: 2005, label: 'Small Town Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1195444', stampSeed: {} },
       { id: 2130, artist: 'Dangerous Rob', title: 'Dangerous On Arrival', year: 2004, label: 'FREEDAM Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11031984', stampSeed: {} },
       { id: 2072, artist: 'Pak-Man', title: 'This Iz Me', year: 2004, label: 'In-Capp Records', youtubeId: null,
