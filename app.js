@@ -728,9 +728,11 @@ const syncTopbarH = () =>
 new ResizeObserver(syncTopbarH).observe(topbar);
 syncTopbarH();
 
-// キャンバスの描画停止(タブ非表示・リサイズ等)から復帰した際に必ず再描画する
+// キャンバスの描画停止(タブ非表示・リサイズ等)から復帰した際に必ず再描画する。
+// あわせて他端末での変更(STREET NAME再生成や持ってる/ほしいの更新)も取り込む
+// (起動時1回だけのプルだと、開きっぱなしの端末が追従できないため)
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) { map.resize(); map.triggerRepaint(); }
+  if (!document.hidden) { map.resize(); map.triggerRepaint(); autoPullFavSync(); }
 });
 window.addEventListener('resize', () => map.resize());
 window.addEventListener('pageshow', () => { map.resize(); map.triggerRepaint(); });
