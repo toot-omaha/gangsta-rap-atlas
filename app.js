@@ -441,6 +441,9 @@ async function linkStreetName(name, code) {
 let activeFilters = new Set();
 let activeRegion = null;
 const shotRegions = new Set(); // 一度クリックした土地は弾痕が残る
+// 直近で開いた地域のid。マーカーを赤く保つ&地図に戻った時の中央寄せに使う。
+// 次に別の地域を選ぶまで維持する(検索経由で開いた場合に特に有効)。
+let selectedRegionId = null;
 
 // ---------- 年代フィルター ----------
 // 3区分のチェックボックス(デフォルト全ON)。外した年代のディスクは
@@ -529,6 +532,7 @@ function refreshMarkers() {
     // 未確認情報の置き場だけは0件でも常に見せる。
     el.classList.toggle('hidden', n === 0 && !r.unclassified);
     el.classList.toggle('hit', shotRegions.has(r.id));
+    el.classList.toggle('selected', r.id === selectedRegionId);
     el.title = `${r.name} — ${n}枚`;
   });
 }
@@ -705,6 +709,7 @@ window.addEventListener('popstate', (e) => {
 
 function openRegion(region, push = true) {
   activeRegion = region;
+  selectedRegionId = region.id; // 次に別の地域を選ぶまで赤表示を維持
   shotRegions.add(region.id);
   fireShot(region);
   refreshMarkers();
@@ -717,7 +722,13 @@ function openRegion(region, push = true) {
 function closeListUI() {
   document.body.classList.remove('detail');
   activeRegion = null;
-  refreshMarkers(); // 地図の位置はリセットせずそのまま
+  // 選択中の地域(赤表示)を地図の中央へ。検索から開いた場合など、
+  // どの地域を見ていたか一目でわかるようにする。
+  if (selectedRegionId) {
+    const region = REGIONS.find((r) => r.id === selectedRegionId);
+    if (region) map.easeTo({ center: [region.lng, region.lat], duration: 500 });
+  }
+  refreshMarkers();
 }
 function closeList() { navBack(); }
 

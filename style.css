@@ -218,6 +218,10 @@ body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
 }
 .marker.hit .bh { opacity: .95; }
 .marker.hit .mk { animation: hit .3s steps(3); }
+/* 直近で開いた地域は次に別の地域を選ぶまで赤いままにする
+   (検索から来た時など、どこにピンが立っていたか一目でわかるように) */
+.marker.selected .grave { fill: var(--red); }
+.marker.selected .buoy { fill: var(--red); }
 @keyframes hit {
   0% { transform: scale(calc(var(--s, 1) * 2.4)); }
   100% { transform: scale(calc(var(--s, 1) * var(--h, 1))); }
