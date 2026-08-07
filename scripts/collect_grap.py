@@ -165,6 +165,25 @@ def norm(s):
     return re.sub(r'[^a-z0-9]+', '', s)
 
 
+# Screwed & Chopped版・リマスター・特別版などは normalized title が変わって
+# しまうため norm() の完全一致では同一盤の別プレスを検出できない。
+# rejected台帳を--reset-rejectedで再候補化した時に「実質同じ盤」を別物として
+# 再度候補に出してしまわないよう、こちらの緩い正規化(再発盤特有の語を除去)を
+# 別途の警告用途で使う(自動除外はしない。誤判定で本当に別作品を消すと
+# データが減る方向の事故になるため、フラグだけ立てて人間/レビューに委ねる)。
+_VARIANT_WORDS = re.compile(
+    r'\b(screwed|chopped|throwed|remaster(?:ed)?|deluxe|anniversary|reissue|'
+    r'edition|version|explicit|clean|special|collector s|vol(?:ume)?\s*\d*|'
+    r'part\s*\d*|disc\s*\d*|the\s+album)\b'
+)
+
+
+def norm_loose(s):
+    s = s.lower().replace('&', ' and ')
+    s = _VARIANT_WORDS.sub(' ', s)
+    return re.sub(r'[^a-z0-9]+', '', s)
+
+
 # ---------- 1. Discogs: G-RAP判定の一次データベース ----------
 LATEST_YEAR = 2010  # G-RAPの実質的な最盛期はこのあたりまで。これ以降は対象外。
 
@@ -360,8 +379,11 @@ def load_existing():
     unquote = lambda s: s[1:-1].replace("\\'", "'").replace('\\"', '"').replace('\\\\', '\\')
 
     albums = set()
+    loose_by_artist = {}
     for a, t in re.findall(rf"artist:\s*{q},\s*title:\s*{q}", src):
-        albums.add((norm(unquote(a)), norm(unquote(t))))
+        artist_n, title_n = norm(unquote(a)), norm(unquote(t))
+        albums.add((artist_n, title_n))
+        loose_by_artist.setdefault(artist_n, set()).add(norm_loose(unquote(t)))
 
     regions = []
     for m in re.finditer(
@@ -371,7 +393,7 @@ def load_existing():
             'id': unquote(m.group(1)), 'name': unquote(m.group(2)),
             'lng': float(m.group(4)), 'lat': float(m.group(5)),
         })
-    return albums, regions
+    return albums, regions, loose_by_artist
 
 
 def nearest_region(lng, lat, regions, max_km=60):
@@ -390,7 +412,7 @@ def nearest_region(lng, lat, regions, max_km=60):
 def main():
     pages = int(sys.argv[1]) if len(sys.argv) > 1 else 2
     state = load_state()
-    existing_albums, regions = load_existing()
+    existing_albums, regions, loose_by_artist = load_existing()
     print(f'既存ディスク {len(existing_albums)} 件 / 既存地域 {len(regions)} 件')
 
     # スタイルごとに独立したカーソルで、それぞれpagesページ分収集する
@@ -411,10 +433,11 @@ def main():
         print(f'  {style}のカーソルを{last_year}年{last_page - 1}ページまで進めました(次回は{last_year}年{last_page}ページ目から)')
 
     processed = load_processed()
-    fresh, skipped_existing, skipped_processed = [], [], []
+    fresh, skipped_existing, skipped_processed, skipped_similar = [], [], [], []
     seen_in_batch = set()
     for h in harvested:
         key = (norm(h['artist']), norm(h['title']))
+        loose_title = norm_loose(h['title'])
         if key in existing_albums:
             skipped_existing.append(h)
         elif (str(h['discogs_id']) in processed['merged']['ids'] or f"{key[0]}|{key[1]}" in processed['merged']['titles']
@@ -423,6 +446,13 @@ def main():
         elif key in seen_in_batch:
             # 同一バッチ内でGangsta/G-Funk両方にヒットした同一作品の重複を弾く
             continue
+        elif loose_title in loose_by_artist.get(key[0], set()):
+            # Screwed & Chopped版・リマスター等の語を除いたタイトルが同一
+            # アーティストの既存盤と一致 = 実質同じ内容の別プレスの疑い。
+            # --reset-rejected で保留候補を再収集した時に、同じ盤を
+            # 別物として重複登録してしまう事故を防ぐための緩いガード。
+            # (誤検出リスクがあるため合流はせず、確認用に一覧だけ残す)
+            skipped_similar.append(h)
         else:
             seen_in_batch.add(key)
             fresh.append(h)
@@ -430,8 +460,15 @@ def main():
         print(f'  [登録済みスキップ] {h["artist"]} - {h["title"]}')
     for h in skipped_processed:
         print(f'  [判断済みスキップ] {h["artist"]} - {h["title"]}')
+    for h in skipped_similar:
+        print(f'  [類似盤の疑いでスキップ] {h["artist"]} - {h["title"]}')
     print(f'  うち既存と重複: {len(skipped_existing)} 件 / 判断済み(前回除外等): {len(skipped_processed)} 件'
-          f' / 新規候補: {len(fresh)} 件')
+          f' / 類似盤の疑い: {len(skipped_similar)} 件 / 新規候補: {len(fresh)} 件')
+    if skipped_similar:
+        (ROOT / 'scripts' / 'skipped_similar.json').write_text(json.dumps(
+            [{'artist': h['artist'], 'title': h['title'], 'discogs_id': h['discogs_id'],
+              'discogs_url': h.get('discogs_url')} for h in skipped_similar],
+            ensure_ascii=False, indent=1))
 
     hometown_cache = {}
     wiki_cache = {}
