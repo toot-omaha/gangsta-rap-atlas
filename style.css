@@ -172,7 +172,7 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
   transform: scale(calc(var(--s, 1) * var(--h, 1)));
   will-change: transform;
 }
-.marker:hover { --h: 1.18; z-index: 5; }
+.marker:hover { --h: 1.18; z-index: 9999 !important; }
 /* 墓石ピン(中に枚数) */
 .marker .grave {
   position: absolute; inset: 0;

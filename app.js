@@ -534,6 +534,8 @@ function refreshMarkers() {
     el.classList.toggle('hit', shotRegions.has(r.id));
     el.classList.toggle('selected', r.id === selectedRegionId);
     el.title = `${r.name} — ${n}枚`;
+    // 重なり順: 枚数が多いほど上に。選択中の地域は常に最前面。
+    el.style.zIndex = r.id === selectedRegionId ? 9000 : n;
   });
 }
 
