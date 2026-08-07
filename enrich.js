@@ -56021,6 +56021,61 @@ const ENRICH = {
    }
   ]
  },
+ "Green Eyez|Me Against The World": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/f2/dd/97/mzi.mbdfbaus.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/me-against-the-world/412440957?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Mama's Baby, Poppa's Maybe",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/71/90/e0/mzm.uejmpczr.aac.p.m4a"
+   },
+   {
+    "name": "Get Yo Paper",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/2f/b8/ef/mzm.afcvfjyf.aac.p.m4a"
+   },
+   {
+    "name": "Happy Day's",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/18/d3/75/mzm.pczxshhw.aac.p.m4a"
+   },
+   {
+    "name": "Unkept Promises",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/b0/5f/8b/mzm.dcsrirar.aac.p.m4a"
+   },
+   {
+    "name": "Stop That",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/2c/dc/b9/mzm.xvzzylmi.aac.p.m4a"
+   },
+   {
+    "name": "Not Gonna Fall",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f1/7c/69/mzm.egiepocj.aac.p.m4a"
+   },
+   {
+    "name": "I Blame I",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/e8/fc/d2/mzm.cpxcsrfm.aac.p.m4a"
+   },
+   {
+    "name": "Big Pimpin'",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/38/b4/74/mzm.cmskmlog.aac.p.m4a"
+   },
+   {
+    "name": "Place of Peace",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/87/b8/1f/mzm.luwnfstn.aac.p.m4a"
+   },
+   {
+    "name": "Streetz Is Heartless",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/d1/4f/82/mzm.psciiaxh.aac.p.m4a"
+   },
+   {
+    "name": "Stay Hustlin",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/da/c1/55/mzm.ekhbmexb.aac.p.m4a"
+   },
+   {
+    "name": "We Still Here",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/04/1e/04/mzm.cxneerzq.aac.p.m4a"
+   }
+  ]
+ },
  "Hustler E|Wacocaine": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/70/5e/71/mzi.qgmdjnvx.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/wacocaine-ii/450036394?uo=4",
@@ -59369,6 +59424,85 @@ const ENRICH = {
    {
     "name": "1 By 1 (screwed)",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/24/98/98/2498983a-29af-1f74-f107-49b2c46c9b4c/mzaf_2098419093657915456.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Kool Whip|The Kingpin": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/c0/93/52/mzi.xpiacezo.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/the-king-pin/199402784?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro (The Beast)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/4f/b1/7d/mzm.mkbtzbyb.aac.p.m4a"
+   },
+   {
+    "name": "Comin2 Get'Cha",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/81/e3/8e/81e38eef-4d3e-2eb6-cbbb-bf4b02d8c33d/mzaf_9112416436594254566.plus.aac.p.m4a"
+   },
+   {
+    "name": "Out Dat South",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/92/4a/d9/924ad9fa-e503-bcbe-49dd-6b9e0bd5a9d8/mzaf_8176766241330450088.plus.aac.p.m4a"
+   },
+   {
+    "name": "Y'all Don't Know Us",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/0a/a5/54/0aa554fd-3616-50b2-0329-cb28a5355a5e/mzaf_8795744156658058347.plus.aac.p.m4a"
+   },
+   {
+    "name": "Southern Fry",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/9b/80/8c/9b808c5e-2e10-66ef-206c-da21ed38b0ed/mzaf_3527895305509692063.plus.aac.p.m4a"
+   },
+   {
+    "name": "Southside Funk",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/05/5b/5d/055b5df7-1e9e-61e1-22a3-dbd3637af185/mzaf_1053130992850861823.plus.aac.p.m4a"
+   },
+   {
+    "name": "The Last Laugh",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b7/01/e9/b701e939-2126-b647-6042-481f6fc0645b/mzaf_1645441668740934608.plus.aac.p.m4a"
+   },
+   {
+    "name": "All Day, Every Day",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/41/e3/e8/41e3e846-d606-5725-f6de-c546cb738ad7/mzaf_13140338937089909400.plus.aac.p.m4a"
+   },
+   {
+    "name": "Picture My Pain",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/21/0e/73/210e7303-d443-b384-77b4-7d40e99b1946/mzaf_5800805138407802616.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ryda 4 Life",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/53/af/b9/53afb9da-9c21-678a-4997-848a6f5baf35/mzaf_18155322505123388166.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dormido",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/aa/b3/f6/aab3f6c7-bbcb-a390-478f-3bfdc08941b0/mzaf_2389671689375645107.plus.aac.p.m4a"
+   },
+   {
+    "name": "Gangsta's Prayer",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/01/32/fb/0132fbb5-2ebc-444c-8e18-4f2bd7cd0c8a/mzaf_2099289252822181698.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pledge Allegiance (Intro)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/52/3c/2d/523c2d79-3c18-4ac2-09c0-65665dc87d45/mzaf_9513936855741045578.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pledge Allegiance",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/1d/ee/84/mzm.ksyxxeiy.aac.p.m4a"
+   },
+   {
+    "name": "Piss (Skit)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f5/45/91/f545910e-3b89-7243-778b-deed3a23985a/mzaf_16307514262530193834.plus.aac.p.m4a"
+   },
+   {
+    "name": "Been Bout It",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/91/7f/79/917f797e-881f-c11e-d8ff-2ef273270d56/mzaf_6733746564358694671.plus.aac.p.m4a"
+   },
+   {
+    "name": "Southern Fry (Skrewed)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/1a/37/f1/1a37f128-e182-8594-bd56-e2e3b0fe1526/mzaf_10078846729744706460.plus.aac.p.m4a"
+   },
+   {
+    "name": "Out Dat South (Skrewed)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b6/c1/ea/b6c1ea45-1149-227e-1f0f-c97a7b98facb/mzaf_15607897641404094430.plus.aac.p.m4a"
    }
   ]
  },

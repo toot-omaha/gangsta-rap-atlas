@@ -908,6 +908,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3532610', stampSeed: {} },
       { id: 1670, artist: 'B-Legit', title: 'Hard 2 B-Legit', year: 2002, label: 'Koch Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1245436', stampSeed: {} },
+      { id: 1724, artist: 'Mac Mall', title: "Mackin' Speaks Louder Than Words", year: 2002, label: 'Sesed Out Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2207371', stampSeed: {} },
     ],
   },
   {
@@ -1144,6 +1146,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10540873', stampSeed: {} },
       { id: 1683, artist: 'Nutt-So', title: 'The Movie', year: 2002, label: 'Outlaw Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4741183', stampSeed: {} },
+      { id: 1718, artist: 'Kaoz The Assassin', title: 'The Assassination Vol. 1', year: 2002, label: 'Killa Valley Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3338202', stampSeed: {} },
     ],
   },
   {
@@ -1544,6 +1548,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4029147', stampSeed: {} },
       { id: 1714, artist: 'Z-Ro', title: 'Life', year: 2002, label: 'KMJ Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2655858', stampSeed: {} },
+      { id: 1721, artist: 'Beltway 8', title: 'Beach Party 2002 (All Wrapped Up!!)', year: 2002, label: 'Beltway 8 Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9270747', stampSeed: {} },
     ],
   },
   {
@@ -1798,6 +1804,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7945372', stampSeed: {} },
       { id: 1703, artist: 'Da Headbussaz', title: "Dat's How It Happen To 'M", year: 2002, label: 'Hypnotize Minds', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3591757', stampSeed: {} },
+      { id: 1715, artist: 'Dirty Red', title: 'Deeper Than Pain', year: 2002, label: 'Midevil I.N.C.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/31280669', stampSeed: {} },
+      { id: 1716, artist: 'Kingpin Skinny Pimp', title: "Pimpin' And Hustlin'", year: 2002, label: 'Rap Hustlaz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2226926', stampSeed: {} },
     ],
   },
   {
@@ -2599,6 +2609,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2490439', stampSeed: {} },
       { id: 1711, artist: 'Pimpsta', title: 'Kicking Real Shit', year: 2002, label: 'Bird House Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12730092', stampSeed: {} },
+      { id: 1725, artist: 'Syko', title: 'Amerikkkan Syko Volume Zero', year: 2002, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34670275', stampSeed: {} },
     ],
   },
   {
@@ -3036,6 +3048,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2040639', stampSeed: { funky: 24, party: 18, bangin: 14 } },
       { id: 1657, artist: 'Twista', title: 'Chi-Town Massacre', year: 2002, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10770316', stampSeed: {} },
+      { id: 1722, artist: 'Rellik', title: '1st Of The Last Born', year: 2002, label: 'Hitt House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12187350', stampSeed: {} },
     ],
   },
   {
@@ -3156,6 +3170,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4140506', stampSeed: {} },
       { id: 1713, artist: 'Taichi', title: 'Show The World', year: 2002, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10849944', stampSeed: {} },
+      { id: 1717, artist: 'King Orgasmus One', title: 'Mein Kampf: Musik Für Männer', year: 2002, label: 'I Luv Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10002028', stampSeed: {} },
     ],
   },
   {
@@ -3365,6 +3381,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/11439047', stampSeed: {} },
       { id: 1644, artist: '57th Street Rogue Dog Villians', title: 'Roguish Ways', year: 2002, label: 'Hog Style Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1836417', stampSeed: {} },
+      { id: 1723, artist: 'Tech N9ne', title: 'Celcius', year: 2002, label: 'MidWestSide Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1745789', stampSeed: {} },
     ],
   },
   {
@@ -3541,6 +3559,8 @@ const REGIONS = [
     albums: [
       { id: 1411, artist: 'Green Eyez', title: 'High Blood Pressure', year: 2000, label: 'Street Slang Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26446541', stampSeed: {} },
+      { id: 1719, artist: 'Green Eyez', title: 'Me Against The World', year: 2002, label: 'Bigg Mony Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5694536', stampSeed: {} },
     ],
   },
   {
@@ -4149,6 +4169,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/25167556', stampSeed: {} },
       { id: 1508, artist: 'Swift', title: 'It Ain\'t Safe No More', year: 2001, label: 'Carnival Beats', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26638355', stampSeed: {} },
+      { id: 1720, artist: 'Kool Whip', title: 'The Kingpin', year: 2002, label: 'Black-N-Brown Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9374581', stampSeed: {} },
     ],
   },
   {
