@@ -979,6 +979,29 @@ function renderDisc(album, push = true) {
 
   const tracksEl = listEl.querySelector('.tracks');
   tracks.forEach((t, i) => tracksEl.appendChild(trackRow(album, t, i, rerender)));
+  // iTunesに1曲も無い盤は、YouTube代替の1行を曲リストと同じ見た目で足す
+  // (再生ボタンを押すとplayAlbum()経由でYouTube側が再生される)。
+  if (!tracks.length) {
+    const vid = youtubeIdFor(album);
+    if (vid) tracksEl.appendChild(youtubeTrackRow(album, vid));
+  }
+}
+
+// iTunesに試聴の無い盤のYouTube代替を、曲リストと統一した見た目の1行で表示する。
+// タイトルはYouTube oEmbed(無料・キー不要)で取得し、届くまでは仮表示にしておく。
+function youtubeTrackRow(album, vid) {
+  const row = document.createElement('div');
+  row.className = 'track';
+  row.innerHTML = `
+    <button class="tp" title="YouTubeで再生(30秒)">▶</button>
+    <span class="no">YT</span>
+    <span class="name">読込中…</span>`;
+  row.querySelector('.tp').addEventListener('click', () => playAlbum(album));
+  const url = `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}&format=json`;
+  fetch(url).then((res) => (res.ok ? res.json() : null)).then((data) => {
+    if (data?.title) row.querySelector('.name').textContent = data.title;
+  }).catch(() => {});
+  return row;
 }
 
 // ---------- お気に入りリスト表示(持ってる/ほしい の2セクション) ----------
@@ -1248,19 +1271,22 @@ const $play = document.getElementById('playBtn');
 // 並べたフラットなキューを再生位置(cursor)を軸に組み立てる。
 // キューの「続き」は地域末尾まで来るたびに次のアルバムを都度継ぎ足す
 // 遅延方式(next()参照)。地域全体を毎回事前展開すると巨大な配列になるため。
+// iTunesに1曲も無い盤の代替動画IDを解決する。優先順(ユーザー指示):
+// iTunes → YouTube Data API検索結果(youtube.js、"full album"クエリで
+// 狙い撃ちしているため精度が高い) → Discogsのリリース情報に載っていた
+// リンク(album.youtubeId、投稿者任せなので精度は劣るがAPI消費ゼロ)。
+function youtubeIdFor(album) {
+  const key = `${album.artist}|${album.title}`;
+  return (typeof YOUTUBE !== 'undefined' ? YOUTUBE[key] : null) || album.youtubeId || null;
+}
+
 function trackItemsOf(album) {
   const e = enrichOf(album);
   const art = artUrl(e, 100, album);
   const itunesTracks = (e?.tracks || []).filter((tr) => tr.preview)
     .map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, youtube: null, art, album }));
   if (itunesTracks.length) return itunesTracks;
-  // iTunesに1曲も無い盤は、アルバム単位のYouTube動画1本で代替する。
-  // 優先順(ユーザー指示): iTunes → YouTube Data API検索結果(youtube.js、
-  // "full album"クエリで狙い撃ちしているため精度が高い) → Discogsの
-  // リリース情報に載っていたリンク(album.youtubeId、投稿者任せなので精度は劣るが
-  // API消費ゼロ)。
-  const key = `${album.artist}|${album.title}`;
-  const vid = (typeof YOUTUBE !== 'undefined' ? YOUTUBE[key] : null) || album.youtubeId || null;
+  const vid = youtubeIdFor(album);
   if (!vid) return [];
   return [{ title: album.title, artist: album.artist, preview: null, youtube: vid, art, album }];
 }
