@@ -33,7 +33,7 @@ const I18N = {
     linkPlaceholder: '例: SHADOW-REAPER', link: '連携スル',
     syncOk: '同期完了', syncErr: '同期失敗。時間ヲ置イテ再度。', linking: '連携中…',
     linkNotFound: 'STREET NAMEカ連携コードガ違ウ(コードハ発行後10分有効)',
-    rerollConfirm: '再生成スルト今ノSTREET NAMEハ無効ニナル(持ッテル/ホシイハ引キ継ガレル)。ヨロシイ？',
+    rerollConfirm: '再生成スルト今ノSTREET NAMEハ無効ニナル(持ッテル/ホシイト連携済ミ端末ハ新シイ名前ニ引キ継ガレル)。ヨロシイ？',
     issueCode: '連携コード発行', codeHint: '他端末デ連携スルニハ、元端末デ発行シタコードモ必要(10分有効・1回限リ)',
     codePlaceholder: '連携コード', codeIssued: (c) => `連携コード: ${c} (10分有効)`,
   },
@@ -67,7 +67,7 @@ const I18N = {
     linkPlaceholder: 'e.g. SHADOW-REAPER', link: 'Link',
     syncOk: 'Synced', syncErr: 'Sync failed. Try again later.', linking: 'Linking…',
     linkNotFound: 'Street Name or link code is wrong (codes last 10 min)',
-    rerollConfirm: 'Rerolling retires your current Street Name (have/want carry over). Continue?',
+    rerollConfirm: 'Rerolling retires your current Street Name (have/want and linked devices carry over to the new name). Continue?',
     issueCode: 'Issue link code', codeHint: 'Linking on another device also requires a code issued on this one (valid 10 min, single use)',
     codePlaceholder: 'Link code', codeIssued: (c) => `Link code: ${c} (valid 10 min)`,
   },
@@ -259,9 +259,45 @@ async function ensureStreetName() {
   return null; // オフライン等で確保できなかった場合は同期なしで動く
 }
 
+// ---- STREET NAME再生成の他端末追従 ----
+// fav_syncテーブルにはgangsta_name以外の不変キーが無いため、再生成(リネーム)は
+// 「新しい名前で行を複製し、旧行のhaveに移転先マーカーを残す」方式で行う。
+// 他端末はpull/push前にマーカーを辿って自分のSTREET NAMEを自動更新するので、
+// 再生成しても連携が切れない。
+const MOVED_PREFIX = '__moved__:';
+function movedTarget(row) {
+  const h = row && Array.isArray(row.have) ? row.have : [];
+  return (h.length === 1 && typeof h[0] === 'string' && h[0].startsWith(MOVED_PREFIX))
+    ? h[0].slice(MOVED_PREFIX.length) : null;
+}
+// マーカーを辿って現在の名前と行を解決する(連続再生成に備えて最大5ホップ)
+async function resolveStreetName(name) {
+  let cur = name, row = null;
+  for (let i = 0; i < 5; i++) {
+    row = await pullFavSync(cur);
+    const target = row && movedTarget(row);
+    if (!target) break;
+    cur = target;
+  }
+  return { name: cur, row };
+}
+// 解決した名前が旧名と違えばローカルへ反映し、お気に入り画面の表示も更新する
+function adoptStreetName(name) {
+  if (name === streetName) return;
+  streetName = name;
+  localStorage.setItem(STREET_KEY, streetName);
+  const $v = document.getElementById('streetNameVal');
+  if ($v) $v.textContent = streetName;
+}
+
 async function pushFavSync() {
   if (!streetName) await ensureStreetName();
   if (!streetName) return;
+  try {
+    // 他端末で再生成されていたら、旧名の行(マーカー)ではなく移転先へ書き込む
+    const { name } = await resolveStreetName(streetName);
+    adoptStreetName(name);
+  } catch { /* 解決に失敗してもそのままの名前で試す */ }
   try {
     const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
       method: 'PATCH',
@@ -299,7 +335,9 @@ async function pullFavSync(name) {
 // そのまま置き換える(last-write-wins)。
 async function autoPullFavSync() {
   if (!streetName) return;
-  const row = await pullFavSync(streetName);
+  // 他端末で再生成されていたらマーカーを辿って新しい名前に追従する
+  const { name, row } = await resolveStreetName(streetName);
+  adoptStreetName(name);
   if (!row) return;
   applyErasFromRow(row);
   const newHave = new Set(row.have || []);
@@ -327,22 +365,29 @@ function applyErasFromRow(row) {
   if (activeRegion) renderList(activeRegion);
 }
 
-// サイコロ: 現在の行を新しい名前へリネーム(持ってる/ほしいはサーバー上のrowがそのまま引き継ぐ)
+// サイコロ: 新しい名前の行を現在のローカル状態で作成し、旧行には移転先マーカーを残す。
+// 連携済みの他端末はpull/push時にマーカーを辿って新しい名前へ自動追従するので、
+// 再生成しても同期は切れない(旧来は行を直接リネームしていたため他端末が迷子になっていた)。
 async function rerollStreetName() {
+  if (!streetName) return null;
+  const oldName = streetName;
   for (let i = 0; i < 3; i++) {
     const candidate = genStreetNameCandidate();
+    if (!(await reserveStreetName(candidate))) continue; // 名前衝突なら引き直し
     try {
-      const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+      await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(oldName)}`, {
         method: 'PATCH',
         headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-        body: JSON.stringify({ gangsta_name: candidate }),
+        body: JSON.stringify({
+          have: [MOVED_PREFIX + candidate], want: [],
+          link_code: null, link_code_expires_at: null,
+          updated_at: new Date().toISOString(),
+        }),
       });
-      if (res.ok) {
-        streetName = candidate;
-        localStorage.setItem(STREET_KEY, streetName);
-        return streetName;
-      }
-    } catch { return null; }
+    } catch { /* マーカー書き込み失敗時も新行は有効。他端末は旧名のまま残るが手動連携で復帰可能 */ }
+    streetName = candidate;
+    localStorage.setItem(STREET_KEY, streetName);
+    return streetName;
   }
   return null;
 }

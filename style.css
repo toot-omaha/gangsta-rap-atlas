@@ -56,8 +56,9 @@ body::before {
 /* デスクトップではドロワーは透明なラッパー(中身がヘッダーに並ぶ) */
 .drawer { display: contents; }
 .drawer-actions { display: none; }
-/* 年代フィルター(デスクトップ: ヘッダー内にインライン表示) */
-.era-filter { display: flex; gap: 10px; align-items: center; padding: 0 10px; flex: 0 0 auto; }
+/* 年代フィルター(デスクトップ: ヘッダー内で右寄せ表示。
+   モバイルのドロワー内ではブロック要素が全幅になるためmargin-left:autoは効かず無害) */
+.era-filter { display: flex; gap: 10px; align-items: center; padding: 0 10px; flex: 0 0 auto; margin-left: auto; }
 .era-chk {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 10px; font-weight: 900; letter-spacing: .06em;
@@ -435,7 +436,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 
 .top-actions {
   display: flex; align-items: center; gap: 8px;
-  margin-left: auto; padding-right: 14px; flex: 0 0 auto; align-self: center;
+  /* margin-left:autoは.era-filter側に持たせた(両方autoだと空きが折半されて
+     年代フィルターが中央に浮いてしまうため) */
+  padding-right: 14px; flex: 0 0 auto; align-self: center;
 }
 .fav-toggle {
   border: 2px solid var(--gold); background: transparent; color: var(--ink);
@@ -524,7 +527,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 /* 狭い画面: スタンプ列は墓石メニューからのドロップダウンに切り替え */
 @media (max-width: 860px) {
   .stamp-menu-btn { display: block; }
-  .top-actions { gap: 6px; padding: 5px 10px; }
+  /* モバイルでは.era-filterはドロワー内(fixed)にあり右寄せ役を担えないので、
+     こちらにmargin-left:autoを戻す */
+  .top-actions { gap: 6px; padding: 5px 10px; margin-left: auto; }
   /* 検索ボタンはヘッダー右下に独立配置(✕ボタンと被りやすいので
      詳細ページ・一覧が開いている間は隠す) */
   .fav-toggle.search {
