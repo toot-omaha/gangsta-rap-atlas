@@ -42,20 +42,31 @@ STATE_FILE = ROOT / 'scripts' / 'collect_state.json'
 PROCESSED_FILE = ROOT / 'scripts' / 'processed_ids.json'
 
 
+# 収集対象のDiscogsスタイル。Gangstaが主軸だが、G-Funkも音楽的に地続きで
+# G-RAP地図の対象として扱う(ユーザー指示により追加)。スタイルごとに
+# 独立したyear/pageカーソルを持ち、1回の実行で両方を進める。
+STYLES = ['Gangsta', 'G-Funk']
+DEFAULT_CURSOR = {'Gangsta': {'year': 1990, 'page': 0}, 'G-Funk': {'year': 1990, 'page': 0}}
+
+
 def load_state():
-    if STATE_FILE.exists():
-        s = json.loads(STATE_FILE.read_text())
-        if 'year' not in s:
-            # 旧形式(year無指定の連番ページ)からの移行。
-            # Discogsの検索APIはヒット件数に関わらずpage<=100までしか
-            # 返さない(44216件ヒットでもpages=100止まり)ため、無指定のまま
-            # 進め続けるとpage100で404になり、それ以降を一切拾えなくなる。
-            # 実際に旧カーソルがpage100で詰まって発覚したため、
-            # year指定(=クエリごとに別枠の100ページ上限を得られる)方式へ移行し、
-            # 詰まっていた年(1999年)のpage1から再開する。
-            return {'year': 1999, 'page': 0}
+    if not STATE_FILE.exists():
+        return {'cursors': {s: dict(DEFAULT_CURSOR[s]) for s in STYLES}}
+    s = json.loads(STATE_FILE.read_text())
+    if 'cursors' in s:
+        # 新規スタイルが後から追加された場合に備えて欠けているカーソルを補完
+        for style in STYLES:
+            s['cursors'].setdefault(style, dict(DEFAULT_CURSOR[style]))
         return s
-    return {'year': 1999, 'page': 0}
+    if 'year' in s:
+        # 旧形式({"year":..,"page":..} = Gangsta単体)からの移行。
+        # Discogsの検索APIはヒット件数に関わらずpage<=100までしか
+        # 返さない(44216件ヒットでもpages=100止まり)ため、無指定のまま
+        # 進め続けるとpage100で404になり、それ以降を一切拾えなくなる。
+        # 実際に旧カーソルがpage100で詰まって発覚したため、
+        # year指定(=クエリごとに別枠の100ページ上限を得られる)方式へ移行した経緯がある。
+        return {'cursors': {'Gangsta': {'year': s['year'], 'page': s['page']}, 'G-Funk': dict(DEFAULT_CURSOR['G-Funk'])}}
+    return {'cursors': {s: dict(DEFAULT_CURSOR[s]) for s in STYLES}}
 
 
 def save_state(state):
@@ -124,8 +135,8 @@ def norm(s):
 # ---------- 1. Discogs: G-RAP判定の一次データベース ----------
 LATEST_YEAR = 2010  # G-RAPの実質的な最盛期はこのあたりまで。これ以降は対象外。
 
-def discogs_harvest(start_year, start_page, pages, per_page=100, fmt='Album', sort='year', sort_order='asc'):
-    """style=Gangsta のリリースを取得し、master_id で重複プレスを除去して返す。
+def discogs_harvest(style, start_year, start_page, pages, per_page=100, fmt='Album', sort='year', sort_order='asc'):
+    """指定styleのリリースを取得し、master_id で重複プレスを除去して返す。
     Discogsの検索APIは総ヒット件数に関わらずpage<=100(=最大10000件)しか
     返さない。無指定の年代順クエリだと総ヒット44216件のうちpage100時点で
     早くも1999年に達してしまい、それ以降を一切拾えなくなる(2026-08-06に
@@ -136,10 +147,11 @@ def discogs_harvest(start_year, start_page, pages, per_page=100, fmt='Album', so
     out = []
     year, page = start_year, start_page
     remaining = pages
+    style_q = urllib.parse.quote(style)
     while remaining > 0 and year <= LATEST_YEAR:
         url = (
             'https://api.discogs.com/database/search'
-            f'?genre=Hip%20Hop&style=Gangsta&type=release&format={fmt}&year={year}'
+            f'?genre=Hip%20Hop&style={style_q}&type=release&format={fmt}&year={year}'
             f'&sort={sort}&sort_order={sort_order}&per_page={per_page}&page={page}'
         )
         data = discogs.get(url)
@@ -184,7 +196,7 @@ def discogs_harvest(start_year, start_page, pages, per_page=100, fmt='Album', so
 # ある1プレスにだけ誤って"Gangsta"が付いていたが、他は全て"Conscious"のみ)。
 # 単発の外れタグで誤って収録されるのを防ぐため、同一作品の全プレスを
 # 横断して多数決を取る。
-def gangsta_consensus(artist, title):
+def gangsta_consensus(artist, title, style='Gangsta'):
     term = urllib.parse.quote(f'{artist} {title}')
     data = discogs.get(f'https://api.discogs.com/database/search?q={term}&type=release&per_page=15')
     na, nt = norm(artist), norm(title)
@@ -194,7 +206,7 @@ def gangsta_consensus(artist, title):
         if na not in rt or nt not in rt:
             continue
         total += 1
-        if 'Gangsta' in (r.get('style') or []):
+        if style in (r.get('style') or []):
             gangsta += 1
     if total == 0:
         return None  # 照合不能(判定材料なし)
@@ -345,23 +357,40 @@ def nearest_region(lng, lat, regions, max_km=60):
 def main():
     pages = int(sys.argv[1]) if len(sys.argv) > 1 else 2
     state = load_state()
-    start_year, start_page = state['year'], state['page'] + 1
     existing_albums, regions = load_existing()
     print(f'既存ディスク {len(existing_albums)} 件 / 既存地域 {len(regions)} 件')
-    print(f'前回まで {start_year}年 {state["page"]} ページ処理済み → 今回は {start_year}年 {start_page} ページ目から{pages}ページ分')
 
-    print(f'[1/4] Discogsから収集中(style=Gangsta, 年代順)…')
-    harvested, last_year, last_page = discogs_harvest(start_year, start_page, pages)
-    print(f'  {len(harvested)} 件(重複プレス除去後)')
+    # スタイルごとに独立したカーソルで、それぞれpagesページ分収集する
+    harvested = []
+    for style in STYLES:
+        cur = state['cursors'][style]
+        start_year, start_page = cur['year'], cur['page'] + 1
+        print(f'[1/4] Discogsから収集中(style={style}, 年代順)… 前回まで{start_year}年{cur["page"]}ページ処理済み → 今回は{start_year}年{start_page}ページ目から{pages}ページ分')
+        got, last_year, last_page = discogs_harvest(style, start_year, start_page, pages)
+        print(f'  {len(got)} 件(重複プレス除去後)')
+        for h in got:
+            h['target_style'] = style
+        harvested.extend(got)
+        # discogs_harvestが返す(last_year, last_page)は「次回はここから」を指すので、
+        # 消費済みとして保存するpageは1つ手前(年をまたいだ直後はpage=1→0=その年未消費)。
+        state['cursors'][style] = {'year': last_year, 'page': last_page - 1}
+        save_state(state)
+        print(f'  {style}のカーソルを{last_year}年{last_page - 1}ページまで進めました(次回は{last_year}年{last_page}ページ目から)')
 
     processed = load_processed()
     fresh, skipped_existing, skipped_processed = [], [], []
+    seen_in_batch = set()
     for h in harvested:
-        if (norm(h['artist']), norm(h['title'])) in existing_albums:
+        key = (norm(h['artist']), norm(h['title']))
+        if key in existing_albums:
             skipped_existing.append(h)
-        elif str(h['discogs_id']) in processed['ids'] or f"{norm(h['artist'])}|{norm(h['title'])}" in processed['titles']:
+        elif str(h['discogs_id']) in processed['ids'] or f"{key[0]}|{key[1]}" in processed['titles']:
             skipped_processed.append(h)
+        elif key in seen_in_batch:
+            # 同一バッチ内でGangsta/G-Funk両方にヒットした同一作品の重複を弾く
+            continue
         else:
+            seen_in_batch.add(key)
             fresh.append(h)
     for h in skipped_existing:
         print(f'  [登録済みスキップ] {h["artist"]} - {h["title"]}')
@@ -370,26 +399,21 @@ def main():
     print(f'  うち既存と重複: {len(skipped_existing)} 件 / 判断済み(前回除外等): {len(skipped_processed)} 件'
           f' / 新規候補: {len(fresh)} 件')
 
-    # discogs_harvestが返す(last_year, last_page)は「次回はここから」を指すので、
-    # 消費済みとして保存するpageは1つ手前(年をまたいだ直後はpage=1→0=その年未消費)。
-    state['year'], state['page'] = last_year, last_page - 1
-    save_state(state)
-    print(f'  カーソルを {last_year}年 {last_page - 1} ページまで進めました(次回は {last_year}年 {last_page} ページ目から)')
-
     hometown_cache = {}
     wiki_cache = {}
     candidates, unclassified = [], []
 
     for i, h in enumerate(fresh, 1):
-        print(f'[1.5/4] Gangstaタグ多数決 {i}/{len(fresh)}: {h["artist"]} - {h["title"]}', file=sys.stderr)
+        style = h.get('target_style', 'Gangsta')
+        print(f'[1.5/4] {style}タグ多数決 {i}/{len(fresh)}: {h["artist"]} - {h["title"]}', file=sys.stderr)
         try:
-            consensus = gangsta_consensus(h['artist'], h['title'])
+            consensus = gangsta_consensus(h['artist'], h['title'], style)
         except Exception as e:
             print(f'    Discogs多数決エラー: {e}', file=sys.stderr)
             consensus = None
         if consensus and consensus['ratio'] < 0.5:
             print(f'    [外れタグの疑いでスキップ] {h["artist"]} - {h["title"]}'
-                  f' (Gangstaタグ {consensus["gangsta"]}/{consensus["total"]} プレス)')
+                  f' ({style}タグ {consensus["gangsta"]}/{consensus["total"]} プレス)')
             continue
 
         print(f'[2/4] iTunes照合 {i}/{len(fresh)}: {h["artist"]} - {h["title"]}', file=sys.stderr)

@@ -3572,6 +3572,14 @@ const REGIONS = [
     ],
   },
   {
+    id: 'jeanerette', name: 'Jeanerette', area: 'Louisiana',
+    lng: -91.6634, lat: 29.9110,
+    albums: [
+      { id: 1726, artist: 'Tray Duece', title: 'Bayou Soldiers', year: 1998, label: 'South Style Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15629409', stampSeed: {} },
+    ],
+  },
+  {
     id: 'waco', name: 'Waco', area: 'Texas',
     lng: -97.1467, lat: 31.5493,
     albums: [
