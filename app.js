@@ -16,7 +16,7 @@ const I18N = {
     noMatch: 'この絞り込みに合うリリースはありません。',
     rarity: '発掘度',
     notOn: 'NOT ON<br>STREAMING<br>─ 激レア ─',
-    queueAll: '＋ 再生リストニ追加',
+    queueAll: '＋ キューニ追加',
     qEmptyT: '再生キューハ空', qEmptyA: 'アルバムノ ▶ ヲ押ストキューニ入ル',
     preview: '30秒試聴', noAudio: '試聴音源ナシ(激レア)',
     clear: 'クリア', credit: '試聴・ジャケ写: Apple Music',
