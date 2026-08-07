@@ -45,7 +45,7 @@ def fetch(release_id):
 def main():
     src = (ROOT / 'data.js').read_text()
     entries = []
-    for m in re.finditer(r"\{ artist: (['\"])((?:\\.|(?!\1).)*)\1, title: (['\"])((?:\\.|(?!\3).)*)\3[^}]*?discogsUrl: '[^']*?/release/(\d+)'", src):
+    for m in re.finditer(r"\{ (?:id: \d+, )?artist: (['\"])((?:\\.|(?!\1).)*)\1, title: (['\"])((?:\\.|(?!\3).)*)\3[^}]*?discogsUrl: '[^']*?/release/(\d+)'", src):
         artist = m.group(2).replace("\\'", "'")
         title = m.group(4).replace("\\'", "'")
         entries.append((artist, title, m.group(5)))

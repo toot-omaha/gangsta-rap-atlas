@@ -3818,6 +3818,8 @@ const REGIONS = [
     id: 'omaha', name: 'Omaha', area: 'Nebraska',
     lng: -95.9345, lat: 41.2565,
     albums: [
+      { id: 1525, artist: 'Toot', title: 'Change Da Game', year: 2002, label: 'Graceside Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5458865', stampSeed: {} },
       { id: 1518, artist: 'Full Clip', title: 'Preach To My Thugs', year: 2001, label: 'Playhouse Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14849535', stampSeed: {} },
     ],

@@ -37,7 +37,7 @@ def main():
         # data.js内の該当エントリを探す(artist+titleで一意)
         # エントリは2行構成: { artist: ..., title: ..., ... stampSeed: {...} },
         pat = re.compile(
-            r"(\{ artist: (['\"])" + re.escape(artist) + r"\2, title: (['\"])" + re.escape(title) + r"\3,.*?stampSeed: )\{[^}]*\}",
+            r"(\{ (?:id: \d+, )?artist: (['\"])" + re.escape(artist) + r"\2, title: (['\"])" + re.escape(title) + r"\3,.*?stampSeed: )\{[^}]*\}",
             re.DOTALL)
         m = pat.search(src)
         if not m:
