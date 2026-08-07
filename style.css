@@ -69,6 +69,9 @@ body::before {
   display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
   padding: 7px 12px; flex: 1; overflow-x: auto;
 }
+/* スタンプ機能は準備中のため、ヘッダー/ドロワー内の絞り込みチップのみ一旦非表示
+   (レイアウト・墓石ボタン・ドロワー構造には手を付けない) */
+.stamp-filter { display: none !important; }
 
 /* ---------- スタンプ(ゴム印っぽく) ---------- */
 .stamp {
