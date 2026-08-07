@@ -888,6 +888,18 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3149797', stampSeed: { funky: 17, bangin: 13, party: 10 } },
       { id: 407, artist: 'Mac Mall', title: 'Illegal Business? 2000', year: 1999, label: "Don't Give Up Productions", youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9060914', stampSeed: { funky: 22, bangin: 16, party: 12 } },
+      { id: 1582, artist: 'Mac Mall', title: 'Immaculate', year: 2001, label: 'Sesed Out Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/656799', stampSeed: {} },
+      { id: 1584, artist: 'D-Shot', title: 'Money, Sex & Thugs', year: 2001, label: 'Shot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3172397', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'seaside', name: 'Seaside', area: 'California',
+    lng: -121.8066, lat: 36.6111,
+    albums: [
+      { id: 1576, artist: 'C-Tru', title: 'Oceanside Game', year: 2001, label: 'Oceanside Game Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13502184', stampSeed: {} },
     ],
   },
   {
@@ -1442,6 +1454,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5415097', stampSeed: {} },
       { id: 1566, artist: 'Benj', title: 'Versatility', year: 2001, label: 'Eva Cleva Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14256896', stampSeed: {} },
+      { id: 1578, artist: "Lil' Flex", title: 'Time 2 Play', year: 2001, label: 'Straight Profit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10546206', stampSeed: {} },
+      { id: 1580, artist: 'Ace Deuce', title: 'Raw & Uncut', year: 2001, label: 'BackWoodz Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4979116', stampSeed: {} },
+      { id: 1581, artist: 'SPM', title: 'Never Change', year: 2001, label: 'Dope House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29613838', stampSeed: {} },
     ],
   },
   {
@@ -2102,6 +2120,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/605386', stampSeed: { funky: 16, bangin: 12, party: 9 } },
       { id: 985, artist: 'GP', title: 'Finally (Looking for Those Friends Who Got Me for My Ends)', year: 1999, label: 'Just On GP Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5329452', stampSeed: { funky: 15, bangin: 11, doro: 8 } },
+      { id: 1573, artist: 'Herm', title: 'Back In Stride Again', year: 2001, label: 'Black Power Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4798580', stampSeed: {} },
+      { id: 1574, artist: 'Mr. Sandman', title: 'Quicksand', year: 2001, label: 'Bay Rider Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3790845', stampSeed: {} },
     ],
   },
   {
@@ -2254,6 +2276,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/34763549', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
       { id: 1055, artist: 'Herm', title: 'Trying to Survive in the Ghetto 2000', year: 1999, label: 'Black Power Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13389684', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
+      { id: 1569, artist: 'The Foundation', title: 'Independent Majors', year: 2001, label: 'Stackhouse Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11248936', stampSeed: {} },
+      { id: 1575, artist: 'Luni Coleone', title: 'In The Mouth Of Madness', year: 2001, label: 'Sicc-A-Cell', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3595913', stampSeed: {} },
     ],
   },
   {
@@ -2643,6 +2669,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10106375', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { id: 1215, artist: 'Jake the Flake', title: 'Jake the Flake & the Flint Thugs', year: 1998, label: 'Power Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4754547', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { id: 1571, artist: 'The Warden', title: 'Hollar At Me', year: 2001, label: 'Lockdown Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9210171', stampSeed: {} },
     ],
   },
   {
@@ -2850,6 +2878,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3378659', stampSeed: { funky: 15, bangin: 11, party: 8 } },
       { id: 1285, artist: 'Mob Figaz', title: "C-Bo's Mob Figaz", year: 1999, label: 'West Coast Mafia Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/969481', stampSeed: { bangin: 22, dark: 16, doro: 12 } },
+      { id: 1583, artist: 'The Jacka', title: 'The Jacka Of The Mob Figaz', year: 2001, label: 'AKBR Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1495439', stampSeed: {} },
     ],
   },
   {
@@ -3121,6 +3151,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4953645', stampSeed: {} },
       { id: 1375, artist: '57th Street Rogue Dog Villians', title: 'My Dogs For Life', year: 1999, label: 'Hog Style Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4786266', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { id: 1579, artist: 'Frank Nitty', title: 'Consequences Of Murder', year: 2001, label: 'Next Level Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11439047', stampSeed: {} },
     ],
   },
   {
@@ -3137,6 +3169,8 @@ const REGIONS = [
     albums: [
       { id: 1377, artist: 'D-Note', title: 'Relentless', year: 1999, label: 'Relentless Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7830849', stampSeed: {} },
+      { id: 1572, artist: 'G-Wiz', title: 'Nappy C.I.T.Y', year: 2001, label: 'Compound Records Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11822828', stampSeed: {} },
     ],
   },
   {
@@ -3288,6 +3322,14 @@ const REGIONS = [
     ],
   },
   {
+    id: 'houma', name: 'Houma', area: 'Louisiana',
+    lng: -90.7195, lat: 29.5958,
+    albums: [
+      { id: 1570, artist: 'Low Down', title: 'Houma Style - The Full CD', year: 2001, label: 'Bottom Line Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7071908', stampSeed: {} },
+    ],
+  },
+  {
     id: 'waco', name: 'Waco', area: 'Texas',
     lng: -97.1467, lat: 31.5493,
     albums: [
@@ -3331,6 +3373,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13122013', stampSeed: {} },
       { id: 1568, artist: 'Mr. Shadow', title: '13', year: 2001, label: 'Familia Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3558433', stampSeed: {} },
+      { id: 1577, artist: 'Lil Rob', title: "Can't Keep A Good Man Down", year: 2001, label: 'Low Profile Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14145709', stampSeed: {} },
     ],
   },
   {
