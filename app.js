@@ -1233,8 +1233,18 @@ const $play = document.getElementById('playBtn');
 function trackItemsOf(album) {
   const e = enrichOf(album);
   const art = artUrl(e, 100);
-  return (e?.tracks || []).filter((tr) => tr.preview)
-    .map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, art, album }));
+  const itunesTracks = (e?.tracks || []).filter((tr) => tr.preview)
+    .map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, youtube: null, art, album }));
+  if (itunesTracks.length) return itunesTracks;
+  // iTunesに1曲も無い盤は、アルバム単位のYouTube動画1本で代替する。
+  // 優先順(ユーザー指示): iTunes → YouTube Data API検索結果(youtube.js、
+  // "full album"クエリで狙い撃ちしているため精度が高い) → Discogsの
+  // リリース情報に載っていたリンク(album.youtubeId、投稿者任せなので精度は劣るが
+  // API消費ゼロ)。
+  const key = `${album.artist}|${album.title}`;
+  const vid = (typeof YOUTUBE !== 'undefined' ? YOUTUBE[key] : null) || album.youtubeId || null;
+  if (!vid) return [];
+  return [{ title: album.title, artist: album.artist, preview: null, youtube: vid, art, album }];
 }
 
 // 通常の▶(アルバムカード/曲行): 今の再生位置に差し込んで即座に頭出しする。
@@ -1264,13 +1274,46 @@ function enqueueAlbum(album) {
   paint();
 }
 
+// ---------- YouTube IFrame Player(iTunesに試聴の無い盤の代替再生用) ----------
+// #ytHost は1x1px・opacity:0の非表示ホスト(style.css)。映像は見せず音声だけ
+// 使う。iTunes試聴とテンポを揃えるため30秒で打ち切る(endSeconds)。
+let ytPlayer = null, ytReady = false, ytPendingId = null;
+window.onYouTubeIframeAPIReady = () => {
+  ytPlayer = new YT.Player('ytHost', {
+    height: '1', width: '1',
+    playerVars: { controls: 0, disablekb: 1, playsinline: 1 },
+    events: {
+      onReady: () => {
+        ytReady = true;
+        if (ytPendingId) { const id = ytPendingId; ytPendingId = null; loadYtVideo(id); }
+      },
+      onStateChange: (e) => {
+        if (e.data === YT.PlayerState.ENDED) next();
+        paint();
+      },
+    },
+  });
+};
+function loadYtVideo(videoId) {
+  if (!ytReady) { ytPendingId = videoId; return; }
+  ytPlayer.loadVideoById({ videoId, startSeconds: 0, endSeconds: 30 });
+}
+function ytIsPlaying() {
+  return !!(ytReady && ytPlayer.getPlayerState && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
+}
+
 function playCurrent() {
   const q = queue[cursor];
   if (q?.preview) {
+    if (ytReady) ytPlayer.stopVideo();
     audio.src = q.preview;
     audio.play().catch(() => {}); // 自動再生ブロック時はユーザーの▶待ち
+  } else if (q?.youtube) {
+    audio.pause(); audio.removeAttribute('src');
+    loadYtVideo(q.youtube);
   } else {
     audio.pause(); audio.removeAttribute('src');
+    if (ytReady) ytPlayer.stopVideo();
   }
   paint();
 }
@@ -1278,8 +1321,15 @@ function playCurrent() {
 // Media Session API: ロック画面/通知領域の再生コントロールとバックグラウンド再生に対応。
 // 曲が変わるたびにメタデータを更新し、OS側の▶⏸/前後ボタンをこちらの操作につなぐ。
 if ('mediaSession' in navigator) {
-  navigator.mediaSession.setActionHandler('play', () => { if (queue[cursor]?.preview) audio.play().catch(() => {}); });
-  navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+  navigator.mediaSession.setActionHandler('play', () => {
+    const q = queue[cursor];
+    if (q?.preview) audio.play().catch(() => {});
+    else if (q?.youtube && ytReady) ytPlayer.playVideo();
+  });
+  navigator.mediaSession.setActionHandler('pause', () => {
+    audio.pause();
+    if (ytReady) ytPlayer.pauseVideo();
+  });
   navigator.mediaSession.setActionHandler('previoustrack', prev);
   navigator.mediaSession.setActionHandler('nexttrack', next);
 }
@@ -1290,13 +1340,13 @@ function syncMediaSession(q) {
     title: q.title, artist: q.artist, album: 'GANGSTA RAP ATLAS',
     artwork: q.art ? [{ src: q.art, sizes: '100x100', type: 'image/jpeg' }] : [],
   });
-  navigator.mediaSession.playbackState = audio.paused ? 'paused' : 'playing';
+  navigator.mediaSession.playbackState = (q.youtube ? ytIsPlaying() : !audio.paused) ? 'playing' : 'paused';
 }
 
 function paint() {
   const q = queue[cursor];
   $count.textContent = `${queue.length} 曲`;
-  $play.textContent = audio.paused ? '▶' : '⏸';
+  $play.textContent = (q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶';
   syncMediaSession(q);
   if (!q) {
     $title.textContent = t('qEmptyT');
@@ -1307,7 +1357,9 @@ function paint() {
   $title.textContent = q.title;
   $artist.textContent = q.preview
     ? `${q.artist} — ${cursor + 1}/${queue.length} (${t('preview')})`
-    : `${q.artist} — ${t('noAudio')}`;
+    : q.youtube
+      ? `${q.artist} — ${cursor + 1}/${queue.length} (YouTube)`
+      : `${q.artist} — ${t('noAudio')}`;
   $art.innerHTML = q.art ? `<img src="${q.art}" alt="">` : '♪';
 }
 
@@ -1340,8 +1392,12 @@ audio.addEventListener('pause', paint);
 document.getElementById('nextBtn').addEventListener('click', next);
 document.getElementById('prevBtn').addEventListener('click', prev);
 $play.addEventListener('click', () => {
-  if (!queue[cursor]?.preview) return;
-  audio.paused ? audio.play().catch(() => {}) : audio.pause();
+  const q = queue[cursor];
+  if (q?.preview) {
+    audio.paused ? audio.play().catch(() => {}) : audio.pause();
+  } else if (q?.youtube && ytReady) {
+    ytIsPlaying() ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
+  }
 });
 document.querySelector('.player-now').addEventListener('click', () => {
   const album = queue[cursor]?.album;
