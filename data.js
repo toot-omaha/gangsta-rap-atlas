@@ -1540,6 +1540,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6617449', stampSeed: {} },
       { id: 1701, artist: 'Cory "Mo"', title: 'I.E. Inconspicuously Evident', year: 2002, label: 'Endure Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6223312', stampSeed: {} },
+      { id: 1707, artist: 'Big Jut', title: 'Screwed Up Fo Life - Screwed', year: 2002, label: 'Houston Heavyweighters', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4029147', stampSeed: {} },
+      { id: 1714, artist: 'Z-Ro', title: 'Life', year: 2002, label: 'KMJ Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2655858', stampSeed: {} },
     ],
   },
   {
@@ -1792,6 +1796,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1540902', stampSeed: {} },
       { id: 1693, artist: 'Criminal Manne', title: "Playtime's Over", year: 2002, label: 'Mo Cheda Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7945372', stampSeed: {} },
+      { id: 1703, artist: 'Da Headbussaz', title: "Dat's How It Happen To 'M", year: 2002, label: 'Hypnotize Minds', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3591757', stampSeed: {} },
     ],
   },
   {
@@ -2042,6 +2048,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8173804', stampSeed: {} },
       { id: 1661, artist: 'Big Tymers', title: 'Hood Rich', year: 2002, label: 'Cash Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1348082', stampSeed: {} },
+      { id: 1712, artist: '54th Platoon', title: 'Sh*t For The Streets!!!', year: 2002, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27480855', stampSeed: {} },
     ],
   },
   {
@@ -2246,6 +2254,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6953540', stampSeed: {} },
       { id: 1689, artist: 'T-Lowe', title: 'Mack-A-Flama', year: 2002, label: 'Black Power Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4987209', stampSeed: {} },
+      { id: 1702, artist: 'JT The Bigga Figga', title: 'Hustle Relentless', year: 2002, label: 'Get Low Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1835533', stampSeed: {} },
+      { id: 1704, artist: 'Messy Marv', title: 'Turf Politics', year: 2002, label: 'Scalen Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2707306', stampSeed: {} },
+      { id: 1705, artist: 'Pho Balo', title: 'NA-PALM', year: 2002, label: 'Big Nest Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5492226', stampSeed: {} },
+      { id: 1710, artist: 'GP', title: 'The Beast Is Finally Released', year: 2002, label: 'Just On GP Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3679716', stampSeed: {} },
     ],
   },
   {
@@ -2581,6 +2597,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13090000', stampSeed: {} },
       { id: 1643, artist: 'Pimpsta', title: 'Country B4 Country Was Cool', year: 2002, label: 'Southside Connection Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2490439', stampSeed: {} },
+      { id: 1711, artist: 'Pimpsta', title: 'Kicking Real Shit', year: 2002, label: 'Bird House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12730092', stampSeed: {} },
     ],
   },
   {
@@ -3136,6 +3154,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2742927', stampSeed: {} },
       { id: 1648, artist: 'Killa Hakan', title: 'Çakallar', year: 2002, label: 'Rough Mix Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4140506', stampSeed: {} },
+      { id: 1713, artist: 'Taichi', title: 'Show The World', year: 2002, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10849944', stampSeed: {} },
     ],
   },
   {
@@ -3577,6 +3597,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3558433', stampSeed: {} },
       { id: 1577, artist: 'Lil Rob', title: "Can't Keep A Good Man Down", year: 2001, label: 'Low Profile Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14145709', stampSeed: {} },
+      { id: 1706, artist: 'Mr. Shadow', title: "A Name You Kan't Touch", year: 2002, label: 'Sol Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21579025', stampSeed: {} },
     ],
   },
   {
@@ -3818,6 +3840,14 @@ const REGIONS = [
     ],
   },
   {
+    id: 'knoxville', name: 'Knoxville', area: 'Tennessee',
+    lng: -83.9210, lat: 35.9604,
+    albums: [
+      { id: 1708, artist: 'Hard Knox', title: 'This Is Real', year: 2002, label: "Mo' Dirty Records", youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1799357', stampSeed: {} },
+    ],
+  },
+  {
     id: 'lexington', name: 'Lexington', area: 'Kentucky',
     lng: -84.4970, lat: 38.0464,
     albums: [
@@ -4055,6 +4085,8 @@ const REGIONS = [
     albums: [
       { id: 1498, artist: 'Pablo', title: 'Thicker Than Molasses', year: 2000, label: 'Soundproof Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12065315', stampSeed: {} },
+      { id: 1709, artist: 'T-Rock', title: 'Conspiracy Theory', year: 2002, label: 'Secret Service Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19813717', stampSeed: {} },
     ],
   },
   {
