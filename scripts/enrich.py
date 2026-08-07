@@ -75,12 +75,16 @@ def find_album(artist: str, title: str):
     term = urllib.parse.quote(artist)
     url = f"https://itunes.apple.com/search?term={term}&entity=musicArtist&limit=5"
     artists = polite_get(url).get("results", [])
-    # 名前がどちらか一方に含まれる候補だけ試す(Snoop Doggy Dogg ⊃ Snoop Dogg)
+    # 名前がどちらか一方に含まれる候補だけ試す(Snoop Doggy Dogg ⊃ Snoop Dogg)。
+    # 一致候補が無ければ「とりあえず1件目」にフォールバックしない
+    # (無関係なアーティストへ誤ってマッチし、ジャケ写・ジャンル・試聴が
+    # 全く違う盤になってしまう事故が実際に発生したため。例: "Big Blac" が
+    # 無関係なオルタナロックのアーティストにマッチしていた)。
     candidates = [
         r for r in artists
         if norm(r.get("artistName", "")) and
         (norm(r["artistName"]) in na or na in norm(r["artistName"]))
-    ][:3] or artists[:1]
+    ][:3]
 
     hits = []
     for a in candidates:
@@ -88,8 +92,15 @@ def find_album(artist: str, title: str):
         for r in polite_get(lu).get("results", []):
             rt = norm(r.get("collectionName", ""))
             # G-RAPはCDシングル(CDS)・EP・コンピもディスク1枚として扱うため、
-            # collectionType では絞らない(wrapperType=collection なら候補)
-            if r.get("wrapperType") == "collection" and rt and (nt in rt or rt in nt):
+            # collectionType では絞らない(wrapperType=collection なら候補)。
+            # ただし短いタイトル同士だと部分一致(nt in rt / rt in nt)が
+            # 偶然の文字列一致で誤爆しやすいため(例: 相手が"4"のような
+            # 短いタイトルだと、こちらの長いタイトルにほぼ必ず含まれてしまう)、
+            # 短い方の文字列がある程度の長さを持つ場合に限って部分一致を認める。
+            if r.get("wrapperType") != "collection" or not rt:
+                continue
+            shorter_len = min(len(nt), len(rt))
+            if (nt in rt or rt in nt) and shorter_len >= 4:
                 hits.append(r)
         if hits:
             break
