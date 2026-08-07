@@ -16,7 +16,7 @@ const I18N = {
     noMatch: 'この絞り込みに合うリリースはありません。',
     rarity: '発掘度',
     notOn: 'NOT ON<br>STREAMING<br>─ 激レア ─',
-    queueAll: '▶ 全曲キューニ入レル',
+    queueAll: '＋ 再生リストニ追加',
     qEmptyT: '再生キューハ空', qEmptyA: 'アルバムノ ▶ ヲ押ストキューニ入ル',
     preview: '30秒試聴', noAudio: '試聴音源ナシ(激レア)',
     clear: 'クリア', credit: '試聴・ジャケ写: Apple Music',
@@ -50,7 +50,7 @@ const I18N = {
     noMatch: 'No releases match this filter.',
     rarity: 'DIG LEVEL',
     notOn: 'NOT ON<br>STREAMING<br>─ RARE ─',
-    queueAll: '▶ QUEUE ALL TRACKS',
+    queueAll: '＋ ADD TO QUEUE',
     qEmptyT: 'QUEUE IS EMPTY', qEmptyA: 'Hit ▶ on a disc to queue it',
     preview: '30s preview', noAudio: 'No preview audio (rare!)',
     clear: 'CLEAR', credit: 'Previews & artwork: Apple Music',
@@ -938,6 +938,7 @@ function renderDisc(album, push = true) {
         <div class="disc-actions">
           <button class="tr-toggle have-d${favsHave.has(key) ? ' on' : ''}">${t('have')}</button>
           <button class="tr-toggle want-d${favsWant.has(key) ? ' on' : ''}">${t('want')}</button>
+          <button class="play-btn disc-play" title="このディスクを今すぐ再生">▶</button>
           <button class="tr-toggle play-d">${t('queueAll')}</button>
         </div>
         <div class="rarity">
@@ -969,6 +970,7 @@ function renderDisc(album, push = true) {
     STAMPS.forEach((s) => wrap.appendChild(discChip(album, s, false, rerender)));
   }
 
+  listEl.querySelector('.disc-play').addEventListener('click', () => playAlbum(album));
   listEl.querySelector('.play-d').addEventListener('click', () => enqueueAlbum(album));
   listEl.querySelector('.have-d').addEventListener('click', () => {
     toggleFav(favsHave, key); updateFavCount(); rerender();
@@ -1361,7 +1363,8 @@ function enqueueAlbum(album) {
 // #ytHost は1x1px・opacity:0の非表示ホスト(style.css)。映像は見せず音声だけ
 // 使う。iTunes試聴とテンポを揃えるため30秒で打ち切る(endSeconds)。
 let ytPlayer = null, ytReady = false, ytPendingId = null;
-window.onYouTubeIframeAPIReady = () => {
+function initYtPlayer() {
+  if (ytPlayer) return;
   ytPlayer = new YT.Player('ytHost', {
     height: '1', width: '1',
     playerVars: { controls: 0, disablekb: 1, playsinline: 1 },
@@ -1376,7 +1379,17 @@ window.onYouTubeIframeAPIReady = () => {
       },
     },
   });
-};
+}
+window.onYouTubeIframeAPIReady = initYtPlayer;
+// 本番環境では上のコールバックがAPI側から呼ばれないことがある(原因不明の
+// タイミング問題)ため、YT.Playerが使えるようになり次第自前でポーリングして
+// 初期化する保険を掛ける(コールバックが正常に来た場合は初期化済みなので
+// initYtPlayer側のif (ytPlayer) returnで二重初期化を防ぐ)。
+(function pollYtApi() {
+  if (ytPlayer) return;
+  if (window.YT && window.YT.Player) { initYtPlayer(); return; }
+  setTimeout(pollYtApi, 300);
+})();
 function loadYtVideo(videoId) {
   if (!ytReady) { ytPendingId = videoId; return; }
   ytPlayer.loadVideoById({ videoId, startSeconds: 0, endSeconds: 30 });
