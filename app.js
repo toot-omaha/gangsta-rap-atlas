@@ -851,7 +851,7 @@ function albumCard(album) {
     ? `<div class="album-art has-img"><img src="${art}" alt="${album.title}" loading="lazy"></div>`
     : `<div class="album-art"><span>${t('notOn')}</span></div>`;
 
-  const hasPreview = !!(e?.tracks || []).some((tr) => tr.preview);
+  const hasPreview = !!(e?.tracks || []).some((tr) => tr.preview) || youtubeIdsFor(album).length > 0;
   const playBtnHtml = hasPreview
     ? `<button class="play-btn" title="このディスクをキューに追加">▶</button>`
     : '';
