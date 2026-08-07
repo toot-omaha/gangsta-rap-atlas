@@ -1179,18 +1179,37 @@ const $count = document.getElementById('queueCount');
 const $art = document.querySelector('.player-art');
 const $play = document.getElementById('playBtn');
 
-// ▶ を押したディスクをその場で再生する(キューは丸ごと差し替え)
-// startIndex を渡すとそのディスクの指定曲から始まり、以降も続けて流れる
+// ▶ を押したディスクから、同じ地域内の「次のアルバム」へ自動的に繋がって
+// 流れ続けるキューを組む(地域の最後まで来たら自然に停止する)。
+// 試聴は1曲30秒しかないので曲単位のキュー管理はせず、試聴のある曲だけを
+// アルバム順に並べたフラットなキューにする(試聴の無い曲・アルバムは
+// 自動再生の対象からは飛ばす。両方とも音源が無く止めようが無いため)。
+// startIndex を渡すとそのディスクの指定曲から始まる。
 function playAlbum(album, startIndex = 0) {
   const e = enrichOf(album);
-  const art = artUrl(e, 100);
-  if (e?.tracks?.length) {
-    queue = e.tracks.map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, art, album }));
-    cursor = Math.min(startIndex, queue.length - 1);
-  } else {
+  const hasAnyPreview = !!(e?.tracks || []).some((tr) => tr.preview);
+  if (!hasAnyPreview) {
+    // 試聴が1曲も無い盤(激レア盤): 情報表示だけの単発プレースホルダーに留める
     queue = [{ title: album.title, artist: album.artist, preview: null, art: null, album }];
     cursor = 0;
+    playCurrent();
+    return;
   }
+
+  const region = REGIONS.find((r) => r.albums.includes(album));
+  const albums = region ? albumsOf(region).slice().sort((a, b) => a.year - b.year) : [album];
+  const startPos = Math.max(0, albums.indexOf(album));
+
+  queue = [];
+  let firstIndexOfStartAlbum = 0;
+  albums.slice(startPos).forEach((a) => {
+    const ae = enrichOf(a);
+    const art = artUrl(ae, 100);
+    const previewTracks = (ae?.tracks || []).filter((tr) => tr.preview);
+    if (a === album) firstIndexOfStartAlbum = queue.length;
+    previewTracks.forEach((tr) => queue.push({ title: tr.name, artist: a.artist, preview: tr.preview, art, album: a }));
+  });
+  cursor = Math.min(firstIndexOfStartAlbum + startIndex, queue.length - 1);
   playCurrent();
 }
 
