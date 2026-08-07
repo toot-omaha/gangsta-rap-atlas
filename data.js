@@ -576,6 +576,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/11297970', stampSeed: {} },
       { id: 1616, artist: 'L-Love', title: 'Done...But Not Finished!(A Long Hard Road Left To Travel)', year: 2002, label: 'At Home Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/34137838', stampSeed: {} },
+      { id: 1642, artist: 'Daz Dillinger', title: 'This Is The Life I Lead', year: 2002, label: 'DPG Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1290579', stampSeed: {} },
     ],
   },
   {
@@ -898,6 +900,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3172397', stampSeed: {} },
       { id: 1599, artist: 'Young Dru', title: 'Flame Spitter', year: 2001, label: 'Rated Z Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8219810', stampSeed: {} },
+      { id: 1635, artist: 'N2DEEP', title: 'Un-Released Game (1993: The Lost Album)', year: 2002, label: '40 Ounce Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3532610', stampSeed: {} },
     ],
   },
   {
@@ -1126,6 +1130,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/969451', stampSeed: {} },
       { id: 1625, artist: 'Dru Down', title: "Gangsta Pimpin'", year: 2002, label: 'C-Note Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/950528', stampSeed: {} },
+      { id: 1650, artist: 'Richie Rich', title: 'Nixon Pryor Roundtree', year: 2002, label: 'Ten-Six Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5840507', stampSeed: {} },
     ],
   },
   {
@@ -1496,6 +1502,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9900487', stampSeed: {} },
       { id: 1630, artist: 'Woss Ness', title: 'Puttin In Work Part 2 (Chopped And Screwed)', year: 2002, label: 'Woss Ness Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9436764', stampSeed: {} },
+      { id: 1634, artist: 'Big Mello', title: 'The Gift', year: 2002, label: 'KMJ Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/762211', stampSeed: {} },
+      { id: 1636, artist: 'Z-Ro', title: 'Screwed Up Click Representa', year: 2002, label: 'Presidential Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8618959', stampSeed: {} },
+      { id: 1638, artist: 'Lil Keke', title: 'Birds Fly South', year: 2002, label: 'Commission Music Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2590455', stampSeed: {} },
     ],
   },
   {
@@ -1730,6 +1742,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3627132', stampSeed: {} },
       { id: 1610, artist: 'DJ Squeeky', title: 'Tha Legacy', year: 2002, label: 'Big Cheeze Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/505668', stampSeed: {} },
+      { id: 1633, artist: 'Playa Fly', title: 'Fly2K', year: 2002, label: 'Diamond Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28563238', stampSeed: {} },
+      { id: 1653, artist: 'Gangsta Blac', title: 'Da Undaground King', year: 2002, label: 'Mouth Of Da South Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/506521', stampSeed: {} },
     ],
   },
   {
@@ -1976,6 +1992,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2580576', stampSeed: {} },
       { id: 1626, artist: 'Lil Wayne', title: '500 Degreez', year: 2002, label: 'Cash Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13217122', stampSeed: {} },
+      { id: 1651, artist: 'B.G.', title: 'Still The #1 Hot Boy', year: 2002, label: 'Chopper City Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8173804', stampSeed: {} },
     ],
   },
   {
@@ -2407,6 +2425,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/506526', stampSeed: { dark: 14, doro: 11, bangin: 8 } },
       { id: 1077, artist: 'Schoolly D', title: 'Reservoir Dog', year: 1995, label: 'PSK Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12232818', stampSeed: { bangin: 22, dark: 17, doro: 13 } },
+      { id: 1641, artist: 'Mally-G', title: 'Mally-G In The Warzone - Groundzero', year: 2002, label: 'Warzone Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24753788', stampSeed: {} },
     ],
   },
   {
@@ -2501,6 +2521,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13234779', stampSeed: {} },
       { id: 1602, artist: 'Dirty South Rydaz', title: 'DSR', year: 2002, label: 'T-Town Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13090000', stampSeed: {} },
+      { id: 1643, artist: 'Pimpsta', title: 'Country B4 Country Was Cool', year: 2002, label: 'Southside Connection Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2490439', stampSeed: {} },
     ],
   },
   {
@@ -2743,6 +2765,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4754547', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { id: 1571, artist: 'The Warden', title: 'Hollar At Me', year: 2001, label: 'Lockdown Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9210171', stampSeed: {} },
+      { id: 1639, artist: 'Project Born', title: 'The Rent Is Due', year: 2002, label: 'Project Mob Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24958399', stampSeed: {} },
     ],
   },
   {
@@ -2766,6 +2790,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5667634', stampSeed: {} },
       { id: 1592, artist: "Racionais MC's", title: 'Ao Vivo', year: 2001, label: 'Zambia Fonográfica', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8955262', stampSeed: {} },
+      { id: 1637, artist: "Racionais MC's", title: 'Nada Como Um Dia Após O Outro Dia', year: 2002, label: 'Cosa Nostra', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/179022', stampSeed: {} },
     ],
   },
   {
@@ -3032,6 +3058,8 @@ const REGIONS = [
     albums: [
       { id: 1557, artist: 'King Orgasmus One', title: 'Tag Der Abrechnung', year: 2001, label: 'I Luv Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2742927', stampSeed: {} },
+      { id: 1648, artist: 'Killa Hakan', title: 'Çakallar', year: 2002, label: 'Rough Mix Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4140506', stampSeed: {} },
     ],
   },
   {
@@ -3138,6 +3166,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6491098', stampSeed: { dark: 17, bangin: 13, doro: 10 } },
       { id: 1344, artist: 'Ben B. Hard', title: "One Mo' Time", year: 1995, label: 'SMG Solar Music Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8623194', stampSeed: { funky: 14, bangin: 11, doro: 8 } },
+      { id: 1646, artist: "Lil' Ric", title: 'The Thug Nut (On One)', year: 2002, label: 'Concrete Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5340325', stampSeed: {} },
     ],
   },
   {
@@ -3203,6 +3233,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9981958', stampSeed: {} },
       { id: 1364, artist: 'Coo Coo Cal', title: "Walkin' Dead", year: 1999, label: 'Infinite Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3677547', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+      { id: 1645, artist: 'Coo Coo Cal', title: 'Still Walkin', year: 2002, label: 'Infinite Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2734784', stampSeed: {} },
     ],
   },
   {
@@ -3233,6 +3265,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4786266', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { id: 1579, artist: 'Frank Nitty', title: 'Consequences Of Murder', year: 2001, label: 'Next Level Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11439047', stampSeed: {} },
+      { id: 1644, artist: '57th Street Rogue Dog Villians', title: 'Roguish Ways', year: 2002, label: 'Hog Style Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1836417', stampSeed: {} },
     ],
   },
   {
@@ -3241,6 +3275,8 @@ const REGIONS = [
     albums: [
       { id: 1376, artist: 'Twin$', title: 'Down For Mine', year: 1999, label: 'Not On Label (Twin$ Self-released)', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15546594', stampSeed: {} },
+      { id: 1631, artist: 'Mr. Criminal', title: 'Criminal Mentality', year: 2002, label: 'Hi Power Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24421193', stampSeed: {} },
     ],
   },
   {
@@ -3385,6 +3421,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1445023', stampSeed: {} },
       { id: 1409, artist: 'THC', title: 'True Hard Chicanos', year: 2000, label: 'C Major Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/19510804', stampSeed: {} },
+      { id: 1647, artist: 'Young Droop', title: 'Lethal Weaponz', year: 2002, label: 'Killa Valley Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9590727', stampSeed: {} },
     ],
   },
   {
@@ -3557,6 +3595,8 @@ const REGIONS = [
     albums: [
       { id: 1441, artist: 'Head Honchoz', title: 'Runnin\' Da Show', year: 2000, label: 'Head Honchoz Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/20049592', stampSeed: {} },
+      { id: 1652, artist: 'V-Boy', title: 'If These Trees Could Talk', year: 2002, label: 'Alleyway Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8122750', stampSeed: {} },
     ],
   },
   {
@@ -3681,6 +3721,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10539441', stampSeed: {} },
       { id: 1564, artist: 'Cowboy', title: 'Straight Off Da Block', year: 2001, label: 'Buck Wild Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8339266', stampSeed: {} },
+      { id: 1649, artist: 'Young Buck', title: 'Born To Be A Thug', year: 2002, label: 'Thug Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14674990', stampSeed: {} },
     ],
   },
   {
@@ -3805,6 +3847,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13552441', stampSeed: {} },
       { id: 1590, artist: 'Big Syke', title: 'Big Syke Daddy', year: 2001, label: 'D3 Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2319243', stampSeed: {} },
+      { id: 1632, artist: 'Shade Sheist', title: 'Informal Introduction', year: 2002, label: 'MCA Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24519020', stampSeed: {} },
+      { id: 1640, artist: 'Big Syke', title: 'Big Syke', year: 2002, label: 'Rap-A-Lot 2K', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25023304', stampSeed: {} },
     ],
   },
   {
