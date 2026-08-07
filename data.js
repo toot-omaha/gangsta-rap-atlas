@@ -696,6 +696,10 @@ const REGIONS = [
     id: 'longbeach', name: 'Long Beach', area: 'Los Angeles County, CA',
     lng: -118.1937, lat: 33.7701,
     albums: [
+      { id: 2260, artist: 'Snoop Dogg', title: 'The One And Only - Welcome To Tha Chuuch', year: 2004, label: 'Doggy Style Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26487851', stampSeed: {} },
+      { id: 2249, artist: 'Lil J', title: 'Time 4 Change', year: 2004, label: 'Done Deal Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6658713', stampSeed: {} },
       { id: 2198, artist: 'Goldie Loc', title: 'Still Eastsidin\'', year: 2004, label: 'Siccness.net', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3635175', youtubeIds: ["v463wdmNSLg", "7Tgdy38VNK8", "YxSBJYyd6Jo", "gROl8Inf-70", "wt9Ff2wr00A", "fl-SlPJQMvA", "XjhFEOtPh24"], discogsArt: "https://i.discogs.com/RzF1LUtb4ZRdsbVpTgqmlrtPsNbxYDP0AN7uU8BafVk/rs:fit/g:sm/q:90/h:600/w:598/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM2MzUx/NzUtMTc1NjU2Mjg5/NC00ODYzLmpwZWc.jpeg", stampSeed: {} },
       { id: 2114, artist: 'Snoop Dogg', title: 'R & G (Rhythm & Gangsta): The Masterpiece', year: 2004, label: 'Geffen Records', youtubeId: null,
@@ -1080,6 +1084,8 @@ const REGIONS = [
     id: 'vallejo', name: 'Vallejo', area: 'Bay Area, CA',
     lng: -122.2566, lat: 38.1041,
     albums: [
+      { id: 2257, artist: 'Willie Joe', title: 'Tha Go Getta', year: 2004, label: 'R.E.A.L. Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7941961', stampSeed: {} },
       { id: 2195, artist: 'Reek Daddy', title: '25 To Life... On The Streets', year: 2004, label: 'None Of Your Business Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1504509', stampSeed: {} },
       { id: 2185, artist: 'Potna Deuce', title: 'Tha Uncut Heron Soup Goop', year: 2004, label: '2 Tight Entertainment', youtubeId: null,
@@ -1256,6 +1262,14 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 2269, artist: 'A.P.G. Crew', title: 'See The Light', year: 1998, label: 'Metro Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3978644', stampSeed: {} },
+      { id: 2261, artist: 'Mistah F.A.B.', title: 'It Was Never Written', year: 2004, label: 'Makaveli Branded', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17683189', stampSeed: {} },
+      { id: 2252, artist: 'Mac Dre', title: 'The Game Is Thick, Part 2', year: 2004, label: 'Thizz Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/979986', stampSeed: {} },
+      { id: 2233, artist: 'Mac Dre', title: 'The Genie Of The Lamp', year: 2004, label: 'Thizz Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/958009', stampSeed: {} },
       { id: 2232, artist: 'Assassin (3)', title: 'Worldwide Game', year: 1999, label: 'GMG Records / Life Or Death Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3881926', stampSeed: {} },
       { id: 2221, artist: 'Dru Down', title: 'Greatest Hits', year: 2004, label: 'C-Note Records', youtubeId: null,
@@ -1508,6 +1522,20 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { id: 2265, artist: 'Slim Thug', title: 'Already Platinum', year: 2004, label: 'Boss Hogg Outlawz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14742711', stampSeed: {} },
+      { id: 2255, artist: 'SPM', title: 'Power Moves The Table', year: 2004, label: 'Dope House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8831189', stampSeed: {} },
+      { id: 2254, artist: 'Geto Boys', title: 'We Can\'t Be Stopped: Screwed & Chopped-A-Lot', year: 2004, label: 'Rap-A-Lot 4 Life', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/336749', stampSeed: {} },
+      { id: 2241, artist: 'Boss Hogg Outlawz', title: 'Boyz-N-Blue - We Make The Rules In The Streets', year: 2004, label: 'Boss Hogg Outlawz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5189250', stampSeed: {} },
+      { id: 2239, artist: 'Scarface', title: 'Mr. Scarface Is Back (Screwed & Chopped)', year: 2004, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8185433', stampSeed: {} },
+      { id: 2236, artist: 'Mista Madd', title: 'The pH Factor: Chopped, Skrewed & Smoked', year: 2004, label: 'Paid In Full Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/431687', stampSeed: {} },
+      { id: 2235, artist: 'Lil Flex', title: 'Back 2 Tha Streetz', year: 2004, label: 'M.A.M. Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2024029', stampSeed: {} },
       { id: 2217, artist: 'K-Rino', title: 'Fear No Evil', year: 2004, label: 'Black Book International', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/523437', stampSeed: {} },
       { id: 2216, artist: 'K-Rino', title: 'The Hit List', year: 2004, label: 'Black Book International', youtubeId: null,
@@ -2034,6 +2062,8 @@ const REGIONS = [
     id: 'portarthur', name: 'Port Arthur', area: 'Texas',
     lng: -93.9399, lat: 29.8850,
     albums: [
+      { id: 2245, artist: 'Sweet James Jones', title: 'Live From The Harris County Jail (Chopped & Skrewed)', year: 2004, label: 'Pimp C Family Ent.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2003423', stampSeed: {} },
       { id: 2090, artist: 'Sweet James Jones', title: 'Live From The Harris County Jail', year: 2004, label: 'Pimp C Family Ent.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1577702', youtubeFullAlbumId: 'Ux9Wu8S7YDY', discogsArt: "https://i.discogs.com/FiZHVYZqVoSTiF4eblA5L7Rn5b6GWG33yXfP6iBGahc/rs:fit/g:sm/q:90/h:597/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE1Nzc3/MDItMTcyMDY5NzA3/OC0zMjc0LmpwZWc.jpeg", stampSeed: {} },
       { id: 2027, artist: 'The Clique', title: 'True Players', year: 1995, label: 'BOT Records', youtubeId: null,
@@ -2056,6 +2086,10 @@ const REGIONS = [
     id: 'memphis', name: 'Memphis', area: 'Tennessee',
     lng: -90.0490, lat: 35.1495,
     albums: [
+      { id: 2243, artist: 'La Chat', title: 'Dramatize', year: 2004, label: 'Rap Hustlaz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9705553', stampSeed: {} },
+      { id: 2240, artist: '8Ball And MJG', title: 'Living Legends - Chopped & Screwed', year: 2004, label: 'Bad Boy Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/299631', stampSeed: {} },
       { id: 2197, artist: 'Lil Wyte', title: 'Phinally Phamous', year: 2004, label: 'Hypnotize Minds', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3669406', stampSeed: {} },
       { id: 2191, artist: 'Gangsta Pat', title: 'Da Dro', year: 2004, label: 'Redrum Records', youtubeId: null,
@@ -2340,6 +2374,10 @@ const REGIONS = [
     id: 'neworleans', name: 'New Orleans', area: 'Louisiana',
     lng: -90.0715, lat: 29.9511,
     albums: [
+      { id: 2267, artist: 'Lower Class', title: 'Life In The Streets', year: 1998, label: '5-Mile Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7950968', stampSeed: {} },
+      { id: 2234, artist: 'Lil\' Wayne', title: 'Tha Carter (Screwed And Chopped)', year: 2004, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/569778', stampSeed: {} },
       { id: 2127, artist: 'Fiend', title: 'Go Hard Or Go Home', year: 2004, label: 'Fiend Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13988958', stampSeed: {} },
       { id: 2117, artist: 'B.G.', title: 'Life After Cash Money', year: 2004, label: 'Koch Records', youtubeId: null,
@@ -2618,6 +2656,8 @@ const REGIONS = [
     id: 'sf', name: 'San Francisco', area: 'Hunters Point / Fillmore, CA',
     lng: -122.4194, lat: 37.7749,
     albums: [
+      { id: 2251, artist: 'Insanity', title: 'The Introduction', year: 2004, label: 'MURDA LAB MUSIC', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11965379', stampSeed: {} },
       { id: 2223, artist: 'Hitman', title: 'Something To Prove', year: 2004, label: 'Nightscope Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11080785', stampSeed: {} },
       { id: 2206, artist: 'Mr. Kee', title: 'The One', year: 2004, label: 'UpRice Music Group', youtubeId: null,
@@ -2856,6 +2896,12 @@ const REGIONS = [
     id: 'sacramento', name: 'Sacramento', area: 'California',
     lng: -121.4944, lat: 38.5816,
     albums: [
+      { id: 2274, artist: 'Sevin', title: 'Evin Angelz Kry', year: 2004, label: 'Not On Label (Sevin Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12925255', stampSeed: {} },
+      { id: 2253, artist: 'First Degree The D.E.', title: 'Look Me In My Face, Though!', year: 2004, label: 'Fahrenheit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2034258', stampSeed: {} },
+      { id: 2238, artist: 'T-Nutty', title: 'Flowmastermouth', year: 2004, label: 'Black Armor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5188769', stampSeed: {} },
       { id: 2220, artist: 'C-Dubb', title: 'Ground Zero (C-Dubb Vol. 1)', year: 2004, label: 'Sovereign Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11486414', stampSeed: {} },
       { id: 2209, artist: 'Young Ridah', title: 'One Love One Life', year: 2004, label: 'Smothers Bros Ent.', youtubeId: null,
@@ -3681,6 +3727,8 @@ const REGIONS = [
     id: 'eastorange', name: 'East Orange', area: 'New Jersey',
     lng: -74.2107, lat: 40.7673,
     albums: [
+      { id: 2242, artist: 'Hussein Fatal', title: 'Fatalveli, Volume 2: The Mixtape', year: 2004, label: 'Thugtertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27905043', stampSeed: {} },
       { id: 1243, artist: 'Outlawz', title: 'Novakane', year: 2001, label: 'Outlaw Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/23116472', stampSeed: {} },
       { id: 1244, artist: 'Outlawz', title: 'Ride Wit Us Or Collide Wit Us', year: 2000, label: 'Outlaw Recordz', youtubeId: null,
@@ -3719,6 +3767,8 @@ const REGIONS = [
     id: 'chicago', name: 'Chicago', area: 'Illinois',
     lng: -87.6298, lat: 41.8781,
     albums: [
+      { id: 2259, artist: 'June', title: 'Zenith', year: 2004, label: 'Round Table Family', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10757578', stampSeed: {} },
       { id: 2205, artist: 'Puppet', title: 'Chapter One: Vos Que Me Dio Mi Dios', year: 2004, label: 'Pura Desmadre Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12023329', discogsArt: "https://i.discogs.com/6uCgiecCSMpH8YTE8ptSh-AbI3NypUxEKvcVTepZ6E4/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyMDIz/MzI5LTE1MjY3OTIw/MzMtNzgzOC5qcGVn.jpeg", stampSeed: {} },
       { id: 2089, artist: 'Shawnna', title: 'Worth Tha Weight', year: 2004, label: 'Disturbing Tha Peace', youtubeId: null,
@@ -3785,6 +3835,10 @@ const REGIONS = [
     id: 'pittsburgca', name: 'Pittsburg', area: 'California',
     lng: -121.8847, lat: 38.0280,
     albums: [
+      { id: 2272, artist: 'A-Wax', title: 'Thug Deluxe', year: 2004, label: 'Pie-RX Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6539526', stampSeed: {} },
+      { id: 2273, artist: 'A-Wax', title: 'KONceptz & KONtradicitionz', year: 2004, label: 'Pie-RX Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/31802711', stampSeed: {} },
       { id: 1272, artist: 'A-Wax', title: 'Savage Timez', year: 2001, label: 'Possi Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3594351', stampSeed: {} },
       { id: 1273, artist: 'Gelo', title: "Havin' It My Way", year: 1993, label: 'SMG Solar Music Group', youtubeId: null,
@@ -3841,6 +3895,8 @@ const REGIONS = [
     id: 'brooklyn', name: 'Brooklyn', area: 'New York, NY',
     lng: -73.9442, lat: 40.6782,
     albums: [
+      { id: 2237, artist: 'The Notorious B.I.G.', title: 'Ready To Die The Remaster CD And DVD', year: 2004, label: 'Bad Boy Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1646096', stampSeed: {} },
       { id: 2118, artist: 'Fabolous', title: 'Real Talk', year: 2004, label: 'Atlantic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/508400', stampSeed: {} },
       { id: 1291, artist: 'Shyne', title: 'Shyne', year: 2000, label: 'Bad Boy Entertainment', youtubeId: null,
@@ -4047,6 +4103,8 @@ const REGIONS = [
     id: 'pomona', name: 'Pomona', area: 'Los Angeles County, CA',
     lng: -117.7498, lat: 34.0551,
     albums: [
+      { id: 2246, artist: 'Pomona City Rydaz', title: 'Walking Game', year: 2004, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1445597', stampSeed: {} },
       { id: 2051, artist: 'Kokane', title: 'Don\'t Bite The Funk Volume One', year: 2003, label: 'Koka Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7254030', youtubeIds: ["sLtEGvMfm8k", "UUGGdj5Hogk"], discogsArt: "https://i.discogs.com/Ve8YuZJUB9vMMuPUVqr3MjWFNUOseER3ZQzCciyDY3c/rs:fit/g:sm/q:90/h:600/w:593/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTcyNTQw/MzAtMTU0MDg3MDQ5/Mi0yMDk3LmpwZWc.jpeg", stampSeed: {} },
       { id: 1347, artist: 'Big Sir Loon', title: 'The Sinners Train', year: 2001, label: 'Stick Figger Music', youtubeId: null,
@@ -4174,6 +4232,8 @@ const REGIONS = [
     id: 'denver', name: 'Denver', area: 'Colorado',
     lng: -104.9903, lat: 39.7392,
     albums: [
+      { id: 2270, artist: 'FROSTIE', title: 'Counteract or die early', year: 1999, label: 'Vytal Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8361598', stampSeed: {} },
       { id: 2137, artist: 'Q.G.', title: 'Haven Major Things', year: 2004, label: 'Shackled Down Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/16131921', stampSeed: {} },
       { id: 1378, artist: 'Mac-V', title: 'Squash The Funk', year: 2000, label: 'True Hustlin\' Entertainment', youtubeId: null,
@@ -4198,6 +4258,8 @@ const REGIONS = [
     id: 'eastla', name: 'East Los Angeles', area: 'Los Angeles County, CA',
     lng: -118.1717, lat: 34.0239,
     albums: [
+      { id: 2271, artist: 'Rizzo', title: 'Short While', year: 1999, label: 'King Shaka Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2584590', stampSeed: {} },
       { id: 2193, artist: 'Conway', title: 'How The West Was Won', year: 2004, label: 'Motown', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14647522', youtubeIds: ["W51-9kyvitU", "9aM1qG7ci0c"], discogsArt: "https://i.discogs.com/xJjFX85k0gLAWh2hwz5qP59zLLZnpJFNxWWkI8d1HI0/rs:fit/g:sm/q:90/h:267/w:400/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE0NjQ3/NTIyLTE1OTg1OTc2/ODAtMTkzNS5qcGVn.jpeg", stampSeed: {} },
       { id: 2190, artist: 'Slow Pain', title: '113.1 FM - Old Town Radio Volume II', year: 2004, label: 'Familia Records', youtubeId: null,
@@ -4404,6 +4466,8 @@ const REGIONS = [
     id: 'sandiego', name: 'San Diego', area: 'California',
     lng: -117.1611, lat: 32.7157,
     albums: [
+      { id: 2244, artist: 'Mr. Shadow', title: 'Soy Mexicano', year: 2004, label: 'Sawed Off Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3904027', stampSeed: {} },
       { id: 1977, artist: 'L.A.Z.', title: 'The Psychadelic One', year: 1994, label: 'Ugn Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8481760', youtubeFullAlbumId: 'fwdUrGG_WDk', discogsArt: "https://i.discogs.com/M8ufs49tHmmuebvGn37mB6N3eFbg2spZ-vRAM3qjFw0/rs:fit/g:sm/q:90/h:481/w:480/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTg0ODE3/NjAtMTQ2MjQ2Njk3/MC04Mzg5LmpwZWc.jpeg", stampSeed: {} },
       { id: 2155, artist: 'Jah Word', title: 'True Testament', year: 1997, label: 'Christ Like Records', youtubeId: null,
@@ -4542,6 +4606,8 @@ const REGIONS = [
     id: 'columbus', name: 'Columbus', area: 'Ohio',
     lng: -82.9988, lat: 39.9612,
     albums: [
+      { id: 2247, artist: 'L.O.G.', title: 'Street Hitz', year: 2004, label: 'Greenboyz Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12740878', stampSeed: {} },
       { id: 1436, artist: 'Bizzy Bone', title: 'The Gift', year: 2001, label: 'AMC American Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6212141', stampSeed: {} },
       { id: 1437, artist: 'Corleone', title: 'Survivin\' Da Game', year: 2000, label: 'Sour Cream Records', youtubeId: null,
@@ -4686,6 +4752,8 @@ const REGIONS = [
     id: 'collegepark', name: 'College Park', area: 'Georgia',
     lng: -84.4494, lat: 33.6532,
     albums: [
+      { id: 2258, artist: 'DJ Smurf', title: 'Dead Crunk 2004', year: 2004, label: 'Ichiban Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11047117', stampSeed: {} },
       { id: 1459, artist: 'Slimm Calhoun', title: 'The Skinny', year: 2000, label: 'Elektra', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15758123', stampSeed: {} },
       { id: 1609, artist: 'Pastor Troy', title: 'Universal Soldier', year: 2002, label: 'Universal Records', youtubeId: null,
@@ -4970,6 +5038,8 @@ const REGIONS = [
     id: 'deerfieldbeach', name: 'Deerfield Beach', area: 'Florida',
     lng: -80.0998, lat: 26.3184,
     albums: [
+      { id: 2266, artist: 'Ovadose', title: 'The New Beginning (Life... It Is What It Is)', year: 2004, label: 'Lil Sum Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11054776', stampSeed: {} },
       { id: 1494, artist: 'Cheeba', title: 'Concrete Jungle', year: 2000, label: 'Platinum Groove Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11212279', discogsArt: "https://i.discogs.com/aJ9Ag75i9rKhKqhzcowrhFuh_uRsrprjAOw5wzg62bo/rs:fit/g:sm/q:90/h:494/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExMjEy/Mjc5LTE1NTcxODQw/OTgtNTYxOC5qcGVn.jpeg", stampSeed: {} },
     ],
@@ -5004,6 +5074,8 @@ const REGIONS = [
     id: 'washingtondc', name: 'Washington', area: 'D.C.',
     lng: -77.0369, lat: 38.9072,
     albums: [
+      { id: 2250, artist: 'Hostile Environment', title: 'Collective Materials', year: 2004, label: 'Hallway Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36519847', stampSeed: {} },
       { id: 2179, artist: 'Bosko', title: 'That Fire', year: 2004, label: 'Jus Family Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/955405', stampSeed: {} },
       { id: 2131, artist: 'T-Rock', title: 'The Mr. Washington Story', year: 2004, label: 'Rock Solid Music', youtubeId: null,
@@ -5072,6 +5144,10 @@ const REGIONS = [
     id: 'fortworth', name: 'Fort Worth', area: 'Texas',
     lng: -97.3308, lat: 32.7555,
     albums: [
+      { id: 2268, artist: 'Eastside', title: 'The Battlefield', year: 1998, label: 'Puppy Dog Unlimited Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8080477', stampSeed: {} },
+      { id: 2256, artist: 'Immortal Soldierz', title: 'Without Warnin\' 1.5', year: 2004, label: 'Unforgiven Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8082072', stampSeed: {} },
       { id: 2180, artist: 'Immortal Soldierz', title: 'Immortal Soldierz & Unforgiven Records Presents The-Dee-Ef-Dub', year: 2004, label: 'Unforgiven Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14800875', stampSeed: {} },
       { id: 1505, artist: 'Immortal Soldierz', title: 'Without Warnin\'', year: 2001, label: 'Unforgiven Records', youtubeId: null,
@@ -5324,6 +5400,8 @@ const REGIONS = [
     id: 'richmondva', name: 'Richmond', area: 'Virginia',
     lng: -77.43428, lat: 37.5385087,
     albums: [
+      { id: 2248, artist: 'Chilee Powdah', title: 'The Get Back Album', year: 2004, label: 'Powdahland Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8640408', stampSeed: {} },
       { id: 1981, artist: 'King George', title: 'Return Of The Kingpin', year: 2003, label: 'Highness Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4654344', youtubeIds: ["3ic0DjH4Fo4"], discogsArt: "https://i.discogs.com/6IoMn3r_fn2G3rkbs84dd6mU0clFgqmvd7daQF2HgUM/rs:fit/g:sm/q:90/h:592/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTQ2NTQz/NDQtMTczNzUzNzE2/Mi0zOTM0LmpwZWc.jpeg", stampSeed: {} },
     ],
@@ -5340,6 +5418,8 @@ const REGIONS = [
     id: 'vancouver', name: 'Vancouver', area: 'British Columbia',
     lng: -123.113952, lat: 49.2608724,
     albums: [
+      { id: 2262, artist: 'Checkmate', title: 'Thuroblood Records Presents:Checkmate', year: 2004, label: 'Thuroblood Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11129815', stampSeed: {} },
       { id: 1983, artist: 'Mik', title: 'Uncut', year: 2003, label: 'RawDeal Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11881941', youtubeIds: ["4LcQsDHybbY", "j4h2XRj9rNk", "IWtDE-EPggM", "gz4rRyO8DyU", "YoRZApJZmQo", "AsrV4Xa5X3Y", "76_GC0YBHNg", "_e1GjELEiwo", "sTE-skfPKIk", "yV0meQm5JaY"], discogsArt: "https://i.discogs.com/b5ZkSLWPpAjPtSOKuHvFqIB3sU1LSCZhbxNJUptCy5o/rs:fit/g:sm/q:90/h:591/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExODgx/OTQxLTE1MjQwNDUy/OTktMTcyMy5qcGVn.jpeg", stampSeed: {} },
     ],
@@ -5348,6 +5428,8 @@ const REGIONS = [
     id: 'mexicocity', name: 'Ciudad de México', area: 'Mexico',
     lng: -99.1514678, lat: 19.3207722,
     albums: [
+      { id: 2264, artist: 'Luch', title: '1 Live 2 Live', year: 2004, label: 'Whatier Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8079338', stampSeed: {} },
       { id: 1984, artist: 'Tito', title: 'Alcohol, Violence & Drugs Vol. 1', year: 2003, label: 'Thug Addict', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35769469', discogsArt: "https://i.discogs.com/UvQuMAdL7bLS11hga9TsByEAuF-riTDqgbMT4DcS0Uo/rs:fit/g:sm/q:90/h:527/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM1NzY5/NDY5LTE3NjQxNzU0/ODQtNjIwOC5qcGVn.jpeg", stampSeed: {} },
     ],
@@ -5594,6 +5676,8 @@ const REGIONS = [
     id: 'toronto', name: 'Toronto', area: 'Ontario',
     lng: -79.3839347, lat: 43.6534817,
     albums: [
+      { id: 2263, artist: 'Fatality', title: 'Deep Thoughts', year: 2004, label: 'Loc Down Production, Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10674846', stampSeed: {} },
       { id: 2229, artist: 'Riviera Regime', title: 'Thugz Of War', year: 2004, label: 'Landmine Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6923643', stampSeed: {} },
     ],
@@ -5604,6 +5688,70 @@ const REGIONS = [
     albums: [
       { id: 2230, artist: 'Cas', title: 'Kronisk Rastløs', year: 2004, label: 'IH8 Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8449401', youtubeIds: ["gjMMLsCoPZE", "N5MymXMk9J0", "UNnPWTEVY-4", "NIVtH8Bfh_s", "mZAz8nvSm_A", "3wp4fI13w3A", "ohaGGO_FkiM", "KKXuwT22EWk", "p2VmmIDob0k", "MDYbmfFGg2Q", "bIEMzaaWNfc", "UTZlXFV0HKU", "SoPjywPZNU4", "yoU-GVrcsT4", "fdusul7GeDM", "PDRnaBmWQTw"], discogsArt: "https://i.discogs.com/V4YYCrGM1UqEt0tY1D5h164njjqlLZSS0DxfBT4HiQA/rs:fit/g:sm/q:90/h:596/w:591/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTg0NDk0/MDEtMTQ2MTgzNjky/NC05Njg3LmpwZWc.jpeg", stampSeed: {} },
+    ],
+  },
+  {
+    id: 'seoul', name: 'Seoul', area: 'South Korea',
+    lng: 126.9782914, lat: 37.5666791,
+    albums: [
+      { id: 2275, artist: 'C.L.', title: 'Them Or Us', year: 2004, label: 'Cru-Luv', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22290274', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'cagliari', name: 'Cagliari', area: 'Italy',
+    lng: 9.113311, lat: 39.2171994,
+    albums: [
+      { id: 2276, artist: 'Infamous', title: 'Da\' Beginning, Not Da\' End', year: 2004, label: 'In Fame Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35019146', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'roma', name: 'Roma', area: 'Italy',
+    lng: 12.4829321, lat: 41.8933203,
+    albums: [
+      { id: 2277, artist: '3D', title: '3DTV Tunnel Vizion', year: 2004, label: 'Undercover Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20200066', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'gottingen', name: 'Göttingen', area: 'Germany',
+    lng: 9.9351811, lat: 51.5328328,
+    albums: [
+      { id: 2278, artist: 'D-Bo', title: 'Deutscha Playa 2004', year: 2004, label: 'Wolfpack Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2740713', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'santacatarina', name: 'Santa Catarina', area: 'Mexico',
+    lng: -100.4616371, lat: 25.6745052,
+    albums: [
+      { id: 2279, artist: 'Cartel De Santa', title: 'Vol. II', year: 2004, label: 'BMG Mexico', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6754997', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'alessandria', name: 'Alessandria', area: 'Italy',
+    lng: 8.7450304, lat: 44.8349534,
+    albums: [
+      { id: 2280, artist: 'B-1', title: 'Off The Hook', year: 2004, label: 'Martell Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8183868', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'sete', name: 'Sète', area: 'France',
+    lng: 3.6959771, lat: 43.4014434,
+    albums: [
+      { id: 2281, artist: 'Stuntman', title: 'The Crash Unit', year: 1998, label: 'Subjec Matta Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7341828', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'eastsussex', name: 'East Sussex', area: 'England',
+    lng: 0.3699978, lat: 50.9404266,
+    albums: [
+      { id: 2282, artist: 'Mr. Solo', title: 'Straight Out The Vee', year: 1998, label: 'N Muzik We Trust', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29689492', stampSeed: {} },
     ],
   },
 ];
