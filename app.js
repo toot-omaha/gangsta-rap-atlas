@@ -1328,9 +1328,23 @@ function trackItemsOf(album) {
   return vids.map((vid) => ({ title: album.title, artist: album.artist, preview: null, youtube: vid, art, album }));
 }
 
+// 既にキューに入っているアルバムの最初の位置(無ければ-1)。
+// 連打で同じアルバムが何度もキューに積まれるのを防ぐために使う。
+function albumQueueIndex(album) {
+  return queue.findIndex((item) => item.album === album);
+}
+
 // 通常の▶(アルバムカード/曲行): 今の再生位置に差し込んで即座に頭出しする。
 // 再生中だった残りのキューはキューから消さず、差し込んだ分だけ後ろへスライドする。
 function playAlbum(album, startIndex = 0) {
+  const existing = albumQueueIndex(album);
+  if (existing !== -1) {
+    // 既にキューにあるなら重複追加せず、その位置から再生し直すだけにする。
+    const itemsLen = trackItemsOf(album).length || 1;
+    cursor = existing + Math.max(0, Math.min(startIndex, itemsLen - 1));
+    playCurrent();
+    return;
+  }
   const items = trackItemsOf(album);
   const insertPos = Math.max(cursor, 0);
   if (!items.length) {
@@ -1356,8 +1370,9 @@ function playSingle(item) {
 // 「▶ 全曲キューニ入レル」: 今の再生を止めず、キューの末尾に足すだけ。
 // 何も再生していなければ即再生と同じ(先頭に差し込むのと変わらない)。
 function enqueueAlbum(album) {
-  const items = trackItemsOf(album);
   if (!queue.length) { playAlbum(album); return; }
+  if (albumQueueIndex(album) !== -1) return; // 既にキュー済みなら何もしない(連打対策)
+  const items = trackItemsOf(album);
   if (!items.length) return; // 試聴の無い盤は積んでも仕方ないので何もしない
   queue.push(...items);
   paint();
