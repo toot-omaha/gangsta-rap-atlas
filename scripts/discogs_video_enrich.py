@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """iTunesに無い盤(enrich.jsに試聴が無い)だけを対象に、Discogsのリリース情報に
 既に載っているYouTubeリンク(videos配列)からアルバム全体の動画を1本だけ選び、
-data.jsの該当アルバムの youtubeId フィールドへ直接書き込む。
+data.jsの該当アルバムの youtubeId フィールドへ直接書き込む。あわせて、
+Discogsのジャケ写(images[0].uri)を discogsArt フィールドへ書き込む
+(iTunesに無い盤はジャケ写も♪アイコンのままだったため、ユーザー承知の上で
+Discogs画像を代替ジャケ写として使う方針に変更、2026-08-07)。
 
 方針(ユーザー指示、2026-08-07):
   - YouTube Data API の検索(1日100クォータ)は使わない。Discogsのrelease
@@ -13,11 +16,13 @@ data.jsの該当アルバムの youtubeId フィールドへ直接書き込む�
 
 選定ロジック: videos配列から、タイトルに "full album" を含むものを最優先、
 無ければアルバムらしい尺(6分以上)のものを、それも無ければ先頭を使う。
+ジャケ写は images 配列の先頭(primary画像)をそのまま使う。
 
 使い方:
   python3 scripts/discogs_video_enrich.py [処理件数上限(デフォルト200)]
 
-出力: data.js を直接書き換える(該当アルバムの youtubeId: null → youtubeId: '<videoId>')。
+出力: data.js を直接書き換える(該当アルバムの youtubeId: null → youtubeId: '<videoId>'、
+discogsArt フィールドが無ければ新規追加)。
 collect_grap.py / rarity.py と同時に実行しない(Discogs APIのレート競合のため)。
 """
 import json
@@ -94,6 +99,8 @@ def main():
 
     # { id, artist, title, discogsUrl, youtubeId(現在値) } を持つエントリを
     # 出現順に列挙する。1エントリ = data.js中の1つの album object。
+    # discogsArtフィールドは無いエントリが大半なので正規表現には含めず、
+    # 個別に「id:Nの直後からstampSeed:までにdiscogsArtが無いか」を後で見る。
     entry_pat = re.compile(
         r"\{ id: (\d+), artist: ((?:'(?:[^'\\]|\\.)*')|(?:\"(?:[^\"\\]|\\.)*\")), "
         r"title: ((?:'(?:[^'\\]|\\.)*')|(?:\"(?:[^\"\\]|\\.)*\")), .*?"
@@ -109,13 +116,18 @@ def main():
         aid, artist_q, title_q, yt_cur, discogs_url, release_id = m.groups()
         artist, title = unquote(artist_q), unquote(title_q)
         key = f'{artist}|{title}'
-        if yt_cur != 'null':
-            continue  # 既にyoutubeIdが入っている
         if key in itunes_keys:
             continue  # iTunesに試聴があるので対象外
-        targets.append({'id': aid, 'artist': artist, 'title': title, 'release_id': release_id})
+        stamp_idx = src.find('stampSeed', m.start())
+        has_art = stamp_idx != -1 and 'discogsArt:' in src[m.start():stamp_idx]
+        if yt_cur != 'null' and has_art:
+            continue  # 動画・ジャケ写とも既に埋まっている
+        targets.append({
+            'id': aid, 'artist': artist, 'title': title, 'release_id': release_id,
+            'need_video': yt_cur == 'null', 'need_art': not has_art,
+        })
 
-    print(f'{len(targets)} 件がiTunes未マッチ・youtubeId未設定で対象(うち先頭{min(limit, len(targets))}件を処理)')
+    print(f'{len(targets)} 件がiTunes未マッチで動画/ジャケ写いずれか未設定(うち先頭{min(limit, len(targets))}件を処理)')
 
     updated = 0
     for i, t in enumerate(targets[:limit], 1):
@@ -124,23 +136,46 @@ def main():
         except Exception as e:
             print(f'  [{i}] {t["artist"]} - {t["title"]}: ERROR {e}', file=sys.stderr)
             continue
-        vid = pick_album_video(data.get('videos'))
-        if not vid:
-            print(f'  [{i}] {t["artist"]} - {t["title"]}: 動画なし')
-            continue
-        # 該当アルバムのその1エントリだけを id で狙い撃ちして置換する
-        pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", .*?youtubeId: )null(,)")
-        new_src, n = pat.subn(rf"\g<1>'{vid}'\g<2>", src, count=1)
-        if n == 1:
-            src = new_src
+
+        changed_this = False
+
+        if t['need_video']:
+            vid = pick_album_video(data.get('videos'))
+            if vid:
+                pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", .*?youtubeId: )null(,)")
+                new_src, n = pat.subn(rf"\g<1>'{vid}'\g<2>", src, count=1)
+                if n == 1:
+                    src = new_src
+                    changed_this = True
+                    print(f'  [{i}] {t["artist"]} - {t["title"]}: video={vid}')
+                else:
+                    print(f'  [{i}] {t["artist"]} - {t["title"]}: id={t["id"]}のyoutubeId置換に失敗(手動確認要)', file=sys.stderr)
+            else:
+                print(f'  [{i}] {t["artist"]} - {t["title"]}: 動画なし')
+
+        if t['need_art']:
+            images = data.get('images') or []
+            art_url = images[0].get('uri') if images else None
+            if art_url:
+                # stampSeed: の直前に discogsArt: '<url>', を差し込む
+                # (id〜stampSeedは改行をまたぐため re.DOTALL が必須)
+                pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", .*?)(stampSeed:)", re.DOTALL)
+                new_src, n = pat.subn(rf"\g<1>discogsArt: {json.dumps(art_url)}, \g<2>", src, count=1)
+                if n == 1:
+                    src = new_src
+                    changed_this = True
+                    print(f'  [{i}] {t["artist"]} - {t["title"]}: art={art_url}')
+                else:
+                    print(f'  [{i}] {t["artist"]} - {t["title"]}: id={t["id"]}のdiscogsArt挿入に失敗(手動確認要)', file=sys.stderr)
+            else:
+                print(f'  [{i}] {t["artist"]} - {t["title"]}: 画像なし')
+
+        if changed_this:
             updated += 1
-            print(f'  [{i}] {t["artist"]} - {t["title"]}: {vid}')
-        else:
-            print(f'  [{i}] {t["artist"]} - {t["title"]}: id={t["id"]}が置換できず(手動確認要)', file=sys.stderr)
 
     if updated:
         data_path.write_text(src)
-    print(f'完了: {updated} 件のyoutubeIdを更新')
+    print(f'完了: {updated} 件を更新')
 
 
 if __name__ == '__main__':

@@ -834,14 +834,19 @@ function applyScrollRestore() {
 
 // iTunes Search API 由来の付加情報(ジャケ写・試聴・Apple Musicリンク)
 const enrichOf = (a) => (typeof ENRICH !== 'undefined' && ENRICH[albumKey(a)]) || null;
-const artUrl = (e, size) => e?.art ? e.art.replace('100x100bb', `${size}x${size}bb`) : null;
+// iTunesにジャケ写が無い盤は、Discogsのリリース情報に載っていた画像
+// (album.discogsArt、scripts/discogs_video_enrich.pyで埋める)にフォールバックする。
+const artUrl = (e, size, album) => {
+  if (e?.art) return e.art.replace('100x100bb', `${size}x${size}bb`);
+  return album?.discogsArt || null;
+};
 
 function albumCard(album) {
   const card = document.createElement('div');
   card.className = 'album';
   const r = rarity(album);
   const e = enrichOf(album);
-  const art = artUrl(e, 300);
+  const art = artUrl(e, 300, album);
   const artHtml = art
     ? `<div class="album-art has-img"><img src="${art}" alt="${album.title}" loading="lazy"></div>`
     : `<div class="album-art"><span>${t('notOn')}</span></div>`;
@@ -908,7 +913,7 @@ function renderDisc(album, push = true) {
   lastDiscRegion = region;
   const discHash = region ? `#r/${encodeURIComponent(region.id)}/${album.id}` : undefined;
   navGoto(push ? 2 : navLevel, discHash);
-  const art = artUrl(e, 600);
+  const art = artUrl(e, 600, album);
   const key = albumKey(album);
   const rerender = () => renderDisc(album, false);
   const tracks = e?.tracks || [];
@@ -1245,7 +1250,7 @@ const $play = document.getElementById('playBtn');
 // 遅延方式(next()参照)。地域全体を毎回事前展開すると巨大な配列になるため。
 function trackItemsOf(album) {
   const e = enrichOf(album);
-  const art = artUrl(e, 100);
+  const art = artUrl(e, 100, album);
   const itunesTracks = (e?.tracks || []).filter((tr) => tr.preview)
     .map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, youtube: null, art, album }));
   if (itunesTracks.length) return itunesTracks;

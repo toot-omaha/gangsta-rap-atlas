@@ -95,7 +95,11 @@ body::before {
 #stage { position: fixed; inset: 58px 0 74px 0; z-index: 1; }
 
 /* 地図は常にフルスクリーンの背景 */
-#mapWrap { position: absolute; inset: 0; overflow: hidden; }
+/* z-indexを持たせて独立したスタッキングコンテキストを作る。
+   これが無いと、内側のマーカー(枚数ベースでz-index最大9999)の値が
+   #mapWrapの外までそのまま漏れて、#list等のポップアップより
+   手前に出てしまう(実際に発生した不具合)。 */
+#mapWrap { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
 #map { position: absolute; inset: 0; }
 /* 白黒印刷風フィルタはタイルのキャンバスだけに掛ける
  * (マーカーまで掛けると赤い弾痕が灰色になってしまう) */

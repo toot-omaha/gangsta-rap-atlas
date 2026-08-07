@@ -3926,7 +3926,7 @@ const REGIONS = [
     lng: -91.6634, lat: 29.9110,
     albums: [
       { id: 1726, artist: 'Tray Duece', title: 'Bayou Soldiers', year: 1998, label: 'South Style Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/15629409', stampSeed: {} },
+        discogsUrl: 'https://www.discogs.com/release/15629409', discogsArt: "https://i.discogs.com/YWZMiN4-45sGBvmLrNDeElFyp_-1Tu-V9Wr72TlcAdI/rs:fit/g:sm/q:90/h:344/w:400/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE1NjI5/NDA5LTE1OTQ4NDUz/NDktNzQzNS5qcGVn.jpeg", stampSeed: {} },
     ],
   },
   {
@@ -4612,7 +4612,7 @@ const REGIONS = [
     lng: -95.9345, lat: 41.2565,
     albums: [
       { id: 1525, artist: 'Toot', title: 'Change Da Game', year: 2002, label: 'Graceside Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/5458865', stampSeed: {} },
+        discogsUrl: 'https://www.discogs.com/release/5458865', discogsArt: "https://i.discogs.com/zWZLIODFLb4aEi-kTTPWCbPIORf5EbDKNO_7r_fKL4E/rs:fit/g:sm/q:90/h:312/w:320/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTU0NTg4/NjUtMTM5Mzg4MzA0/NC01MDg1LmpwZWc.jpeg", stampSeed: {} },
       { id: 1518, artist: 'Full Clip', title: 'Preach To My Thugs', year: 2001, label: 'Playhouse Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14849535', stampSeed: {} },
     ],
