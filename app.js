@@ -1445,7 +1445,7 @@ function syncMediaSession(q) {
 
 function paint() {
   const q = queue[cursor];
-  $count.textContent = `${queue.length} 曲`;
+  $count.textContent = `${Math.max(0, queue.length - Math.max(cursor, 0))} 曲`;
   $play.textContent = (q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶';
   syncMediaSession(q);
   if (!q) {
