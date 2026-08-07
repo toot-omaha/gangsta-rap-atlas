@@ -65,8 +65,9 @@ body::before {
 }
 .era-chk input { accent-color: var(--ink); margin: 0; cursor: pointer; }
 .era-chk.on { color: var(--ink); }
+/* スタンプ機能は準備中のため一旦非表示 */
 .stamp-filter {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  display: none !important; flex-wrap: wrap; align-items: center; gap: 4px;
   padding: 7px 12px; flex: 1; overflow-x: auto;
 }
 
@@ -444,9 +445,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .fav-toggle.search { border-color: var(--ink); display: flex; align-items: center; padding: 5px 9px; }
 .fav-toggle.search:hover { background: var(--ink); color: var(--paper); }
 
-/* 墓石メニュー(狭い画面のみ) */
+/* 墓石メニュー(狭い画面のみ)— スタンプ機能は準備中のため一旦非表示 */
 .stamp-menu-btn {
-  display: none; border: 2px solid var(--ink); background: transparent; color: var(--ink);
+  display: none !important; border: 2px solid var(--ink); background: transparent; color: var(--ink);
   width: 34px; height: 34px; padding: 4px; cursor: pointer;
 }
 .stamp-menu-btn:hover, body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); }
@@ -522,6 +523,20 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 @media (max-width: 860px) {
   .stamp-menu-btn { display: block; }
   .top-actions { gap: 6px; padding: 5px 10px; }
+  /* スタンプメニューを隠した分、年代フィルターはドロワーへ入れず
+     ヘッダー直下に常時表示の行として出す(スタンプボタン経由でしか
+     開けなくなるとモバイルから触れなくなるため) */
+  #topbar { flex-wrap: wrap; }
+  .drawer { display: contents !important; }
+  .era-filter {
+    flex: 1 0 100%; order: 3; justify-content: center;
+    padding: 6px 10px; border-top: 2px solid var(--ink);
+  }
+  .brand { order: 1; }
+  .top-actions { order: 2; }
+  /* ドロワーをcontentsにした関係で投稿/EN複製ボタン(旧ドロワー用)が
+     ヘッダーに漏れ出さないよう明示的に隠す */
+  .drawer-actions { display: none !important; }
   /* 検索ボタンはヘッダー右下に独立配置(✕ボタンと被りやすいので
      詳細ページ・一覧が開いている間は隠す) */
   .fav-toggle.search {
