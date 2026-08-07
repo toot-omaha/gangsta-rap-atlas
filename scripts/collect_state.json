@@ -1,4 +1,12 @@
 {
- "year": 2003,
- "page": 3
+ "cursors": {
+  "Gangsta": {
+   "year": 2003,
+   "page": 6
+  },
+  "G-Funk": {
+   "year": 1993,
+   "page": 0
+  }
+ }
 }
