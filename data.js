@@ -770,6 +770,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2159158', stampSeed: { bangin: 17, funky: 13, dark: 10 } },
       { id: 1560, artist: 'South Central Cartel', title: 'Gangsta Conversation', year: 2001, label: 'PR Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3091057', stampSeed: {} },
+      { id: 1690, artist: 'Frost', title: 'Still Up In This $#*+!', year: 2002, label: 'Hit A Lick Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3517678', stampSeed: {} },
     ],
   },
   {
@@ -1140,6 +1142,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/24433730', stampSeed: {} },
       { id: 1681, artist: 'Yukmouth', title: 'United Ghettos Of America', year: 2002, label: 'Rap-A-Lot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10540873', stampSeed: {} },
+      { id: 1683, artist: 'Nutt-So', title: 'The Movie', year: 2002, label: 'Outlaw Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4741183', stampSeed: {} },
     ],
   },
   {
@@ -1524,6 +1528,18 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6671026', stampSeed: {} },
       { id: 1676, artist: 'Juan Gotti', title: 'No Sett Trippin', year: 2002, label: 'Dope House Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/16148405', stampSeed: {} },
+      { id: 1682, artist: 'T.O. Ikeman', title: 'From Day One', year: 2002, label: 'Shut Em Down Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17187178', stampSeed: {} },
+      { id: 1684, artist: 'Guerilla Maab', title: 'Res•Ur•Rect•Ed', year: 2002, label: 'KMJ Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4421865', stampSeed: {} },
+      { id: 1685, artist: 'S.L.A.B.', title: "Slow Loud And Bangin', Volume 2: Underground 4 Life", year: 2002, label: 'Raw And Untamed Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6671644', stampSeed: {} },
+      { id: 1692, artist: 'Slim Thug', title: 'Tha Boss', year: 2002, label: 'Boss Hogg Outlawz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5837286', stampSeed: {} },
+      { id: 1695, artist: 'S.L.A.B.', title: 'Screenz On', year: 2002, label: 'Uranus Funk Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6617449', stampSeed: {} },
+      { id: 1701, artist: 'Cory "Mo"', title: 'I.E. Inconspicuously Evident', year: 2002, label: 'Endure Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6223312', stampSeed: {} },
     ],
   },
   {
@@ -1772,6 +1788,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/908777', stampSeed: {} },
       { id: 1679, artist: 'Project Pat', title: "Layin' Da Smack Down", year: 2002, label: 'Loud Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5126262', stampSeed: {} },
+      { id: 1687, artist: 'Tela', title: 'Double Dose', year: 2002, label: 'Rap-A-Lot Resurrection', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1540902', stampSeed: {} },
+      { id: 1693, artist: 'Criminal Manne', title: "Playtime's Over", year: 2002, label: 'Mo Cheda Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7945372', stampSeed: {} },
     ],
   },
   {
@@ -2224,6 +2244,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3790845', stampSeed: {} },
       { id: 1589, artist: 'Bosha', title: 'What Part Of The Game Is This', year: 2001, label: 'Testa Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6953540', stampSeed: {} },
+      { id: 1689, artist: 'T-Lowe', title: 'Mack-A-Flama', year: 2002, label: 'Black Power Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4987209', stampSeed: {} },
     ],
   },
   {
@@ -2388,6 +2410,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8632428', stampSeed: {} },
       { id: 1674, artist: 'Luni Coleone', title: 'lunicoleone.com', year: 2002, label: 'Out Of Bounds', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/20956762', stampSeed: {} },
+      { id: 1697, artist: 'C-Bo', title: 'Desert Eagle', year: 2002, label: 'Warlock Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1004171', stampSeed: {} },
+      { id: 1698, artist: 'X-Raided', title: 'Deadly Game', year: 2002, label: 'The Distribution Center', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1469156', stampSeed: {} },
     ],
   },
   {
@@ -3028,6 +3054,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/969481', stampSeed: { bangin: 22, dark: 16, doro: 12 } },
       { id: 1583, artist: 'The Jacka', title: 'The Jacka Of The Mob Figaz', year: 2001, label: 'AKBR Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1495439', stampSeed: {} },
+      { id: 1686, artist: 'A-Wax', title: "65 G'z In A Jordan Briefcase", year: 2002, label: 'Possi Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14595210', stampSeed: {} },
     ],
   },
   {
@@ -3596,6 +3624,14 @@ const REGIONS = [
     ],
   },
   {
+    id: 'trenton', name: 'Trenton', area: 'New Jersey',
+    lng: -74.7659, lat: 40.2203,
+    albums: [
+      { id: 1699, artist: 'YZ', title: 'The Legend Of Floyd Jones', year: 2002, label: 'Reservoir Records, Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/906675', stampSeed: {} },
+    ],
+  },
+  {
     id: 'anniston', name: 'Anniston', area: 'Alabama',
     lng: -85.8317, lat: 33.6598,
     albums: [
@@ -3633,6 +3669,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1636878', stampSeed: {} },
       { id: 1439, artist: 'Sideways', title: 'Livin The Life...', year: 2000, label: 'Sideways Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11383790', stampSeed: {} },
+      { id: 1688, artist: 'Woodie', title: 'Life Storiez Vol. 1', year: 2002, label: 'East Co. Co. Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/33209160', stampSeed: {} },
     ],
   },
   {
@@ -3780,6 +3818,14 @@ const REGIONS = [
     ],
   },
   {
+    id: 'lexington', name: 'Lexington', area: 'Kentucky',
+    lng: -84.4970, lat: 38.0464,
+    albums: [
+      { id: 1696, artist: 'Dirtbag', title: 'Take A Dirt Nap', year: 2002, label: 'Epidemic Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16822749', stampSeed: {} },
+    ],
+  },
+  {
     id: 'madison', name: 'Madison', area: 'Wisconsin',
     lng: -89.4012, lat: 43.0731,
     albums: [
@@ -3831,6 +3877,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/19661155', stampSeed: {} },
       { id: 1473, artist: 'Sean T', title: 'Heated', year: 2000, label: 'Bay Rider Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2740120', stampSeed: {} },
+      { id: 1700, artist: 'Sean T', title: 'Familiar Ground', year: 2002, label: 'Perrion Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3535858', stampSeed: {} },
     ],
   },
   {
@@ -3863,6 +3911,8 @@ const REGIONS = [
     albums: [
       { id: 1477, artist: 'Sonny Spoon', title: 'Hustler', year: 2000, label: 'Alpine Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7422495', stampSeed: {} },
+      { id: 1694, artist: 'Sonny Spoon', title: 'The Arrival', year: 2002, label: 'Dollyhood Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15817134', stampSeed: {} },
     ],
   },
   {
@@ -3987,6 +4037,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6784196', stampSeed: {} },
       { id: 1496, artist: '9-Milla', title: 'Round Duice', year: 2000, label: 'In-Capp Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3096569', stampSeed: {} },
+      { id: 1691, artist: '9-Milla', title: "Puttin' In Wizzurk", year: 2002, label: 'In-Capp Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3815896', stampSeed: {} },
     ],
   },
   {
