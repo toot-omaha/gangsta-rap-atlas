@@ -506,6 +506,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8772692', stampSeed: { funky: 40, bangin: 34, smooth: 26, dark: 20 } },
       { id: 227, artist: 'Gospel Gangstaz', title: 'I Can See Clearly Now', year: 1999, label: 'B-Rite Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22902152', stampSeed: { funky: 16, mellow: 12, bangin: 9 } },
+      { id: 1677, artist: 'MC Eiht', title: 'Underground Hero', year: 2002, label: 'D3 Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1306855', stampSeed: {} },
     ],
   },
   {
@@ -1136,6 +1138,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5840507', stampSeed: {} },
       { id: 1665, artist: 'E-A-Ski', title: 'Apply Pressure', year: 2002, label: 'Not On Label (E-A-Ski Self-released)', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/24433730', stampSeed: {} },
+      { id: 1681, artist: 'Yukmouth', title: 'United Ghettos Of America', year: 2002, label: 'Rap-A-Lot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10540873', stampSeed: {} },
     ],
   },
   {
@@ -1518,6 +1522,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/24287996', stampSeed: {} },
       { id: 1660, artist: 'S.L.A.B.', title: "Slow Loud And Bangin', Volume 1: Underground 4 Life", year: 2002, label: 'Raw And Untamed Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6671026', stampSeed: {} },
+      { id: 1676, artist: 'Juan Gotti', title: 'No Sett Trippin', year: 2002, label: 'Dope House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16148405', stampSeed: {} },
     ],
   },
   {
@@ -1764,6 +1770,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9154448', stampSeed: {} },
       { id: 1671, artist: 'DJ Zirk', title: 'Underworld', year: 2002, label: 'O.M.V. Muzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/908777', stampSeed: {} },
+      { id: 1679, artist: 'Project Pat', title: "Layin' Da Smack Down", year: 2002, label: 'Loud Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5126262', stampSeed: {} },
     ],
   },
   {
@@ -2378,6 +2386,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3834658', stampSeed: {} },
       { id: 1672, artist: 'C-Bo', title: 'Life As A Rider', year: 2002, label: 'West Coast Mafia Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8632428', stampSeed: {} },
+      { id: 1674, artist: 'Luni Coleone', title: 'lunicoleone.com', year: 2002, label: 'Out Of Bounds', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20956762', stampSeed: {} },
     ],
   },
   {
@@ -2789,6 +2799,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9210171', stampSeed: {} },
       { id: 1639, artist: 'Project Born', title: 'The Rent Is Due', year: 2002, label: 'Project Mob Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/24958399', stampSeed: {} },
+      { id: 1675, artist: 'The Dayton Family', title: 'Welcome To The Dope House', year: 2002, label: 'Koch Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4285707', stampSeed: {} },
     ],
   },
   {
@@ -2823,6 +2835,8 @@ const REGIONS = [
     albums: [
       { id: 1222, artist: 'MV Bill', title: 'CDD. Mandando Fechado', year: 1998, label: 'Zambia', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6267695', stampSeed: { dark: 20, doro: 16, bangin: 12 } },
+      { id: 1678, artist: 'MV Bill', title: 'Declaração De Guerra', year: 2002, label: 'Natasha Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6267999', stampSeed: {} },
     ],
   },
   {
@@ -3371,6 +3385,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6916171', stampSeed: {} },
       { id: 1388, artist: 'D.O.A.', title: 'Ghetto Rich', year: 1999, label: '2 Da Face Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1895331', stampSeed: {} },
+      { id: 1680, artist: 'Doja Clik', title: 'THC', year: 2002, label: 'Hard On Da Grind Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3378643', stampSeed: {} },
     ],
   },
   {
