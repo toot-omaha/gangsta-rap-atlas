@@ -1103,10 +1103,20 @@ document.getElementById('stampMenuBtn').addEventListener('click', () => {
   document.body.classList.toggle('stamps-open');
 });
 
-// 投稿・言語ボタンは常にヘッダーの top-actions に置く。
-// (スタンプドロワーが閉じたままだと辿り着けなくなるため、狭い画面でも
-// ドロワーへ移し替えない)
-document.querySelector('.top-actions').prepend(document.getElementById('submitBtn'), document.getElementById('langBtn'));
+// 狭い画面では 投稿・言語ボタンをドロワー下部のセクションへ移す
+const narrowMq = matchMedia('(max-width: 860px)');
+function placeActionButtons() {
+  const submitB = document.getElementById('submitBtn');
+  const langB = document.getElementById('langBtn');
+  if (narrowMq.matches) {
+    document.getElementById('drawerActions').append(submitB, langB);
+  } else {
+    const actions = document.querySelector('.top-actions');
+    actions.prepend(submitB, langB); // 投稿, 言語, ★, 墓石 の順に戻す
+  }
+}
+narrowMq.addEventListener('change', placeActionButtons);
+placeActionButtons();
 
 // ディスクのチップ。曲データがある盤では集計表示(押すのは曲側)、ない盤ではトグル可
 function discChip(album, s, readonly, rerender) {
