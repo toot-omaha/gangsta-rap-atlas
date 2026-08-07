@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "dev.pages.gangsta_rap_atlas.twa",
+    "sha256_cert_fingerprints": ["73:D2:91:F5:0E:DE:BB:B0:09:D2:E4:FC:BF:02:6B:79:79:31:DC:42:76:BC:BA:81:AA:16:47:88:F8:0F:69:4F"]
+  }
+}]
