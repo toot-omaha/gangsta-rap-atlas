@@ -122,6 +122,10 @@ const myStamps = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); // { album
 const saveStamps = () => localStorage.setItem(STORE_KEY, JSON.stringify(myStamps));
 
 const albumKey = (a) => `${a.artist}|${a.title}`;
+// 共有リンク用のディスクID。data.js内で各アルバムに直接振られた連番(a.id)を使う。
+// 並び順・情報源(Discogs/投稿)・タイトルの表記ゆれのどれにも影響されない
+// 本物の一意ID。
+const resolveDiscShareId = (region, id) => region.albums.find((a) => a.id === Number(id));
 const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9぀-ヿ一-龯]+/g, '');
 const trackKey = (a, name) => `${albumKey(a)}#${name}`;
 
@@ -688,7 +692,15 @@ window.addEventListener('pageshow', () => { map.resize(); map.triggerRepaint(); 
 document.getElementById('mask').addEventListener('click', closeList);
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeList(); });
 
-const shareBtnHtml = `<button class="share" title="このページのリンクを共有">🔗</button>`;
+const shareBtnHtml = `<button class="share" title="このページのリンクを共有">
+  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+    <circle cx="18" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="6" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="18" cy="19" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+    <line x1="8.7" y1="10.7" x2="15.3" y2="6.3" stroke="currentColor" stroke-width="2"/>
+    <line x1="8.7" y1="13.3" x2="15.3" y2="17.7" stroke="currentColor" stroke-width="2"/>
+  </svg>
+</button>`;
 const listHead = (title, sub, cnt, share = false) => `
   <div class="list-head">
     <h2>${title}</h2>
@@ -834,7 +846,7 @@ function renderDisc(album, push = true) {
   const r = rarity(album);
   const region = REGIONS.find((rr) => rr.albums.includes(album));
   lastDiscRegion = region;
-  const discHash = region ? `#r/${encodeURIComponent(region.id)}/${encodeURIComponent(albumKey(album))}` : undefined;
+  const discHash = region ? `#r/${encodeURIComponent(region.id)}/${album.id}` : undefined;
   navGoto(push ? 2 : navLevel, discHash);
   const art = artUrl(e, 600);
   const key = albumKey(album);
@@ -1350,12 +1362,12 @@ map.on('load', () => { map.resize(); refreshMarkers(); });
 (function openFromHash() {
   const h = location.hash.slice(1);
   if (!h.startsWith('r/')) return;
-  const [regionId, key] = h.slice(2).split('/').map((s) => decodeURIComponent(s));
-  const region = REGIONS.find((r) => r.id === regionId);
+  const [regionId, discId] = h.slice(2).split('/');
+  const region = REGIONS.find((r) => r.id === decodeURIComponent(regionId));
   if (!region) return;
   openRegion(region);
-  if (key) {
-    const album = region.albums.find((a) => albumKey(a) === key);
+  if (discId != null) {
+    const album = resolveDiscShareId(region, discId);
     if (album) setTimeout(() => renderDisc(album), 460);
   }
 })();

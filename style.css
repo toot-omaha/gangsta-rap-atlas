@@ -279,9 +279,10 @@ body.detail #list { opacity: 1; pointer-events: auto; transform: none; }
 .list-head .share {
   align-self: center; flex: 0 0 auto;
   width: 34px; height: 34px; border: 2px solid var(--ink);
-  background: var(--paper); color: var(--ink); font-size: 14px; cursor: pointer;
+  background: var(--paper); color: var(--ink); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
 }
-.list-head .share:hover { background: var(--gold); border-color: var(--gold); }
+.list-head .share:hover { background: var(--ink); color: var(--paper); }
 
 /* 共有リンクをコピーしたときの簡易トースト */
 .share-toast {
