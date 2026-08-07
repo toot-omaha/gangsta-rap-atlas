@@ -14,8 +14,11 @@ Discogs画像を代替ジャケ写として使う方針に変更、2026-08-07)�
   - 曲単位でYouTubeを紐付けるところまでは無理にやらない。あくまで
     アルバム1本の代替再生用として youtubeId (既存スキーマ) を埋めるだけ。
 
-選定ロジック: videos配列から、タイトルに "full album" を含むものを最優先、
-無ければアルバムらしい尺(6分以上)のものを、それも無ければ先頭を使う。
+選定ロジック(2026-08-07改訂、ユーザー指示): Full Albumの採用は最終手段。
+videos配列から、タイトルに "full album" を含まず10分未満の短尺(曲単体らしい
+もの)を最優先で youtubeId (埋め込み30秒再生) に採用する。短尺が無く
+Full Album相当(タイトルに"full album"を含む/10分以上)しか無い場合は、
+埋め込み再生はせず youtubeFullAlbumId (外部リンク専用) にのみ入れる。
 ジャケ写は images 配列の先頭(primary画像)をそのまま使う。
 
 使い方:
@@ -59,22 +62,33 @@ def discogs_get(url):
     return data
 
 
+FULL_ALBUM_SECONDS = 600  # 10分以上はFull Album扱い(埋め込み30秒再生ではなく外部リンクへ)
+
+
 def pick_album_video(videos):
+    """(short_video_id, full_album_video_id) を返す。short は曲単体らしい
+    短尺(タイトルに"full album"を含まず10分未満)を最優先で選ぶ。無ければ
+    short は None とし、Full Album用の動画があればそちらだけ埋める
+    (呼び出し側で外部リンク表示に回す、埋め込み再生はしない)。"""
     if not videos:
-        return None
+        return None, None
     seen = []
     for v in videos:
         vid = extract_video_id(v.get('uri', ''))
         if not vid or vid in [s[0] for s in seen]:
             continue
         seen.append((vid, v))
-    for vid, v in seen:
-        if 'full album' in (v.get('title') or '').lower():
-            return vid
-    for vid, v in seen:
-        if (v.get('duration') or 0) >= 360:  # 6分以上ならアルバム通しの可能性が高い
-            return vid
-    return seen[0][0] if seen else None
+
+    def is_full_album(v):
+        title = (v.get('title') or '').lower()
+        return 'full album' in title or (v.get('duration') or 0) >= FULL_ALBUM_SECONDS
+
+    short = next((vid for vid, v in seen if not is_full_album(v)), None)
+    full = next((vid for vid, v in seen if is_full_album(v)), None)
+    if short is None and full is None and seen:
+        # フラグが立たなかった場合の保険(タイトル不明・尺不明でも1本目を採用)
+        full = seen[0][0]
+    return short, full
 
 
 def extract_video_id(uri):
@@ -119,12 +133,14 @@ def main():
         if key in itunes_keys:
             continue  # iTunesに試聴があるので対象外
         stamp_idx = src.find('stampSeed', m.start())
-        has_art = stamp_idx != -1 and 'discogsArt:' in src[m.start():stamp_idx]
-        if yt_cur != 'null' and has_art:
-            continue  # 動画・ジャケ写とも既に埋まっている
+        segment = src[m.start():stamp_idx] if stamp_idx != -1 else ''
+        has_art = 'discogsArt:' in segment
+        has_full = 'youtubeFullAlbumId:' in segment
+        if yt_cur != 'null' and has_art and has_full:
+            continue  # 動画(短尺/フル問わず)・ジャケ写とも既に埋まっている
         targets.append({
             'id': aid, 'artist': artist, 'title': title, 'release_id': release_id,
-            'need_video': yt_cur == 'null', 'need_art': not has_art,
+            'need_video': yt_cur == 'null' and not has_full, 'need_art': not has_art,
         })
 
     print(f'{len(targets)} 件がiTunes未マッチで動画/ジャケ写いずれか未設定(うち先頭{min(limit, len(targets))}件を処理)')
@@ -140,16 +156,27 @@ def main():
         changed_this = False
 
         if t['need_video']:
-            vid = pick_album_video(data.get('videos'))
-            if vid:
+            short_vid, full_vid = pick_album_video(data.get('videos'))
+            if short_vid:
                 pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", .*?youtubeId: )null(,)")
-                new_src, n = pat.subn(rf"\g<1>'{vid}'\g<2>", src, count=1)
+                new_src, n = pat.subn(rf"\g<1>'{short_vid}'\g<2>", src, count=1)
                 if n == 1:
                     src = new_src
                     changed_this = True
-                    print(f'  [{i}] {t["artist"]} - {t["title"]}: video={vid}')
+                    print(f'  [{i}] {t["artist"]} - {t["title"]}: video(短尺)={short_vid}')
                 else:
                     print(f'  [{i}] {t["artist"]} - {t["title"]}: id={t["id"]}のyoutubeId置換に失敗(手動確認要)', file=sys.stderr)
+            elif full_vid:
+                # 短尺が無くFull Albumしか無い場合: 埋め込み再生はせず、外部リンク
+                # 専用フィールド(youtubeFullAlbumId)にのみ入れる。
+                pat = re.compile(r"(\{ id: " + re.escape(t['id']) + r", .*?)(stampSeed:)", re.DOTALL)
+                new_src, n = pat.subn(rf"\g<1>youtubeFullAlbumId: '{full_vid}', \g<2>", src, count=1)
+                if n == 1:
+                    src = new_src
+                    changed_this = True
+                    print(f'  [{i}] {t["artist"]} - {t["title"]}: video(Full Albumのみ、外部リンク)={full_vid}')
+                else:
+                    print(f'  [{i}] {t["artist"]} - {t["title"]}: id={t["id"]}のyoutubeFullAlbumId挿入に失敗(手動確認要)', file=sys.stderr)
             else:
                 print(f'  [{i}] {t["artist"]} - {t["title"]}: 動画なし')
 

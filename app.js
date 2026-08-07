@@ -984,7 +984,18 @@ function renderDisc(album, push = true) {
   if (!tracks.length) {
     const vid = youtubeIdFor(album);
     if (vid) tracksEl.appendChild(youtubeTrackRow(album, vid));
+    const fullId = fullAlbumIdFor(album);
+    if (fullId) tracksEl.appendChild(fullAlbumLinkRow(fullId));
   }
+}
+
+// Full Album尺の動画は30秒プレビューにしても意味が無いので、再生ボタンは
+// 付けずにYouTube側を直接開くリンクだけを曲リストの下に添える。
+function fullAlbumLinkRow(vid) {
+  const row = document.createElement('div');
+  row.className = 'track yt-full';
+  row.innerHTML = `<a href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener">Full Album [YouTube ↗]</a>`;
+  return row;
 }
 
 // iTunesに試聴の無い盤のYouTube代替を、曲リストと統一した見た目の1行で表示する。
@@ -1276,8 +1287,14 @@ const $play = document.getElementById('playBtn');
 // 狙い撃ちしているため精度が高い) → Discogsのリリース情報に載っていた
 // リンク(album.youtubeId、投稿者任せなので精度は劣るがAPI消費ゼロ)。
 function youtubeIdFor(album) {
+  return album.youtubeId || null;
+}
+
+// Full Album尺の動画はリンク（外部再生）のみ。youtube.js(検索クエリが
+// "full album"固定)のヒットは常にフルアルバムなのでこちら扱い。
+function fullAlbumIdFor(album) {
   const key = `${album.artist}|${album.title}`;
-  return (typeof YOUTUBE !== 'undefined' ? YOUTUBE[key] : null) || album.youtubeId || null;
+  return (typeof YOUTUBE !== 'undefined' ? YOUTUBE[key] : null) || album.youtubeFullAlbumId || null;
 }
 
 function trackItemsOf(album) {
