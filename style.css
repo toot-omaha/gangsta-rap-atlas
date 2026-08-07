@@ -556,5 +556,10 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   .list-head .share { position: absolute; right: 40px; top: 6px; }
   .list-head .cnt { margin-left: 0; }
   .player-queue .credit { display: none; }
-  .player { gap: 10px; }
+  /* 曲数とクリアを縦積みにして横幅を圧縮し、その分を曲名/アーティスト名に回す */
+  .player-queue { flex-direction: column; align-items: flex-end; gap: 1px; flex: 0 0 auto; }
+  .player { gap: 8px; padding: 0 10px; }
+  .player-now { gap: 8px; flex: 1 1 auto; }
+  .player-meta { flex: 1 1 auto; min-width: 0; }
+  .player-controls { flex: 0 0 auto; gap: 6px; }
 }

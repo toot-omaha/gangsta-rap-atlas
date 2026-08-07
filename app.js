@@ -904,7 +904,7 @@ function renderDisc(album, push = true) {
     STAMPS.forEach((s) => wrap.appendChild(discChip(album, s, false, rerender)));
   }
 
-  listEl.querySelector('.play-d').addEventListener('click', () => playAlbum(album));
+  listEl.querySelector('.play-d').addEventListener('click', () => enqueueAlbum(album));
   listEl.querySelector('.have-d').addEventListener('click', () => {
     toggleFav(favsHave, key); updateFavCount(); rerender();
   });
@@ -1179,38 +1179,42 @@ const $count = document.getElementById('queueCount');
 const $art = document.querySelector('.player-art');
 const $play = document.getElementById('playBtn');
 
-// ▶ を押したディスクから、同じ地域内の「次のアルバム」へ自動的に繋がって
-// 流れ続けるキューを組む(地域の最後まで来たら自然に停止する)。
 // 試聴は1曲30秒しかないので曲単位のキュー管理はせず、試聴のある曲だけを
-// アルバム順に並べたフラットなキューにする(試聴の無い曲・アルバムは
-// 自動再生の対象からは飛ばす。両方とも音源が無く止めようが無いため)。
-// startIndex を渡すとそのディスクの指定曲から始まる。
-function playAlbum(album, startIndex = 0) {
+// 並べたフラットなキューを再生位置(cursor)を軸に組み立てる。
+// キューの「続き」は地域末尾まで来るたびに次のアルバムを都度継ぎ足す
+// 遅延方式(next()参照)。地域全体を毎回事前展開すると巨大な配列になるため。
+function trackItemsOf(album) {
   const e = enrichOf(album);
-  const hasAnyPreview = !!(e?.tracks || []).some((tr) => tr.preview);
-  if (!hasAnyPreview) {
-    // 試聴が1曲も無い盤(激レア盤): 情報表示だけの単発プレースホルダーに留める
-    queue = [{ title: album.title, artist: album.artist, preview: null, art: null, album }];
-    cursor = 0;
+  const art = artUrl(e, 100);
+  return (e?.tracks || []).filter((tr) => tr.preview)
+    .map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, art, album }));
+}
+
+// 通常の▶(アルバムカード/曲行): 今の再生位置に差し込んで即座に頭出しする。
+// 再生中だった残りのキューはキューから消さず、差し込んだ分だけ後ろへスライドする。
+function playAlbum(album, startIndex = 0) {
+  const items = trackItemsOf(album);
+  const insertPos = Math.max(cursor, 0);
+  if (!items.length) {
+    // 試聴が1曲も無い盤(激レア盤): 情報表示だけのプレースホルダーを差し込む
+    queue.splice(insertPos, 0, { title: album.title, artist: album.artist, preview: null, art: null, album });
+    cursor = insertPos;
     playCurrent();
     return;
   }
-
-  const region = REGIONS.find((r) => r.albums.includes(album));
-  const albums = region ? albumsOf(region).slice().sort((a, b) => a.year - b.year) : [album];
-  const startPos = Math.max(0, albums.indexOf(album));
-
-  queue = [];
-  let firstIndexOfStartAlbum = 0;
-  albums.slice(startPos).forEach((a) => {
-    const ae = enrichOf(a);
-    const art = artUrl(ae, 100);
-    const previewTracks = (ae?.tracks || []).filter((tr) => tr.preview);
-    if (a === album) firstIndexOfStartAlbum = queue.length;
-    previewTracks.forEach((tr) => queue.push({ title: tr.name, artist: a.artist, preview: tr.preview, art, album: a }));
-  });
-  cursor = Math.min(firstIndexOfStartAlbum + startIndex, queue.length - 1);
+  queue.splice(insertPos, 0, ...items);
+  cursor = insertPos + Math.min(startIndex, items.length - 1);
   playCurrent();
+}
+
+// 「▶ 全曲キューニ入レル」: 今の再生を止めず、キューの末尾に足すだけ。
+// 何も再生していなければ即再生と同じ(先頭に差し込むのと変わらない)。
+function enqueueAlbum(album) {
+  const items = trackItemsOf(album);
+  if (!queue.length) { playAlbum(album); return; }
+  if (!items.length) return; // 試聴の無い盤は積んでも仕方ないので何もしない
+  queue.push(...items);
+  paint();
 }
 
 function playCurrent() {
@@ -1260,7 +1264,28 @@ function paint() {
   $art.innerHTML = q.art ? `<img src="${q.art}" alt="">` : '♪';
 }
 
-function next() { if (cursor < queue.length - 1) { cursor++; playCurrent(); } else paint(); }
+// キューがまだ残っていればそのまま進む。尽きたら、直前まで再生していた
+// 曲のアルバムが属する地域から「次のアルバム」を並び順ベースで継ぎ足して
+// 続ける(試聴の無いアルバムは飛ばす)。地域の末尾まで来たら自然に停止する。
+function next() {
+  if (cursor < queue.length - 1) { cursor++; playCurrent(); return; }
+  const lastAlbum = queue[queue.length - 1]?.album;
+  const region = lastAlbum && REGIONS.find((r) => r.albums.includes(lastAlbum));
+  if (region) {
+    const albums = albumsOf(region).slice().sort((a, b) => a.year - b.year);
+    const pos = albums.indexOf(lastAlbum);
+    for (let i = pos + 1; i < albums.length; i++) {
+      const items = trackItemsOf(albums[i]);
+      if (items.length) {
+        queue.push(...items);
+        cursor++;
+        playCurrent();
+        return;
+      }
+    }
+  }
+  paint();
+}
 function prev() { if (cursor > 0) { cursor--; playCurrent(); } }
 
 audio.addEventListener('play', paint);
