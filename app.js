@@ -979,11 +979,11 @@ function renderDisc(album, push = true) {
 
   const tracksEl = listEl.querySelector('.tracks');
   tracks.forEach((t, i) => tracksEl.appendChild(trackRow(album, t, i, rerender)));
-  // iTunesに1曲も無い盤は、YouTube代替の1行を曲リストと同じ見た目で足す
-  // (再生ボタンを押すとplayAlbum()経由でYouTube側が再生される)。
+  // iTunesに1曲も無い盤は、YouTube代替行を曲リストと同じ見た目で足す
+  // (Discogsに複数曲が個別に貼られていれば全て並べる。再生ボタンを押すと
+  // playAlbum()経由でYouTube側が再生される)。
   if (!tracks.length) {
-    const vid = youtubeIdFor(album);
-    if (vid) tracksEl.appendChild(youtubeTrackRow(album, vid));
+    youtubeIdsFor(album).forEach((vid, i) => tracksEl.appendChild(youtubeTrackRow(album, vid, i)));
     const fullId = fullAlbumIdFor(album);
     if (fullId) tracksEl.appendChild(fullAlbumLinkRow(fullId));
   }
@@ -1000,14 +1000,14 @@ function fullAlbumLinkRow(vid) {
 
 // iTunesに試聴の無い盤のYouTube代替を、曲リストと統一した見た目の1行で表示する。
 // タイトルはYouTube oEmbed(無料・キー不要)で取得し、届くまでは仮表示にしておく。
-function youtubeTrackRow(album, vid) {
+function youtubeTrackRow(album, vid, index = 0) {
   const row = document.createElement('div');
   row.className = 'track';
   row.innerHTML = `
     <button class="tp" title="YouTubeで再生(30秒)">▶</button>
     <span class="no">YT</span>
     <span class="name">読込中…</span>`;
-  row.querySelector('.tp').addEventListener('click', () => playAlbum(album));
+  row.querySelector('.tp').addEventListener('click', () => playAlbum(album, index));
   const url = `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}&format=json`;
   fetch(url).then((res) => (res.ok ? res.json() : null)).then((data) => {
     if (data?.title) row.querySelector('.name').textContent = data.title;
@@ -1286,8 +1286,9 @@ const $play = document.getElementById('playBtn');
 // iTunes → YouTube Data API検索結果(youtube.js、"full album"クエリで
 // 狙い撃ちしているため精度が高い) → Discogsのリリース情報に載っていた
 // リンク(album.youtubeId、投稿者任せなので精度は劣るがAPI消費ゼロ)。
-function youtubeIdFor(album) {
-  return album.youtubeId || null;
+function youtubeIdsFor(album) {
+  if (Array.isArray(album.youtubeIds) && album.youtubeIds.length) return album.youtubeIds;
+  return album.youtubeId ? [album.youtubeId] : [];
 }
 
 // Full Album尺の動画はリンク（外部再生）のみ。youtube.js(検索クエリが
@@ -1303,9 +1304,9 @@ function trackItemsOf(album) {
   const itunesTracks = (e?.tracks || []).filter((tr) => tr.preview)
     .map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, youtube: null, art, album }));
   if (itunesTracks.length) return itunesTracks;
-  const vid = youtubeIdFor(album);
-  if (!vid) return [];
-  return [{ title: album.title, artist: album.artist, preview: null, youtube: vid, art, album }];
+  const vids = youtubeIdsFor(album);
+  if (!vids.length) return [];
+  return vids.map((vid) => ({ title: album.title, artist: album.artist, preview: null, youtube: vid, art, album }));
 }
 
 // 通常の▶(アルバムカード/曲行): 今の再生位置に差し込んで即座に頭出しする。
