@@ -983,7 +983,7 @@ function renderDisc(album, push = true) {
   // (Discogsに複数曲が個別に貼られていれば全て並べる。再生ボタンを押すと
   // playAlbum()経由でYouTube側が再生される)。
   if (!tracks.length) {
-    youtubeIdsFor(album).forEach((vid, i) => tracksEl.appendChild(youtubeTrackRow(album, vid, i)));
+    youtubeIdsFor(album).forEach((vid) => tracksEl.appendChild(youtubeTrackRow(album, vid)));
     const fullId = fullAlbumIdFor(album);
     if (fullId) tracksEl.appendChild(fullAlbumLinkRow(fullId));
   }
@@ -1000,14 +1000,17 @@ function fullAlbumLinkRow(vid) {
 
 // iTunesに試聴の無い盤のYouTube代替を、曲リストと統一した見た目の1行で表示する。
 // タイトルはYouTube oEmbed(無料・キー不要)で取得し、届くまでは仮表示にしておく。
-function youtubeTrackRow(album, vid, index = 0) {
+function youtubeTrackRow(album, vid) {
   const row = document.createElement('div');
   row.className = 'track';
   row.innerHTML = `
     <button class="tp" title="YouTubeで再生(30秒)">▶</button>
     <span class="no">YT</span>
     <span class="name">読込中…</span>`;
-  row.querySelector('.tp').addEventListener('click', () => playAlbum(album, index));
+  row.querySelector('.tp').addEventListener('click', () => {
+    const e = enrichOf(album);
+    playSingle({ title: album.title, artist: album.artist, preview: null, youtube: vid, art: artUrl(e, 100, album), album });
+  });
   const url = `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}&format=json`;
   fetch(url).then((res) => (res.ok ? res.json() : Promise.reject())).then((data) => {
     if (data?.title) row.querySelector('.name').textContent = data.title;
@@ -1253,7 +1256,10 @@ function trackRow(album, track, idx, rerender) {
     if (s) { const m = document.createElement('i'); m.style.background = s.color; m.title = stampName(s); mini.appendChild(m); }
   });
 
-  row.querySelector('.tp').addEventListener('click', () => playAlbum(album, idx));
+  row.querySelector('.tp').addEventListener('click', () => {
+    const e = enrichOf(album);
+    playSingle({ title: track.name, artist: album.artist, preview: track.preview, youtube: null, art: artUrl(e, 100, album), album });
+  });
   row.querySelector('.add').addEventListener('click', () => {
     const picker = document.createElement('div');
     picker.className = 'picker';
@@ -1330,6 +1336,14 @@ function playAlbum(album, startIndex = 0) {
   }
   queue.splice(insertPos, 0, ...items);
   cursor = insertPos + Math.min(startIndex, items.length - 1);
+  playCurrent();
+}
+
+// 単曲の▶: アルバム全曲をキューに積まず、その1曲だけを今の再生位置に差し込む。
+function playSingle(item) {
+  const insertPos = Math.max(cursor, 0);
+  queue.splice(insertPos, 0, item);
+  cursor = insertPos;
   playCurrent();
 }
 
