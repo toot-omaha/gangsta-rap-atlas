@@ -892,6 +892,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/656799', stampSeed: {} },
       { id: 1584, artist: 'D-Shot', title: 'Money, Sex & Thugs', year: 2001, label: 'Shot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3172397', stampSeed: {} },
+      { id: 1599, artist: 'Young Dru', title: 'Flame Spitter', year: 2001, label: 'Rated Z Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8219810', stampSeed: {} },
     ],
   },
   {
@@ -1110,6 +1112,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3383633', stampSeed: { bangin: 17, dark: 13, doro: 9 } },
       { id: 1563, artist: 'Richie Rich', title: 'The Game', year: 2001, label: 'Ten-Six Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6135217', stampSeed: {} },
+      { id: 1586, artist: 'Clyde Carson', title: 'The Story Vol. 1', year: 2001, label: 'Outfit Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11203399', stampSeed: {} },
     ],
   },
   {
@@ -1460,6 +1464,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4979116', stampSeed: {} },
       { id: 1581, artist: 'SPM', title: 'Never Change', year: 2001, label: 'Dope House Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/29613838', stampSeed: {} },
+      { id: 1594, artist: 'SK All Day', title: 'Rewind & Play', year: 2001, label: 'Cloverleaf Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3160706', stampSeed: {} },
     ],
   },
   {
@@ -1688,6 +1694,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/15796474', stampSeed: { dark: 24, doro: 19, bangin: 15 } },
       { id: 1559, artist: 'D.J. Spanish Fly', title: 'Black Radio', year: 2001, label: 'Fly Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6661068', stampSeed: {} },
+      { id: 1588, artist: 'Dirty Red', title: 'The Spirit World', year: 2001, label: 'Top Notch Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36259195', stampSeed: {} },
+      { id: 1598, artist: 'Kami Kaze Inc.', title: 'Kami Kaze', year: 2001, label: 'Kami Kaze Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3627132', stampSeed: {} },
     ],
   },
   {
@@ -1924,6 +1934,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9024961', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { id: 1567, artist: 'Black Menace', title: 'Presents: The IV Horsemen', year: 2001, label: 'The Menace Entertainment Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1451079', stampSeed: {} },
+      { id: 1597, artist: 'Hot Boy$', title: 'Get It How U Live!!', year: 2001, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12785227', stampSeed: {} },
     ],
   },
   {
@@ -2124,6 +2136,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/4798580', stampSeed: {} },
       { id: 1574, artist: 'Mr. Sandman', title: 'Quicksand', year: 2001, label: 'Bay Rider Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3790845', stampSeed: {} },
+      { id: 1589, artist: 'Bosha', title: 'What Part Of The Game Is This', year: 2001, label: 'Testa Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6953540', stampSeed: {} },
     ],
   },
   {
@@ -2280,6 +2294,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/11248936', stampSeed: {} },
       { id: 1575, artist: 'Luni Coleone', title: 'In The Mouth Of Madness', year: 2001, label: 'Sicc-A-Cell', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3595913', stampSeed: {} },
+      { id: 1591, artist: 'X-Raided', title: '...And He Shall Appear', year: 2001, label: 'Madman Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3589649', stampSeed: {} },
     ],
   },
   {
@@ -2475,6 +2491,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3241279', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { id: 1131, artist: 'Criminal Nation', title: 'Resurrection', year: 1998, label: 'Ocean Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3785301', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
+      { id: 1587, artist: 'Pothead', title: 'Gangsta Rhythm', year: 2001, label: 'Drop Down Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21284734', stampSeed: {} },
     ],
   },
   {
@@ -2579,6 +2597,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/6798432', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { id: 1176, artist: 'Shot Callers', title: 'Ya Only Live Once', year: 1999, label: 'Big Ballin Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5685706', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { id: 1593, artist: 'Mikel Knight', title: 'Hardest Wood Outha Forest', year: 2001, label: 'AMC American Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10828650', stampSeed: {} },
     ],
   },
   {
@@ -2690,6 +2710,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/5116185', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
       { id: 1221, artist: 'Criminal Bass', title: 'O GUETO DESTROI SONHOS', year: 1998, label: 'N. World Produções', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22475108', stampSeed: { dark: 16, doro: 12, bangin: 9 } },
+      { id: 1585, artist: 'Facção Central', title: 'A Marcha Fúnebre Prossegue', year: 2001, label: 'Ouver Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5667634', stampSeed: {} },
+      { id: 1592, artist: "Racionais MC's", title: 'Ao Vivo', year: 2001, label: 'Zambia Fonográfica', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8955262', stampSeed: {} },
     ],
   },
   {
@@ -3205,6 +3229,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/19371214', stampSeed: {} },
       { id: 1385, artist: 'Frost', title: 'That Was Then, This Is Now Vol. 1', year: 1999, label: 'Celeb Entertainment Inc.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2155706', stampSeed: {} },
+      { id: 1596, artist: 'Mojack', title: 'Mojack Daniels', year: 2001, label: 'MoMusic Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13840774', stampSeed: {} },
     ],
   },
   {
@@ -3719,6 +3745,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/10536839', stampSeed: {} },
       { id: 1482, artist: 'Redrum', title: 'Relentless 2 Da Game', year: 2000, label: 'Top Fuel Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13552441', stampSeed: {} },
+      { id: 1590, artist: 'Big Syke', title: 'Big Syke Daddy', year: 2001, label: 'D3 Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2319243', stampSeed: {} },
     ],
   },
   {
@@ -3745,6 +3773,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3992834', stampSeed: {} },
       { id: 1489, artist: 'KOD', title: 'The Outcome', year: 2000, label: 'Mischieph Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/31922227', stampSeed: {} },
+      { id: 1595, artist: 'Tha Unda', title: 'Undapressure', year: 2001, label: 'Hill Co Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6954305', stampSeed: {} },
     ],
   },
   {
