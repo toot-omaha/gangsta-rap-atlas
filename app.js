@@ -1140,7 +1140,14 @@ function renderFavs(push = true) {
   });
   applyScrollRestore();
 }
-document.getElementById('brandHome').addEventListener('click', () => location.reload());
+document.getElementById('brandHome').addEventListener('click', () => {
+  // location.reload()だと現在のURLハッシュ(#r/houston/2233等)がそのまま
+  // 残るため、リロード後に同じ地域/ディスクが再度開いてしまいトップに
+  // 戻れなかった。ハッシュを消してからリロードする。
+  selectedRegionId = null;
+  history.replaceState(null, '', location.pathname + location.search);
+  location.reload();
+});
 document.getElementById('favBtn').addEventListener('click', renderFavs);
 updateFavCount();
 
@@ -1226,8 +1233,8 @@ function placeActionButtons() {
   if (narrowMq.matches) {
     document.getElementById('drawerActions').append(submitB, langB);
   } else {
-    const actions = document.querySelector('.top-actions');
-    actions.prepend(submitB, langB); // 投稿, 言語, ★, 墓石 の順に戻す
+    // 検索, ★, 投稿, 言語 の順になるよう、スタンプボタンの直前に差し込む
+    document.getElementById('stampMenuBtn').before(submitB, langB);
   }
 }
 narrowMq.addEventListener('change', placeActionButtons);
