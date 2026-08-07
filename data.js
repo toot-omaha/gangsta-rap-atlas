@@ -902,6 +902,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8219810', stampSeed: {} },
       { id: 1635, artist: 'N2DEEP', title: 'Un-Released Game (1993: The Lost Album)', year: 2002, label: '40 Ounce Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3532610', stampSeed: {} },
+      { id: 1670, artist: 'B-Legit', title: 'Hard 2 B-Legit', year: 2002, label: 'Koch Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1245436', stampSeed: {} },
     ],
   },
   {
@@ -1132,6 +1134,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/950528', stampSeed: {} },
       { id: 1650, artist: 'Richie Rich', title: 'Nixon Pryor Roundtree', year: 2002, label: 'Ten-Six Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5840507', stampSeed: {} },
+      { id: 1665, artist: 'E-A-Ski', title: 'Apply Pressure', year: 2002, label: 'Not On Label (E-A-Ski Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24433730', stampSeed: {} },
     ],
   },
   {
@@ -1508,6 +1512,12 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8618959', stampSeed: {} },
       { id: 1638, artist: 'Lil Keke', title: 'Birds Fly South', year: 2002, label: 'Commission Music Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2590455', stampSeed: {} },
+      { id: 1654, artist: 'Scarface', title: 'The Fix', year: 2002, label: 'Def Jam South', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/303093', stampSeed: {} },
+      { id: 1659, artist: 'Al D.', title: 'Unconditional Luv - A Memorial To DJ Screw', year: 2002, label: 'Power House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24287996', stampSeed: {} },
+      { id: 1660, artist: 'S.L.A.B.', title: "Slow Loud And Bangin', Volume 1: Underground 4 Life", year: 2002, label: 'Raw And Untamed Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6671026', stampSeed: {} },
     ],
   },
   {
@@ -1746,6 +1756,14 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/28563238', stampSeed: {} },
       { id: 1653, artist: 'Gangsta Blac', title: 'Da Undaground King', year: 2002, label: 'Mouth Of Da South Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/506521', stampSeed: {} },
+      { id: 1656, artist: 'Juicy J', title: 'Chronicles Of The Juice Man (Underground Album)', year: 2002, label: 'North-North Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13523650', stampSeed: {} },
+      { id: 1664, artist: '8Ball', title: 'Lay It Down', year: 2002, label: 'Draper Inc', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12745770', stampSeed: {} },
+      { id: 1666, artist: 'Tom Skeemask', title: 'Da Memphis Squad', year: 2002, label: '2 Wild Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9154448', stampSeed: {} },
+      { id: 1671, artist: 'DJ Zirk', title: 'Underworld', year: 2002, label: 'O.M.V. Muzik', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/908777', stampSeed: {} },
     ],
   },
   {
@@ -1994,6 +2012,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/13217122', stampSeed: {} },
       { id: 1651, artist: 'B.G.', title: 'Still The #1 Hot Boy', year: 2002, label: 'Chopper City Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8173804', stampSeed: {} },
+      { id: 1661, artist: 'Big Tymers', title: 'Hood Rich', year: 2002, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1348082', stampSeed: {} },
     ],
   },
   {
@@ -2356,6 +2376,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3589649', stampSeed: {} },
       { id: 1623, artist: 'X-Raided', title: 'These Walls Can Talk...', year: 2002, label: 'Bubble Up Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3834658', stampSeed: {} },
+      { id: 1672, artist: 'C-Bo', title: 'Life As A Rider', year: 2002, label: 'West Coast Mafia Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8632428', stampSeed: {} },
     ],
   },
   {
@@ -2866,6 +2888,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/11791833', stampSeed: { bangin: 32, dark: 22, doro: 17 } },
       { id: 1242, artist: 'JT Money', title: 'Pimpin on Wax', year: 1999, label: 'Priority Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/298285', stampSeed: { funky: 22, party: 17, bangin: 13 } },
+      { id: 1658, artist: 'Trick Daddy', title: 'Thug Holiday', year: 2002, label: 'Slip-N-Slide Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25765549', stampSeed: {} },
+      { id: 1667, artist: 'JT Money', title: 'Return Of The B-Izer', year: 2002, label: 'Crunk City Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2482691', stampSeed: {} },
     ],
   },
   {
@@ -2880,6 +2906,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/241357', stampSeed: { bangin: 36, party: 28, funky: 22 } },
       { id: 1246, artist: 'Hussein Fatal', title: 'In the Line of Fire', year: 1998, label: 'Relativity', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9782243', stampSeed: { dark: 22, doro: 17, bangin: 14 } },
+      { id: 1662, artist: 'Outlawz', title: 'Neva Surrenda- The Rap-A-Lot Sessions', year: 2002, label: 'Rap-A-Lot 2K', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/929542', stampSeed: {} },
+      { id: 1669, artist: 'Napoleon', title: 'Southology', year: 2002, label: 'C-4 Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14674362', stampSeed: {} },
     ],
   },
   {
@@ -2946,6 +2976,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/26776136', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
       { id: 1271, artist: 'Do or Die', title: 'Headz or Tailz', year: 1998, label: 'Neighborhood Watch Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2040639', stampSeed: { funky: 24, party: 18, bangin: 14 } },
+      { id: 1657, artist: 'Twista', title: 'Chi-Town Massacre', year: 2002, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10770316', stampSeed: {} },
     ],
   },
   {
@@ -3024,6 +3056,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7732045', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
       { id: 1299, artist: 'Side By Side', title: 'Everyday Thangz', year: 1998, label: 'Rock On Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10770188', stampSeed: { bangin: 15, dark: 11, doro: 8 } },
+      { id: 1668, artist: "Ol' Dirty Bastard", title: 'The Trials And Tribulations Of Russell Jones (Radio LP)', year: 2002, label: 'D3 Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2441348', stampSeed: {} },
     ],
   },
   {
@@ -3208,6 +3242,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/712173', stampSeed: { bangin: 24, dark: 18, funky: 14 } },
       { id: 1358, artist: 'Big B', title: 'Let the Games Begin', year: 1998, label: 'Dirty Harry Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4625819', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { id: 1663, artist: 'DJ Quik', title: 'Under Tha Influence', year: 2002, label: 'Bungalo Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/329274', stampSeed: {} },
     ],
   },
   {
@@ -3393,6 +3429,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/7605780', stampSeed: {} },
       { id: 1401, artist: 'Camoflauge', title: 'I Represent', year: 2000, label: 'Pure Pain Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6583491', stampSeed: {} },
+      { id: 1655, artist: 'Camoflauge', title: 'Keepin It Real', year: 2002, label: 'Pure Pain Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4053773', stampSeed: {} },
     ],
   },
   {
@@ -3851,6 +3889,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/24519020', stampSeed: {} },
       { id: 1640, artist: 'Big Syke', title: 'Big Syke', year: 2002, label: 'Rap-A-Lot 2K', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/25023304', stampSeed: {} },
+      { id: 1673, artist: 'Big Syke', title: 'Street Commando', year: 2002, label: 'D3 Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3257375', stampSeed: {} },
     ],
   },
   {
