@@ -276,6 +276,22 @@ body.detail #list { opacity: 1; pointer-events: auto; transform: none; }
   background: var(--paper); color: var(--ink); font-size: 14px; font-weight: 900; cursor: pointer;
 }
 .list-head .close:hover { background: var(--red); border-color: var(--red); color: var(--paper); }
+.list-head .share {
+  align-self: center; flex: 0 0 auto;
+  width: 34px; height: 34px; border: 2px solid var(--ink);
+  background: var(--paper); color: var(--ink); font-size: 14px; cursor: pointer;
+}
+.list-head .share:hover { background: var(--gold); border-color: var(--gold); }
+
+/* 共有リンクをコピーしたときの簡易トースト */
+.share-toast {
+  position: fixed; left: 50%; bottom: 96px; z-index: 60;
+  transform: translate(-50%, 8px); opacity: 0; transition: opacity .25s, transform .25s;
+  background: var(--ink); color: var(--paper);
+  padding: 8px 16px; font-size: 12px; font-weight: 900; letter-spacing: .08em;
+  border: 2px solid var(--paper); pointer-events: none; white-space: nowrap;
+}
+.share-toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 .intro {
   position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%);
@@ -534,8 +550,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 12px; }
   /* スマホ: 1行目=都市名(+右上の閉じる) / 2行目=州名+DISCS数 */
   .list-head { flex-wrap: wrap; gap: 2px 12px; }
-  .list-head h2 { font-size: 26px; flex: 0 0 100%; padding-right: 44px; }
+  .list-head h2 { font-size: 26px; flex: 0 0 100%; padding-right: 82px; }
   .list-head .close { position: absolute; right: 0; top: 6px; }
+  .list-head .share { position: absolute; right: 40px; top: 6px; }
   .list-head .cnt { margin-left: 0; }
   .player-meta span, .player-queue .credit { display: none; }
   .player { gap: 10px; }

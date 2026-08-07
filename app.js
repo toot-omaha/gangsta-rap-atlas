@@ -27,6 +27,7 @@ const I18N = {
     noPii: '⚠ 個人情報(名前・連絡先など)ハ書キ込マナイコト',
     send: '送信スル', sending: '送信中…', sent: '感謝!承認後ニ地図ニ刻マレル。', sendErr: '送信失敗。時間ヲ置イテ再度。',
     needFields: 'URLは必須です',
+    linkCopied: 'リンクをコピーシタ',
     streetName: 'YOUR STREET NAME', streetNameHint: 'コレデ他端末ト持ッテル/ホシイヲ同期デキル',
     reroll: '🎲 再生成', linkTitle: '別端末ノSTREET NAMEヲ入力シテ連携',
     linkPlaceholder: '例: SHADOW-REAPER', link: '連携スル',
@@ -60,6 +61,7 @@ const I18N = {
     noPii: '⚠ Do not include personal information (names, contacts, etc.)',
     send: 'SEND', sending: 'Sending…', sent: 'Respect! It will be carved on the map after review.', sendErr: 'Failed. Try again later.',
     needFields: 'URL is required',
+    linkCopied: 'Link copied',
     streetName: 'YOUR STREET NAME', streetNameHint: 'Use this to sync have/want across devices',
     reroll: '🎲 Reroll', linkTitle: 'Enter another device\'s Street Name to link',
     linkPlaceholder: 'e.g. SHADOW-REAPER', link: 'Link',
@@ -631,10 +633,11 @@ function fireShot(region) {
 // 「戻る」1回で必ず1階層だけ上がるようにする。
 let navLevel = 0;
 history.replaceState({ level: 0 }, '');
-function navGoto(level) {
-  if (level > navLevel) history.pushState({ level }, '');
+function navGoto(level, hash) {
+  const url = hash != null ? hash : undefined;
+  if (level > navLevel) history.pushState({ level }, '', url);
   else if (level < navLevel) { /* 呼び出し元(popstate)側でhistory側は既に動いている */ }
-  else history.replaceState({ level }, '');
+  else history.replaceState({ level }, '', url);
   navLevel = level;
 }
 function navBack() {
@@ -656,7 +659,7 @@ function openRegion(region, push = true) {
   shotRegions.add(region.id);
   fireShot(region);
   refreshMarkers();
-  if (push) navGoto(1);
+  navGoto(push ? 1 : navLevel, `#r/${encodeURIComponent(region.id)}`);
   renderList(region);
   // 着弾→揺れを見せてから誌面ポップアップ
   setTimeout(() => document.body.classList.add('detail'), 450);
@@ -685,13 +688,39 @@ window.addEventListener('pageshow', () => { map.resize(); map.triggerRepaint(); 
 document.getElementById('mask').addEventListener('click', closeList);
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeList(); });
 
-const listHead = (title, sub, cnt) => `
+const shareBtnHtml = `<button class="share" title="このページのリンクを共有">🔗</button>`;
+const listHead = (title, sub, cnt, share = false) => `
   <div class="list-head">
     <h2>${title}</h2>
     <span class="sub">${sub}</span>
     <span class="cnt">${cnt}</span>
+    ${share ? shareBtnHtml : ''}
     <button class="close" title="地図へ戻る">✕</button>
   </div>`;
+
+// PWA(standalone表示)ではアドレスバーが無くURLを直接コピーできないため、
+// 明示的な共有ボタンを用意する。対応環境ではWeb Share API、
+// それ以外はクリップボードコピー+簡易トーストにフォールバックする。
+function shareCurrentPage(title) {
+  const url = location.href;
+  if (navigator.share) {
+    navigator.share({ title, url }).catch(() => {});
+    return;
+  }
+  (navigator.clipboard?.writeText(url) || Promise.reject()).then(showShareToast).catch(() => {
+    // クリップボードAPIが使えない環境向けの最終手段。prompt自体が
+    // 使えない(一部の埋め込みWebView等)場合も静かに諦める
+    try { window.prompt('このURLをコピーしてください', url); } catch { /* noop */ }
+  });
+}
+function showShareToast() {
+  const el = document.createElement('div');
+  el.className = 'share-toast';
+  el.textContent = t('linkCopied');
+  document.body.appendChild(el);
+  setTimeout(() => el.classList.add('show'));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 1800);
+}
 
 let listView = 'region'; // ディスクページの「◀ 戻る」の行き先
 let currentDisc = null;  // 表示中のディスク(言語切替時の再描画用)
@@ -706,9 +735,10 @@ function renderList(region) {
   currentDisc = null;
   const list = albumsOf(region).slice().sort((a, b) => a.year - b.year);
   listEl.innerHTML = `
-    ${listHead(region.name, region.area, `${list.length} ${t('discs')}`)}
+    ${listHead(region.name, region.area, `${list.length} ${t('discs')}`, true)}
     <div class="grid"></div>`;
   listEl.querySelector('.close').addEventListener('click', closeList);
+  listEl.querySelector('.share').addEventListener('click', () => shareCurrentPage(region.name));
   const grid = listEl.querySelector('.grid');
   if (!list.length) {
     grid.innerHTML = `<p style="font-size:12px">${t('noMatch')}</p>`;
@@ -804,7 +834,8 @@ function renderDisc(album, push = true) {
   const r = rarity(album);
   const region = REGIONS.find((rr) => rr.albums.includes(album));
   lastDiscRegion = region;
-  if (push) navGoto(2);
+  const discHash = region ? `#r/${encodeURIComponent(region.id)}/${encodeURIComponent(albumKey(album))}` : undefined;
+  navGoto(push ? 2 : navLevel, discHash);
   const art = artUrl(e, 600);
   const key = albumKey(album);
   const rerender = () => renderDisc(album, false);
@@ -816,6 +847,7 @@ function renderDisc(album, push = true) {
       <h2>${album.title}</h2>
       <span class="sub">${album.artist}${region ? ` / ${region.name}` : ''}</span>
       <span class="cnt">${album.year}</span>
+      ${shareBtnHtml}
       <button class="close x" title="地図へ戻る">✕</button>
     </div>
     <div class="disc">
@@ -847,6 +879,7 @@ function renderDisc(album, push = true) {
   // (スワイプ/ブラウザの戻るボタンと同じ経路に揃える)。
   listEl.querySelector('.back').addEventListener('click', navBack);
   listEl.querySelector('.x').addEventListener('click', navBack);
+  listEl.querySelector('.share').addEventListener('click', () => shareCurrentPage(`${album.artist} - ${album.title}`));
 
   const wrap = listEl.querySelector('.album-stamps');
   if (tracks.length) {
@@ -1312,6 +1345,20 @@ autoPullFavSync();
 
 refreshMarkers();
 map.on('load', () => { map.resize(); refreshMarkers(); });
+
+// 共有リンク(#r/<地域ID>または#r/<地域ID>/<artist|title>)を開いたときの復元
+(function openFromHash() {
+  const h = location.hash.slice(1);
+  if (!h.startsWith('r/')) return;
+  const [regionId, key] = h.slice(2).split('/').map((s) => decodeURIComponent(s));
+  const region = REGIONS.find((r) => r.id === regionId);
+  if (!region) return;
+  openRegion(region);
+  if (key) {
+    const album = region.albums.find((a) => albumKey(a) === key);
+    if (album) setTimeout(() => renderDisc(album), 460);
+  }
+})();
 
 // PWAとしてインストール可能にするための最小Service Worker登録
 if ('serviceWorker' in navigator) {
