@@ -368,6 +368,8 @@ const REGIONS = [
     id: 'compton', name: 'Compton', area: 'Los Angeles County, CA',
     lng: -118.2201, lat: 33.8958,
     albums: [
+      { id: 2076, artist: 'Eazy-E', title: 'Str8 Off Tha Streetz Of Compton', year: 1996, label: 'Ruthless Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7394780', stampSeed: {} },
       { id: 2021, artist: 'Kill Kill', title: 'Kill Kill - The EP', year: 1995, label: 'Laser Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5029065', stampSeed: {} },
       { id: 2020, artist: 'DMG', title: 'Black Roulette', year: 2003, label: 'J. Prince Entertainment', youtubeId: null,
@@ -1068,6 +1070,8 @@ const REGIONS = [
     id: 'vallejo', name: 'Vallejo', area: 'Bay Area, CA',
     lng: -122.2566, lat: 38.1041,
     albums: [
+      { id: 2055, artist: 'Jay Tee', title: 'High Caliber', year: 2003, label: '40 Ounce Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1997021', stampSeed: {} },
       { id: 1915, artist: 'Young Lay', title: 'Don\'t Get It Twisted', year: 2003, label: 'Young Black Brotha Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3806737', stampSeed: {} },
       { id: 348, artist: 'Mac Dre', title: 'Mac Dre\'s The Name', year: 2001, label: 'Out Of Bounds', youtubeId: null,
@@ -1234,6 +1238,10 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 2083, artist: '2 Tymz', title: '...And Then There Were Two', year: 1996, label: 'M Entertainment Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6801040', stampSeed: {} },
+      { id: 2036, artist: 'Casual', title: 'I Be That "G"', year: 2003, label: 'Westside Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9175381', stampSeed: {} },
       { id: 2029, artist: 'Tucole', title: 'Deeper Than You Think', year: 1995, label: 'Strictly Urban Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1765282', stampSeed: {} },
       { id: 1973, artist: 'Pizzo', title: 'The Tribulation...', year: 2003, label: 'RoundnaWorld Entertainment', youtubeId: null,
@@ -1474,6 +1482,20 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { id: 2071, artist: 'Trae', title: 'Same Thing Different Day (Special Edition Set 2 Of 2 - S.L.A.B. Edition)', year: 2004, label: 'G-Maab Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3802164', stampSeed: {} },
+      { id: 2065, artist: '5th Ward Boyz', title: 'Word Is Bond Swisher Chopped & Screwed', year: 2003, label: 'Underground Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9956804', stampSeed: {} },
+      { id: 2063, artist: 'Corey B', title: 'Million Dollar Mouthpiece - Underground Platinum', year: 2003, label: 'Raw Talent Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4178843', stampSeed: {} },
+      { id: 2054, artist: 'Lil Keke', title: 'Street Stories Vol. 1', year: 2003, label: 'Lookin Up Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2270127', stampSeed: {} },
+      { id: 2044, artist: 'Willie-D', title: 'Unbreakable', year: 2003, label: 'Relentless Music Ventures', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2101287', stampSeed: {} },
+      { id: 2034, artist: 'Woss Ness', title: 'Paper Chasin', year: 2003, label: 'Woss Ness Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2759672', stampSeed: {} },
+      { id: 2031, artist: 'Ace Deuce', title: 'Street Muzic', year: 2003, label: 'AD Money Treez Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3810846', stampSeed: {} },
       { id: 2014, artist: '5th Ward Boyz', title: 'Word Is Bond', year: 2003, label: 'Underground Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2454528', stampSeed: {} },
       { id: 2012, artist: 'HAWK', title: 'The Incredible Hawk Undaground Volume 1', year: 2003, label: '1 Stop Distribution', youtubeId: null,
@@ -1954,6 +1976,12 @@ const REGIONS = [
     id: 'memphis', name: 'Memphis', area: 'Tennessee',
     lng: -90.0490, lat: 35.1495,
     albums: [
+      { id: 2050, artist: 'Gangsta Boo', title: 'Enquiring Minds II - The Soap Opera (Edited Clean Version)', year: 2003, label: 'Yorktown Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7516890', stampSeed: {} },
+      { id: 2046, artist: 'DJ Squeeky', title: 'Dogging Da Game', year: 2003, label: 'Mo Cheda Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7583497', stampSeed: {} },
+      { id: 2038, artist: 'Project Pat', title: 'The Appeal Mix Tape', year: 2003, label: 'Hypnotize Minds', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14457880', stampSeed: {} },
       { id: 2019, artist: 'Dirty Red', title: 'The Zone', year: 2003, label: 'Platinum Jointz Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5707168', stampSeed: {} },
       { id: 1960, artist: 'Playa G', title: 'Definition Of A Pimp', year: 2003, label: 'Donald Gates Entertainment', youtubeId: null,
@@ -2214,6 +2242,10 @@ const REGIONS = [
     id: 'neworleans', name: 'New Orleans', area: 'Louisiana',
     lng: -90.0715, lat: 29.9511,
     albums: [
+      { id: 2062, artist: 'Boss Player', title: 'Enemies Among Us', year: 2003, label: 'Pimps, Players & Hustlers Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9029117', stampSeed: {} },
+      { id: 2060, artist: 'Woozy', title: 'One Of The Best', year: 2003, label: 'Scorchin\' Hot Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12970640', stampSeed: {} },
       { id: 1990, artist: 'Choppa', title: 'Straight From The N.O.', year: 2003, label: 'The New No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/32902935', stampSeed: {} },
       { id: 1954, artist: 'Down', title: 'California Cowboys', year: 2003, label: 'Down By Law Recordings', youtubeId: null,
@@ -2478,6 +2510,10 @@ const REGIONS = [
     id: 'sf', name: 'San Francisco', area: 'Hunters Point / Fillmore, CA',
     lng: -122.4194, lat: 37.7749,
     albums: [
+      { id: 2058, artist: 'Taydatay', title: 'Out Of Sight, On The Grind', year: 2003, label: 'Five Star Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4019965', stampSeed: {} },
+      { id: 2057, artist: 'Andre Nickatina', title: 'Conversation With A Devil - CR 3', year: 2003, label: 'Fillmoe Coleman Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1497176', stampSeed: {} },
       { id: 2023, artist: 'Gee-Que', title: 'Sucka Free City', year: 1995, label: 'Half Ounz Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4747061', stampSeed: {} },
       { id: 2015, artist: 'Guce', title: 'Kings Of Gangsta', year: 2003, label: 'Git Paid Music Group', youtubeId: null,
@@ -2702,6 +2738,10 @@ const REGIONS = [
     id: 'sacramento', name: 'Sacramento', area: 'California',
     lng: -121.4944, lat: 38.5816,
     albums: [
+      { id: 2080, artist: 'Big U & The Madhouse Crew', title: 'Raw Deal', year: 1996, label: 'Alexia Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34107475', stampSeed: {} },
+      { id: 2043, artist: 'T-Nutty', title: 'The Last Of The Floheakinz', year: 2003, label: 'Black Armor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12313851', stampSeed: {} },
       { id: 2008, artist: 'Eklips Da Hustla', title: 'Game Spilla', year: 2003, label: 'Reality Muzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13556568', stampSeed: {} },
       { id: 2005, artist: 'Hollow Tip', title: 'Taking No Shorts Vol. II', year: 2003, label: 'Murder Creek Music', youtubeId: null,
@@ -2937,6 +2977,8 @@ const REGIONS = [
     id: 'philly', name: 'Philadelphia', area: 'Pennsylvania',
     lng: -75.1635, lat: 39.9527,
     albums: [
+      { id: 2052, artist: 'Kurupt', title: 'Against The Grain', year: 2003, label: 'Triggermen Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12175119', stampSeed: {} },
       { id: 2028, artist: 'The D.E.E.P.', title: 'Parlayin\'', year: 1995, label: 'Family Affair', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2464228', stampSeed: {} },
       { id: 1068, artist: 'Rasheed', title: 'Let The Games Begin', year: 2000, label: 'Dope House Records', youtubeId: null,
@@ -3009,6 +3051,12 @@ const REGIONS = [
     id: 'dallas', name: 'Dallas', area: 'Texas',
     lng: -96.7969, lat: 32.7763,
     albums: [
+      { id: 2077, artist: 'Pimpsta', title: 'Texas Wada', year: 1996, label: 'Rrush Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5006798', stampSeed: {} },
+      { id: 2073, artist: 'Colby Savage', title: 'The Adventures Of A Poor King', year: 2004, label: 'Blacked Out Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14082141', stampSeed: {} },
+      { id: 2069, artist: 'Dirty South Rydaz', title: 'All Eyez On Us', year: 2004, label: 'DSR', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15540953', stampSeed: {} },
       { id: 2000, artist: 'Tum-Tum', title: 'AKA O-Tumma-Tumladin', year: 2003, label: 'DSR', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15648131', stampSeed: {} },
       { id: 1943, artist: 'Dirty South Rydaz', title: 'DSR The Album (Screwed & Chopped)', year: 2003, label: 'T-Town Music', youtubeId: null,
@@ -3125,6 +3173,8 @@ const REGIONS = [
     id: 'atlanta', name: 'Atlanta', area: 'Georgia',
     lng: -84.3898, lat: 33.7545,
     albums: [
+      { id: 2067, artist: 'Ghetto Mafia', title: 'Wicked & The Hood Show', year: 2004, label: 'ITD Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11110323', stampSeed: {} },
       { id: 2018, artist: 'C-SIDE', title: 'P.O.W.E.R.', year: 2003, label: 'Power Enterprises', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13782145', stampSeed: {} },
       { id: 1536, artist: 'The Faculty', title: 'We\'re On A Mission', year: 2001, label: 'Gain Green Entertainment', youtubeId: null,
@@ -3291,6 +3341,8 @@ const REGIONS = [
     id: 'flint', name: 'Flint', area: 'Michigan',
     lng: -83.6875, lat: 43.0125,
     albums: [
+      { id: 2053, artist: 'Project Born', title: 'Ghetto Celebs', year: 2003, label: 'Plugged In Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2346217', stampSeed: {} },
       { id: 1198, artist: 'Dukeman', title: 'Tha Album Tha High', year: 2001, label: 'Elevating Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7113111', stampSeed: {} },
       { id: 1199, artist: 'Scurvy', title: 'Flint Mentality', year: 2001, label: 'Imperial Blew Back Records', youtubeId: null,
@@ -3340,6 +3392,8 @@ const REGIONS = [
     id: 'saopaulo', name: 'São Paulo', area: 'Brazil — 世界のG-RAP',
     lng: -46.6334, lat: -23.5507,
     albums: [
+      { id: 2047, artist: 'RZO', title: 'Evolução É Uma Coisa', year: 2003, label: 'Warlock Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11374786', stampSeed: {} },
       { id: 1934, artist: 'Consciência Humana', title: 'Agonia Do Morro', year: 2003, label: 'Zambia', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15464695', stampSeed: {} },
       { id: 1216, artist: "Racionais MC's", title: 'Holocausto Urbano', year: 1990, label: 'Zambia', youtubeId: null,
@@ -3434,6 +3488,8 @@ const REGIONS = [
     id: 'miami', name: 'Miami', area: 'Florida',
     lng: -80.1918, lat: 25.7617,
     albums: [
+      { id: 2070, artist: 'Trick Daddy', title: 'Thug Matrimony: Married To The Streets', year: 2004, label: 'Slip-N-Slide Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6248309', stampSeed: {} },
       { id: 1232, artist: 'Redd Eyezz', title: 'Eyezz Of The Storm', year: 2001, label: 'Z-Bo Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3196171', stampSeed: {} },
       { id: 1233, artist: 'Trick Daddy', title: 'Thugs Are Us', year: 2001, label: 'Slip-N-Slide Records', youtubeId: null,
@@ -3504,6 +3560,8 @@ const REGIONS = [
     id: 'chicago', name: 'Chicago', area: 'Illinois',
     lng: -87.6298, lat: 41.8781,
     albums: [
+      { id: 2061, artist: 'The Outfit', title: 'Collectors Edition', year: 2003, label: 'Dubble Barrell Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9337519', stampSeed: {} },
       { id: 2013, artist: 'Qualo', title: 'And The Movement Chi ☆ Bangin The Movement Catalog', year: 2003, label: 'The Movement', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/33176241', stampSeed: {} },
       { id: 1975, artist: 'Twista', title: 'Resurrection', year: 1994, label: 'Street Flava Records', youtubeId: null,
@@ -3672,6 +3730,12 @@ const REGIONS = [
     id: 'berlin', name: 'Berlin', area: 'Germany — 世界のG-RAP',
     lng: 13.3951309, lat: 52.5173885,
     albums: [
+      { id: 2045, artist: 'Bass Sultan Hengzt', title: 'Rap Braucht Kein Abitur', year: 2003, label: 'Amstaff', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1908914', stampSeed: {} },
+      { id: 2042, artist: 'King Orgasmus One', title: 'Fick Mich...Und Halt Dein Maul !', year: 2003, label: 'I Luv Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2257701', stampSeed: {} },
+      { id: 2041, artist: 'Frauenarzt', title: 'Untergrund Solo Vol. 2', year: 2003, label: 'Rap Haus Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2011987', stampSeed: {} },
       { id: 1995, artist: 'Arsen', title: '151 Xplicit', year: 2003, label: 'ServnU151 Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9973448', stampSeed: {} },
       { id: 1933, artist: 'Brixx', title: 'As Cold As They Come', year: 2003, label: 'IANI Records', youtubeId: null,
@@ -3810,6 +3874,8 @@ const REGIONS = [
     id: 'pomona', name: 'Pomona', area: 'Los Angeles County, CA',
     lng: -117.7498, lat: 34.0551,
     albums: [
+      { id: 2051, artist: 'Kokane', title: 'Don\'t Bite The Funk Volume One', year: 2003, label: 'Koka Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7254030', stampSeed: {} },
       { id: 1347, artist: 'Big Sir Loon', title: 'The Sinners Train', year: 2001, label: 'Stick Figger Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8867256', stampSeed: {} },
       { id: 1348, artist: 'KMG', title: 'Ear Candy', year: 2001, label: 'West World Records', youtubeId: null,
@@ -3873,6 +3939,8 @@ const REGIONS = [
     id: 'kansascity', name: 'Kansas City', area: 'Missouri',
     lng: -94.5786, lat: 39.0997,
     albums: [
+      { id: 2039, artist: 'Fat Tone', title: 'Tha Stick-Up Kid', year: 2003, label: 'Real Life Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6702299', stampSeed: {} },
       { id: 1365, artist: 'Ol\' Skool', title: 'This Is Kansas', year: 2001, label: 'Get $ Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12936908', stampSeed: {} },
       { id: 1366, artist: 'T-Wes', title: 'How You Still Ballin', year: 2001, label: 'Midwest Pyramid Recordings', youtubeId: null,
@@ -3949,6 +4017,8 @@ const REGIONS = [
     id: 'eastla', name: 'East Los Angeles', area: 'Los Angeles County, CA',
     lng: -118.1717, lat: 34.0239,
     albums: [
+      { id: 2075, artist: 'Insane Poetry', title: 'Ain\'t Got No Braincells', year: 1995, label: 'React Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16140278', stampSeed: {} },
       { id: 2025, artist: 'L.A. Nash', title: 'L.A. Nash', year: 1995, label: 'Menes Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3679653', stampSeed: {} },
       { id: 1997, artist: 'Da 5 Footaz', title: 'The Lost Scrolls', year: 2003, label: 'Addicted 2 Music', youtubeId: null,
@@ -3973,6 +4043,10 @@ const REGIONS = [
     id: 'stockton', name: 'Stockton', area: 'California',
     lng: -121.2908, lat: 37.9577,
     albums: [
+      { id: 2068, artist: 'Tizzle', title: 'Power Moves', year: 2004, label: '2 Da Face Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3382960', stampSeed: {} },
+      { id: 2048, artist: 'Young Wa', title: 'It\'s Official', year: 2003, label: 'Nu World Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16111285', stampSeed: {} },
       { id: 2010, artist: 'Robb Dogg Loco', title: 'O.G. Set Vet', year: 2003, label: 'Blue Coast Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10892394', stampSeed: {} },
       { id: 1386, artist: 'C-Lim', title: 'What Dat \'N\' Like', year: 2000, label: 'Diamond Life Entertainment', youtubeId: null,
@@ -4007,6 +4081,8 @@ const REGIONS = [
     id: 'cincinnati', name: 'Cincinnati', area: 'Ohio',
     lng: -84.5120, lat: 39.1031,
     albums: [
+      { id: 2059, artist: 'Ant D.O.G.', title: 'Life On Wax Vol. 1', year: 2003, label: 'Big Eddie Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8059909', stampSeed: {} },
       { id: 1392, artist: 'Convicted Felons', title: 'Tonight The Ghetto, Tomorrow The World', year: 2001, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13889899', stampSeed: {} },
       { id: 1393, artist: 'Terrell', title: 'Uptown International', year: 2000, label: 'IQ Records', youtubeId: null,
@@ -4087,6 +4163,8 @@ const REGIONS = [
     id: 'lakecharles', name: 'Lake Charles', area: 'Louisiana',
     lng: -93.2174, lat: 30.2266,
     albums: [
+      { id: 2040, artist: 'Green Eyez', title: 'When A G Iz Fed Up', year: 2003, label: '8 Ballen Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6715578', stampSeed: {} },
       { id: 1411, artist: 'Green Eyez', title: 'High Blood Pressure', year: 2000, label: 'Street Slang Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26446541', stampSeed: {} },
       { id: 1719, artist: 'Green Eyez', title: 'Me Against The World', year: 2002, label: 'Bigg Mony Records', youtubeId: null,
@@ -4129,6 +4207,8 @@ const REGIONS = [
     id: 'sandiego', name: 'San Diego', area: 'California',
     lng: -117.1611, lat: 32.7157,
     albums: [
+      { id: 2074, artist: 'Lucky 7', title: 'Random Thoughts', year: 2004, label: 'Big Things Ent', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15496904', stampSeed: {} },
       { id: 1989, artist: 'Cricet', title: 'Blue Damien: The Pirate Ship', year: 2003, label: 'Cracles Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3379528', stampSeed: {} },
       { id: 1944, artist: 'Ecay Uno', title: 'Mental Scars', year: 2003, label: 'Money Hungry Entertainment', youtubeId: null,
@@ -4199,6 +4279,8 @@ const REGIONS = [
     id: 'phoenix', name: 'Phoenix', area: 'Arizona',
     lng: -112.074, lat: 33.4484,
     albums: [
+      { id: 2037, artist: 'Lucky', title: '69 Nasty Ways', year: 2003, label: 'Teen Angels Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10994588', stampSeed: {} },
       { id: 2022, artist: 'M.C. Magic', title: 'Don\'t Worry', year: 1995, label: 'Nastyboy Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/23824379', stampSeed: {} },
       { id: 1428, artist: 'NB Ridaz', title: 'Invasion', year: 2001, label: 'Upstairs Records', youtubeId: null,
@@ -4375,6 +4457,8 @@ const REGIONS = [
     id: 'ocala', name: 'Ocala', area: 'Florida',
     lng: -82.1206, lat: 29.1872,
     albums: [
+      { id: 2078, artist: 'Bigtyme Clique', title: 'The Prodject Vol. 1', year: 1996, label: 'Bigtyme Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13256988', stampSeed: {} },
       { id: 1456, artist: 'Strangers', title: 'Money & Power', year: 2000, label: 'Majorweight Hardmouth Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8627749', stampSeed: {} },
       { id: 1457, artist: 'Strangers', title: 'Respect It Or Check It', year: 2000, label: 'Majorweight Hardmouth Records', youtubeId: null,
@@ -4405,6 +4489,8 @@ const REGIONS = [
     id: 'nashville', name: 'Nashville', area: 'Tennessee',
     lng: -86.7816, lat: 36.1627,
     albums: [
+      { id: 2049, artist: 'Pistol', title: 'Get Cha Weight Up', year: 2003, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13735802', stampSeed: {} },
       { id: 1460, artist: 'No Joke', title: 'Tha New Beginning', year: 2001, label: 'No Joke Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10388088', stampSeed: {} },
       { id: 1461, artist: 'C-Wiz', title: 'Ballin & Pimpin - Volume One', year: 2001, label: 'CTE Records', youtubeId: null,
@@ -4485,6 +4571,8 @@ const REGIONS = [
     id: 'minneapolis', name: 'Minneapolis', area: 'Minnesota',
     lng: -93.265, lat: 44.9778,
     albums: [
+      { id: 2035, artist: 'Lil Shine', title: 'Life Ain\'t Life', year: 2003, label: 'So What Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10551728', stampSeed: {} },
       { id: 1470, artist: 'N.I.G', title: 'Show & Prove - The Block The Club The Jail', year: 2001, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12147257', stampSeed: {} },
       { id: 1471, artist: 'Monk', title: 'My Dope\'s My Music', year: 2000, label: '2 Bridge Entertainment', youtubeId: null,
@@ -4539,6 +4627,8 @@ const REGIONS = [
     id: 'macon', name: 'Macon', area: 'Georgia',
     lng: -83.6324, lat: 32.8407,
     albums: [
+      { id: 2079, artist: 'Rehab', title: 'Second Hand Smoke', year: 1996, label: 'Rehab Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17775505', stampSeed: {} },
       { id: 1477, artist: 'Sonny Spoon', title: 'Hustler', year: 2000, label: 'Alpine Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7422495', stampSeed: {} },
       { id: 1694, artist: 'Sonny Spoon', title: 'The Arrival', year: 2002, label: 'Dollyhood Records', youtubeId: null,
@@ -4573,6 +4663,8 @@ const REGIONS = [
     id: 'inglewood', name: 'Inglewood', area: 'California',
     lng: -118.3531, lat: 33.9617,
     albums: [
+      { id: 2032, artist: 'Proper Dos', title: 'Overdose', year: 2003, label: 'Aries Music Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3808104', stampSeed: {} },
       { id: 1528, artist: 'Allfrumtha I', title: 'Uncut', year: 2001, label: 'Dedal Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3664072', stampSeed: {} },
       { id: 1481, artist: 'Mack 10', title: 'Bang Or Ball', year: 2001, label: 'Cash Money Records', youtubeId: null,
@@ -4593,6 +4685,8 @@ const REGIONS = [
     id: 'mobile', name: 'Mobile', area: 'Alabama',
     lng: -88.0399, lat: 30.6954,
     albums: [
+      { id: 2064, artist: 'The Last Mr. Bigg', title: 'The Mask Is Off', year: 2003, label: 'Warlock Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/862886', stampSeed: {} },
       { id: 2016, artist: 'The Last Mr. Bigg', title: 'The Last Mr. Bigg (Underground Act 1) Presents... The Clown Show', year: 2003, label: 'P.C.P. Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13216738', stampSeed: {} },
       { id: 1483, artist: 'C-Nile', title: 'The Golden Child', year: 2001, label: 'Gorilla Records', youtubeId: null,
@@ -4667,6 +4761,8 @@ const REGIONS = [
     id: 'tulsa', name: 'Tulsa', area: 'Oklahoma',
     lng: -95.9928, lat: 36.154,
     albums: [
+      { id: 2072, artist: 'Pak-Man', title: 'This Iz Me', year: 2004, label: 'In-Capp Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15784434', stampSeed: {} },
       { id: 1495, artist: 'Lethal', title: 'Da Chosen Few', year: 2001, label: 'Smugglin Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6784196', stampSeed: {} },
       { id: 1496, artist: '9-Milla', title: 'Round Duice', year: 2000, label: 'In-Capp Records', youtubeId: null,
@@ -4687,6 +4783,10 @@ const REGIONS = [
     id: 'washingtondc', name: 'Washington', area: 'D.C.',
     lng: -77.0369, lat: 38.9072,
     albums: [
+      { id: 2081, artist: 'Blak Kaos', title: 'Mind Stimuli', year: 1996, label: 'Fresh Gruv Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7988403', stampSeed: {} },
+      { id: 2033, artist: 'Psychodrama', title: 'Time Vs. Life... The Neverending Story', year: 2003, label: 'Nuface Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8086645', stampSeed: {} },
       { id: 1931, artist: 'Ballistic', title: 'Face 2 Face-Back 2 Back', year: 2003, label: 'Danard Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11937218', stampSeed: {} },
       { id: 1920, artist: 'T-Rock', title: 'Rock Solid/4:20', year: 2003, label: 'Club Memphis Music', youtubeId: null,
@@ -4767,6 +4867,10 @@ const REGIONS = [
     id: 'statenisland', name: 'Staten Island', area: 'New York',
     lng: -74.1502, lat: 40.5795,
     albums: [
+      { id: 2082, artist: 'Catch 22', title: 'Outta Sheer Frustration', year: 1996, label: 'Factory Artist Management', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20074696', stampSeed: {} },
+      { id: 2066, artist: 'Bueno', title: 'Change The Game', year: 2003, label: 'Noyz "R" Us Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14206551', stampSeed: {} },
       { id: 1509, artist: 'Wu-Tang Clan', title: 'Iron Flag', year: 2001, label: 'Loud Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/19409734', stampSeed: {} },
     ],
@@ -4941,6 +5045,8 @@ const REGIONS = [
     id: 'bonn', name: 'Bonn', area: 'Germany',
     lng: 7.1024635, lat: 50.7352621,
     albums: [
+      { id: 2056, artist: 'G-Style', title: 'Ghetto Prophecy', year: 2003, label: 'G Style Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10924202', stampSeed: {} },
       { id: 1927, artist: 'Bushido', title: 'Vom Bordstein Bis Zur Skyline', year: 2003, label: 'Aggro Berlin', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/318694', stampSeed: {} },
     ],
@@ -5049,6 +5155,22 @@ const REGIONS = [
     albums: [
       { id: 2030, artist: 'Roulette', title: 'Asphalt Ist Kalt', year: 2003, label: 'I Luv Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2671617', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'krefeld', name: 'Krefeld', area: 'Germany',
+    lng: 6.5623343, lat: 51.3331205,
+    albums: [
+      { id: 2084, artist: 'Freshwask', title: 'Aussenseiter', year: 2004, label: 'Spastenabwehr', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/32072166', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'osnabruck', name: 'Osnabrück', area: 'Germany',
+    lng: 8.047635, lat: 52.2719595,
+    albums: [
+      { id: 2085, artist: '4.9.0 Friedhof Chiller', title: 'Willkommen Im Tal Der Finsternis', year: 2004, label: '4.9.0 Studioz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2856804', stampSeed: {} },
     ],
   },
 ];
