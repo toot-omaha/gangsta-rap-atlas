@@ -73,25 +73,58 @@ def save_state(state):
     STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=1))
 
 
-def load_processed():
-    """discogs_id と正規化artist|titleの両方でレジャーを持つ。
-    同じ盤の別プレス(別id)でも artist|title が一致すれば重複として弾くため。"""
-    if PROCESSED_FILE.exists():
-        d = json.loads(PROCESSED_FILE.read_text())
-        if isinstance(d, list):  # 旧形式(idのみのリスト)からの移行
-            return {'ids': set(d), 'titles': set()}
-        return {'ids': set(d.get('ids', [])), 'titles': set(d.get('titles', []))}
+def _empty_bucket():
     return {'ids': set(), 'titles': set()}
 
 
-def add_processed(items):
-    """items: [(discogs_id, artist, title), ...]"""
+def load_processed():
+    """'merged'(data.jsに実際に入った=永久除外) と 'rejected'(レビューで
+    却下 or 出身地不明などで保留=再クロール可能)を分けて持つ。
+    却下理由をいちいち覚えておかなくていいように、通常運転では両方を
+    重複チェックに使うが、rejectedは --reset-rejected でいつでもクリアして
+    再収集の対象に戻せる(2026-08-08、「重要な盤が二度と出てこなくなる」
+    というユーザー指摘を受けて旧仕様(単一processedリストへの一括永久除外)
+    から分離した)。"""
+    if not PROCESSED_FILE.exists():
+        return {'merged': _empty_bucket(), 'rejected': _empty_bucket()}
+    d = json.loads(PROCESSED_FILE.read_text())
+    if isinstance(d, list):  # 最旧形式(idのみのリスト)からの移行
+        return {'merged': {'ids': set(d), 'titles': set()}, 'rejected': _empty_bucket()}
+    if 'merged' not in d and 'rejected' not in d:
+        # 旧形式({"ids":[...], "titles":[...]}、採用/却下を区別していなかった)
+        # からの移行。分離できないため、一旦すべてrejected(再クロール可能)側に
+        # 寄せる。data.js側に実在するものはmain()の重複チェック
+        # (skipped_existing)で別途弾かれるので実害は無い。
+        return {
+            'merged': _empty_bucket(),
+            'rejected': {'ids': set(d.get('ids', [])), 'titles': set(d.get('titles', []))},
+        }
+    return {
+        'merged': {'ids': set(d.get('merged', {}).get('ids', [])), 'titles': set(d.get('merged', {}).get('titles', []))},
+        'rejected': {'ids': set(d.get('rejected', {}).get('ids', [])), 'titles': set(d.get('rejected', {}).get('titles', []))},
+    }
+
+
+def add_processed(items, status):
+    """items: [(discogs_id, artist, title), ...] / status: 'merged' か 'rejected'"""
+    assert status in ('merged', 'rejected')
     cur = load_processed()
     for did, artist, title in items:
-        cur['ids'].add(str(did))
-        cur['titles'].add(f'{norm(artist)}|{norm(title)}')
+        cur[status]['ids'].add(str(did))
+        cur[status]['titles'].add(f'{norm(artist)}|{norm(title)}')
     PROCESSED_FILE.write_text(json.dumps(
-        {'ids': sorted(cur['ids']), 'titles': sorted(cur['titles'])}, ensure_ascii=False, indent=1))
+        {k: {'ids': sorted(v['ids']), 'titles': sorted(v['titles'])} for k, v in cur.items()},
+        ensure_ascii=False, indent=1))
+
+
+def reset_rejected():
+    """却下/保留バケットだけをクリアし、次回収集で再度候補に出せるようにする。
+    'merged'(実際に地図に載った盤)はそのまま残す。"""
+    cur = load_processed()
+    cur['rejected'] = _empty_bucket()
+    PROCESSED_FILE.write_text(json.dumps(
+        {k: {'ids': sorted(v['ids']), 'titles': sorted(v['titles'])} for k, v in cur.items()},
+        ensure_ascii=False, indent=1))
 
 
 class RateLimited:
@@ -384,7 +417,8 @@ def main():
         key = (norm(h['artist']), norm(h['title']))
         if key in existing_albums:
             skipped_existing.append(h)
-        elif str(h['discogs_id']) in processed['ids'] or f"{key[0]}|{key[1]}" in processed['titles']:
+        elif (str(h['discogs_id']) in processed['merged']['ids'] or f"{key[0]}|{key[1]}" in processed['merged']['titles']
+              or str(h['discogs_id']) in processed['rejected']['ids'] or f"{key[0]}|{key[1]}" in processed['rejected']['titles']):
             skipped_processed.append(h)
         elif key in seen_in_batch:
             # 同一バッチ内でGangsta/G-Funk両方にヒットした同一作品の重複を弾く
@@ -414,6 +448,9 @@ def main():
         if consensus and consensus['ratio'] < 0.5:
             print(f'    [外れタグの疑いでスキップ] {h["artist"]} - {h["title"]}'
                   f' ({style}タグ {consensus["gangsta"]}/{consensus["total"]} プレス)')
+            # 外れタグ判定はrejected(再クロール可能)扱い。多数決の実データが
+            # 後で変わる(新規プレスが増える等)こともあるため永久除外しない。
+            add_processed([(h['discogs_id'], h['artist'], h['title'])], 'rejected')
             continue
 
         print(f'[2/4] iTunes照合 {i}/{len(fresh)}: {h["artist"]} - {h["title"]}', file=sys.stderr)
@@ -458,12 +495,19 @@ def main():
     (ROOT / 'scripts' / 'unclassified.json').write_text(
         json.dumps(unclassified, ensure_ascii=False, indent=1))
 
-    # このバッチで一度サーフェスした候補は、採用・却下どちらの判断であれ
-    # 二度と自動候補に出さない(却下した理由をいちいち覚えておかなくていいように)
-    add_processed((h['discogs_id'], h['artist'], h['title']) for h in fresh)
+    # candidates.json / unclassified.json に出た時点ではまだ「保留」であり、
+    # ここではprocessed台帳に一切書き込まない。実際にレビューして採用
+    # (data.jsへ合流)/却下したタイミングで apply_verdicts.py が
+    # merged/rejected へ振り分ける。unclassified(出身地不明)は却下でも
+    # 採用でもないので、次回収集で自然に再候補化させたい場合は何もしなくてよい
+    # (地名解決の精度が上がれば自然に候補として拾い直される)。
 
     print(f'[4/4] 完了: candidates.json {len(candidates)}件 / unclassified.json {len(unclassified)}件')
 
 
 if __name__ == '__main__':
-    main()
+    if '--reset-rejected' in sys.argv:
+        reset_rejected()
+        print('rejected台帳をクリアしました。次回収集で却下済み候補が再度候補化されます。')
+    else:
+        main()
