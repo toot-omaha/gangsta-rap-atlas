@@ -43,10 +43,6 @@ const UNCLASSIFIED_REGION = {
         discogsUrl: 'https://www.discogs.com/release/17480395', stampSeed: {} },
       { id: 2349, artist: 'Prime', title: 'Get It Or Don\'t Have It', year: 2005, label: 'Trustworthy', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10686615', stampSeed: {} },
-      { id: 1986, artist: 'Big Bud', title: 'In Bud We Trust', year: 2003, label: 'TightWork Music', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/14065690', stampSeed: {} },
-      { id: 2391, artist: 'Jimbob', title: 'Stand On My Own', year: 2005, label: 'Better Dayz Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/9773125', stampSeed: {} },
       { id: 2228, artist: 'Box', title: 'Inboxicated', year: 2004, label: 'Clever Soundz Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9104465', youtubeIds: ["qJzVjV0hckg", "tOGN0QDIpuA"], discogsArt: "https://i.discogs.com/8rvq31CXH5ZzT76WJ_RX3EIFybSw7qpcPooi3_w2E90/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkxMDQ0/NjUtMTQ3NDgzNDI3/MC04ODgxLmpwZWc.jpeg", stampSeed: {} },
       { id: 2169, artist: 'Hard Life', title: 'Hard Life Vol. 1', year: 2004, label: 'Elevation Records', youtubeId: null,
@@ -6643,6 +6639,22 @@ const REGIONS = [
     albums: [
       { id: 2779, artist: 'Hustle', title: 'Just Doin Me', year: 2005, label: 'No Joke Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12414042', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'gainesvillefl', name: 'Gainesville', area: 'Florida',
+    lng: -82.3248, lat: 29.6516,
+    albums: [
+      { id: 1986, artist: 'Big Bud', title: 'In Bud We Trust', year: 2003, label: 'TightWork Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14065690', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'augustaga', name: 'Augusta', area: 'Georgia',
+    lng: -81.9748, lat: 33.4735,
+    albums: [
+      { id: 2391, artist: 'Jimbob', title: 'Stand On My Own', year: 2005, label: 'Better Dayz Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9773125', stampSeed: {} },
     ],
   },
 ];
