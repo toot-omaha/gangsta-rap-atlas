@@ -1,6 +1,97 @@
 // 自動生成: scripts/enrich.py (iTunes Search API)
 // ジャケ写・試聴はAppleの提供データ。表示時はApple Musicへのリンクを添える。
 const ENRICH = {
+ "Kings Of The City|Who Rides Wit Da Kings": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m04/d13/h17/s05.lmzkzqge.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/who-rides-wit-da-kings/57995620?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "where You From",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/53/8e/62/mzm.nlgijhsf.aac.p.m4a"
+   },
+   {
+    "name": "who Rides Wit Da Kings",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/21/38/d2/mzm.zyaquyyz.aac.p.m4a"
+   },
+   {
+    "name": "stuntin & Frontin",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/02/d8/e0/02d8e064-a693-b0b6-a8ee-a8848f64b2fe/mzaf_7302477917719223731.plus.aac.p.m4a"
+   },
+   {
+    "name": "quit hatin",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/4d/ee/45/4dee45bb-a8a2-3c73-e27d-fd4eae2776ca/mzaf_5267553249256915217.plus.aac.p.m4a"
+   },
+   {
+    "name": "you Should Be By My Side",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/5d/d0/9a/mzm.zuekviha.aac.p.m4a"
+   },
+   {
+    "name": "late At Night",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/17/3a/08/mzm.wyfrrxmr.aac.p.m4a"
+   },
+   {
+    "name": "swang Down In Da Blue",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/9f/e3/46/mzm.hdzgepru.aac.p.m4a"
+   },
+   {
+    "name": "we respresent",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ff/8d/bc/mzm.aviqjrrx.aac.p.m4a"
+   },
+   {
+    "name": "hot lead",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/8b/cd/61/mzm.sumibpgd.aac.p.m4a"
+   },
+   {
+    "name": "you Aint Heard",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/0e/ea/59/mzm.ojadrqat.aac.p.m4a"
+   },
+   {
+    "name": "we Through Da Door",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/84/53/00/mzm.frexfjda.aac.p.m4a"
+   },
+   {
+    "name": "to the Floor",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/a3/10/f6/mzm.topyzzfl.aac.p.m4a"
+   },
+   {
+    "name": "touch Da Floor",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/34/b6/c7/34b6c7f9-9505-8f54-bd8e-e974bda49685/mzaf_6437762814074269761.plus.aac.p.m4a"
+   },
+   {
+    "name": "just Be Thankful",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/1d/6c/29/mzm.fwlvjpyt.aac.p.m4a"
+   },
+   {
+    "name": "everything Out In the Open",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/a3/7d/76/mzm.bfvinkzx.aac.p.m4a"
+   },
+   {
+    "name": "groove Wit It",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/bd/fa/66/mzm.dsxqxppz.aac.p.m4a"
+   },
+   {
+    "name": "suck me",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/18/75/5e/mzm.wihufdfl.aac.p.m4a"
+   },
+   {
+    "name": "touch you",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/35/7e/79/mzm.spgkcorh.aac.p.m4a"
+   },
+   {
+    "name": "merry-go-round",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/65/21/85/mzm.fykpdztm.aac.p.m4a"
+   },
+   {
+    "name": "ridin & Shinin",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/01/6d/55/mzm.gpsrmtpk.aac.p.m4a"
+   },
+   {
+    "name": "we Da Kings of the City",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/9f/03/71/mzm.cimtsgqc.aac.p.m4a"
+   }
+  ]
+ },
  "Nature Boy|Mack Life Vol. 1": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music62/v4/a9/fb/30/a9fb3094-bff9-090b-7349-5bc7fa9a1001/00_Cover.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/mack-life/1160947393?uo=4",
@@ -18437,6 +18528,148 @@ const ENRICH = {
    {
     "name": "Hard Tymes",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e6/73/77/e673773b-056b-15ea-0646-93a02090fc3b/mzaf_1140618658965463950.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Capone|Chicano World Dos": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music6/v4/0a/b4/9b/0ab49b38-8a12-1172-b8c4-74cbe7d6365a/FullSizeImage.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/chicano-world/815513188?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "When Capone Comes Down On You",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/24/06/cd/2406cdd6-757d-cad7-8f0b-249ccb3fac0c/mzaf_6023671810167293574.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bang Like Chrome",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/13/51/55/135155ca-5f96-45d7-58a0-7116a6ac18ab/mzaf_2977292970832677055.plus.aac.p.m4a"
+   },
+   {
+    "name": "Chicano Life",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f1/c2/0d/f1c20d37-7b6d-5fba-e9a2-df72dc55011b/mzaf_17707319070856842853.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pa Mi Chola",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/95/a4/25/95a425f6-472f-956b-f32f-9a800f019c58/mzaf_3965752696338558347.plus.aac.p.m4a"
+   },
+   {
+    "name": "Get Somewhere",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/b4/64/d9/b464d9fc-ed25-01dc-fa3f-eea9fc4bbfa0/mzaf_5219270692082123773.plus.aac.p.m4a"
+   },
+   {
+    "name": "Chicano World",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/39/12/fc/3912fc33-0153-c6f6-3c64-06424810f9fb/mzaf_171845158715064721.plus.aac.p.m4a"
+   },
+   {
+    "name": "You Can't Ride No More",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/70/fe/82/70fe82b1-35e8-4981-12df-269e858dd532/mzaf_8459870568483781342.plus.aac.p.m4a"
+   },
+   {
+    "name": "Brownside of Town",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/7f/e3/5a/7fe35ac9-2be5-5075-00b1-38398338e092/mzaf_1910014361502212875.plus.aac.p.m4a"
+   },
+   {
+    "name": "Los Homeboys",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/34/b7/ed/34b7ed80-eb18-7691-09c7-84e6b5c57266/mzaf_1719046037404949889.plus.aac.p.m4a"
+   },
+   {
+    "name": "Tejas Gangster",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/d1/df/4b/d1df4b72-bde5-46c2-9dfe-210017dac537/mzaf_5022155651860031778.plus.aac.p.m4a"
+   },
+   {
+    "name": "Don't F**k With the Mexicans",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/c7/50/d7/c750d7b1-436b-491b-97c9-964b06c5e61f/mzaf_695938523111554466.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ranflas On Chrome",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/f6/e6/37/f6e637c1-257f-b78e-2fe0-b2550c7bdee0/mzaf_7320876487589509358.plus.aac.p.m4a"
+   },
+   {
+    "name": "Prison Rules",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/50/9c/89/509c8915-a782-2490-962e-8ee070efa782/mzaf_7742408291276846299.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dangerous Situation",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/a8/a0/47/a8a047a5-3a76-d685-a920-637e781ebcb4/mzaf_7482477528407393795.plus.aac.p.m4a"
+   },
+   {
+    "name": "Uno Ocho Siete",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/cd/12/7b/cd127b52-42c8-23fe-f1a5-174708450133/mzaf_4277376261200489429.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bonus Track",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/6f/a9/60/6fa96063-add9-9d33-6cd1-034ae3ce7ac9/mzaf_3330069323985130405.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Capone|Chicano World 3": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music6/v4/0a/b4/9b/0ab49b38-8a12-1172-b8c4-74cbe7d6365a/FullSizeImage.jpg/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/chicano-world/815513188?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "When Capone Comes Down On You",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/24/06/cd/2406cdd6-757d-cad7-8f0b-249ccb3fac0c/mzaf_6023671810167293574.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bang Like Chrome",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/13/51/55/135155ca-5f96-45d7-58a0-7116a6ac18ab/mzaf_2977292970832677055.plus.aac.p.m4a"
+   },
+   {
+    "name": "Chicano Life",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f1/c2/0d/f1c20d37-7b6d-5fba-e9a2-df72dc55011b/mzaf_17707319070856842853.plus.aac.p.m4a"
+   },
+   {
+    "name": "Pa Mi Chola",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/95/a4/25/95a425f6-472f-956b-f32f-9a800f019c58/mzaf_3965752696338558347.plus.aac.p.m4a"
+   },
+   {
+    "name": "Get Somewhere",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/b4/64/d9/b464d9fc-ed25-01dc-fa3f-eea9fc4bbfa0/mzaf_5219270692082123773.plus.aac.p.m4a"
+   },
+   {
+    "name": "Chicano World",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/39/12/fc/3912fc33-0153-c6f6-3c64-06424810f9fb/mzaf_171845158715064721.plus.aac.p.m4a"
+   },
+   {
+    "name": "You Can't Ride No More",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/70/fe/82/70fe82b1-35e8-4981-12df-269e858dd532/mzaf_8459870568483781342.plus.aac.p.m4a"
+   },
+   {
+    "name": "Brownside of Town",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/7f/e3/5a/7fe35ac9-2be5-5075-00b1-38398338e092/mzaf_1910014361502212875.plus.aac.p.m4a"
+   },
+   {
+    "name": "Los Homeboys",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/34/b7/ed/34b7ed80-eb18-7691-09c7-84e6b5c57266/mzaf_1719046037404949889.plus.aac.p.m4a"
+   },
+   {
+    "name": "Tejas Gangster",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/d1/df/4b/d1df4b72-bde5-46c2-9dfe-210017dac537/mzaf_5022155651860031778.plus.aac.p.m4a"
+   },
+   {
+    "name": "Don't F**k With the Mexicans",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/c7/50/d7/c750d7b1-436b-491b-97c9-964b06c5e61f/mzaf_695938523111554466.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ranflas On Chrome",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/f6/e6/37/f6e637c1-257f-b78e-2fe0-b2550c7bdee0/mzaf_7320876487589509358.plus.aac.p.m4a"
+   },
+   {
+    "name": "Prison Rules",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/50/9c/89/509c8915-a782-2490-962e-8ee070efa782/mzaf_7742408291276846299.plus.aac.p.m4a"
+   },
+   {
+    "name": "Dangerous Situation",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/a8/a0/47/a8a047a5-3a76-d685-a920-637e781ebcb4/mzaf_7482477528407393795.plus.aac.p.m4a"
+   },
+   {
+    "name": "Uno Ocho Siete",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/cd/12/7b/cd127b52-42c8-23fe-f1a5-174708450133/mzaf_4277376261200489429.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bonus Track",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/6f/a9/60/6fa96063-add9-9d33-6cd1-034ae3ce7ac9/mzaf_3330069323985130405.plus.aac.p.m4a"
    }
   ]
  },
@@ -77487,148 +77720,6 @@ const ENRICH = {
   "genre": "Hip-Hop/Rap",
   "tracks": []
  },
- "Capone|Chicano World 3": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music6/v4/0a/b4/9b/0ab49b38-8a12-1172-b8c4-74cbe7d6365a/FullSizeImage.jpg/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/chicano-world/815513188?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "When Capone Comes Down On You",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/24/06/cd/2406cdd6-757d-cad7-8f0b-249ccb3fac0c/mzaf_6023671810167293574.plus.aac.p.m4a"
-   },
-   {
-    "name": "Bang Like Chrome",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/13/51/55/135155ca-5f96-45d7-58a0-7116a6ac18ab/mzaf_2977292970832677055.plus.aac.p.m4a"
-   },
-   {
-    "name": "Chicano Life",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f1/c2/0d/f1c20d37-7b6d-5fba-e9a2-df72dc55011b/mzaf_17707319070856842853.plus.aac.p.m4a"
-   },
-   {
-    "name": "Pa Mi Chola",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/95/a4/25/95a425f6-472f-956b-f32f-9a800f019c58/mzaf_3965752696338558347.plus.aac.p.m4a"
-   },
-   {
-    "name": "Get Somewhere",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/b4/64/d9/b464d9fc-ed25-01dc-fa3f-eea9fc4bbfa0/mzaf_5219270692082123773.plus.aac.p.m4a"
-   },
-   {
-    "name": "Chicano World",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/39/12/fc/3912fc33-0153-c6f6-3c64-06424810f9fb/mzaf_171845158715064721.plus.aac.p.m4a"
-   },
-   {
-    "name": "You Can't Ride No More",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/70/fe/82/70fe82b1-35e8-4981-12df-269e858dd532/mzaf_8459870568483781342.plus.aac.p.m4a"
-   },
-   {
-    "name": "Brownside of Town",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/7f/e3/5a/7fe35ac9-2be5-5075-00b1-38398338e092/mzaf_1910014361502212875.plus.aac.p.m4a"
-   },
-   {
-    "name": "Los Homeboys",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/34/b7/ed/34b7ed80-eb18-7691-09c7-84e6b5c57266/mzaf_1719046037404949889.plus.aac.p.m4a"
-   },
-   {
-    "name": "Tejas Gangster",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/d1/df/4b/d1df4b72-bde5-46c2-9dfe-210017dac537/mzaf_5022155651860031778.plus.aac.p.m4a"
-   },
-   {
-    "name": "Don't F**k With the Mexicans",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/c7/50/d7/c750d7b1-436b-491b-97c9-964b06c5e61f/mzaf_695938523111554466.plus.aac.p.m4a"
-   },
-   {
-    "name": "Ranflas On Chrome",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/f6/e6/37/f6e637c1-257f-b78e-2fe0-b2550c7bdee0/mzaf_7320876487589509358.plus.aac.p.m4a"
-   },
-   {
-    "name": "Prison Rules",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/50/9c/89/509c8915-a782-2490-962e-8ee070efa782/mzaf_7742408291276846299.plus.aac.p.m4a"
-   },
-   {
-    "name": "Dangerous Situation",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/a8/a0/47/a8a047a5-3a76-d685-a920-637e781ebcb4/mzaf_7482477528407393795.plus.aac.p.m4a"
-   },
-   {
-    "name": "Uno Ocho Siete",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/cd/12/7b/cd127b52-42c8-23fe-f1a5-174708450133/mzaf_4277376261200489429.plus.aac.p.m4a"
-   },
-   {
-    "name": "Bonus Track",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/6f/a9/60/6fa96063-add9-9d33-6cd1-034ae3ce7ac9/mzaf_3330069323985130405.plus.aac.p.m4a"
-   }
-  ]
- },
- "Capone|Chicano World Dos": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music6/v4/0a/b4/9b/0ab49b38-8a12-1172-b8c4-74cbe7d6365a/FullSizeImage.jpg/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/chicano-world/815513188?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "When Capone Comes Down On You",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/24/06/cd/2406cdd6-757d-cad7-8f0b-249ccb3fac0c/mzaf_6023671810167293574.plus.aac.p.m4a"
-   },
-   {
-    "name": "Bang Like Chrome",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/13/51/55/135155ca-5f96-45d7-58a0-7116a6ac18ab/mzaf_2977292970832677055.plus.aac.p.m4a"
-   },
-   {
-    "name": "Chicano Life",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f1/c2/0d/f1c20d37-7b6d-5fba-e9a2-df72dc55011b/mzaf_17707319070856842853.plus.aac.p.m4a"
-   },
-   {
-    "name": "Pa Mi Chola",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/95/a4/25/95a425f6-472f-956b-f32f-9a800f019c58/mzaf_3965752696338558347.plus.aac.p.m4a"
-   },
-   {
-    "name": "Get Somewhere",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/b4/64/d9/b464d9fc-ed25-01dc-fa3f-eea9fc4bbfa0/mzaf_5219270692082123773.plus.aac.p.m4a"
-   },
-   {
-    "name": "Chicano World",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/39/12/fc/3912fc33-0153-c6f6-3c64-06424810f9fb/mzaf_171845158715064721.plus.aac.p.m4a"
-   },
-   {
-    "name": "You Can't Ride No More",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/70/fe/82/70fe82b1-35e8-4981-12df-269e858dd532/mzaf_8459870568483781342.plus.aac.p.m4a"
-   },
-   {
-    "name": "Brownside of Town",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/7f/e3/5a/7fe35ac9-2be5-5075-00b1-38398338e092/mzaf_1910014361502212875.plus.aac.p.m4a"
-   },
-   {
-    "name": "Los Homeboys",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/34/b7/ed/34b7ed80-eb18-7691-09c7-84e6b5c57266/mzaf_1719046037404949889.plus.aac.p.m4a"
-   },
-   {
-    "name": "Tejas Gangster",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music4/v4/d1/df/4b/d1df4b72-bde5-46c2-9dfe-210017dac537/mzaf_5022155651860031778.plus.aac.p.m4a"
-   },
-   {
-    "name": "Don't F**k With the Mexicans",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/c7/50/d7/c750d7b1-436b-491b-97c9-964b06c5e61f/mzaf_695938523111554466.plus.aac.p.m4a"
-   },
-   {
-    "name": "Ranflas On Chrome",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/f6/e6/37/f6e637c1-257f-b78e-2fe0-b2550c7bdee0/mzaf_7320876487589509358.plus.aac.p.m4a"
-   },
-   {
-    "name": "Prison Rules",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/50/9c/89/509c8915-a782-2490-962e-8ee070efa782/mzaf_7742408291276846299.plus.aac.p.m4a"
-   },
-   {
-    "name": "Dangerous Situation",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/a8/a0/47/a8a047a5-3a76-d685-a920-637e781ebcb4/mzaf_7482477528407393795.plus.aac.p.m4a"
-   },
-   {
-    "name": "Uno Ocho Siete",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music6/v4/cd/12/7b/cd127b52-42c8-23fe-f1a5-174708450133/mzaf_4277376261200489429.plus.aac.p.m4a"
-   },
-   {
-    "name": "Bonus Track",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/6f/a9/60/6fa96063-add9-9d33-6cd1-034ae3ce7ac9/mzaf_3330069323985130405.plus.aac.p.m4a"
-   }
-  ]
- },
  "DNA|Chiefa In A Zone": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2004/m11/d22/h14/s05.jivuafyv.tif/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/chiefa-in-a-zone/31251874?uo=4",
@@ -77890,97 +77981,6 @@ const ENRICH = {
    {
     "name": "Vāks (feat. Dj Monsta)",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/7f/96/c7/7f96c761-4b8d-992f-b652-6b29d511b23b/mzaf_8271463185446220167.plus.aac.p.m4a"
-   }
-  ]
- },
- "Kings Of The City|Who Rides Wit Da Kings": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m04/d13/h17/s05.lmzkzqge.tif/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/who-rides-wit-da-kings/57995620?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "where You From",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/53/8e/62/mzm.nlgijhsf.aac.p.m4a"
-   },
-   {
-    "name": "who Rides Wit Da Kings",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/21/38/d2/mzm.zyaquyyz.aac.p.m4a"
-   },
-   {
-    "name": "stuntin & Frontin",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/02/d8/e0/02d8e064-a693-b0b6-a8ee-a8848f64b2fe/mzaf_7302477917719223731.plus.aac.p.m4a"
-   },
-   {
-    "name": "quit hatin",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/4d/ee/45/4dee45bb-a8a2-3c73-e27d-fd4eae2776ca/mzaf_5267553249256915217.plus.aac.p.m4a"
-   },
-   {
-    "name": "you Should Be By My Side",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/5d/d0/9a/mzm.zuekviha.aac.p.m4a"
-   },
-   {
-    "name": "late At Night",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/17/3a/08/mzm.wyfrrxmr.aac.p.m4a"
-   },
-   {
-    "name": "swang Down In Da Blue",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/9f/e3/46/mzm.hdzgepru.aac.p.m4a"
-   },
-   {
-    "name": "we respresent",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ff/8d/bc/mzm.aviqjrrx.aac.p.m4a"
-   },
-   {
-    "name": "hot lead",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/8b/cd/61/mzm.sumibpgd.aac.p.m4a"
-   },
-   {
-    "name": "you Aint Heard",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/0e/ea/59/mzm.ojadrqat.aac.p.m4a"
-   },
-   {
-    "name": "we Through Da Door",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/84/53/00/mzm.frexfjda.aac.p.m4a"
-   },
-   {
-    "name": "to the Floor",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/a3/10/f6/mzm.topyzzfl.aac.p.m4a"
-   },
-   {
-    "name": "touch Da Floor",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/34/b6/c7/34b6c7f9-9505-8f54-bd8e-e974bda49685/mzaf_6437762814074269761.plus.aac.p.m4a"
-   },
-   {
-    "name": "just Be Thankful",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/1d/6c/29/mzm.fwlvjpyt.aac.p.m4a"
-   },
-   {
-    "name": "everything Out In the Open",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/a3/7d/76/mzm.bfvinkzx.aac.p.m4a"
-   },
-   {
-    "name": "groove Wit It",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/bd/fa/66/mzm.dsxqxppz.aac.p.m4a"
-   },
-   {
-    "name": "suck me",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/18/75/5e/mzm.wihufdfl.aac.p.m4a"
-   },
-   {
-    "name": "touch you",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/35/7e/79/mzm.spgkcorh.aac.p.m4a"
-   },
-   {
-    "name": "merry-go-round",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/65/21/85/mzm.fykpdztm.aac.p.m4a"
-   },
-   {
-    "name": "ridin & Shinin",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/01/6d/55/mzm.gpsrmtpk.aac.p.m4a"
-   },
-   {
-    "name": "we Da Kings of the City",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/9f/03/71/mzm.cimtsgqc.aac.p.m4a"
    }
   ]
  },

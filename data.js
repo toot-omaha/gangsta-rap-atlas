@@ -29,6 +29,18 @@ const UNCLASSIFIED_REGION = {
   lng: -129, lat: 36,
   unclassified: true,
   albums: [
+            { id: 2170, artist: 'Big D', title: 'Jamm La Paix', year: 2004, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12656868', stampSeed: {} },
+            { id: 2363, artist: 'South', title: 'Redemption', year: 2005, label: 'No Question Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15258880', stampSeed: {} },
+            { id: 2329, artist: 'D.O.E.', title: 'Cold Blooded', year: 1999, label: 'Upset Records Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10537950', stampSeed: {} },
+            { id: 2281, artist: 'Stuntman', title: 'The Crash Unit', year: 1998, label: 'Subjec Matta Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7341828', stampSeed: {} },
+            { id: 2207, artist: 'Troublesome', title: 'The Devil Made Me Do It', year: 2004, label: 'Gorilla Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12385874', discogsArt: "https://i.discogs.com/iIVmAumFYOe6WW1xYz2MTQQ0ScMNI7-qYyF8x5A-0JI/rs:fit/g:sm/q:90/h:499/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyMzg1/ODc0LTE1MzQyMDgy/MDUtNTQwMC5qcGVn.jpeg", stampSeed: {} },
+            { id: 2298, artist: 'Kings Of The City', title: 'Who Rides Wit Da Kings', year: 2004, label: 'Big Bailey Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15509983', stampSeed: {} },
       { id: 1, artist: 'Menace', title: 'Confessing Sins', year: 1999, label: 'No Love Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10625251', youtubeIds: ["YgDpbwlP_LQ", "HNyHlk6VUrI", "KTNF37nOnqo", "Uf9dyoS5mG0", "FBptgfXdsqQ", "gaLdyMCzIa4", "dH0CfE65-eo", "c5fgvmpI084", "NSlG8mrwvtI", "eDbixSG4aYQ", "vAh0JAILzxo", "JqP96nKcczM", "crzs4oj3KO4", "9SCtzPFrc8k", "dKie6SF_-kg", "dARZxocZW9c"], discogsArt: "https://i.discogs.com/OdSLyyaUwGGYc_1kWmP8U8djHDJdQJy9hgjHdxseRXA/rs:fit/g:sm/q:90/h:300/w:350/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwNjI1/MjUxLTE2MzY2MzA2/MzktNDMzNC5qcGVn.jpeg", stampSeed: {} },
       { id: 2, artist: 'SandSpiders', title: 'Live II Tell', year: 1999, label: 'SandSpider Records', youtubeId: null,
@@ -368,6 +380,8 @@ const REGIONS = [
     id: 'compton', name: 'Compton', area: 'Los Angeles County, CA',
     lng: -118.2201, lat: 33.8958,
     albums: [
+            { id: 2282, artist: 'Mr. Solo', title: 'Straight Out The Vee', year: 1998, label: 'N Muzik We Trust', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29689492', stampSeed: {} },
       { id: 2415, artist: 'Dr. Dre', title: '2001 (Censored Version)', year: 1999, label: 'Aftermath Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3527529', stampSeed: {} },
       { id: 2404, artist: 'MC Eiht', title: 'Veterans Day', year: 2005, label: 'West Inc. Records', youtubeId: null,
@@ -1340,6 +1354,16 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { id: 2157, artist: 'Capone', title: 'Barrio Dope', year: 2004, label: 'Aries Music Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19139485', discogsArt: "https://i.discogs.com/Cl0iajwTpuewoV_zyjaY1nl84F0zawVrkoUaJxjSeHA/rs:fit/g:sm/q:90/h:499/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE5MTM5/NDg1LTE2MjM2ODYw/OTQtODI3MS5qcGVn.jpeg", stampSeed: {} },
+      { id: 2362, artist: 'Capone', title: 'Chicano World Dos', year: 2005, label: 'EMI Latin', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13989718', stampSeed: {} },
+      { id: 2383, artist: 'Capone', title: 'Chicano World 3', year: 2005, label: 'Latino Jam Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3879269', stampSeed: {} },
+      { id: 2402, artist: 'Capone', title: 'Welcome 2 Da Life', year: 2005, label: 'OE Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24484820', stampSeed: {} },
+            { id: 1057, artist: 'Capone', title: 'Second To None', year: 2000, label: 'On My Hustle Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/31721945', youtubeIds: ["ZPkzRiG5U7M"], youtubeFullAlbumId: 'ccVY0Q0TW5M', discogsArt: "https://i.discogs.com/RGMoplUsJwluoDHoRREq9sDAVYvlhCwJoS3kAiAy-Mo/rs:fit/g:sm/q:90/h:481/w:372/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMxNzIx/OTQ1LTE3MjYyMDY2/MzktNTMxMy5wbmc.jpeg", stampSeed: {} },
       { id: 2414, artist: 'Fat Pat', title: 'Last Concert Live!!!', year: 2005, label: 'Screwed Up Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2760915', stampSeed: {} },
       { id: 2401, artist: '5th Ward Boyz', title: 'Usual Suspects (Screwed & Chopped-A-Lot)', year: 2005, label: 'Rap-A-Lot Records', youtubeId: null,
@@ -3018,8 +3042,6 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1608783', stampSeed: {} },
       { id: 1056, artist: 'Live Squad', title: 'Game Of Survival', year: 2001, label: 'Grand Imperial Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4529052', youtubeIds: ["FVEOPF1LlCE", "XGboPFgmp3A", "o7siGRj7hek", "XiWvKVozEeA", "pCUc4qT8uaM", "Pz5w-7QiPiw", "d7-AP9J17NQ"], discogsArt: "https://i.discogs.com/vdryznLDkJqtZtOUt_DkIwstsqLoAytbpC5-Ta55AMg/rs:fit/g:sm/q:90/h:500/w:347/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTQ1Mjkw/NTItMTM2NzUwODI1/NS0xMzczLmpwZWc.jpeg", stampSeed: {} },
-      { id: 1057, artist: 'Capone', title: 'Second To None', year: 2000, label: 'On My Hustle Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/31721945', youtubeIds: ["ZPkzRiG5U7M"], youtubeFullAlbumId: 'ccVY0Q0TW5M', discogsArt: "https://i.discogs.com/RGMoplUsJwluoDHoRREq9sDAVYvlhCwJoS3kAiAy-Mo/rs:fit/g:sm/q:90/h:481/w:372/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMxNzIx/OTQ1LTE3MjYyMDY2/MzktNTMxMy5wbmc.jpeg", stampSeed: {} },
       { id: 1058, artist: 'Mobb Deep', title: 'The Infamous', year: 1995, label: 'Loud', youtubeId: null,
         stampSeed: { dark: 5, doro: 3, bangin: 1 }, seedSrc: ['https://theneedledrop.com/album-reviews/mobb-deep-the-infamous-album-review/', 'https://hiphopgoldenage.com/mobb-deep-the-infamous-1995-review/', 'https://www.albumoftheyear.org/album/14799-mobb-deep-the-infamous.php', 'https://www.allmusic.com/album/shook-ones-pt-2-mw0000628236'] },
       { id: 1059, artist: 'Kool G Rap & DJ Polo', title: 'Live and Let Die', year: 1992, label: 'Cold Chillin\'', youtubeId: null,
@@ -4430,6 +4452,8 @@ const REGIONS = [
     id: 'sandiego', name: 'San Diego', area: 'California',
     lng: -117.1611, lat: 32.7157,
     albums: [
+            { id: 2173, artist: 'Johnny Boy', title: 'Threat To Society', year: 2004, label: 'B-Dub Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/23585852', youtubeIds: ["QTAVPUfTOiQ", "mp7QNcNh8Yg"], discogsArt: "https://i.discogs.com/rawcCUL65Rc6jOwa552lrmh3KqZwisJfTIwJeDxH0VA/rs:fit/g:sm/q:90/h:487/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIzNTg1/ODUyLTE2NTUzMjE4/NjAtNTE2OS5qcGVn.jpeg", stampSeed: {} },
       { id: 2357, artist: 'Mr. Shadow', title: 'Drama', year: 2005, label: 'PR Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3597774', stampSeed: {} },
       { id: 2324, artist: 'Jayo Felony', title: 'Underground', year: 1999, label: 'Eureka Records', youtubeId: null,
@@ -5172,6 +5196,7 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/8758696', youtubeIds: ["cpsVe-hmNAY", "Cpu8FXbJ4-8", "xrTrRHfUAcs", "MWk8xp6QCoU", "mKiM2zm3aXI", "qUdi8h_WQ0U", "Q8Ah9ejHsr4", "4R7ppLxTt3E", "HDKDIGht1lI", "PeBdAKE5iTI"], discogsArt: "https://i.discogs.com/slfQwa4mHNLKCbSV4pO37EXuhxo5kY4uegVYeYsmmDU/rs:fit/g:sm/q:90/h:600/w:599/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTg3NTg2/OTYtMTU2MTUzNjQ2/OS0yMjg2LmpwZWc.jpeg", stampSeed: {} },
       { id: 1507, artist: 'Capone', title: 'Barrio Dope The Album - Chopped, Throwed Y Despacio', year: 2001, label: 'Latino Jam Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/25167556', discogsArt: "https://i.discogs.com/QzAvyyNQbAYz9cFud_OHoJeRCt-pyTAVhgVvb8LgfY8/rs:fit/g:sm/q:90/h:552/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI1MTY3/NTU2LTE2Njg4MTUz/NDUtMTM4Ny5qcGVn.jpeg", stampSeed: {} },
+      
       { id: 1508, artist: 'Swift', title: 'It Ain\'t Safe No More', year: 2001, label: 'Carnival Beats', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26638355', discogsArt: "https://i.discogs.com/0EfwdK6626ZW1JJPwWLTt_CN8gGVSfGPs1jbGZrp25I/rs:fit/g:sm/q:90/h:600/w:594/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI2NjM4/MzU1LTE2ODA1MzU2/NzgtMzY1OS5qcGVn.jpeg", stampSeed: {} },
       { id: 1720, artist: 'Kool Whip', title: 'The Kingpin', year: 2002, label: 'Black-N-Brown Entertainment', youtubeId: null,
@@ -5535,20 +5560,6 @@ const REGIONS = [
     ],
   },
   {
-    id: 'clapham', name: 'Clapham', area: 'England',
-    lng: -0.138627, lat: 51.4614469,
-    albums: [
-      { id: 2402, artist: 'Capone', title: 'Welcome 2 Da Life', year: 2005, label: 'OE Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/24484820', stampSeed: {} },
-      { id: 2383, artist: 'Capone', title: 'Chicano World 3', year: 2005, label: 'Latino Jam Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/3879269', stampSeed: {} },
-      { id: 2362, artist: 'Capone', title: 'Chicano World Dos', year: 2005, label: 'EMI Latin', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/13989718', stampSeed: {} },
-      { id: 2157, artist: 'Capone', title: 'Barrio Dope', year: 2004, label: 'Aries Music Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/19139485', discogsArt: "https://i.discogs.com/Cl0iajwTpuewoV_zyjaY1nl84F0zawVrkoUaJxjSeHA/rs:fit/g:sm/q:90/h:499/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE5MTM5/NDg1LTE2MjM2ODYw/OTQtODI3MS5qcGVn.jpeg", stampSeed: {} },
-    ],
-  },
-  {
     id: 'bath', name: 'Bath', area: 'England',
     lng: -2.3596963, lat: 51.3813864,
     albums: [
@@ -5645,22 +5656,6 @@ const REGIONS = [
     ],
   },
   {
-    id: 'london', name: 'London', area: 'England',
-    lng: -0.1277653, lat: 51.5074456,
-    albums: [
-      { id: 2363, artist: 'South', title: 'Redemption', year: 2005, label: 'No Question Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/15258880', stampSeed: {} },
-      { id: 2329, artist: 'D.O.E.', title: 'Cold Blooded', year: 1999, label: 'Upset Records Inc.', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/10537950', stampSeed: {} },
-      { id: 2298, artist: 'Kings Of The City', title: 'Who Rides Wit Da Kings', year: 2004, label: 'Big Bailey Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/15509983', stampSeed: {} },
-      { id: 2207, artist: 'Troublesome', title: 'The Devil Made Me Do It', year: 2004, label: 'Gorilla Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/12385874', discogsArt: "https://i.discogs.com/iIVmAumFYOe6WW1xYz2MTQQ0ScMNI7-qYyF8x5A-0JI/rs:fit/g:sm/q:90/h:499/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyMzg1/ODc0LTE1MzQyMDgy/MDUtNTQwMC5qcGVn.jpeg", stampSeed: {} },
-      { id: 2170, artist: 'Big D', title: 'Jamm La Paix', year: 2004, label: 'Not On Label', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/12656868', stampSeed: {} },
-    ],
-  },
-  {
     id: 'lonestar', name: 'Lone Star', area: 'Texas',
     lng: -94.7094584, lat: 32.941589,
     albums: [
@@ -5674,14 +5669,6 @@ const REGIONS = [
     albums: [
       { id: 2172, artist: 'Bad Seed', title: 'From Dem Streetz', year: 2004, label: 'In-Tim\'-Dat\'En Rekords', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8964763', youtubeIds: ["nWnSFyICklA", "QwcEcnRjbnI", "JvRksi8U7U8", "n1Q8Q_J6YyY", "67riSw1niPc", "izOM9ET-uPw", "wfYSppAJZLw"], discogsArt: "https://i.discogs.com/8Cw80yPUJfnAVQsS_mn4UiPS1uMAWo6cPTaZtYpdcCw/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTg5NjQ3/NjMtMTQ3MjM4MjEx/NC0xNTE3LmpwZWc.jpeg", stampSeed: {} },
-    ],
-  },
-  {
-    id: 'liverpool', name: 'Liverpool', area: 'England',
-    lng: -2.9166389, lat: 53.3933411,
-    albums: [
-      { id: 2173, artist: 'Johnny Boy', title: 'Threat To Society', year: 2004, label: 'B-Dub Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/23585852', youtubeIds: ["QTAVPUfTOiQ", "mp7QNcNh8Yg"], discogsArt: "https://i.discogs.com/rawcCUL65Rc6jOwa552lrmh3KqZwisJfTIwJeDxH0VA/rs:fit/g:sm/q:90/h:487/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIzNTg1/ODUyLTE2NTUzMjE4/NjAtNTE2OS5qcGVn.jpeg", stampSeed: {} },
     ],
   },
   {
@@ -5774,22 +5761,6 @@ const REGIONS = [
     albums: [
       { id: 2280, artist: 'B-1', title: 'Off The Hook', year: 2004, label: 'Martell Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8183868', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'sete', name: 'Sète', area: 'France',
-    lng: 3.6959771, lat: 43.4014434,
-    albums: [
-      { id: 2281, artist: 'Stuntman', title: 'The Crash Unit', year: 1998, label: 'Subjec Matta Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/7341828', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'eastsussex', name: 'East Sussex', area: 'England',
-    lng: 0.3699978, lat: 50.9404266,
-    albums: [
-      { id: 2282, artist: 'Mr. Solo', title: 'Straight Out The Vee', year: 1998, label: 'N Muzik We Trust', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/29689492', stampSeed: {} },
     ],
   },
   {
