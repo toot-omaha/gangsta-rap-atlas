@@ -29,6 +29,40 @@ const UNCLASSIFIED_REGION = {
   lng: -129, lat: 36,
   unclassified: true,
   albums: [
+      { id: 2228, artist: 'Box', title: 'Inboxicated', year: 2004, label: 'Clever Soundz Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9104465', youtubeIds: ["qJzVjV0hckg", "tOGN0QDIpuA"], discogsArt: "https://i.discogs.com/8rvq31CXH5ZzT76WJ_RX3EIFybSw7qpcPooi3_w2E90/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkxMDQ0/NjUtMTQ3NDgzNDI3/MC04ODgxLmpwZWc.jpeg", stampSeed: {} },
+      { id: 2169, artist: 'Hard Life', title: 'Hard Life Vol. 1', year: 2004, label: 'Elevation Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35357926', discogsArt: "https://i.discogs.com/27fFhnPC6aFTEVe9PxdZ3i3Jzr2P39XtbK_6Au9JtYY/rs:fit/g:sm/q:90/h:400/w:400/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM1MzU3/OTI2LTE3NjAzMDIz/MzYtNzA4Mi5qcGVn.jpeg", stampSeed: {} },
+      { id: 2167, artist: 'D-Wayne', title: 'Ice-A-Tone', year: 2004, label: 'Drove Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24029426', discogsArt: "https://i.discogs.com/5QC2UJJhNZvigidL_q2Ecmn8oiGY4ezfA9Yy6vXlZTs/rs:fit/g:sm/q:90/h:288/w:291/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI0MDI5/NDI2LTE2NTkwNDY5/MjctNTcxNy5wbmc.jpeg", stampSeed: {} },
+      { id: 2159, artist: 'Sandro G', title: 'The Final Chapter?', year: 2004, label: 'City Of Sin', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37999308', discogsArt: "https://i.discogs.com/O0ORHetd9Q6FhQXiVwPWaf6aCffVvGxoshjQD8Wlmmk/rs:fit/g:sm/q:90/h:297/w:296/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM3OTk5/MzA4LTE3ODUyMzQz/MzQtNjIyNC5qcGVn.jpeg", stampSeed: {} },
+      { id: 2122, artist: 'Prime', title: 'Cyberballin', year: 2004, label: 'EMG Music Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2126164', youtubeIds: ["NN3sZiGH4TE", "HYNcWFgIT74"], discogsArt: "https://i.discogs.com/mZtMVVg4anqUmCLOVzlBpTMFsyAJAgls2euZNNdqY3I/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxMjYx/NjQtMTI2NTQ1OTkz/MC5qcGVn.jpeg", stampSeed: {} },
+      { id: 2140, artist: 'Prime', title: 'Cook It', year: 2004, label: 'Bayou Bay Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7376912', discogsArt: "https://i.discogs.com/I5caobMfYUKQGQ0PA92s1qGQV5JD7V9pTCBoCo-ilOk/rs:fit/g:sm/q:90/h:355/w:356/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTczNzY5/MTItMTQ0MDIxODk3/NS05NDUxLmpwZWc.jpeg", stampSeed: {} },
+      { id: 1985, artist: 'D.A.P.', title: 'Diamonds And Platinum', year: 2003, label: 'D.A.P. Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13472810', youtubeIds: ["sZMJr8D1qKc", "OYI6eOXpy9k", "st4Np9RoLWs", "SJ8bLBIo2No", "NUKCgg6biMc", "Mep-96oM8F4", "VfNob39up-M", "aFpKOTMWKe8", "QRQH6laVvWc", "MD5rFzs2F-w", "dESe_iJjSBA", "39AxEb-z9rI", "0yiHwneRcL8"], discogsArt: "https://i.discogs.com/Z0bEh-dVLgFvTMo-GE0TsdrLgakiaB_s9sfAqC1h7jQ/rs:fit/g:sm/q:90/h:600/w:591/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzNDcy/ODEwLTE1NTQ4NjM5/MTYtNzU1Ny5qcGVn.jpeg", stampSeed: {} },
+      { id: 1980, artist: 'Agony', title: 'Eternal Pain', year: 2003, label: 'Just Not Right Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11409284', discogsArt: "https://i.discogs.com/-hhh5iCrKy2jc4rMherrBSbJqV-NNAsXEndym8_uXkU/rs:fit/g:sm/q:90/h:600/w:595/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExNDA5/Mjg0LTE1MTU4MzQ5/NTgtMjYxMS5wbmc.jpeg", stampSeed: {} },
+      { id: 2151, artist: 'Most Valuable Players', title: 'The Game Of Life', year: 1997, label: 'Sho Shot Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7836686', youtubeIds: ["Ti2dAzVFlo0", "HJ41a5WuSMY"], discogsArt: "https://i.discogs.com/LfC2LW2s6Km7j7br3KvGCg7IAyizAzHk_78P5rjdnQc/rs:fit/g:sm/q:90/h:318/w:320/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTc4MzY2/ODYtMTU3MTk2MTU1/Ni05ODkxLmpwZWc.jpeg", stampSeed: {} },
+      { id: 1979, artist: 'Alkatraz', title: 'Life Sentence', year: 2003, label: 'Life Sentence Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9221733', discogsArt: "https://i.discogs.com/1LfaVkJJ672wYWx4YC9rpQ7YYSnoIV7T5-4RT8Id5UM/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkyMjE3/MzMtMTUwODU4OTIy/MS02ODE5LmpwZWc.jpeg", stampSeed: {} },
+      { id: 2056, artist: 'G-Style', title: 'Ghetto Prophecy', year: 2003, label: 'G Style Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10924202', youtubeIds: ["GqOgdw3L-CE", "Wpfrn6z5Bqc", "xTEtadQQW-8"], youtubeFullAlbumId: 'DwWAhFLi_r0', discogsArt: "https://i.discogs.com/13x2LX06bJtruGm6ZaBdEnx6GzpB92xpBwj9apqzyBk/rs:fit/g:sm/q:90/h:593/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwOTI0/MjAyLTE1MDY2MTA1/NzItODQ1OC5qcGVn.jpeg", stampSeed: {} },
+      { id: 1713, artist: 'Taichi', title: 'Show The World', year: 2002, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10849944', discogsArt: "https://i.discogs.com/YbLX177AfHjZ7iYg9Hc8z2JUk0vdo8hY3aLwuaJJOIU/rs:fit/g:sm/q:90/h:599/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwODQ5/OTQ0LTE1MDUzMjY3/NzctMzk5OC5qcGVn.jpeg", stampSeed: {} },
+      { id: 1933, artist: 'Brixx', title: 'As Cold As They Come', year: 2003, label: 'IANI Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28502314', youtubeIds: ["7haZxN09Ylc", "xsl2MA7898E", "YxhkAyEcGBo", "PD2BXzNA1vU", "f7SPd9no-nI", "5e-65XVjYLw", "Vne8d8jPrFQ", "38zLLt7YxCE", "AT8othPwJt4", "n2lCWOfytc4", "gBYZRrb5icc", "FHIQrmPo8vY", "3Ut8-Tkpf-A", "WN0agJd33VQ", "NFj2_x8fF8I", "O_6swoxi3gM"], discogsArt: "https://i.discogs.com/S0zliuoGlXFme9k2QZD1WySOyPOpPb8jtL-Jw7sdBIc/rs:fit/g:sm/q:90/h:562/w:569/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4NTAy/MzE0LTE2OTY1MDQ1/OTUtNTA0NC5qcGVn.jpeg", stampSeed: {} },
+      { id: 1995, artist: 'Arsen', title: '151 Xplicit', year: 2003, label: 'ServnU151 Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9973448', discogsArt: "https://i.discogs.com/6fHjFFu4aSrExwbUDxDpSUEcL_kFnXMInzx_aYiKWj0/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTk5NzM0/NDgtMTc3MjIzMTg4/MS01MzA4LmpwZWc.jpeg", stampSeed: {} },
+      { id: 1231, artist: 'Major Damage', title: 'Sho Nuff Real', year: 1997, label: 'Poe Jet Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10102272', youtubeIds: ["GVEgTafwmQs", "Wyq2UVQ3SI8", "_NlmrQqZRaQ", "WnlizUNNm5w", "xAM4ONzoZog"], discogsArt: "https://i.discogs.com/AEHYnSIbCIM7mtiatQUqR1gJzWGhDbdVsHDB2IJvI2g/rs:fit/g:sm/q:90/h:593/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwMTAy/MjcyLTE0OTE2NTA1/MTgtMjM4NC5qcGVn.jpeg", stampSeed: { bangin: 16, dark: 12, doro: 9 } },
+      { id: 1230, artist: 'Lo Down', title: 'Gangstaville', year: 1994, label: '40 Ounce Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3378717', stampSeed: { bangin: 17, dark: 13, doro: 10 } },
+      { id: 2359, artist: 'Tino', title: 'Die For Fortune & Fame', year: 2005, label: 'Diamond Note Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11010412', stampSeed: {} },
             { id: 2170, artist: 'Big D', title: 'Jamm La Paix', year: 2004, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12656868', stampSeed: {} },
             { id: 2363, artist: 'South', title: 'Redemption', year: 2005, label: 'No Question Records', youtubeId: null,
@@ -3941,14 +3975,8 @@ const REGIONS = [
     id: 'amsterdam', name: 'Amsterdam', area: 'Netherlands — 世界のG-RAP',
     lng: 4.8952, lat: 52.3702,
     albums: [
-      { id: 2359, artist: 'Tino', title: 'Die For Fortune & Fame', year: 2005, label: 'Diamond Note Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/11010412', stampSeed: {} },
       { id: 1229, artist: 'Osdorp Posse', title: 'Osdorp Stijl', year: 1992, label: 'Djax Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2995060', stampSeed: { bangin: 20, dark: 15, doro: 11 } },
-      { id: 1230, artist: 'Lo Down', title: 'Gangstaville', year: 1994, label: '40 Ounce Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/3378717', stampSeed: { bangin: 17, dark: 13, doro: 10 } },
-      { id: 1231, artist: 'Major Damage', title: 'Sho Nuff Real', year: 1997, label: 'Poe Jet Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/10102272', youtubeIds: ["GVEgTafwmQs", "Wyq2UVQ3SI8", "_NlmrQqZRaQ", "WnlizUNNm5w", "xAM4ONzoZog"], discogsArt: "https://i.discogs.com/AEHYnSIbCIM7mtiatQUqR1gJzWGhDbdVsHDB2IJvI2g/rs:fit/g:sm/q:90/h:593/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwMTAy/MjcyLTE0OTE2NTA1/MTgtMjM4NC5qcGVn.jpeg", stampSeed: { bangin: 16, dark: 12, doro: 9 } },
     ],
   },
   {
@@ -4307,16 +4335,10 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/2257701', discogsArt: "https://i.discogs.com/Ir24iIkWVK8NAsDHhqLFD1ViellGXQn1wrZ1fJszOWE/rs:fit/g:sm/q:90/h:595/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIyNTc3/MDEtMTY0MzA2MDg3/OS04MTg1LmpwZWc.jpeg", stampSeed: {} },
       { id: 2041, artist: 'Frauenarzt', title: 'Untergrund Solo Vol. 2', year: 2003, label: 'Rap Haus Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2011987', stampSeed: {} },
-      { id: 1995, artist: 'Arsen', title: '151 Xplicit', year: 2003, label: 'ServnU151 Music', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/9973448', discogsArt: "https://i.discogs.com/6fHjFFu4aSrExwbUDxDpSUEcL_kFnXMInzx_aYiKWj0/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTk5NzM0/NDgtMTc3MjIzMTg4/MS01MzA4LmpwZWc.jpeg", stampSeed: {} },
-      { id: 1933, artist: 'Brixx', title: 'As Cold As They Come', year: 2003, label: 'IANI Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/28502314', youtubeIds: ["7haZxN09Ylc", "xsl2MA7898E", "YxhkAyEcGBo", "PD2BXzNA1vU", "f7SPd9no-nI", "5e-65XVjYLw", "Vne8d8jPrFQ", "38zLLt7YxCE", "AT8othPwJt4", "n2lCWOfytc4", "gBYZRrb5icc", "FHIQrmPo8vY", "3Ut8-Tkpf-A", "WN0agJd33VQ", "NFj2_x8fF8I", "O_6swoxi3gM"], discogsArt: "https://i.discogs.com/S0zliuoGlXFme9k2QZD1WySOyPOpPb8jtL-Jw7sdBIc/rs:fit/g:sm/q:90/h:562/w:569/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI4NTAy/MzE0LTE2OTY1MDQ1/OTUtNTA0NC5qcGVn.jpeg", stampSeed: {} },
       { id: 1557, artist: 'King Orgasmus One', title: 'Tag Der Abrechnung', year: 2001, label: 'I Luv Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2742927', stampSeed: {} },
       { id: 1648, artist: 'Killa Hakan', title: 'Çakallar', year: 2002, label: 'Rough Mix Recordings', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4140506', stampSeed: {} },
-      { id: 1713, artist: 'Taichi', title: 'Show The World', year: 2002, label: 'Not On Label', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/10849944', discogsArt: "https://i.discogs.com/YbLX177AfHjZ7iYg9Hc8z2JUk0vdo8hY3aLwuaJJOIU/rs:fit/g:sm/q:90/h:599/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwODQ5/OTQ0LTE1MDUzMjY3/NzctMzk5OC5qcGVn.jpeg", stampSeed: {} },
       { id: 1717, artist: 'King Orgasmus One', title: 'Mein Kampf: Musik Für Männer', year: 2002, label: 'I Luv Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10002028', youtubeIds: ["rcP7JV0gwKM", "He-oA_2_5pM", "8r1Eepfzf-4"], discogsArt: "https://i.discogs.com/cNFJWWiQzRueqbxtycIkNpfPfHgJb28IRr_5_vYQ4Ms/rs:fit/g:sm/q:90/h:588/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwMDAy/MDI4LTE2MjA4OTQx/NTktNzc5Ny5qcGVn.jpeg", stampSeed: {} },
     ],
@@ -5989,8 +6011,6 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/855286', stampSeed: {} },
       { id: 2146, artist: 'Bushido', title: 'Electro Ghetto', year: 2004, label: 'ersguterjunge', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6177711', stampSeed: {} },
-      { id: 2056, artist: 'G-Style', title: 'Ghetto Prophecy', year: 2003, label: 'G Style Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/10924202', youtubeIds: ["GqOgdw3L-CE", "Wpfrn6z5Bqc", "xTEtadQQW-8"], youtubeFullAlbumId: 'DwWAhFLi_r0', discogsArt: "https://i.discogs.com/13x2LX06bJtruGm6ZaBdEnx6GzpB92xpBwj9apqzyBk/rs:fit/g:sm/q:90/h:593/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwOTI0/MjAyLTE1MDY2MTA1/NzItODQ1OC5qcGVn.jpeg", stampSeed: {} },
       { id: 1927, artist: 'Bushido', title: 'Vom Bordstein Bis Zur Skyline', year: 2003, label: 'Aggro Berlin', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/318694', stampSeed: {} },
     ],
@@ -6017,24 +6037,6 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/12087707', youtubeIds: ["jkoZ85_2Z5Q", "ldpFTvvYOm4"], youtubeFullAlbumId: 'Hopr1jNOegc', discogsArt: "https://i.discogs.com/E9PEjpstZTrQcqz_yWjWhNsduVqBSQ-M9XpIR9hOMX0/rs:fit/g:sm/q:90/h:600/w:598/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyMDg3/NzA3LTE1MjgwNDI3/NjMtMjI1Ny5qcGVn.jpeg", stampSeed: {} },
       { id: 1929, artist: 'L.O.C.', title: 'Inkarneret', year: 2003, label: 'Virgin', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1188891', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'neathporttalbot', name: 'Neath Port Talbot', area: 'Wales',
-    lng: -3.7218179, lat: 51.6689557,
-    albums: [
-      { id: 1979, artist: 'Alkatraz', title: 'Life Sentence', year: 2003, label: 'Life Sentence Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/9221733', discogsArt: "https://i.discogs.com/1LfaVkJJ672wYWx4YC9rpQ7YYSnoIV7T5-4RT8Id5UM/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkyMjE3/MzMtMTUwODU4OTIy/MS02ODE5LmpwZWc.jpeg", stampSeed: {} },
-    ],
-  },
-  {
-    id: 'solna', name: 'Solna', area: 'Sweden',
-    lng: 18.000259, lat: 59.3598923,
-    albums: [
-      { id: 2151, artist: 'Most Valuable Players', title: 'The Game Of Life', year: 1997, label: 'Sho Shot Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/7836686', youtubeIds: ["Ti2dAzVFlo0", "HJ41a5WuSMY"], discogsArt: "https://i.discogs.com/LfC2LW2s6Km7j7br3KvGCg7IAyizAzHk_78P5rjdnQc/rs:fit/g:sm/q:90/h:318/w:320/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTc4MzY2/ODYtMTU3MTk2MTU1/Ni05ODkxLmpwZWc.jpeg", stampSeed: {} },
-      { id: 1980, artist: 'Agony', title: 'Eternal Pain', year: 2003, label: 'Just Not Right Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/11409284', discogsArt: "https://i.discogs.com/-hhh5iCrKy2jc4rMherrBSbJqV-NNAsXEndym8_uXkU/rs:fit/g:sm/q:90/h:600/w:595/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTExNDA5/Mjg0LTE1MTU4MzQ5/NTgtMjYxMS5wbmc.jpeg", stampSeed: {} },
     ],
   },
   {
@@ -6080,14 +6082,6 @@ const REGIONS = [
     ],
   },
   {
-    id: 'pisa', name: 'Pisa', area: 'Italy',
-    lng: 10.6797912, lat: 43.4714722,
-    albums: [
-      { id: 1985, artist: 'D.A.P.', title: 'Diamonds And Platinum', year: 2003, label: 'D.A.P. Productions', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/13472810', youtubeIds: ["sZMJr8D1qKc", "OYI6eOXpy9k", "st4Np9RoLWs", "SJ8bLBIo2No", "NUKCgg6biMc", "Mep-96oM8F4", "VfNob39up-M", "aFpKOTMWKe8", "QRQH6laVvWc", "MD5rFzs2F-w", "dESe_iJjSBA", "39AxEb-z9rI", "0yiHwneRcL8"], discogsArt: "https://i.discogs.com/Z0bEh-dVLgFvTMo-GE0TsdrLgakiaB_s9sfAqC1h7jQ/rs:fit/g:sm/q:90/h:600/w:591/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzNDcy/ODEwLTE1NTQ4NjM5/MTYtNzU1Ny5qcGVn.jpeg", stampSeed: {} },
-    ],
-  },
-  {
     id: 'southampton', name: 'Southampton', area: 'England',
     lng: -1.404189, lat: 50.9025349,
     albums: [
@@ -6125,10 +6119,6 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/9538127', stampSeed: {} },
       { id: 2349, artist: 'Prime', title: 'Get It Or Don\'t Have It', year: 2005, label: 'Trustworthy', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10686615', stampSeed: {} },
-      { id: 2140, artist: 'Prime', title: 'Cook It', year: 2004, label: 'Bayou Bay Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/7376912', discogsArt: "https://i.discogs.com/I5caobMfYUKQGQ0PA92s1qGQV5JD7V9pTCBoCo-ilOk/rs:fit/g:sm/q:90/h:355/w:356/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTczNzY5/MTItMTQ0MDIxODk3/NS05NDUxLmpwZWc.jpeg", stampSeed: {} },
-      { id: 2122, artist: 'Prime', title: 'Cyberballin', year: 2004, label: 'EMG Music Group', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/2126164', youtubeIds: ["NN3sZiGH4TE", "HYNcWFgIT74"], discogsArt: "https://i.discogs.com/mZtMVVg4anqUmCLOVzlBpTMFsyAJAgls2euZNNdqY3I/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTIxMjYx/NjQtMTI2NTQ1OTkz/MC5qcGVn.jpeg", stampSeed: {} },
       { id: 1988, artist: 'Sté Strausz\'', title: 'Sté Real', year: 1994, label: 'Plug It! Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/404612', youtubeIds: ["dqeXKyMubo4", "BpBGUFaztbM", "69WaW6qEzmY"], discogsArt: "https://i.discogs.com/rN45IAE7GyqF2rjjdCUjEGmdZQ0k3iK08FxA30sgRzc/rs:fit/g:sm/q:90/h:376/w:369/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTQwNDYx/Mi0xMTA4OTc0MjQw/LmpwZw.jpeg", stampSeed: {} },
     ],
@@ -6173,14 +6163,6 @@ const REGIONS = [
     albums: [
       { id: 2158, artist: 'DNA', title: 'Chiefa In A Zone', year: 2004, label: 'NAR', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/17480395', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'saomiguel', name: 'São Miguel', area: 'Azores',
-    lng: -25.4731374, lat: 37.8085565,
-    albums: [
-      { id: 2159, artist: 'Sandro G', title: 'The Final Chapter?', year: 2004, label: 'City Of Sin', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/37999308', discogsArt: "https://i.discogs.com/O0ORHetd9Q6FhQXiVwPWaf6aCffVvGxoshjQD8Wlmmk/rs:fit/g:sm/q:90/h:297/w:296/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM3OTk5/MzA4LTE3ODUyMzQz/MzQtNjIyNC5qcGVn.jpeg", stampSeed: {} },
     ],
   },
   {
@@ -6244,14 +6226,6 @@ const REGIONS = [
     ],
   },
   {
-    id: 'eindhoven', name: 'Eindhoven', area: 'Netherlands',
-    lng: 5.478633, lat: 51.4392648,
-    albums: [
-      { id: 2167, artist: 'D-Wayne', title: 'Ice-A-Tone', year: 2004, label: 'Drove Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/24029426', discogsArt: "https://i.discogs.com/5QC2UJJhNZvigidL_q2Ecmn8oiGY4ezfA9Yy6vXlZTs/rs:fit/g:sm/q:90/h:288/w:291/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTI0MDI5/NDI2LTE2NTkwNDY5/MjctNTcxNy5wbmc.jpeg", stampSeed: {} },
-    ],
-  },
-  {
     id: 'riga', name: 'Rīga', area: 'Latvia',
     lng: 24.1051846, lat: 56.9493977,
     albums: [
@@ -6259,14 +6233,6 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/3041727', stampSeed: {} },
       { id: 2168, artist: 'Gustavo', title: 'Beidzot!', year: 2004, label: 'Gailītis-G', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/30889176', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'leicester', name: 'Leicester', area: 'England',
-    lng: -1.1331969, lat: 52.6362,
-    albums: [
-      { id: 2169, artist: 'Hard Life', title: 'Hard Life Vol. 1', year: 2004, label: 'Elevation Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/35357926', discogsArt: "https://i.discogs.com/27fFhnPC6aFTEVe9PxdZ3i3Jzr2P39XtbK_6Au9JtYY/rs:fit/g:sm/q:90/h:400/w:400/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM1MzU3/OTI2LTE3NjAzMDIz/MzYtNzA4Mi5qcGVn.jpeg", stampSeed: {} },
     ],
   },
   {
@@ -6299,14 +6265,6 @@ const REGIONS = [
     albums: [
       { id: 2227, artist: 'The A-Team', title: 'Teamwork', year: 2004, label: 'Aba Muzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1539564', discogsArt: "https://i.discogs.com/osVfyPlDEhQFV2nPonDS85XL0CaOzohkwn2FQtKOL6Y/rs:fit/g:sm/q:90/h:520/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE1Mzk1/NjQtMTczNjI4NDQ4/Ny0yMzgxLmpwZWc.jpeg", stampSeed: {} },
-    ],
-  },
-  {
-    id: 'antwerp', name: 'Antwerp', area: 'Belgium',
-    lng: 4.3997081, lat: 51.2211097,
-    albums: [
-      { id: 2228, artist: 'Box', title: 'Inboxicated', year: 2004, label: 'Clever Soundz Productions', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/9104465', youtubeIds: ["qJzVjV0hckg", "tOGN0QDIpuA"], discogsArt: "https://i.discogs.com/8rvq31CXH5ZzT76WJ_RX3EIFybSw7qpcPooi3_w2E90/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkxMDQ0/NjUtMTQ3NDgzNDI3/MC04ODgxLmpwZWc.jpeg", stampSeed: {} },
     ],
   },
   {

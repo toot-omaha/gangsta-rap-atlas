@@ -1,6 +1,57 @@
 // 自動生成: scripts/enrich.py (iTunes Search API)
 // ジャケ写・試聴はAppleの提供データ。表示時はApple Musicへのリンクを添える。
 const ENRICH = {
+ "Lo Down|Gangstaville": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/d7/de/41/mzi.asvdydiv.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/gangstaville/265593028?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Funky Shit",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/98/84/72/9884721c-c6fe-9e30-add8-6534b82991c1/mzaf_128707313286441470.plus.aac.p.m4a"
+   },
+   {
+    "name": "East Side",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/33/cf/17/33cf1761-5e56-4f42-b8de-eef02c093c6b/mzaf_14417824140487103608.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bullet 'N Da Chamba Feat. Buccet Loc",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/77/6a/ea/mzm.syuajmkm.aac.p.m4a"
+   },
+   {
+    "name": "Bluff",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/8a/f9/1f/mzm.agwcwzdv.aac.p.m4a"
+   },
+   {
+    "name": "Gangsta Issues Feat. Nappi Chin",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/80/e1/fa/mzm.btywtojt.aac.p.m4a"
+   },
+   {
+    "name": "Blaze Feat. Nappi Chin & T-Mack",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/b1/ee/fa/mzm.deaevuwd.aac.p.m4a"
+   },
+   {
+    "name": "Coppin' Deuce Feat. Nappi Chin",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/25/c3/96/mzm.xkqympdl.aac.p.m4a"
+   },
+   {
+    "name": "Summertime Feat. Nappi Chin",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/b7/24/f3/mzm.dxmqjqts.aac.p.m4a"
+   },
+   {
+    "name": "My Baby's Momma",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/24/b3/e2/24b3e2f8-0130-2c34-8f10-4eb3bdef88ff/mzaf_6668662467971986078.plus.aac.p.m4a"
+   },
+   {
+    "name": "You Don't Know Feat. Playa C",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/99/c9/18/mzm.jhqjugfz.aac.p.m4a"
+   },
+   {
+    "name": "Gangstaville Feat. Spex & Nappi Chin",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/03/4c/0c/mzm.yxhzvqhy.aac.p.m4a"
+   }
+  ]
+ },
  "Kings Of The City|Who Rides Wit Da Kings": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m04/d13/h17/s05.lmzkzqge.tif/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/who-rides-wit-da-kings/57995620?uo=4",
@@ -68710,57 +68761,6 @@ const ENRICH = {
    {
     "name": "Osdorp Stijl / Uittro",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/10/32/ff/1032ff90-7319-3fc5-7ca3-17b405c09b44/mzaf_11413743911602566499.plus.aac.p.m4a"
-   }
-  ]
- },
- "Lo Down|Gangstaville": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/d7/de/41/mzi.asvdydiv.tif/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/gangstaville/265593028?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "Funky Shit",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/98/84/72/9884721c-c6fe-9e30-add8-6534b82991c1/mzaf_128707313286441470.plus.aac.p.m4a"
-   },
-   {
-    "name": "East Side",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/33/cf/17/33cf1761-5e56-4f42-b8de-eef02c093c6b/mzaf_14417824140487103608.plus.aac.p.m4a"
-   },
-   {
-    "name": "Bullet 'N Da Chamba Feat. Buccet Loc",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/77/6a/ea/mzm.syuajmkm.aac.p.m4a"
-   },
-   {
-    "name": "Bluff",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/8a/f9/1f/mzm.agwcwzdv.aac.p.m4a"
-   },
-   {
-    "name": "Gangsta Issues Feat. Nappi Chin",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/80/e1/fa/mzm.btywtojt.aac.p.m4a"
-   },
-   {
-    "name": "Blaze Feat. Nappi Chin & T-Mack",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/b1/ee/fa/mzm.deaevuwd.aac.p.m4a"
-   },
-   {
-    "name": "Coppin' Deuce Feat. Nappi Chin",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/25/c3/96/mzm.xkqympdl.aac.p.m4a"
-   },
-   {
-    "name": "Summertime Feat. Nappi Chin",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/b7/24/f3/mzm.dxmqjqts.aac.p.m4a"
-   },
-   {
-    "name": "My Baby's Momma",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/24/b3/e2/24b3e2f8-0130-2c34-8f10-4eb3bdef88ff/mzaf_6668662467971986078.plus.aac.p.m4a"
-   },
-   {
-    "name": "You Don't Know Feat. Playa C",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/99/c9/18/mzm.jhqjugfz.aac.p.m4a"
-   },
-   {
-    "name": "Gangstaville Feat. Spex & Nappi Chin",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/03/4c/0c/mzm.yxhzvqhy.aac.p.m4a"
    }
   ]
  },
