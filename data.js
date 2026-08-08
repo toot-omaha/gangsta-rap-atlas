@@ -29,8 +29,6 @@ const UNCLASSIFIED_REGION = {
   lng: -129, lat: 36,
   unclassified: true,
   albums: [
-      { id: 2428, artist: 'Rees', title: 'Off Da Ripp', year: 2005, label: 'No Tamin Ent.', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/11573715', stampSeed: {} },
       { id: 2280, artist: 'B-1', title: 'Off The Hook', year: 2004, label: 'Martell Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8183868', stampSeed: {} },
       { id: 2277, artist: '3D', title: '3DTV Tunnel Vizion', year: 2004, label: 'Undercover Records', youtubeId: null,
@@ -6655,6 +6653,14 @@ const REGIONS = [
     albums: [
       { id: 2391, artist: 'Jimbob', title: 'Stand On My Own', year: 2005, label: 'Better Dayz Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9773125', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'gary', name: 'Gary', area: 'Indiana',
+    lng: -87.3464, lat: 41.5934,
+    albums: [
+      { id: 2428, artist: 'Rees', title: 'Off Da Ripp', year: 2005, label: 'No Tamin Ent.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11573715', stampSeed: {} },
     ],
   },
 ];
