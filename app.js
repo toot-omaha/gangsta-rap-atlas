@@ -1304,6 +1304,49 @@ let queue = [], cursor = -1;
 const audio = new Audio();
 audio.addEventListener('ended', () => next());
 
+// ---------- キューの永続化(リロードしても再生が「ゼロから」にならないように) ----------
+// キューの中身そのもの(album等の巨大なオブジェクト)は保存せず、
+// albumId+trackItemsOf内の何番目か、だけを保存して再構築する。
+const QUEUE_KEY = 'gra.queue.v1';
+function albumById(id) {
+  for (const r of REGIONS) {
+    const a = r.albums.find((x) => x.id === id);
+    if (a) return a;
+  }
+  return null;
+}
+function saveQueue() {
+  const items = queue.map((q) => (q.album ? { albumId: q.album.id, idx: q.idx ?? 0 } : null));
+  localStorage.setItem(QUEUE_KEY, JSON.stringify({ cursor, items }));
+}
+// リロード直後: キューの構成とカーソル位置だけ復元し曲情報を表示する。
+// 自動再生はブラウザの制約で通らないことが多く、鳴りっぱなしも望ましくないため、
+// 現在曲を「▶を押せばすぐ鳴る」状態(試聴はsrcセット、YouTubeはcue)まで
+// 準備した上で一時停止のまま待つ。
+function restoreQueue() {
+  let saved;
+  try { saved = JSON.parse(localStorage.getItem(QUEUE_KEY) || 'null'); } catch { saved = null; }
+  if (!saved || !Array.isArray(saved.items) || !saved.items.length) return;
+  const restored = [];
+  for (const it of saved.items) {
+    if (!it) continue;
+    const album = albumById(it.albumId);
+    if (!album) continue;
+    const item = trackItemsOf(album)[it.idx];
+    if (item) restored.push(item);
+  }
+  if (!restored.length) return;
+  queue = restored;
+  cursor = Math.max(0, Math.min(saved.cursor, queue.length - 1));
+  const q = queue[cursor];
+  if (q?.preview) {
+    audio.src = q.preview; // 一時停止のまま、▶で即再生できるように準備だけ
+  } else if (q?.youtube) {
+    loadYtVideo(q.youtube, true); // cueのみ、自動再生しない
+  }
+  paint();
+}
+
 const $title = document.getElementById('playerTitle');
 const $artist = document.getElementById('playerArtist');
 const $count = document.getElementById('queueCount');
@@ -1335,10 +1378,13 @@ function trackItemsOf(album) {
   const art = artUrl(e, 100, album);
   const itunesTracks = (e?.tracks || []).filter((tr) => tr.preview)
     .map((tr) => ({ title: tr.name, artist: album.artist, preview: tr.preview, youtube: null, art, album }));
-  if (itunesTracks.length) return itunesTracks;
-  const vids = youtubeIdsFor(album);
-  if (!vids.length) return [];
-  return vids.map((vid) => ({ title: album.title, artist: album.artist, preview: null, youtube: vid, art, album }));
+  const items = itunesTracks.length ? itunesTracks : (() => {
+    const vids = youtubeIdsFor(album);
+    if (!vids.length) return [];
+    return vids.map((vid) => ({ title: album.title, artist: album.artist, preview: null, youtube: vid, art, album }));
+  })();
+  items.forEach((it, i) => { it.idx = i; }); // キュー復元時にtrackItemsOfの何番目かを特定するため
+  return items;
 }
 
 // 既にキューに入っているアルバムの最初の位置(無ければ-1)。
@@ -1394,7 +1440,7 @@ function enqueueAlbum(album) {
 // ---------- YouTube IFrame Player(iTunesに試聴の無い盤の代替再生用) ----------
 // #ytHost は1x1px・opacity:0の非表示ホスト(style.css)。映像は見せず音声だけ
 // 使う。iTunes試聴とテンポを揃えるため30秒で打ち切る(endSeconds)。
-let ytPlayer = null, ytReady = false, ytPendingId = null;
+let ytPlayer = null, ytReady = false, ytPendingId = null, ytPendingCueOnly = false;
 function initYtPlayer() {
   if (ytPlayer) return;
   ytPlayer = new YT.Player('ytHost', {
@@ -1403,7 +1449,7 @@ function initYtPlayer() {
     events: {
       onReady: () => {
         ytReady = true;
-        if (ytPendingId) { const id = ytPendingId; ytPendingId = null; loadYtVideo(id); }
+        if (ytPendingId) { const id = ytPendingId; const cue = ytPendingCueOnly; ytPendingId = null; loadYtVideo(id, cue); }
       },
       onStateChange: (e) => {
         if (e.data === YT.PlayerState.ENDED) next();
@@ -1422,9 +1468,11 @@ window.onYouTubeIframeAPIReady = initYtPlayer;
   if (window.YT && window.YT.Player) { initYtPlayer(); return; }
   setTimeout(pollYtApi, 300);
 })();
-function loadYtVideo(videoId) {
-  if (!ytReady) { ytPendingId = videoId; return; }
-  ytPlayer.loadVideoById({ videoId, startSeconds: 0, endSeconds: 30 });
+// cueOnly=true だと読み込むだけで再生開始しない(リロード直後のキュー復元用。
+// loadVideoByIdは即再生してしまうため、ユーザーが▶を押すまで待つ場合はcueVideoByIdを使う)。
+function loadYtVideo(videoId, cueOnly = false) {
+  if (!ytReady) { ytPendingId = videoId; ytPendingCueOnly = cueOnly; return; }
+  ytPlayer[cueOnly ? 'cueVideoById' : 'loadVideoById']({ videoId, startSeconds: 0, endSeconds: 30 });
 }
 function ytIsPlaying() {
   return !!(ytReady && ytPlayer.getPlayerState && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
@@ -1473,6 +1521,7 @@ function syncMediaSession(q) {
 
 function paint() {
   const q = queue[cursor];
+  saveQueue();
   $count.textContent = `${Math.max(0, queue.length - Math.max(cursor, 0))} 曲`;
   $play.textContent = (q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶';
   syncMediaSession(q);
@@ -1637,6 +1686,7 @@ document.getElementById('langBtn').addEventListener('click', () => {
   localStorage.setItem('gra.lang', lang);
   applyLang();
 });
+restoreQueue();
 applyLang();
 loadSharedStamps();
 autoPullFavSync();
