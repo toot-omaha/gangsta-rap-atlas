@@ -668,6 +668,10 @@ const REGIONS = [
     id: 'longbeach', name: 'Long Beach', area: 'Los Angeles County, CA',
     lng: -118.1937, lat: 33.7701,
     albums: [
+      { id: 3167, artist: 'Snoop Dogg', title: 'Ego Trippin', year: 2008, label: 'Geffen Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5770863-Snoop-Dogg-Ego-Trippin', stampSeed: {} },
+      { id: 3157, artist: 'Snoop Dogg', title: 'The Big Squeeze', year: 2007, label: 'Koch Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1369441-Snoop-Dogg-The-Big-Squeeze', stampSeed: {} },
       { id: 3104, artist: 'RBX', title: 'Broken Silence', year: 2007, label: 'Premeditated Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6077224-RBX-Broken-Silence', stampSeed: {} },
       { id: 3064, artist: 'Katana Da Don', title: 'Secret Weapon Vol 1', year: 2007, label: 'Katastrofik Entertainment', youtubeId: null,
@@ -1256,6 +1260,8 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 3173, artist: 'Yukmouth', title: 'Million Dollar Mouthpiece', year: 2008, label: 'Rap-A-Lot 4 Life', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1303805-Yukmouth-Million-Dollar-Mouthpiece', stampSeed: {} },
       { id: 3106, artist: 'Mac Dre', title: 'The Best of Mac Dammit & Friends', year: 2007, label: 'Thizz Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15480020-Mac-Dre-The-Best-of-Mac-Dammit-Friends', stampSeed: {} },
       { id: 3095, artist: 'Tuff Da Goon', title: 'Me-N-My Goonz', year: 2007, label: 'Thizz Entertainment', youtubeId: null,
@@ -1586,6 +1592,16 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { id: 3186, artist: 'Juan Gotti', title: 'El Mas Locote Mix Vol.1', year: 2008, label: 'Dope House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12812107-Juan-Gotti-El-Mas-Locote-Mix-Vol1', stampSeed: {} },
+      { id: 3177, artist: 'SPM', title: 'The Last Chair Violinist', year: 2008, label: 'Dope House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6387531-SPM-The-Last-Chair-Violinist-', stampSeed: {} },
+      { id: 3175, artist: 'K-Rino', title: 'Triple Darkness Vol. 2 - The Lyrics', year: 2008, label: 'Black Book International', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1406598-K-Rino-Triple-Darkness-Vol-2-The-Lyrics', stampSeed: {} },
+      { id: 3163, artist: 'Trae', title: 'Life Goes On (S.L.A.B.E.D.)', year: 2007, label: 'G-Maab Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19897312-Trae-Life-Goes-On-SLABED', stampSeed: {} },
+      { id: 3160, artist: 'Big Moe', title: 'Lost Tracks', year: 2007, label: 'Dream Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9767476-Big-Moe-Lost-Tracks', stampSeed: {} },
       { id: 3107, artist: 'Lester Roy', title: 'Back2Tha Biz', year: 2007, label: 'Big House Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13090348-Lester-Roy-Back2Tha-Biz', stampSeed: {} },
       { id: 3100, artist: 'Slim Thug', title: 'Boss Basics Gangsta Grillz Special Edition', year: 2007, label: 'Aphilliates', youtubeId: null,
@@ -2326,6 +2342,8 @@ const REGIONS = [
     id: 'portarthur', name: 'Port Arthur', area: 'Texas',
     lng: -93.9399, lat: 29.8850,
     albums: [
+      { id: 3170, artist: 'Bun B', title: 'II Trill', year: 2008, label: 'Rap-A-Lot 4 Life', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/32909199-Bun-B-II-Trill', stampSeed: {} },
       { id: 3073, artist: 'UGK', title: 'Underground Kings', year: 2007, label: 'Zomba', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26317052-UGK-Underground-Kings', stampSeed: {} },
       { id: 3068, artist: 'Bankroll Jonez', title: 'UGK Records & Get Money Movement Presents Scroll Muzik', year: 2007, label: 'UGK Records', youtubeId: null,
@@ -2362,6 +2380,10 @@ const REGIONS = [
     id: 'memphis', name: 'Memphis', area: 'Tennessee',
     lng: -90.0490, lat: 35.1495,
     albums: [
+      { id: 3169, artist: 'La Chat', title: 'Da Hood Home Girl', year: 2008, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5203708-La-Chat-Da-Hood-Home-Girl', stampSeed: {} },
+      { id: 3165, artist: 'Lord Infamous', title: 'The Man The Myth The Legacy', year: 2007, label: 'Black Rain Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2225323-Lord-Infamous-The-Man-The-Myth-The-Legacy', stampSeed: {} },
       { id: 3099, artist: 'DJ Sound', title: 'Vol 5 Gangsta Shit', year: 2007, label: 'FrayserClick Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3335783-DJ-Sound-Vol-5-Gangsta-Shit', stampSeed: {} },
       { id: 3074, artist: 'DJ Sound', title: 'Volume 3', year: 2007, label: 'FrayserClick Records', youtubeId: null,
@@ -2720,6 +2742,10 @@ const REGIONS = [
     id: 'neworleans', name: 'New Orleans', area: 'Louisiana',
     lng: -90.0715, lat: 29.9511,
     albums: [
+      { id: 3185, artist: 'Lil Wayne', title: 'Tha Carter', year: 2008, label: 'Cash Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16425045-Lil-Wayne-Tha-Carter', stampSeed: {} },
+      { id: 3180, artist: 'DJ Khaled', title: 'We Global (Bonus Track Version)', year: 2008, label: 'Koch Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21399706-DJ-Khaled-We-Global-Bonus-Track-Version', stampSeed: {} },
       { id: 3089, artist: 'Down', title: 'The Definition Of An Ese', year: 2007, label: 'Silent Giant Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/28573561-Down-The-Definition-Of-An-Ese', stampSeed: {} },
       { id: 3088, artist: 'Master P', title: 'Featuring...Master P (Edit)', year: 2007, label: 'Priority Records', youtubeId: null,
@@ -3064,6 +3090,8 @@ const REGIONS = [
     id: 'sf', name: 'San Francisco', area: 'Hunters Point / Fillmore, CA',
     lng: -122.4194, lat: 37.7749,
     albums: [
+      { id: 3184, artist: 'Sky Balla', title: 'Thizz Nation Twenty Four: Starring Sky Balla', year: 2008, label: 'Thizz Nation', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1464882-Sky-Balla-Thizz-Nation-Twenty-Four-Starring-Sky-Balla', stampSeed: {} },
       { id: 3096, artist: 'JT The Bigga Figga', title: 'Mr. Vice President', year: 2007, label: 'Mandatory Business', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1081094-JT-The-Bigga-Figga-Mr-Vice-President', stampSeed: {} },
       { id: 3092, artist: 'Andre Nickatina', title: 'Ugly Money', year: 2007, label: 'I-Khan Distribution', youtubeId: null,
@@ -3366,6 +3394,8 @@ const REGIONS = [
     id: 'sacramento', name: 'Sacramento', area: 'California',
     lng: -121.4944, lat: 38.5816,
     albums: [
+      { id: 3155, artist: 'The Council', title: 'Still Standing', year: 2007, label: 'Him Vill Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10780406-The-Council-Still-Standing', stampSeed: {} },
       { id: 3085, artist: 'Mr. Doctor', title: 'Bloccstyle 2', year: 2007, label: 'Epidemic Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3770490-Mr-Doctor-Bloccstyle-2', stampSeed: {} },
       { id: 3010, artist: 'Lil Pigg Penn', title: 'It Is What It Is M.O.B', year: 2007, label: 'Mobb Bizness Ent.', youtubeId: null,
@@ -3726,6 +3756,10 @@ const REGIONS = [
     id: 'bronx', name: 'The Bronx', area: 'New York, NY',
     lng: -73.9167, lat: 40.8448,
     albums: [
+      { id: 3179, artist: 'Fat Joe', title: 'The Elephant In The Room', year: 2008, label: 'Terror Squad Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17096580-Fat-Joe-The-Elephant-In-The-Room', stampSeed: {} },
+      { id: 3174, artist: 'Jim Jones', title: 'Harlem\'s American Gangster', year: 2008, label: 'Koch Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1403333-Jim-Jones-Harlems-American-Gangster', stampSeed: {} },
       { id: 3017, artist: 'Drag-On', title: 'Hood Environment', year: 2007, label: 'T.R.U.S.T.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2367817-Drag-On-Hood-Environment', stampSeed: {} },
       { id: 2787, artist: 'Cam\'ron', title: 'Killa Season (Limited Edition)', year: 2006, label: 'Diplomats', youtubeId: null,
@@ -3778,6 +3812,8 @@ const REGIONS = [
     id: 'dallas', name: 'Dallas', area: 'Texas',
     lng: -96.7969, lat: 32.7763,
     albums: [
+      { id: 3171, artist: 'Big Tuck', title: 'Hell On \'Em Screwed & Chopped', year: 2008, label: 'J.I.N. Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4964011-Big-Tuck-Hell-On-Em-Screwed-Chopped', stampSeed: {} },
       { id: 3082, artist: 'Tum Tum', title: 'Eat Or Get Ate', year: 2007, label: 'T-Town Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1374169-Tum-Tum-Eat-Or-Get-Ate', stampSeed: {} },
       { id: 2718, artist: 'Pimpsta', title: 'Greatest Hits Vol.1', year: 2006, label: 'Bird House Records', youtubeId: null,
@@ -4034,6 +4070,8 @@ const REGIONS = [
     id: 'sanantonio', name: 'San Antonio', area: 'Texas',
     lng: -98.4951, lat: 29.4246,
     albums: [
+      { id: 3164, artist: 'Liveola', title: 'Show Me The Money', year: 2007, label: 'Goodfella Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15051981-Liveola-Show-Me-The-Money', stampSeed: {} },
       { id: 2703, artist: 'Lil Sin', title: 'The Greatest Flames', year: 2006, label: 'Screwed Up Click Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2960483', stampSeed: {} },
       { id: 2606, artist: 'Lil\' Sin', title: 'Frustrated By Death', year: 2006, label: 'Souf Field Entertainment', youtubeId: null,
@@ -4401,6 +4439,8 @@ const REGIONS = [
     id: 'chicago', name: 'Chicago', area: 'Illinois',
     lng: -87.6298, lat: 41.8781,
     albums: [
+      { id: 3178, artist: 'Twista', title: 'The GMG Takeover', year: 2008, label: 'CMP Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11227392-Twista-The-GMG-Takeover', stampSeed: {} },
       { id: 2876, artist: 'Qualo', title: 'Believe', year: 2006, label: 'The Movement', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3775050', stampSeed: {} },
       { id: 2826, artist: 'Puppet', title: 'Chapter 2: Suenos Perdidos (The Lost Dreams)', year: 2006, label: 'Pura Desmadre Records', youtubeId: null,
@@ -4639,6 +4679,12 @@ const REGIONS = [
     id: 'berlin', name: 'Berlin', area: 'Germany — 世界のG-RAP',
     lng: 13.3951309, lat: 52.5173885,
     albums: [
+      { id: 3183, artist: 'MC Bogy', title: 'Deutschlands Albtraum', year: 2008, label: 'Fight4Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3091926-MC-Bogy-Deutschlands-Albtraum', stampSeed: {} },
+      { id: 3176, artist: 'Sido', title: 'Trilogy', year: 2008, label: 'Aggro Berlin', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1656239-Sido-Trilogy', stampSeed: {} },
+      { id: 3172, artist: 'Sido', title: 'Ich Und Meine Maske', year: 2008, label: 'Aggro Berlin', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1493970-Sido-Ich-Und-Meine-Maske', stampSeed: {} },
       { id: 3109, artist: 'MOK', title: 'Musik Oder Knast (Premium Edition)', year: 2007, label: 'ersboeserjunge', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4132500-MOK-Musik-Oder-Knast-Premium-Edition', stampSeed: {} },
       { id: 3108, artist: 'MOK', title: 'Hustler', year: 2007, label: 'ersboeserjunge', youtubeId: null,
@@ -5098,6 +5144,10 @@ const REGIONS = [
     id: 'eastla', name: 'East Los Angeles', area: 'Los Angeles County, CA',
     lng: -118.1717, lat: 34.0239,
     albums: [
+      { id: 3166, artist: 'The Game', title: 'LAX', year: 2008, label: 'Geffen Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3898371-The-Game-LAX', stampSeed: {} },
+      { id: 3158, artist: 'Too $hort', title: 'Get Off The Stage', year: 2007, label: 'Jive', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1903941-Too-hort-Get-Off-The-Stage', stampSeed: {} },
       { id: 3045, artist: 'Slow Pain', title: 'The Cali King', year: 2007, label: 'Crime INC', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3570299-Slow-Pain-The-Cali-King', stampSeed: {} },
       { id: 3008, artist: 'The Game', title: 'Code Of The Streets', year: 2007, label: 'Korgee', youtubeId: null,
@@ -6044,6 +6094,8 @@ const REGIONS = [
     id: 'inglewood', name: 'Inglewood', area: 'California',
     lng: -118.3531, lat: 33.9617,
     albums: [
+      { id: 3161, artist: 'Bishop Lamont', title: 'Pope Mobile', year: 2007, label: 'Aftermath Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1325459-Bishop-Lamont-Pope-Mobile', stampSeed: {} },
       { id: 2848, artist: 'Shade Sheist', title: 'Informal Introduction OG (Special Anniversary Edition)', year: 2008, label: 'Put Yourself Out Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/34092211', stampSeed: {} },
       { id: 2839, artist: 'Big Syke', title: 'Reincarnated Volume 1', year: 2007, label: 'Cali Untouchables', youtubeId: null,
@@ -6541,6 +6593,10 @@ const REGIONS = [
     id: 'bonn', name: 'Bonn', area: 'Germany',
     lng: 7.1024635, lat: 50.7352621,
     albums: [
+      { id: 3181, artist: 'Bushido', title: 'Heavy Metal Payback (Premium Edition)', year: 2008, label: 'ersguterjunge', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1816402-Bushido-Heavy-Metal-Payback-Premium-Edition', stampSeed: {} },
+      { id: 3162, artist: 'Eko Fresh', title: 'Ekaveli', year: 2007, label: 'ersguterjunge', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1810906-Eko-Fresh-Ekaveli', stampSeed: {} },
       { id: 3002, artist: 'Bushido', title: '7', year: 2007, label: 'ersguterjunge', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1663835-Bushido-7', stampSeed: {} },
       { id: 2914, artist: 'Bushido', title: 'Von Der Skyline Zum Bordstein Zurück - Platinum Edition', year: 2007, label: 'ersguterjunge', youtubeId: null,
@@ -6641,6 +6697,8 @@ const REGIONS = [
     id: 'boston', name: 'Boston', area: 'Massachusetts',
     lng: -71.0578303, lat: 42.3588336,
     albums: [
+      { id: 3159, artist: 'Benzino', title: 'The Antidote', year: 2007, label: '7th Floor Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/1315452-Benzino-The-Antidote', stampSeed: {} },
       { id: 2996, artist: 'Psycho', title: 'The End Of Time', year: 2007, label: 'Hustlhard Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10899525-Psycho-The-End-Of-Time', stampSeed: {} },
       { id: 2192, artist: 'Big Bear', title: 'Travel Infinity', year: 2004, label: 'Hi-Life Productions', youtubeId: null,
@@ -7117,6 +7175,8 @@ const REGIONS = [
     id: 'crenshaw', name: 'Crenshaw', area: 'Los Angeles, CA',
     lng: -118.3326, lat: 34.0031,
     albums: [
+      { id: 3168, artist: 'Ice Cube', title: 'Raw  Footage', year: 2008, label: 'Lench Mob Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35120033-Ice-Cube-Raw-Footage', stampSeed: {} },
       { id: 2691, artist: 'Ice Cube', title: 'Laugh Now, Cry Later', year: 2006, label: 'Lench Mob Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/758942', stampSeed: {} },
     ],
@@ -7207,6 +7267,8 @@ const REGIONS = [
     id: 'hamburg', name: 'Hamburg', area: 'Germany',
     lng: 10.0013165, lat: 53.5501721,
     albums: [
+      { id: 3182, artist: 'Bonez MC', title: 'Mehr Geht Nicht', year: 2008, label: 'Jentown Crhyme Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4722864-Bonez-MC-Mehr-Geht-Nicht', stampSeed: {} },
       { id: 2884, artist: 'Captain Gips', title: 'Transformer', year: 2006, label: 'Silberrücken Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2127573', stampSeed: {} },
       { id: 2775, artist: 'Bonez MC', title: '187 Strassen Bande', year: 2006, label: 'Not On Label (Bonez MC self-released)', youtubeId: null,
@@ -7241,6 +7303,8 @@ const REGIONS = [
     id: 'raleigh', name: 'Raleigh', area: 'North Carolina',
     lng: -78.6390989, lat: 35.7803977,
     albums: [
+      { id: 3156, artist: 'J-Hood', title: 'The Countdown', year: 2007, label: 'D-Block Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12639120-J-Hood-The-Countdown', stampSeed: {} },
       { id: 2779, artist: 'Hustle', title: 'Just Doin Me', year: 2005, label: 'No Joke Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12414042', stampSeed: {} },
     ],
@@ -7382,6 +7446,8 @@ const REGIONS = [
   {
     id: 'portauprince', name: 'Port-au-Prince', area: 'Haiti', lng: -72.3395928, lat: 18.547327,
     albums: [
+      { id: 3187, artist: 'Barikad Crew', title: 'Jiskobou', year: 2008, label: 'Sak Pasé Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/2206997-Barikad-Crew-Jiskobou', stampSeed: {} },
       { id: 2973, artist: 'Barikad Crew', title: 'Goumen Pou Sa W Kwè', year: '2007', label: 'Hip Faktory', discogsUrl: 'https://www.discogs.com/release/1256784-Barikad-Crew-Goumen-Pou-Sa-W-Kw%C3%A8' },
     ],
   },
