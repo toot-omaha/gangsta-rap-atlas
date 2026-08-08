@@ -1270,7 +1270,7 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/979986', stampSeed: {} },
       { id: 2233, artist: 'Mac Dre', title: 'The Genie Of The Lamp', year: 2004, label: 'Thizz Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/958009', stampSeed: {} },
-      { id: 2232, artist: 'Assassin (3)', title: 'Worldwide Game', year: 1999, label: 'GMG Records / Life Or Death Records', youtubeId: null,
+      { id: 2232, artist: 'Assassin', title: 'Worldwide Game', year: 1999, label: 'GMG Records / Life Or Death Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3881926', stampSeed: {} },
       { id: 2221, artist: 'Dru Down', title: 'Greatest Hits', year: 2004, label: 'C-Note Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13860818', stampSeed: {} },
