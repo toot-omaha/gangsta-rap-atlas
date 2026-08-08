@@ -1272,6 +1272,8 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/958009', stampSeed: {} },
       { id: 2232, artist: 'Assassin', title: 'Worldwide Game', year: 1999, label: 'GMG Records / Life Or Death Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3881926', stampSeed: {} },
+      { id: 2283, artist: 'Assassin', title: 'Hitworks Volume One', year: 1996, label: 'Arrogant / Bonafyed', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/602329', stampSeed: {} },
       { id: 2221, artist: 'Dru Down', title: 'Greatest Hits', year: 2004, label: 'C-Note Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13860818', stampSeed: {} },
       { id: 2218, artist: 'Yukmouth', title: 'Yukmouth Presents United Ghettos Of America Vol. 2 Screwed & Chopped-A-Lot', year: 2004, label: 'Rap-A-Lot 4 Life', youtubeId: null,

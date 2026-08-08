@@ -1042,6 +1042,12 @@ function renderFavs(push = true) {
   listView = 'favs';
   currentDisc = null;
   if (push) navGoto(1);
+  // お気に入り画面を開いた瞬間(内部再描画ではなく実際に開いた時だけ)に
+  // 他端末側の変更(STREET NAME再生成・持ってる/ほしいの更新)を取りに行く。
+  // 従来はページ読み込み時とタブ復帰時にしか同期していなかったため、
+  // アプリを開きっぱなしのまま他端末で名前を変えても、お気に入り画面を
+  // 見るだけでは反映されなかった。
+  if (push) autoPullFavSync();
   document.body.classList.add('detail');
   activeRegion = null;
   refreshMarkers();
