@@ -1340,9 +1340,13 @@ function restoreQueue() {
   cursor = Math.max(0, Math.min(saved.cursor, queue.length - 1));
   const q = queue[cursor];
   if (q?.preview) {
-    audio.src = q.preview; // 一時停止のまま、▶で即再生できるように準備だけ
+    audio.src = q.preview;
+    // 自動再生はブラウザに拒否されることも多いが(その場合は▶待ちの
+    // 一時停止状態になるだけで無害)、過去にこのサイトで再生操作をした
+    // ことがあるブラウザでは許可されることが多いため、まず試す。
+    audio.play().catch(() => {});
   } else if (q?.youtube) {
-    loadYtVideo(q.youtube, true); // cueのみ、自動再生しない
+    loadYtVideo(q.youtube, false); // 自動再生を試す(ブロックされれば単に無音のまま止まる)
   }
   paint();
 }
