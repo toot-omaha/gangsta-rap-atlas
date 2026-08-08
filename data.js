@@ -29,6 +29,24 @@ const UNCLASSIFIED_REGION = {
   lng: -129, lat: 36,
   unclassified: true,
   albums: [
+      { id: 2428, artist: 'Rees', title: 'Off Da Ripp', year: 2005, label: 'No Tamin Ent.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11573715', stampSeed: {} },
+      { id: 2280, artist: 'B-1', title: 'Off The Hook', year: 2004, label: 'Martell Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8183868', stampSeed: {} },
+      { id: 2277, artist: '3D', title: '3DTV Tunnel Vizion', year: 2004, label: 'Undercover Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20200066', stampSeed: {} },
+      { id: 2276, artist: 'Infamous', title: 'Da\' Beginning, Not Da\' End', year: 2004, label: 'In Fame Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35019146', stampSeed: {} },
+      { id: 2160, artist: 'SKS', title: 'Street Knight Soldiers', year: 2004, label: 'Hellafyde Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/3590963', stampSeed: {} },
+      { id: 2158, artist: 'DNA', title: 'Chiefa In A Zone', year: 2004, label: 'NAR', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17480395', stampSeed: {} },
+      { id: 2349, artist: 'Prime', title: 'Get It Or Don\'t Have It', year: 2005, label: 'Trustworthy', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/10686615', stampSeed: {} },
+      { id: 1986, artist: 'Big Bud', title: 'In Bud We Trust', year: 2003, label: 'TightWork Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14065690', stampSeed: {} },
+      { id: 2391, artist: 'Jimbob', title: 'Stand On My Own', year: 2005, label: 'Better Dayz Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9773125', stampSeed: {} },
       { id: 2228, artist: 'Box', title: 'Inboxicated', year: 2004, label: 'Clever Soundz Productions', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9104465', youtubeIds: ["qJzVjV0hckg", "tOGN0QDIpuA"], discogsArt: "https://i.discogs.com/8rvq31CXH5ZzT76WJ_RX3EIFybSw7qpcPooi3_w2E90/rs:fit/g:sm/q:90/h:500/w:500/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkxMDQ0/NjUtMTQ3NDgzNDI3/MC04ODgxLmpwZWc.jpeg", stampSeed: {} },
       { id: 2169, artist: 'Hard Life', title: 'Hard Life Vol. 1', year: 2004, label: 'Elevation Records', youtubeId: null,
@@ -6082,16 +6100,6 @@ const REGIONS = [
     ],
   },
   {
-    id: 'southampton', name: 'Southampton', area: 'England',
-    lng: -1.404189, lat: 50.9025349,
-    albums: [
-      { id: 2391, artist: 'Jimbob', title: 'Stand On My Own', year: 2005, label: 'Better Dayz Entertainment', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/9773125', stampSeed: {} },
-      { id: 1986, artist: 'Big Bud', title: 'In Bud We Trust', year: 2003, label: 'TightWork Music', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/14065690', stampSeed: {} },
-    ],
-  },
-  {
     id: 'boston', name: 'Boston', area: 'Massachusetts',
     lng: -71.0578303, lat: 42.3588336,
     albums: [
@@ -6117,8 +6125,6 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1132858', stampSeed: {} },
       { id: 2450, artist: 'N\'Dal', title: 'Graine De Taulard', year: 2005, label: 'Insomnie Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9538127', stampSeed: {} },
-      { id: 2349, artist: 'Prime', title: 'Get It Or Don\'t Have It', year: 2005, label: 'Trustworthy', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/10686615', stampSeed: {} },
       { id: 1988, artist: 'Sté Strausz\'', title: 'Sté Real', year: 1994, label: 'Plug It! Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/404612', youtubeIds: ["dqeXKyMubo4", "BpBGUFaztbM", "69WaW6qEzmY"], discogsArt: "https://i.discogs.com/rN45IAE7GyqF2rjjdCUjEGmdZQ0k3iK08FxA30sgRzc/rs:fit/g:sm/q:90/h:376/w:369/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTQwNDYx/Mi0xMTA4OTc0MjQw/LmpwZw.jpeg", stampSeed: {} },
     ],
@@ -6155,22 +6161,6 @@ const REGIONS = [
     albums: [
       { id: 2156, artist: 'Niarn', title: 'Årgang 79', year: 2004, label: 'Copenhagen Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/1035178', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'bath', name: 'Bath', area: 'England',
-    lng: -2.3596963, lat: 51.3813864,
-    albums: [
-      { id: 2158, artist: 'DNA', title: 'Chiefa In A Zone', year: 2004, label: 'NAR', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/17480395', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'toulouse', name: 'Toulouse', area: 'France',
-    lng: 1.4442433, lat: 43.6044638,
-    albums: [
-      { id: 2160, artist: 'SKS', title: 'Street Knight Soldiers', year: 2004, label: 'Hellafyde Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/3590963', stampSeed: {} },
     ],
   },
   {
@@ -6298,22 +6288,6 @@ const REGIONS = [
     ],
   },
   {
-    id: 'cagliari', name: 'Cagliari', area: 'Italy',
-    lng: 9.113311, lat: 39.2171994,
-    albums: [
-      { id: 2276, artist: 'Infamous', title: 'Da\' Beginning, Not Da\' End', year: 2004, label: 'In Fame Productions', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/35019146', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'roma', name: 'Roma', area: 'Italy',
-    lng: 12.4829321, lat: 41.8933203,
-    albums: [
-      { id: 2277, artist: '3D', title: '3DTV Tunnel Vizion', year: 2004, label: 'Undercover Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/20200066', stampSeed: {} },
-    ],
-  },
-  {
     id: 'gottingen', name: 'Göttingen', area: 'Germany',
     lng: 9.9351811, lat: 51.5328328,
     albums: [
@@ -6345,14 +6319,6 @@ const REGIONS = [
     albums: [
       { id: 2279, artist: 'Cartel De Santa', title: 'Vol. II', year: 2004, label: 'BMG Mexico', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6754997', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'alessandria', name: 'Alessandria', area: 'Italy',
-    lng: 8.7450304, lat: 44.8349534,
-    albums: [
-      { id: 2280, artist: 'B-1', title: 'Off The Hook', year: 2004, label: 'Martell Music', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/8183868', stampSeed: {} },
     ],
   },
   {
@@ -6457,14 +6423,6 @@ const REGIONS = [
     albums: [
       { id: 2427, artist: 'Tom Green', title: 'Prepare For Impact', year: 2005, label: 'Sony BMG', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/930411', stampSeed: {} },
-    ],
-  },
-  {
-    id: 'middlesbrough', name: 'Middlesbrough', area: 'England',
-    lng: -1.2344047, lat: 54.5760419,
-    albums: [
-      { id: 2428, artist: 'Rees', title: 'Off Da Ripp', year: 2005, label: 'No Tamin Ent.', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/11573715', stampSeed: {} },
     ],
   },
   {

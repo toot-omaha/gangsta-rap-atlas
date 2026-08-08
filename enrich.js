@@ -1,6 +1,269 @@
 // 自動生成: scripts/enrich.py (iTunes Search API)
 // ジャケ写・試聴はAppleの提供データ。表示時はApple Musicへのリンクを添える。
 const ENRICH = {
+ "B-1|Off The Hook": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/50/50/70/5050706f-73ed-0044-44b7-5ac6d414b6a7/s06.dvtcsuau.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/off-the-hook-part-2-underground-famous/66138589?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro: DJ Mason Storm",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/90/0a/67/900a6715-7024-5761-15de-394f1940f9b6/mzaf_2439113286255819214.plus.aac.p.m4a"
+   },
+   {
+    "name": "Shells N My Shotgun /Feat. Mon Cambell & K-Rino",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/c5/0b/a5/mzm.aefwocjh.aac.p.m4a"
+   },
+   {
+    "name": "There Can Only B-1",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/1b/64/15/mzm.hctomcij.aac.p.m4a"
+   },
+   {
+    "name": "My S!@# Be On",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/8f/81/e7/8f81e724-5769-98d2-958d-72d8ed53f79a/mzaf_6180004748554663803.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bob Yo Head",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f5/1a/3a/mzm.aguucbrx.aac.p.m4a"
+   },
+   {
+    "name": "What'cha Fina Do/Feat. Mon Campbell, Caper, Pimp Game Shane",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/77/ec/4b/mzm.yqligrjt.aac.p.m4a"
+   },
+   {
+    "name": "Ball Wit My Homies/Feat. Black Mike",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/7e/e9/db/7ee9dbf3-2e19-7c1e-2d14-5cc663a2b923/mzaf_4585875692341922699.plus.aac.p.m4a"
+   },
+   {
+    "name": "Skit",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/07/a0/f7/mzm.ozxqihjt.aac.p.m4a"
+   },
+   {
+    "name": "Time Is Money/Top Dawg, Soup D, Swab from IDEAl",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/26/7e/dd/mzm.kiglbdia.aac.p.m4a"
+   },
+   {
+    "name": "Hogg N!#$@",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/db/46/c7/mzm.vtckzibo.aac.p.m4a"
+   },
+   {
+    "name": "GrownAzz Man/Feat. IWill",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ae/3d/d6/mzm.qfayetne.aac.p.m4a"
+   },
+   {
+    "name": "If I Only Knew",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/9f/99/1b/mzm.mnykwxsk.aac.p.m4a"
+   },
+   {
+    "name": "Feel Like Givin Up/Feat. Caper",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview71/v4/51/cb/5d/51cb5d4c-1718-3e95-8bb7-70b321c15c68/mzaf_2809162625198089148.plus.aac.p.m4a"
+   },
+   {
+    "name": "Outro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/5e/49/1e/5e491e27-4f10-c005-84d6-28a7dbc40a9f/mzaf_3636989294918920151.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "3D|3DTV Tunnel Vizion": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/46/af/1a/mzi.tbnywvpv.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/3dtv/261851022?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/a4/d9/4e/a4d94ec2-55fd-7be6-d906-5db153a698eb/mzaf_6823716947604390694.plus.aac.p.m4a"
+   },
+   {
+    "name": "Where You At?",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f8/ef/c5/mzm.krcuklok.aac.p.m4a"
+   },
+   {
+    "name": "Off the Wall - Feat. the Steel House",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ed/e5/bb/mzm.uklxpucn.aac.p.m4a"
+   },
+   {
+    "name": "Do It Live - Feat. Smoove Black Poetz",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/be/55/fc/mzm.pjrkkjwt.aac.p.m4a"
+   },
+   {
+    "name": "(skit) Liquor Store",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/29/ef/87/29ef876b-1c85-6c32-2c65-43f1d3a4364f/mzaf_2225266479325917943.plus.aac.p.m4a"
+   },
+   {
+    "name": "Radio Aktive",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/2b/2d/1d/2b2d1dc7-547d-7ad6-788d-1d7c2dffa860/mzaf_9142632062370747510.plus.aac.p.m4a"
+   },
+   {
+    "name": "The O- Feat. Dick'm D. Big Bola",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f1/a7/77/mzm.bepknfws.aac.p.m4a"
+   },
+   {
+    "name": "Str8 Blaze -feat. the Steel House",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/46/41/1b/mzm.rhyraand.aac.p.m4a"
+   },
+   {
+    "name": "(skit) Good News",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/97/e3/23/97e32312-197a-95ef-0bba-17867bedfac3/mzaf_1704484970131390612.plus.aac.p.m4a"
+   },
+   {
+    "name": "Drama -feat. Maine Attraction & Duna Lefevre",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/da/20/40/mzm.kzgtmdis.aac.p.m4a"
+   },
+   {
+    "name": "Look At Me",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/91/a8/2c/mzm.lfuqqwyw.aac.p.m4a"
+   },
+   {
+    "name": "That's Real -feat. the Steel House",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/d8/d8/7f/mzm.iauwseut.aac.p.m4a"
+   }
+  ]
+ },
+ "SKS|Street Knight Soldiers": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/30/44/6f/mzi.cctwgyyp.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/street-knight-soldiers/128917037?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/7a/64/c1/7a64c12a-468b-2768-6035-45d04a2bfe20/mzaf_5370576618962981723.plus.aac.p.m4a"
+   },
+   {
+    "name": "Get ya Roll on",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/97/36/bb/mzm.hafwwbgw.aac.p.m4a"
+   },
+   {
+    "name": "Lets keep it ill",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/65/b8/2c/mzm.ojgbxbzs.aac.p.m4a"
+   },
+   {
+    "name": "Outstanding",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/b9/63/5f/mzm.upjmpdcn.aac.p.m4a"
+   },
+   {
+    "name": "Have it all",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/a2/b5/4f/mzm.swvoqmfb.aac.p.m4a"
+   },
+   {
+    "name": "Thugs on the block",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/e8/3a/05/mzm.qebdlnca.aac.p.m4a"
+   },
+   {
+    "name": "Up in the club",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/15/49/fd/mzm.xbfdlqan.aac.p.m4a"
+   },
+   {
+    "name": "Oh No",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/22/96/2a/mzm.kqfegnkm.aac.p.m4a"
+   },
+   {
+    "name": "Yeah ma ma",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ca/65/1b/mzm.jrwrpmkq.aac.p.m4a"
+   },
+   {
+    "name": "How long",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/35/de/57/mzm.qpbrotzf.aac.p.m4a"
+   },
+   {
+    "name": "for all my dogs",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/11/de/49/mzm.noqjtdgr.aac.p.m4a"
+   },
+   {
+    "name": "on the low",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/2c/6a/40/mzm.bhzwzkya.aac.p.m4a"
+   },
+   {
+    "name": "Run up on ya",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/18/f5/52/mzm.knuzhott.aac.p.m4a"
+   }
+  ]
+ },
+ "DNA|Chiefa In A Zone": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2004/m11/d22/h14/s05.jivuafyv.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/chiefa-in-a-zone/31251874?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Intro: Does It Have to Be This Way?",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f9/42/8f/mzm.bavogoes.aac.p.m4a"
+   },
+   {
+    "name": "Another Way",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/72/6c/e4/726ce4ec-397f-669c-1e92-f4fa57e4fb18/mzaf_3385947247062377362.plus.aac.p.m4a"
+   },
+   {
+    "name": "You Wanna Ride",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/71/76/50/mzm.izqzqhcr.aac.p.m4a"
+   },
+   {
+    "name": "I Can Feel It",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/46/89/75/4689758c-a236-a799-49b3-cc2da215bbbb/mzaf_11532669976844305090.plus.aac.p.m4a"
+   },
+   {
+    "name": "I Need It",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/86/04/09/86040964-8dc1-6bcf-e48d-be7b1671dad2/mzaf_3733915796077860473.plus.aac.p.m4a"
+   },
+   {
+    "name": "Tight Like Denim",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/ca/88/2b/ca882b12-67a8-6b16-de25-e4400f36e06d/mzaf_7490507944313496869.plus.aac.p.m4a"
+   },
+   {
+    "name": "Chiefa In a Zone",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/73/7a/02/mzm.vkgwanpe.aac.p.m4a"
+   },
+   {
+    "name": "Off the Chain",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/1b/9f/e7/1b9fe7e2-f693-4a22-aa43-b43897e4497e/mzaf_4479386499603762668.plus.aac.p.m4a"
+   },
+   {
+    "name": "You Can't Stop Me",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6a/d3/43/6ad34314-f383-06b0-7d51-c42af45edbd9/mzaf_7387591485502939277.plus.aac.p.m4a"
+   }
+  ]
+ },
+ "Big Bud|In Bud We Trust": {
+  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/94/df/c7/mzi.vujtsodx.tif/100x100bb.jpg",
+  "link": "https://music.apple.com/us/album/in-bud-we-trust-special-edition/82482716?uo=4",
+  "genre": "Hip-Hop/Rap",
+  "tracks": [
+   {
+    "name": "Pay Back",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/0b/ff/a0/0bffa0a1-6061-8cac-e16d-d546dde06bb8/mzaf_3036240309941809005.plus.aac.p.m4a"
+   },
+   {
+    "name": "Ay Boy (fe. Strugglazz)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/44/1a/49/441a49c4-0021-d024-dd1f-3d07b4e68aaf/mzaf_12383026198516327117.plus.aac.p.m4a"
+   },
+   {
+    "name": "Bump",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e9/60/1f/e9601f43-9ef5-558b-96b3-029e2a923e82/mzaf_661623673701883665.plus.aac.p.m4a"
+   },
+   {
+    "name": "Trapped",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/78/51/e2/mzm.mzzcwlrq.aac.p.m4a"
+   },
+   {
+    "name": "Warriors",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/27/d5/1d/mzm.czsietlc.aac.p.m4a"
+   },
+   {
+    "name": "Feelin' Good",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/90/6f/96/906f96b1-53de-e17b-34d3-ea19dfaa42d0/mzaf_6291919437468713387.plus.aac.p.m4a"
+   },
+   {
+    "name": "Shake It",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/96/c2/9f/96c29f1a-5eed-324b-05b2-759ed06e1dbc/mzaf_6003657433169107054.plus.aac.p.m4a"
+   },
+   {
+    "name": "Fire It Up (fe. Strugglazz)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/c7/93/0a/mzm.ywikqkyx.aac.p.m4a"
+   },
+   {
+    "name": "Fire Dis B*tch Up (fe. Strugglazz)",
+    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3c/cb/f1/3ccbf1c6-5c0f-94d7-7fa3-f1c9ce98ecff/mzaf_14920453911766739003.plus.aac.p.m4a"
+   }
+  ]
+ },
  "Lo Down|Gangstaville": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/d7/de/41/mzi.asvdydiv.tif/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/gangstaville/265593028?uo=4",
@@ -90396,49 +90659,6 @@ const ENRICH = {
   "genre": "Hip-Hop/Rap",
   "tracks": []
  },
- "Big Bud|In Bud We Trust": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/94/df/c7/mzi.vujtsodx.tif/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/in-bud-we-trust-special-edition/82482716?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "Pay Back",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/0b/ff/a0/0bffa0a1-6061-8cac-e16d-d546dde06bb8/mzaf_3036240309941809005.plus.aac.p.m4a"
-   },
-   {
-    "name": "Ay Boy (fe. Strugglazz)",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/44/1a/49/441a49c4-0021-d024-dd1f-3d07b4e68aaf/mzaf_12383026198516327117.plus.aac.p.m4a"
-   },
-   {
-    "name": "Bump",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e9/60/1f/e9601f43-9ef5-558b-96b3-029e2a923e82/mzaf_661623673701883665.plus.aac.p.m4a"
-   },
-   {
-    "name": "Trapped",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/78/51/e2/mzm.mzzcwlrq.aac.p.m4a"
-   },
-   {
-    "name": "Warriors",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/27/d5/1d/mzm.czsietlc.aac.p.m4a"
-   },
-   {
-    "name": "Feelin' Good",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/90/6f/96/906f96b1-53de-e17b-34d3-ea19dfaa42d0/mzaf_6291919437468713387.plus.aac.p.m4a"
-   },
-   {
-    "name": "Shake It",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/96/c2/9f/96c29f1a-5eed-324b-05b2-759ed06e1dbc/mzaf_6003657433169107054.plus.aac.p.m4a"
-   },
-   {
-    "name": "Fire It Up (fe. Strugglazz)",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/c7/93/0a/mzm.ywikqkyx.aac.p.m4a"
-   },
-   {
-    "name": "Fire Dis B*tch Up (fe. Strugglazz)",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/3c/cb/f1/3ccbf1c6-5c0f-94d7-7fa3-f1c9ce98ecff/mzaf_14920453911766739003.plus.aac.p.m4a"
-   }
-  ]
- },
  "Pistola|Pistolplay": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/24/d4/e2/mzi.xrhtfdvw.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/pistol-play/267430428?uo=4",
@@ -90772,108 +90992,6 @@ const ENRICH = {
   "link": "https://music.apple.com/us/album/%C3%A5rgang-79/1442274986?uo=4",
   "genre": "Hip-Hop/Rap",
   "tracks": []
- },
- "DNA|Chiefa In A Zone": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2004/m11/d22/h14/s05.jivuafyv.tif/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/chiefa-in-a-zone/31251874?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "Intro: Does It Have to Be This Way?",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f9/42/8f/mzm.bavogoes.aac.p.m4a"
-   },
-   {
-    "name": "Another Way",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/72/6c/e4/726ce4ec-397f-669c-1e92-f4fa57e4fb18/mzaf_3385947247062377362.plus.aac.p.m4a"
-   },
-   {
-    "name": "You Wanna Ride",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/71/76/50/mzm.izqzqhcr.aac.p.m4a"
-   },
-   {
-    "name": "I Can Feel It",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/46/89/75/4689758c-a236-a799-49b3-cc2da215bbbb/mzaf_11532669976844305090.plus.aac.p.m4a"
-   },
-   {
-    "name": "I Need It",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/86/04/09/86040964-8dc1-6bcf-e48d-be7b1671dad2/mzaf_3733915796077860473.plus.aac.p.m4a"
-   },
-   {
-    "name": "Tight Like Denim",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/ca/88/2b/ca882b12-67a8-6b16-de25-e4400f36e06d/mzaf_7490507944313496869.plus.aac.p.m4a"
-   },
-   {
-    "name": "Chiefa In a Zone",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/73/7a/02/mzm.vkgwanpe.aac.p.m4a"
-   },
-   {
-    "name": "Off the Chain",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/1b/9f/e7/1b9fe7e2-f693-4a22-aa43-b43897e4497e/mzaf_4479386499603762668.plus.aac.p.m4a"
-   },
-   {
-    "name": "You Can't Stop Me",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6a/d3/43/6ad34314-f383-06b0-7d51-c42af45edbd9/mzaf_7387591485502939277.plus.aac.p.m4a"
-   }
-  ]
- },
- "SKS|Street Knight Soldiers": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/30/44/6f/mzi.cctwgyyp.tif/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/street-knight-soldiers/128917037?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "Intro",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/7a/64/c1/7a64c12a-468b-2768-6035-45d04a2bfe20/mzaf_5370576618962981723.plus.aac.p.m4a"
-   },
-   {
-    "name": "Get ya Roll on",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/97/36/bb/mzm.hafwwbgw.aac.p.m4a"
-   },
-   {
-    "name": "Lets keep it ill",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/65/b8/2c/mzm.ojgbxbzs.aac.p.m4a"
-   },
-   {
-    "name": "Outstanding",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/b9/63/5f/mzm.upjmpdcn.aac.p.m4a"
-   },
-   {
-    "name": "Have it all",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/a2/b5/4f/mzm.swvoqmfb.aac.p.m4a"
-   },
-   {
-    "name": "Thugs on the block",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/e8/3a/05/mzm.qebdlnca.aac.p.m4a"
-   },
-   {
-    "name": "Up in the club",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/15/49/fd/mzm.xbfdlqan.aac.p.m4a"
-   },
-   {
-    "name": "Oh No",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/22/96/2a/mzm.kqfegnkm.aac.p.m4a"
-   },
-   {
-    "name": "Yeah ma ma",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ca/65/1b/mzm.jrwrpmkq.aac.p.m4a"
-   },
-   {
-    "name": "How long",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/35/de/57/mzm.qpbrotzf.aac.p.m4a"
-   },
-   {
-    "name": "for all my dogs",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/11/de/49/mzm.noqjtdgr.aac.p.m4a"
-   },
-   {
-    "name": "on the low",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/2c/6a/40/mzm.bhzwzkya.aac.p.m4a"
-   },
-   {
-    "name": "Run up on ya",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/18/f5/52/mzm.knuzhott.aac.p.m4a"
-   }
-  ]
  },
  "Tungtvann|Siste Skanse": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3e/d3/70/3ed370f6-f08c-9944-fda6-ab0a9b89aaab/mzi.dssryvfq.jpg/100x100bb.jpg",
@@ -91376,61 +91494,6 @@ const ENRICH = {
    }
   ]
  },
- "3D|3DTV Tunnel Vizion": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music/46/af/1a/mzi.tbnywvpv.tif/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/3dtv/261851022?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "Intro",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/a4/d9/4e/a4d94ec2-55fd-7be6-d906-5db153a698eb/mzaf_6823716947604390694.plus.aac.p.m4a"
-   },
-   {
-    "name": "Where You At?",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f8/ef/c5/mzm.krcuklok.aac.p.m4a"
-   },
-   {
-    "name": "Off the Wall - Feat. the Steel House",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ed/e5/bb/mzm.uklxpucn.aac.p.m4a"
-   },
-   {
-    "name": "Do It Live - Feat. Smoove Black Poetz",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/be/55/fc/mzm.pjrkkjwt.aac.p.m4a"
-   },
-   {
-    "name": "(skit) Liquor Store",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/29/ef/87/29ef876b-1c85-6c32-2c65-43f1d3a4364f/mzaf_2225266479325917943.plus.aac.p.m4a"
-   },
-   {
-    "name": "Radio Aktive",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/2b/2d/1d/2b2d1dc7-547d-7ad6-788d-1d7c2dffa860/mzaf_9142632062370747510.plus.aac.p.m4a"
-   },
-   {
-    "name": "The O- Feat. Dick'm D. Big Bola",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f1/a7/77/mzm.bepknfws.aac.p.m4a"
-   },
-   {
-    "name": "Str8 Blaze -feat. the Steel House",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/46/41/1b/mzm.rhyraand.aac.p.m4a"
-   },
-   {
-    "name": "(skit) Good News",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/97/e3/23/97e32312-197a-95ef-0bba-17867bedfac3/mzaf_1704484970131390612.plus.aac.p.m4a"
-   },
-   {
-    "name": "Drama -feat. Maine Attraction & Duna Lefevre",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/da/20/40/mzm.kzgtmdis.aac.p.m4a"
-   },
-   {
-    "name": "Look At Me",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/91/a8/2c/mzm.lfuqqwyw.aac.p.m4a"
-   },
-   {
-    "name": "That's Real -feat. the Steel House",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/d8/d8/7f/mzm.iauwseut.aac.p.m4a"
-   }
-  ]
- },
  "Teroa Team|Einbruch": {
   "art": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/ff/f7/2b/fff72b2b-ab88-706a-b487-f78e63d42e36/cover_4050215449688.jpg/100x100bb.jpg",
   "link": "https://music.apple.com/us/album/einbruch/1435945420?uo=4",
@@ -91756,69 +91819,6 @@ const ENRICH = {
    {
     "name": "Intenta Rimar - Vol. II (feat. Mery Dee)",
     "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/97/05/c0/9705c027-9270-3298-741e-b2ab7deec305/mzaf_11957716602360917970.plus.aac.p.m4a"
-   }
-  ]
- },
- "B-1|Off The Hook": {
-  "art": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/50/50/70/5050706f-73ed-0044-44b7-5ac6d414b6a7/s06.dvtcsuau.tif/100x100bb.jpg",
-  "link": "https://music.apple.com/us/album/off-the-hook-part-2-underground-famous/66138589?uo=4",
-  "genre": "Hip-Hop/Rap",
-  "tracks": [
-   {
-    "name": "Intro: DJ Mason Storm",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/90/0a/67/900a6715-7024-5761-15de-394f1940f9b6/mzaf_2439113286255819214.plus.aac.p.m4a"
-   },
-   {
-    "name": "Shells N My Shotgun /Feat. Mon Cambell & K-Rino",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/c5/0b/a5/mzm.aefwocjh.aac.p.m4a"
-   },
-   {
-    "name": "There Can Only B-1",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/1b/64/15/mzm.hctomcij.aac.p.m4a"
-   },
-   {
-    "name": "My S!@# Be On",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/8f/81/e7/8f81e724-5769-98d2-958d-72d8ed53f79a/mzaf_6180004748554663803.plus.aac.p.m4a"
-   },
-   {
-    "name": "Bob Yo Head",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/f5/1a/3a/mzm.aguucbrx.aac.p.m4a"
-   },
-   {
-    "name": "What'cha Fina Do/Feat. Mon Campbell, Caper, Pimp Game Shane",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/77/ec/4b/mzm.yqligrjt.aac.p.m4a"
-   },
-   {
-    "name": "Ball Wit My Homies/Feat. Black Mike",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music2/v4/7e/e9/db/7ee9dbf3-2e19-7c1e-2d14-5cc663a2b923/mzaf_4585875692341922699.plus.aac.p.m4a"
-   },
-   {
-    "name": "Skit",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/07/a0/f7/mzm.ozxqihjt.aac.p.m4a"
-   },
-   {
-    "name": "Time Is Money/Top Dawg, Soup D, Swab from IDEAl",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/26/7e/dd/mzm.kiglbdia.aac.p.m4a"
-   },
-   {
-    "name": "Hogg N!#$@",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/db/46/c7/mzm.vtckzibo.aac.p.m4a"
-   },
-   {
-    "name": "GrownAzz Man/Feat. IWill",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/ae/3d/d6/mzm.qfayetne.aac.p.m4a"
-   },
-   {
-    "name": "If I Only Knew",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/9f/99/1b/mzm.mnykwxsk.aac.p.m4a"
-   },
-   {
-    "name": "Feel Like Givin Up/Feat. Caper",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview71/v4/51/cb/5d/51cb5d4c-1718-3e95-8bb7-70b321c15c68/mzaf_2809162625198089148.plus.aac.p.m4a"
-   },
-   {
-    "name": "Outro",
-    "preview": "https://audio-ssl.itunes.apple.com/itunes-assets/Music/v4/5e/49/1e/5e491e27-4f10-c005-84d6-28a7dbc40a9f/mzaf_3636989294918920151.plus.aac.p.m4a"
    }
   ]
  },
