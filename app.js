@@ -1317,7 +1317,11 @@ function albumById(id) {
 }
 function saveQueue() {
   const items = queue.map((q) => (q.album ? { albumId: q.album.id, idx: q.idx ?? 0 } : null));
-  localStorage.setItem(QUEUE_KEY, JSON.stringify({ cursor, items }));
+  const q = queue[cursor];
+  // 直前が再生中だったか一時停止中だったかも記録する。リロード後、
+  // 一時停止中だったのに問答無用で再生し始めてしまうのを防ぐため。
+  const playing = q ? (q.youtube ? ytIsPlaying() : !audio.paused) : false;
+  localStorage.setItem(QUEUE_KEY, JSON.stringify({ cursor, items, playing }));
 }
 // リロード直後: キューの構成とカーソル位置だけ復元し曲情報を表示する。
 // 自動再生はブラウザの制約で通らないことが多く、鳴りっぱなしも望ましくないため、
@@ -1339,14 +1343,19 @@ function restoreQueue() {
   queue = restored;
   cursor = Math.max(0, Math.min(saved.cursor, queue.length - 1));
   const q = queue[cursor];
+  const wasPlaying = !!saved.playing;
   if (q?.preview) {
     audio.src = q.preview;
-    // 自動再生はブラウザに拒否されることも多いが(その場合は▶待ちの
-    // 一時停止状態になるだけで無害)、過去にこのサイトで再生操作をした
-    // ことがあるブラウザでは許可されることが多いため、まず試す。
-    audio.play().catch(() => {});
+    if (wasPlaying) {
+      // 直前が再生中だった場合のみ自動再生を試す。ブラウザに拒否されても
+      // (その場合は▶待ちの一時停止状態になるだけで無害)、過去にこのサイトで
+      // 再生操作をしたことがあるブラウザでは許可されることが多い。
+      // 逆に直前が一時停止中だったなら、リロードしただけで鳴り出すのは
+      // 望ましくないため何もしない。
+      audio.play().catch(() => {});
+    }
   } else if (q?.youtube) {
-    loadYtVideo(q.youtube, false); // 自動再生を試す(ブロックされれば単に無音のまま止まる)
+    loadYtVideo(q.youtube, !wasPlaying); // 再生中だった時だけ自動再生、それ以外はcueのみ
   }
   paint();
 }
