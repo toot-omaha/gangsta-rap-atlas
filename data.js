@@ -426,6 +426,12 @@ const REGIONS = [
     id: 'compton', name: 'Compton', area: 'Los Angeles County, CA',
     lng: -118.2201, lat: 33.8958,
     albums: [
+      { id: 4086, artist: 'YG', title: 'Blame It On The Streets', year: 2014, label: 'Def Jam Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22638698-YG-Blame-It-On-The-Streets', stampSeed: {} },
+      { id: 4070, artist: 'YG', title: 'My Krazy Life', year: 2014, label: 'Def Jam Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5578345-YG-My-Krazy-Life', stampSeed: {} },
+      { id: 4033, artist: 'Big Fase 100', title: 'Piruminati', year: 2013, label: 'One Hunned Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12261987-Big-Fase-100-Piruminati', stampSeed: {} },
       { id: 4018, artist: 'MC Eiht', title: 'Lessons', year: 2020, label: 'Blue Stamp Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/16008329-MC-Eiht-Lessons', stampSeed: {} },
       { id: 4017, artist: 'MC Eiht', title: 'Wich Way Iz West', year: 2020, label: 'Blue Stamp Music', youtubeId: null,
@@ -714,6 +720,18 @@ const REGIONS = [
     id: 'longbeach', name: 'Long Beach', area: 'Los Angeles County, CA',
     lng: -118.1937, lat: 33.7701,
     albums: [
+      { id: 4118, artist: 'Snoop Dogg', title: 'Bacc On Death Row', year: 2022, label: 'Death Row Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22593503-Snoop-Dogg-Bacc-On-Death-Row', stampSeed: {} },
+      { id: 4117, artist: 'Snoop Dogg', title: 'Metaverse: The NFT Drop, Vol. 1', year: 2022, label: 'Real Talk Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24891176-Snoop-Dogg-Metaverse-The-NFT-Drop-Vol-1', stampSeed: {} },
+      { id: 4111, artist: 'Snoop Dogg', title: 'Death Row Summer 2022', year: 2022, label: 'Death Row Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24895052-Snoop-Dogg-Death-Row-Summer-2022', stampSeed: {} },
+      { id: 4110, artist: 'Snoop Dogg', title: 'Metaverse: The NFT Drop Vol. 2', year: 2022, label: 'Real Talk Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24895397-Snoop-Dogg-Metaverse-The-NFT-Drop-Vol-2', stampSeed: {} },
+      { id: 4098, artist: 'Tha Dogg Pound', title: 'DPG 4 Life', year: 2021, label: 'Dogg Food Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28368865-Tha-Dogg-Pound-DPG-4-Life', stampSeed: {} },
+      { id: 4043, artist: 'Snoop Dogg', title: 'Always Smoking', year: 2014, label: 'Tac Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13312135-Snoop-Dogg-Always-Smoking', stampSeed: {} },
       { id: 4002, artist: 'Snoop Dogg', title: 'I Wanna Thank Me', year: 2019, label: 'Doggy Style Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14014683-Snoop-Dogg-I-Wanna-Thank-Me', stampSeed: {} },
       { id: 4000, artist: 'Snoop Dogg', title: 'Doggystyle 25 Years', year: 2018, label: 'Death Row Records', youtubeId: null,
@@ -1132,6 +1150,10 @@ const REGIONS = [
     id: 'vallejo', name: 'Vallejo', area: 'Bay Area, CA',
     lng: -122.2566, lat: 38.1041,
     albums: [
+      { id: 4088, artist: 'J Diggs', title: 'Soul Of A Gangsta', year: 2014, label: 'Thizz Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5977912-J-Diggs-Soul-Of-A-Gangsta', stampSeed: {} },
+      { id: 4023, artist: 'Reek Daddy', title: 'Dipped in Butter', year: 2013, label: 'N.O.Y.B. Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/33319485-Reek-Daddy-Dipped-in-Butter', stampSeed: {} },
       { id: 3953, artist: 'Celly Cel', title: 'Morphine', year: 2013, label: 'Realside Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5268658-Celly-Cel-Morphine', stampSeed: {} },
       { id: 3933, artist: 'Big Bone', title: 'Payola', year: 2013, label: 'Stop Snitchin Entertainment', youtubeId: null,
@@ -1400,6 +1422,8 @@ const REGIONS = [
     id: 'seaside', name: 'Seaside', area: 'California',
     lng: -121.8066, lat: 36.6111,
     albums: [
+      { id: 4116, artist: 'Sideraq Osama', title: 'Poopie\'s Son', year: 2022, label: 'Trezy Fam Gang Ent', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/23694299-Sideraq-Osama-Poopies-Son', stampSeed: {} },
       { id: 1576, artist: 'C-Tru', title: 'Oceanside Game', year: 2001, label: 'Oceanside Game Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13502184', youtubeFullAlbumId: 'e2y0yjBoyHk', discogsArt: "https://i.discogs.com/tB8m6o0hin3DZjh0Ega29MzcKYMa2cFVvgsnJYzUo38/rs:fit/g:sm/q:90/h:591/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzNTAy/MTg0LTE3MjExNTE1/MDMtNTI3MS5qcGVn.jpeg", stampSeed: {} },
     ],
@@ -1408,6 +1432,16 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 4080, artist: 'HD', title: 'Team Guapale', year: 2014, label: 'Bearfaced Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8581227-HD-Team-Guapale', stampSeed: {} },
+      { id: 4072, artist: 'Father Dom', title: 'Bombay', year: 2014, label: 'Conversion', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13040258-Father-Dom-Bombay', stampSeed: {} },
+      { id: 4065, artist: 'Joe Blow', title: 'M.O.B. 2 (The Real Mob)', year: 2014, label: 'Blow Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11266391-Joe-Blow-MOB-2-The-Real-Mob', stampSeed: {} },
+      { id: 4048, artist: 'Lil Rue', title: 'Hood Noise - R.U.E. I Am That', year: 2014, label: 'So True Music Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22519388-Lil-Rue-Hood-Noise-RUE-I-Am-That', stampSeed: {} },
+      { id: 4030, artist: 'Joe Blow', title: 'Blow', year: 2013, label: 'The Artist Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8066947-Joe-Blow-Blow', stampSeed: {} },
       { id: 3986, artist: 'Lil Rue', title: 'The Dead End', year: 2013, label: 'So True Music Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15981967-Lil-Rue-The-Dead-End', stampSeed: {} },
       { id: 3985, artist: 'Shady Nate', title: 'Mobb Marley II', year: 2013, label: 'Livewire Records', youtubeId: null,
@@ -1830,6 +1864,16 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { id: 4077, artist: 'K-Rino', title: 'Deprogrammed', year: 2014, label: 'Black Book International', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6331252-K-Rino-Deprogrammed', stampSeed: {} },
+      { id: 4068, artist: 'Big Moe', title: 'Greatest Hits', year: 2014, label: 'Wreckshop Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14404643-Big-Moe-Greatest-Hits', stampSeed: {} },
+      { id: 4066, artist: 'Lil\' Flip', title: '#Screwluv', year: 2014, label: 'Clover G Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6036841-Lil-Flip-Screwluv', stampSeed: {} },
+      { id: 4056, artist: 'Warren B.', title: 'Gotta Love A Hustler', year: 2014, label: 'World Bound Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9874803-Warren-B-Gotta-Love-A-Hustler', stampSeed: {} },
+      { id: 4032, artist: 'Carolyn Rodriguez', title: 'Dope Diary', year: 2013, label: 'Dope House Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13845923-Carolyn-Rodriguez-Dope-Diary', stampSeed: {} },
       { id: 3990, artist: 'K-Rino', title: 'Plantation Rebellion', year: 2013, label: 'Black Book International', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4937912-K-Rino-Plantation-Rebellion', stampSeed: {} },
       { id: 3989, artist: 'K-Rino', title: 'theRAPeutic', year: 2013, label: 'Black Book International', youtubeId: null,
@@ -2752,6 +2796,8 @@ const REGIONS = [
     id: 'portarthur', name: 'Port Arthur', area: 'Texas',
     lng: -93.9399, lat: 29.8850,
     albums: [
+      { id: 4089, artist: 'Bun B', title: 'Trill', year: 2014, label: 'Rap-A-Lot 4 Life', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5571813-Bun-B-Trill', stampSeed: {} },
       { id: 3966, artist: 'Bun B', title: 'Trill O.G. (Screwed & Chopped)', year: 2013, label: 'Rap-A-Lot 2K', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/32539284-Bun-B-Trill-OG-Screwed-Chopped', stampSeed: {} },
       { id: 3915, artist: 'Bun-B', title: 'Trill O.G The Epilogue', year: 2013, label: 'Rap-A-Lot 4 Life', youtubeId: null,
@@ -2804,6 +2850,12 @@ const REGIONS = [
     id: 'memphis', name: 'Memphis', area: 'Tennessee',
     lng: -90.0490, lat: 35.1495,
     albums: [
+      { id: 4064, artist: 'Scan Man', title: 'Death Awaits', year: 2014, label: 'Phixieous Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6301657-Scan-Man-Death-Awaits', stampSeed: {} },
+      { id: 4042, artist: 'DJ Sound', title: 'Volume 12 Recipe For Desaster', year: 2014, label: 'FrayserClick Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7116369-DJ-Sound-Volume-12-Recipe-For-Desaster-', stampSeed: {} },
+      { id: 4028, artist: 'DJ Paul', title: 'Volume 16: The Original Masters (4 Da Summer "94)', year: 2013, label: 'S.A.T.ENT Music LLC', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6269786-DJ-Paul-Volume-16-The-Original-Masters-4-Da-Summer-94', stampSeed: {} },
       { id: 3999, artist: 'Yo Gotti', title: 'I Am', year: 2013, label: 'Epic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22655681-Yo-Gotti-I-Am', stampSeed: {} },
       { id: 3992, artist: 'Scan Man', title: 'Tainted Portraits', year: 2013, label: 'Kami Kaze Productions', youtubeId: null,
@@ -3272,6 +3324,14 @@ const REGIONS = [
     id: 'neworleans', name: 'New Orleans', area: 'Louisiana',
     lng: -90.0715, lat: 29.9511,
     albums: [
+      { id: 4085, artist: 'Juvenile', title: 'The Fundamentals', year: 2014, label: 'Rap-A-Lot 4 Life', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5619032-Juvenile-The-Fundamentals', stampSeed: {} },
+      { id: 4081, artist: 'Partners-N-Crime', title: 'The Lost Tapes', year: 2014, label: 'Not On Label (Partners-N-Crime Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7472699-Partners-N-Crime-The-Lost-Tapes', stampSeed: {} },
+      { id: 4069, artist: 'U.N.L.V.', title: 'The Relaunch', year: 2014, label: 'TYT Global', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11075295-UNLV-The-Relaunch', stampSeed: {} },
+      { id: 4027, artist: 'Master P', title: 'Famous Again', year: 2013, label: 'No Limit Forever', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7173658-Master-P-Famous-Again', stampSeed: {} },
       { id: 3961, artist: 'UNLV', title: 'Rebels Of The Street Corner', year: 2013, label: 'D.O.B. Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5227612-UNLV-Rebels-Of-The-Street-Corner', stampSeed: {} },
       { id: 3936, artist: 'Master P', title: 'Al Capone', year: 2013, label: 'No Limit Forever', youtubeId: null,
@@ -4008,6 +4068,10 @@ const REGIONS = [
     id: 'sacramento', name: 'Sacramento', area: 'California',
     lng: -121.4944, lat: 38.5816,
     albums: [
+      { id: 4092, artist: 'Brotha Lynch Hung', title: 'The Suicide Tour 10 Years Later...Movie & Soundtrack', year: 2014, label: 'Siccmade Muzicc', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11950344-Brotha-Lynch-Hung-The-Suicide-Tour-10-Years-LaterMovie-Soundtrack', stampSeed: {} },
+      { id: 4035, artist: 'Young Dre D', title: 'The Ghetto Spokesman', year: 2013, label: 'Hogg Mobb Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34611784-Young-Dre-D-The-Ghetto-Spokesman', stampSeed: {} },
       { id: 4013, artist: 'C-Dubb', title: 'Kalifornia 2K19', year: 2019, label: 'Mobb Muzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14074923-C-Dubb-Kalifornia-2K19', stampSeed: {} },
       { id: 3994, artist: 'Hollow Tip', title: 'Rydah\'s & Hustla\'s', year: 2013, label: 'Mercenary Entertainment', youtubeId: null,
@@ -4336,6 +4400,16 @@ const REGIONS = [
     id: 'queens', name: 'Queensbridge', area: 'New York, NY',
     lng: -73.9430, lat: 40.7550,
     albums: [
+      { id: 4103, artist: 'Rice', title: 'Swisher Deep Vol.9', year: 2021, label: 'II Tight LLC', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19774525-Rice-Swisher-Deep-Vol9', stampSeed: {} },
+      { id: 4102, artist: 'Rice', title: 'Swisher Deep Vol.8', year: 2021, label: 'II Tight LLC', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19774399-Rice-Swisher-Deep-Vol8', stampSeed: {} },
+      { id: 4100, artist: 'Rice', title: 'Swisher Deep Vol.7', year: 2021, label: 'II Tight LLC', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19774330-Rice-Swisher-Deep-Vol7', stampSeed: {} },
+      { id: 4099, artist: 'Grooveman Spot', title: 'Luv 4 Me', year: 2021, label: 'Scotoma Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37927698-Grooveman-Spot-Luv-4-Me', stampSeed: {} },
+      { id: 4095, artist: '2Pac', title: 'The All Eyez On Me Apocrypha: Book 2', year: 2014, label: 'Euphanasia', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17462515-2Pac-The-All-Eyez-On-Me-Apocrypha-Book-2', stampSeed: {} },
       { id: 3952, artist: 'Tokona-X', title: 'トウカイ×テイオー', year: 2013, label: 'Music Securities, Inc.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5959216-Tokona-X-%E3%83%88%E3%82%A6%E3%82%AB%E3%82%A4%E3%83%86%E3%82%A4%E3%82%AA%E3%83%BC', stampSeed: {} },
       { id: 3844, artist: '2Pac', title: 'Ghetto Gospel - The Birth Of A Legend', year: 2012, label: 'Vtribe Media & Entertainment', youtubeId: null,
@@ -4644,6 +4718,8 @@ const REGIONS = [
     id: 'seattle', name: 'Seattle', area: 'Washington',
     lng: -122.3301, lat: 47.6038,
     albums: [
+      { id: 4097, artist: 'Jake One', title: 'Seaplane: Deluxe Edition', year: 2021, label: 'Snare Jordan', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19727038-Jake-One-Seaplane-Deluxe-Edition', stampSeed: {} },
       { id: 3904, artist: 'M Dot 80', title: 'Back 2 Work', year: 2013, label: 'Original Pie Flippers', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7312673-M-Dot-80-Back-2-Work', stampSeed: {} },
       { id: 3879, artist: 'Macc Dundee', title: 'Subliminal Mind Music', year: 2017, label: 'Dundeal Entertainment', youtubeId: null,
@@ -4708,6 +4784,8 @@ const REGIONS = [
     id: 'atlanta', name: 'Atlanta', area: 'Georgia',
     lng: -84.3898, lat: 33.7545,
     albums: [
+      { id: 4057, artist: 'Fabo', title: 'Uncaged', year: 2014, label: 'Tight 2 Def Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36068830-Fabo-Uncaged', stampSeed: {} },
       { id: 3939, artist: 'T.I.', title: 'King Hustle 3', year: 2013, label: 'LRG Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/31359085-TI-King-Hustle-3', stampSeed: {} },
       { id: 3929, artist: 'Young Dro', title: 'High Times', year: 2013, label: 'eOne', youtubeId: null,
@@ -4898,6 +4976,10 @@ const REGIONS = [
     id: 'detroit', name: 'Detroit', area: 'Michigan',
     lng: -83.0458, lat: 42.3314,
     albums: [
+      { id: 4051, artist: 'Steven B The Great', title: 'Spur Of The Moment: All Originals', year: 2014, label: 'SB Flight 2 Greatness', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/23099771-Steven-B-The-Great-Spur-Of-The-Moment-All-Originals', stampSeed: {} },
+      { id: 4038, artist: 'Trick Trick', title: 'The Godfather 3', year: 2014, label: 'Not On Label (Trick Trick Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25819669-Trick-Trick-The-Godfather-3', stampSeed: {} },
       { id: 3951, artist: 'Payroll Giovanni', title: 'Get Money Stay Humble', year: 2013, label: 'Doughboyz Cashout Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/33430331-Payroll-Giovanni-Get-Money-Stay-Humble', stampSeed: {} },
       { id: 3722, artist: 'Bizarre', title: 'This Guy’s A Weirdo', year: 2012, label: 'Red Head Records', youtubeId: null,
@@ -5057,6 +5139,8 @@ const REGIONS = [
     id: 'saopaulo', name: 'São Paulo', area: 'Brazil — 世界のG-RAP',
     lng: -46.6334, lat: -23.5507,
     albums: [
+      { id: 4037, artist: 'Racionais MC\'s', title: 'Cores & Valores', year: 2014, label: 'Boogie Naipe', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6350729-Racionais-MCs-Cores-Valores', stampSeed: {} },
       { id: 3996, artist: 'Consciência Humana', title: 'Firma Forte', year: 2013, label: 'Só Monstro', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/37577535-Consci%C3%AAncia-Humana-Firma-Forte', stampSeed: {} },
       { id: 3436, artist: 'A286', title: 'Exército dos Excluídos', year: 2010, label: '1DASUL', youtubeId: null,
@@ -5139,6 +5223,8 @@ const REGIONS = [
     id: 'amsterdam', name: 'Amsterdam', area: 'Netherlands — 世界のG-RAP',
     lng: 4.8952, lat: 52.3702,
     albums: [
+      { id: 4029, artist: 'Adje', title: 'Vossig', year: 2013, label: 'Streetknowledge', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5162064-Adje-Vossig', stampSeed: {} },
       { id: 4014, artist: 'Unstoppable Knight', title: 'Da Knightshiftah', year: 2019, label: 'Y.A.P. Muzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13861316-Unstoppable-Knight-Da-Knightshiftah', stampSeed: {} },
       { id: 1229, artist: 'Osdorp Posse', title: 'Osdorp Stijl', year: 1992, label: 'Djax Records', youtubeId: null,
@@ -5149,6 +5235,8 @@ const REGIONS = [
     id: 'miami', name: 'Miami', area: 'Florida',
     lng: -80.1918, lat: 25.7617,
     albums: [
+      { id: 4061, artist: 'SpaceGhostPurrp', title: 'XXX Intoxxxicated', year: 2014, label: 'Raider Klan Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6012692-SpaceGhostPurrp-XXX-Intoxxxicated', stampSeed: {} },
       { id: 3339, artist: 'Trick Daddy', title: 'Finally Famous (Born A Thug, Still A Thug)', year: 2009, label: 'Dunk Ryder Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/32901927-Trick-Daddy-Finally-Famous-Born-A-Thug-Still-A-Thug', stampSeed: {} },
       { id: 2879, artist: 'Streetrunner', title: 'Run The Streets Volume One', year: 2006, label: 'Counterflow Distribution', youtubeId: null,
@@ -5227,6 +5315,8 @@ const REGIONS = [
     id: 'riverside', name: 'Riverside', area: 'California',
     lng: -117.3961, lat: 33.9806,
     albums: [
+      { id: 4109, artist: 'Bossolo', title: 'United Boss Of America', year: 2021, label: 'Bloc Hustle Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/17199940-Bossolo-United-Boss-Of-America', stampSeed: {} },
       { id: 4011, artist: 'Bossolo', title: 'The Antidote C.4.T.W.1 (Cure 4 The West)', year: 2019, label: 'Bloc Hustle Inc.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14240256-Bossolo-The-Antidote-C4TW1-Cure-4-The-West', stampSeed: {} },
       { id: 4009, artist: 'Bossolo', title: 'Written Chapter One', year: 2019, label: 'Bloc Hustle Inc.', youtubeId: null,
@@ -5273,6 +5363,12 @@ const REGIONS = [
     id: 'chicago', name: 'Chicago', area: 'Illinois',
     lng: -87.6298, lat: 41.8781,
     albums: [
+      { id: 4055, artist: 'Puppet', title: 'Chapter 6: Lágrimas Del Corazón', year: 2014, label: 'Pura Desmadre Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12047127-Puppet-Chapter-6-L%C3%A1grimas-Del-Coraz%C3%B3n', stampSeed: {} },
+      { id: 4050, artist: 'Chief Keef', title: 'Nobody', year: 2014, label: 'Glo Gang', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15519013-Chief-Keef-Nobody', stampSeed: {} },
+      { id: 4036, artist: 'Ca$his', title: 'The County Hound 2', year: 2014, label: 'Bogish Brand Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8265023-Cahis-The-County-Hound-2', stampSeed: {} },
       { id: 3980, artist: 'Fredo Santana', title: 'Trappin Ain\'t Dead', year: 2013, label: 'Savage Squad Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5306139-Fredo-Santana-Trappin-Aint-Dead', stampSeed: {} },
       { id: 3755, artist: 'Belo Zero', title: 'I Plead The 5th', year: 2014, label: 'Wicked Entertainment', youtubeId: null,
@@ -5532,6 +5628,8 @@ const REGIONS = [
     id: 'frankfurt', name: 'Frankfurt', area: 'Germany — 世界のG-RAP',
     lng: 8.6821, lat: 50.1109,
     albums: [
+      { id: 4053, artist: 'Haftbefehl', title: 'Russisch Roulette / BABO BOX', year: 2014, label: 'Urban', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15134963-Haftbefehl-Russisch-Roulette-BABO-BOX', stampSeed: {} },
       { id: 3947, artist: 'Haftbefehl', title: 'Blockplatin', year: 2013, label: 'Azzlackz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4361363-Haftbefehl-Blockplatin', stampSeed: {} },
       { id: 3841, artist: 'Haftbefehl', title: 'Kanackiş (Limited Amazon Edition)', year: 2012, label: 'Azzlackz', youtubeId: null,
@@ -5555,6 +5653,16 @@ const REGIONS = [
     id: 'berlin', name: 'Berlin', area: 'Germany — 世界のG-RAP',
     lng: 13.3951309, lat: 52.5173885,
     albums: [
+      { id: 4074, artist: 'Silla', title: 'Audio Anabolika', year: 2014, label: 'Maskulin', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7078432-Silla-Audio-Anabolika', stampSeed: {} },
+      { id: 4063, artist: 'Fler', title: 'Neue Deutsche Welle 2', year: 2014, label: 'Maskulin', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/9934203-Fler-Neue-Deutsche-Welle-2', stampSeed: {} },
+      { id: 4047, artist: 'Blokkmonsta', title: 'Blokkhaus', year: 2014, label: 'Hirntot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6140522-Blokkmonsta-Blokkhaus', stampSeed: {} },
+      { id: 4031, artist: 'Kaisa', title: 'Die Legende Vom Rasenmähermann', year: 2013, label: 'Schnipp Schnapp', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14681114-Kaisa-Die-Legende-Vom-Rasenm%C3%A4hermann', stampSeed: {} },
+      { id: 4026, artist: 'PTK', title: 'Typisch Deutsch', year: 2013, label: 'BombenProdukt', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/4445076-PTK-Typisch-Deutsch', stampSeed: {} },
       { id: 3983, artist: 'Killa Hakan', title: 'Son Mohakan', year: 2013, label: 'Esen Müzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13854882-Killa-Hakan-Son-Mohakan', stampSeed: {} },
       { id: 3971, artist: 'Blokkmonsta', title: '1-Mann-Armee (Untouchable Edition)', year: 2013, label: 'Hirntot Records', youtubeId: null,
@@ -5877,6 +5985,8 @@ const REGIONS = [
     id: 'richmondca', name: 'Richmond', area: 'California',
     lng: -122.3477, lat: 37.9358,
     albums: [
+      { id: 4106, artist: 'Aleman', title: 'Huracán', year: 2021, label: 'Homegrown Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25830307-Aleman-Hurac%C3%A1n', stampSeed: {} },
       { id: 1339, artist: 'Erase E', title: 'Longevity', year: 2001, label: 'Lethal Injection Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12190442', youtubeIds: ["xhtdcpJOVXI"], discogsArt: "https://i.discogs.com/RKoudGPX6ld2_fLg4xRl7qBRoMr2mOcndHsNNSQluak/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyMTkw/NDQyLTE1MzAxMTY5/MDgtNjU3Mi5qcGVn.jpeg", stampSeed: {} },
       { id: 1340, artist: 'Straight Game', title: 'A Dose Of Game', year: 2000, label: 'Hear The Groove Entertainment', youtubeId: null,
@@ -5911,6 +6021,8 @@ const REGIONS = [
     id: 'pomona', name: 'Pomona', area: 'Los Angeles County, CA',
     lng: -117.7498, lat: 34.0551,
     albums: [
+      { id: 4112, artist: 'Kokane', title: 'Da White Album', year: 2022, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25417726-Kokane-Da-White-Album', stampSeed: {} },
       { id: 4003, artist: 'Kokane', title: 'Finger Roll: Music For The Soul', year: 2019, label: 'Bud E. Boy Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/13537540-Kokane-Finger-Roll-Music-For-The-Soul', stampSeed: {} },
       { id: 3997, artist: 'Above The Law', title: 'The A.T.L. Crime Files', year: 2013, label: 'West World Records', youtubeId: null,
@@ -6274,6 +6386,22 @@ const REGIONS = [
     id: 'eastla', name: 'East Los Angeles', area: 'Los Angeles County, CA',
     lng: -118.1717, lat: 34.0239,
     albums: [
+      { id: 4107, artist: 'Baby S', title: 'The Life Of Baby S', year: 2021, label: 'Baby Blast Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25087621-Baby-S-The-Life-Of-Baby-S-', stampSeed: {} },
+      { id: 4094, artist: 'Conejo', title: 'Ski Mask Boy 2', year: 2014, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16956549-Conejo-Ski-Mask-Boy-2', stampSeed: {} },
+      { id: 4093, artist: 'Conejo', title: 'Featuring: The Southland Gangsters', year: 2014, label: 'SL Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16975347-Conejo-Featuring-The-Southland-Gangsters', stampSeed: {} },
+      { id: 4087, artist: 'Cozz', title: 'Cozz & Effect', year: 2014, label: 'Dreamville', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8490900-Cozz-Cozz-Effect', stampSeed: {} },
+      { id: 4084, artist: 'Conejo', title: 'American Zombie Dos', year: 2014, label: 'Sinister Kingdom Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16955439-Conejo-American-Zombie-Dos', stampSeed: {} },
+      { id: 4083, artist: 'Conejo', title: 'Professional Medicine', year: 2014, label: 'Sinister Kingdom Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16944237-Conejo-Professional-Medicine', stampSeed: {} },
+      { id: 4082, artist: 'Conejo', title: 'Favela', year: 2014, label: 'Sinister Kingdom Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16944363-Conejo-Favela', stampSeed: {} },
+      { id: 4049, artist: 'The Game', title: 'Blood Moon: Year Of The Wolf', year: 2014, label: 'Blood Money Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21451441-The-Game-Blood-Moon-Year-Of-The-Wolf', stampSeed: {} },
       { id: 3976, artist: 'Level', title: 'Unsupervised', year: 2013, label: 'Music Access, Inc.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26597564-Level-Unsupervised', stampSeed: {} },
       { id: 3975, artist: 'Conejo', title: 'The Garden Of Blood And Bones', year: 2013, label: 'The Prime Suspects', youtubeId: null,
@@ -6622,6 +6750,8 @@ const REGIONS = [
     id: 'houma', name: 'Houma', area: 'Louisiana',
     lng: -90.7195, lat: 29.5958,
     albums: [
+      { id: 4062, artist: 'Mo B. Dick', title: 'Signature (The Anthology)', year: 2014, label: 'Out The Box Xploitations, LLC', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20539282-Mo-B-Dick-Signature-The-Anthology', stampSeed: {} },
       { id: 1570, artist: 'Low Down', title: 'Houma Style - The Full CD', year: 2001, label: 'Bottom Line Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7071908', youtubeIds: ["nq6tghGBM0s"], discogsArt: "https://i.discogs.com/icI5WwUydFqjTHakqYSFoH82hcAHWUMxAel90qYh8_Q/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTcwNzE5/MDgtMTUxNDMzOTkz/OS04MDA2LmpwZWc.jpeg", stampSeed: {} },
     ],
@@ -6668,6 +6798,12 @@ const REGIONS = [
     id: 'sandiego', name: 'San Diego', area: 'California',
     lng: -117.1611, lat: 32.7157,
     albums: [
+      { id: 4115, artist: 'Cricet', title: 'Life, Power & Evolution', year: 2022, label: 'Acerz Music Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24777869-Cricet-Life-Power-Evolution', stampSeed: {} },
+      { id: 4090, artist: 'Mitchy Slick', title: 'Call Of Duty - South East', year: 2014, label: 'Tha Wrongkind Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15166191-Mitchy-Slick-Call-Of-Duty-South-East', stampSeed: {} },
+      { id: 4058, artist: 'Kevin Bradley', title: 'Megastar 2', year: 2014, label: 'Kevin Bradley', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6747105-Kevin-Bradley-Megastar-2', stampSeed: {} },
       { id: 4015, artist: 'Black Mikey', title: 'Premeditated Music 2', year: 2019, label: 'Have At It Ent.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15585803-Black-Mikey-Premeditated-Music-2', stampSeed: {} },
       { id: 3993, artist: 'Mr. Shadow', title: 'All Bout Me', year: 2013, label: 'East Side Records', youtubeId: null,
@@ -6822,6 +6958,8 @@ const REGIONS = [
     id: 'marincity', name: 'Marin City', area: 'California',
     lng: -122.493, lat: 37.8636,
     albums: [
+      { id: 4114, artist: 'Bones', title: '2MillionBlunts', year: 2022, label: 'TeamSESH', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25045795-Bones-2MillionBlunts', stampSeed: {} },
       { id: 3955, artist: 'Bones', title: 'LivingLegend', year: 2013, label: 'TeamSESH', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12394960-Bones-LivingLegend', stampSeed: {} },
       { id: 3920, artist: 'Bones', title: 'Teenager', year: 2013, label: 'TeamSESH', youtubeId: null,
@@ -6880,6 +7018,8 @@ const REGIONS = [
     id: 'trenton', name: 'Trenton', area: 'New Jersey',
     lng: -74.7659, lat: 40.2203,
     albums: [
+      { id: 4105, artist: 'GRiMM Doza', title: 'GRiMM & EViL', year: 2021, label: 'Not On Label (GRiMM Doza Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20831122-GRiMM-Doza-GRiMM-EViL', stampSeed: {} },
       { id: 2853, artist: 'YZ', title: '45Rhymez', year: 2008, label: 'G-House Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6773429', stampSeed: {} },
       { id: 2627, artist: 'Gusto', title: 'Empire Builder', year: 2006, label: 'The Philosofers Product Records', youtubeId: null,
@@ -7066,6 +7206,8 @@ const REGIONS = [
     id: 'channelview', name: 'Channelview', area: 'Texas',
     lng: -95.1147, lat: 29.7799,
     albums: [
+      { id: 4025, artist: 'KB Da Kidnappa', title: 'Black Mamba', year: 2013, label: 'Spitting Venom Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5100204-KB-Da-Kidnappa-Black-Mamba', stampSeed: {} },
       { id: 3611, artist: 'KB Da Kidnappa', title: 'An Army Of One', year: 2011, label: 'Spitting Venom Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8302978-KB-Da-Kidnappa-An-Army-Of-One', stampSeed: {} },
       { id: 3052, artist: 'KB Da Kidnappa', title: 'Spitting Venom', year: 2007, label: 'Spitting Venom Recordz', youtubeId: null,
@@ -7136,6 +7278,8 @@ const REGIONS = [
     id: 'nashville', name: 'Nashville', area: 'Tennessee',
     lng: -86.7816, lat: 36.1627,
     albums: [
+      { id: 4054, artist: 'Jelly Roll', title: 'Biggest Loser', year: 2014, label: 'Crash Out Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/13641085-Jelly-Roll-Biggest-Loser', stampSeed: {} },
       { id: 3530, artist: 'Young Buck', title: 'The Rehab', year: 2010, label: 'Real Talk Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8390559-Young-Buck-The-Rehab', stampSeed: {} },
       { id: 2908, artist: 'Young Buck', title: 'Buck The World', year: 2007, label: 'G Unit', youtubeId: null,
@@ -7576,6 +7720,8 @@ const REGIONS = [
     id: 'washingtondc', name: 'Washington', area: 'D.C.',
     lng: -77.0369, lat: 38.9072,
     albums: [
+      { id: 4034, artist: 'T-Rock', title: 'Papers: Volume 1.5', year: 2013, label: 'Rock Solid Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19816114-T-Rock-Papers-Volume-15', stampSeed: {} },
       { id: 3978, artist: 'T-Rock', title: 'Papers: Volume One', year: 2013, label: 'Rock Solid Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7041643-T-Rock-Papers-Volume-One', stampSeed: {} },
       { id: 3945, artist: '2 Chainz', title: 'Trappin Hard', year: 2013, label: 'GL Recordings', youtubeId: null,
@@ -7967,6 +8113,8 @@ const REGIONS = [
     id: 'bonn', name: 'Bonn', area: 'Germany',
     lng: 7.1024635, lat: 50.7352621,
     albums: [
+      { id: 4052, artist: 'Bushido', title: 'Sonny Black', year: 2014, label: 'Sony Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5399035-Bushido-Sonny-Black', stampSeed: {} },
       { id: 3907, artist: 'SSIO', title: 'BB.U.M.SS.N (Limited Spezial Edition)', year: 2013, label: 'Alles Oder Nix Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5269066-SSIO-BBUMSSN-Limited-Spezial-Edition', stampSeed: {} },
       { id: 3874, artist: 'Eko Fresh', title: 'König Von Deutschland (Limitierte Fan Box)', year: 2017, label: 'German Dream Empire', youtubeId: null,
@@ -8051,6 +8199,8 @@ const REGIONS = [
     id: 'richmondva', name: 'Richmond', area: 'Virginia',
     lng: -77.43428, lat: 37.5385087,
     albums: [
+      { id: 4091, artist: 'Chilee Powdah', title: 'Tired Of All The Bullsh*t', year: 2014, label: 'Powdahland Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36783925-Chilee-Powdah-Tired-Of-All-The-Bullsht', stampSeed: {} },
       { id: 3900, artist: 'G-Mo Skee', title: 'Chaly & The Filth Factory', year: 2018, label: 'Majik Ninja Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12255079-G-Mo-Skee-Chaly-The-Filth-Factory', stampSeed: {} },
       { id: 2430, artist: 'Big Baby', title: 'Already Famous', year: 2005, label: 'Not On Label', youtubeId: null,
@@ -8167,6 +8317,10 @@ const REGIONS = [
     id: 'krefeld', name: 'Krefeld', area: 'Germany',
     lng: 6.5623343, lat: 51.3331205,
     albums: [
+      { id: 4075, artist: 'Veysel', title: 'Audiovisuell', year: 2014, label: 'Azzlackz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6230497-Veysel-Audiovisuell', stampSeed: {} },
+      { id: 4067, artist: 'Majoe', title: 'Breiter Als Der Türsteher', year: 2014, label: 'Banger Musik', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6896741-Majoe-Breiter-Als-Der-T%C3%BCrsteher', stampSeed: {} },
       { id: 3571, artist: 'Sinan-G', title: 'Schutzgeld', year: 2011, label: 'Callshopmafia', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4320603-Sinan-G-Schutzgeld', stampSeed: {} },
       { id: 2892, artist: 'Freshwask', title: 'Den Umständen Entsprechend', year: 2006, label: 'Spastenabwehr', youtubeId: null,
@@ -8223,6 +8377,8 @@ const REGIONS = [
     id: 'tampa', name: 'Tampa', area: 'Florida',
     lng: -82.4583107, lat: 27.9449854,
     albums: [
+      { id: 4060, artist: '2 Pistols', title: 'Comin\' Back Hard', year: 2014, label: 'Stage One Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11556066-2-Pistols-Comin-Back-Hard', stampSeed: {} },
       { id: 2748, artist: 'Stranger', title: 'A.K.A Extraño Vol.2', year: 2006, label: 'Strange Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26624846', stampSeed: {} },
       { id: 2164, artist: 'Stranger', title: 'Nunca Hables Con Extraños', year: 2004, label: 'Discos Profeta', youtubeId: null,
@@ -8387,6 +8543,10 @@ const REGIONS = [
     id: 'nurnberg', name: 'Nürnberg', area: 'Germany',
     lng: 11.077298, lat: 49.453872,
     albums: [
+      { id: 4076, artist: 'Automatikk', title: 'Jenseits von Eden 2', year: 2014, label: 'distri', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6903218-Automatikk-Jenseits-von-Eden-2', stampSeed: {} },
+      { id: 4024, artist: 'Perverz', title: 'Mein Kopf Zerplatzt 2', year: 2013, label: 'Hirntot Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5121599-Perverz-Mein-Kopf-Zerplatzt-2', stampSeed: {} },
       { id: 3984, artist: 'Khef', title: 'Rückblick Volume I', year: 2013, label: 'KMR Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5682944-Khef-R%C3%BCckblick-Volume-I', stampSeed: {} },
       { id: 3960, artist: 'ManoBass', title: 'Untergrund Stacheldraht', year: 2013, label: '23Klikk', youtubeId: null,
@@ -8429,6 +8589,10 @@ const REGIONS = [
     id: 'providence', name: 'Providence', area: 'Rhode Island',
     lng: -71.4128343, lat: 41.8239891,
     albums: [
+      { id: 4108, artist: 'DOM', title: 'Reciprocation', year: 2021, label: 'SIC Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20193358-DOM-Reciprocation', stampSeed: {} },
+      { id: 4096, artist: 'DOM', title: 'KevinTheCreep - MF KHAOS - How Dare You Bieutch', year: 2021, label: 'SIC Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28933525-DOM-76-KevinTheCreep-MF-KHAOS-How-Dare-You-Bieutch', stampSeed: {} },
       { id: 2963, artist: 'KOZ', title: 'The One Way', year: 2010, label: 'Hood Sound Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/5542533', stampSeed: {} },
       { id: 2332, artist: 'Darkside', title: 'Phunk Planet', year: 1999, label: 'Tic, Tic, Boom!! Entertainment', youtubeId: null,
@@ -8547,6 +8711,8 @@ const REGIONS = [
     id: 'budapest', name: 'Budapest', area: 'Hungary',
     lng: 19.1457723, lat: 47.4813896,
     albums: [
+      { id: 4039, artist: 'Farkasok', title: 'Farkasok LP', year: 2014, label: 'Real Trill Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8272709-Farkasok-Farkasok-LP', stampSeed: {} },
       { id: 3957, artist: 'Mr. Busta', title: 'Mindenre Kész Vagyok', year: 2013, label: 'Real Trill Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/7967138-Mr-Busta-Mindenre-K%C3%A9sz-Vagyok', stampSeed: {} },
       { id: 3834, artist: 'Dopeman', title: 'Drogsztár', year: 2012, label: 'Not On Label (Dopeman (2) Self-released)', youtubeId: null,
@@ -8969,6 +9135,8 @@ const REGIONS = [
     id: 'saarbrucken', name: 'Saarbrücken', area: 'Germany',
     lng: 6.996379, lat: 49.234362,
     albums: [
+      { id: 4046, artist: 'Massiv', title: '#M10', year: 2014, label: 'Al Massiva', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6295580-Massiv-M10', stampSeed: {} },
       { id: 3796, artist: 'Massiv', title: 'Blut Gegen Blut 2 X', year: 2012, label: 'Al Massiva', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9253349-Massiv-Blut-Gegen-Blut-2-X', stampSeed: {} },
       { id: 3634, artist: 'Massiv', title: 'Blut Gegen Blut 2', year: 2011, label: 'Al Massiva', youtubeId: null,
@@ -9046,6 +9214,8 @@ const REGIONS = [
   {
     id: 'roma', name: 'Roma', area: 'Italy', lng: 12.4829321, lat: 41.8933203,
     albums: [
+      { id: 4071, artist: 'Chicoria', title: 'Servizio Funebre', year: 2014, label: 'Smuggler\'s Bazaar', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/8377582-Chicoria-Servizio-Funebre', stampSeed: {} },
       { id: 3060, artist: 'Chicoria', title: 'Cliente Su Cliente', year: 2007, label: 'Smuggler\'s Bazaar', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8288460-Chicoria-Cliente-Su-Cliente', stampSeed: {} },
     ],
@@ -9064,6 +9234,8 @@ const REGIONS = [
   {
     id: 'napoli', name: 'Napoli', area: 'Italy', lng: 14.2487679, lat: 40.8358846,
     albums: [
+      { id: 4078, artist: 'Ntò', title: 'Ntò Presenta Stirpe Nova Numero9', year: 2014, label: 'No Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/12068265-Nt%C3%B2-Nt%C3%B2-Presenta-Stirpe-Nova-Numero9', stampSeed: {} },
       { id: 3101, artist: 'DJ Enzo', title: 'Vuoti A Perdere', year: 2007, label: 'Vibrarecords', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14317203-DJ-Enzo-Vuoti-A-Perdere', stampSeed: {} },
     ],
@@ -9187,6 +9359,8 @@ const REGIONS = [
   {
     id: 'fortmyers', name: 'Fort Myers', area: 'Florida', lng: -81.8723084, lat: 26.640628,
     albums: [
+      { id: 4040, artist: 'Plies', title: 'Coast 2 Coast 251', year: 2014, label: 'Oarfin Distribution', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28363549-Plies-Coast-2-Coast-251', stampSeed: {} },
       { id: 3474, artist: 'Plies', title: 'The Lost Sessions', year: 2010, label: 'U Digg Music Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3655617-Plies-The-Lost-Sessions', stampSeed: {} },
       { id: 3382, artist: 'Plies', title: 'Young Rich & Famous', year: 2009, label: 'Fameus Entertainment & Promotions', youtubeId: null,
@@ -9261,6 +9435,8 @@ const REGIONS = [
   {
     id: 'mannheim', name: 'Mannheim', area: 'Germany', lng: 8.4673098, lat: 49.4892913,
     albums: [
+      { id: 4059, artist: 'Toni Der Assi', title: 'Žilet - Audio Digital Rasur', year: 2014, label: 'Wasieb Musik', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5641143-Toni-Der-Assi-%C5%BDilet-Audio-Digital-Rasur', stampSeed: {} },
       { id: 3991, artist: 'Toni Der Assi', title: 'Von Brate Für Brate', year: 2013, label: 'Distributionz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4383066-Toni-Der-Assi-Von-Brate-F%C3%BCr-Brate', stampSeed: {} },
       { id: 3388, artist: 'Toni Der Assi', title: 'Im Namen Des Volkes', year: 2009, label: 'Distributionz', youtubeId: null,
@@ -9307,6 +9483,8 @@ const REGIONS = [
   {
     id: 'oldenburg', name: 'Oldenburg', area: 'Germany', lng: 8.2146017, lat: 53.1389753,
     albums: [
+      { id: 4044, artist: 'Moneymaxxx', title: '808 Family', year: 2014, label: 'One Take One Hit Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/7419092-Moneymaxxx-808-Family', stampSeed: {} },
       { id: 3866, artist: 'Moneymaxxx', title: 'Moneypuliert', year: 2016, label: '808 Muzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/8392729-Moneymaxxx-Moneypuliert', stampSeed: {} },
     ],
@@ -9355,6 +9533,8 @@ const REGIONS = [
   {
     id: 'bietigheimbissingen', name: 'Bietigheim-Bissingen', area: 'Germany', lng: 9.1364229, lat: 48.9493243,
     albums: [
+      { id: 4073, artist: 'Shindy', title: 'FVCKB!TCHE$GETMONE¥', year: 2014, label: 'Sony Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/6191931-Shindy-FVCKBTCHEGETMONE', stampSeed: {} },
       { id: 3918, artist: 'Shindy', title: 'NWA 2.0', year: 2013, label: 'AMF Management', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/4984737-Shindy-NWA-20', stampSeed: {} },
     ],
@@ -9392,8 +9572,35 @@ const REGIONS = [
   {
     id: 'moscow', name: 'Moscow', area: 'Russia', lng: 37.6063916, lat: 55.625578,
     albums: [
+      { id: 4113, artist: 'Route 696', title: 'Moscow G', year: 2022, label: 'KleinerSalon22', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24728099-Route-696-Moscow-G', stampSeed: {} },
+      { id: 4104, artist: 'Route 696', title: 'Bloody Roots', year: 2021, label: 'Black Zero Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19462438-Route-696-Bloody-Roots', stampSeed: {} },
+      { id: 4101, artist: 'Route 696', title: 'Dawg Wit A G', year: 2021, label: 'Pink Shine Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19225627-Route-696-Dawg-Wit-A-G', stampSeed: {} },
       { id: 4016, artist: 'Route 696', title: 'Bump My Sh*t', year: 2020, label: 'Black Zero Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/25393729-Route-696-Bump-My-Sht', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'meschede', name: 'Meschede', area: 'Germany', lng: 8.2859257, lat: 51.3436532,
+    albums: [
+      { id: 4041, artist: 'Punch Arogunz', title: 'Carnivora', year: 2014, label: 'Halunkenbande', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/5402639-Punch-Arogunz-Carnivora', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'columbiasc', name: 'Columbia', area: 'South Carolina', lng: -81.0352313, lat: 34.000754,
+    albums: [
+      { id: 4045, artist: 'Jeezy', title: 'Seen It All: The Autobiography', year: 2014, label: 'Def Jam Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/11922742-Jeezy-Seen-It-All-The-Autobiography', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'bern', name: 'Bern', area: 'Switzerland', lng: 7.4474468, lat: 46.9479739,
+    albums: [
+      { id: 4079, artist: 'MQ', title: 'Reinkarnation', year: 2014, label: 'Reaktor Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/18845326-MQ-Reinkarnation', stampSeed: {} },
     ],
   },
 ];
