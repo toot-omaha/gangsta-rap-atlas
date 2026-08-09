@@ -1504,6 +1504,8 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 4654, artist: 'Joe Blow', title: 'GOAT', year: 2021, label: 'Blow Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19077127-Joe-Blow-GOAT', stampSeed: {} },
       { id: 4614, artist: 'Mac Dre', title: 'Al Boo Boo', year: 2020, label: 'Sumo Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/27279408-Mac-Dre-Al-Boo-Boo', stampSeed: {} },
       { id: 4602, artist: 'Joe Blow', title: 'Uhuru', year: 2020, label: 'Blow Money Records', youtubeId: null,
@@ -1988,6 +1990,12 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { id: 4677, artist: 'Le$', title: 'E30', year: 2021, label: 'Dios Did It Ourselves', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26106223-Le-E30', stampSeed: {} },
+      { id: 4657, artist: 'Mr. 3-2', title: 'Really Doe', year: 2021, label: 'Street Game Family', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20265550-Mr-3-2-Really-Doe', stampSeed: {} },
+      { id: 4646, artist: 'Lucky Luciano', title: 'The Motivation Album', year: 2020, label: 'LucianoTV', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14917619-Lucky-Luciano-The-Motivation-Album', stampSeed: {} },
       { id: 4626, artist: 'Lil\' Flip', title: 'The Leprechaun 2', year: 2020, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15216781-Lil-Flip-The-Leprechaun-2', stampSeed: {} },
       { id: 4601, artist: 'Wreckless Klan', title: 'Hate Is The New Love', year: 2020, label: 'Wreckless Entertainment', youtubeId: null,
@@ -3138,6 +3146,10 @@ const REGIONS = [
     id: 'memphis', name: 'Memphis', area: 'Tennessee',
     lng: -90.0490, lat: 35.1495,
     albums: [
+      { id: 4641, artist: 'Juicy J', title: 'The Hustle Continues', year: 2020, label: 'Trippy Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19068469-Juicy-J-The-Hustle-Continues', stampSeed: {} },
+      { id: 4639, artist: 'Scan Man', title: 'Tainted Portraits (Dragged n Chopped)', year: 2020, label: 'Kami Kaze Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15154679-Scan-Man-Tainted-Portraits-Dragged-n-Chopped', stampSeed: {} },
       { id: 4635, artist: 'Lil\' E', title: 'Playa 4 Life', year: 2020, label: 'Snubnoze Muzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15154941-Lil-E-Playa-4-Life', stampSeed: {} },
       { id: 4613, artist: 'Manson Family', title: 'The Manson Family Album: Unreleased', year: 2020, label: 'Sun City Publishing, LLC', youtubeId: null,
@@ -3664,6 +3676,10 @@ const REGIONS = [
     id: 'neworleans', name: 'New Orleans', area: 'Louisiana',
     lng: -90.0715, lat: 29.9511,
     albums: [
+      { id: 4676, artist: 'Lil Wayne', title: 'Tha Carter IV (Complete Edition)', year: 2021, label: 'Young Money Records, Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20044315-Lil-Wayne-Tha-Carter-IV-Complete-Edition', stampSeed: {} },
+      { id: 4652, artist: 'Lil Slim', title: 'Robbery‘s My Specialty', year: 2020, label: 'Graveyard Funk Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15982186-Lil-Slim-Robberys-My-Specialty', stampSeed: {} },
       { id: 4608, artist: 'Gambino Family', title: 'Still Ghetto Organized', year: 2020, label: 'Gambino Family', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/24734030-Gambino-Family-Still-Ghetto-Organized', stampSeed: {} },
       { id: 4594, artist: 'Mr. Serv-On', title: 'Life Insurance (20 Year Anniversary Edition Volume 1)', year: 2020, label: 'Hot City Music Group', youtubeId: null,
@@ -4444,6 +4460,10 @@ const REGIONS = [
     id: 'sacramento', name: 'Sacramento', area: 'California',
     lng: -121.4944, lat: 38.5816,
     albums: [
+      { id: 4663, artist: 'Hollow Tip', title: 'Mercenary Mafia', year: 2021, label: 'Mercenary Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22574756-Hollow-Tip-Mercenary-Mafia', stampSeed: {} },
+      { id: 4649, artist: 'Key Loom', title: 'Candlelight Vigils (Hunnid Days)', year: 2020, label: 'Loom Squad Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15761269-Key-Loom-Candlelight-Vigils-Hunnid-Days', stampSeed: {} },
       { id: 4632, artist: 'Key Loom', title: 'Candlelight Vigils (Hunnid Nights)', year: 2020, label: 'Loom Squad Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15761292-Key-Loom-Candlelight-Vigils-Hunnid-Nights', stampSeed: {} },
       { id: 4599, artist: 'M.A.R.V.A.L.E.S.S', title: 'Still Marvaless', year: 2020, label: 'Marvaless Music', youtubeId: null,
@@ -4976,6 +4996,8 @@ const REGIONS = [
     id: 'bronx', name: 'The Bronx', area: 'New York, NY',
     lng: -73.9167, lat: 40.8448,
     albums: [
+      { id: 4643, artist: 'Children Of The Corn', title: 'The Final Chapter', year: 2020, label: 'SIC Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15865042-Children-Of-The-Corn-The-Final-Chapter', stampSeed: {} },
       { id: 4567, artist: 'Fred The Godson', title: 'God Level', year: 2019, label: 'Air Vinyl Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14846944-Fred-The-Godson-God-Level', stampSeed: {} },
       { id: 4546, artist: 'Cam\'ron', title: 'Purple Haze 2', year: 2019, label: 'Killa Entertainment', youtubeId: null,
@@ -5044,6 +5066,8 @@ const REGIONS = [
     id: 'dallas', name: 'Dallas', area: 'Texas',
     lng: -96.7969, lat: 32.7763,
     albums: [
+      { id: 4678, artist: 'AJ Snow', title: 'Mr. Fresh', year: 2021, label: 'Made By OGs', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/30950755-AJ-Snow-Mr-Fresh', stampSeed: {} },
       { id: 4628, artist: 'AJ Snow', title: '40th Anniversary', year: 2020, label: 'Made By OGs', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/30875970-AJ-Snow-40th-Anniversary', stampSeed: {} },
       { id: 4558, artist: 'AJ Snow', title: 'Ghetto Gold', year: 2019, label: 'Made By OGs', youtubeId: null,
@@ -5700,6 +5724,8 @@ const REGIONS = [
     id: 'riodejaneiro', name: 'Rio de Janeiro', area: 'Brazil — 世界のG-RAP',
     lng: -43.1729, lat: -22.9068,
     albums: [
+      { id: 4647, artist: 'MV Bill', title: 'Traficando Informação', year: 2020, label: 'Noize Record Club', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16863246-MV-Bill-Traficando-Informa%C3%A7%C3%A3o', stampSeed: {} },
       { id: 3482, artist: 'MV Bill', title: 'Causa E Efeito', year: 2010, label: 'Chapa Preta', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6180144-MV-Bill-Causa-E-Efeito', stampSeed: {} },
       { id: 1222, artist: 'MV Bill', title: 'CDD. Mandando Fechado', year: 1998, label: 'Zambia', youtubeId: null,
@@ -5771,6 +5797,10 @@ const REGIONS = [
     id: 'miami', name: 'Miami', area: 'Florida',
     lng: -80.1918, lat: 25.7617,
     albums: [
+      { id: 4651, artist: 'Stitches', title: 'Married To The Bricks', year: 2020, label: 'Stitches', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/18386287-Stitches-Married-To-The-Bricks', stampSeed: {} },
+      { id: 4642, artist: 'Icee', title: 'One Life One Cause', year: 2020, label: '4 Amigoz Ent', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15745239-Icee-One-Life-One-Cause-', stampSeed: {} },
       { id: 4534, artist: 'Denzel Curry', title: 'Zuu', year: 2019, label: 'Loma Vista', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14041858-Denzel-Curry-Zuu', stampSeed: {} },
       { id: 4496, artist: 'Stitches', title: 'Time For Murder', year: 2018, label: 'Stitches', youtubeId: null,
@@ -5823,6 +5853,8 @@ const REGIONS = [
     id: 'eastorange', name: 'East Orange', area: 'New Jersey',
     lng: -74.2107, lat: 40.7673,
     albums: [
+      { id: 4655, artist: 'Outlawz', title: 'One Nation', year: 2021, label: 'Outlaw Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29415811-Outlawz-One-Nation', stampSeed: {} },
       { id: 4476, artist: 'Hussein Fatal', title: 'Legendary Status', year: 2018, label: 'Hussein Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12228789-Hussein-Fatal-Legendary-Status', stampSeed: {} },
       { id: 4425, artist: 'Outlawz', title: '#LastOnezLeft', year: 2017, label: 'Outlaw Recordz', youtubeId: null,
@@ -5867,6 +5899,8 @@ const REGIONS = [
     id: 'riverside', name: 'Riverside', area: 'California',
     lng: -117.3961, lat: 33.9806,
     albums: [
+      { id: 4661, artist: 'Bossolo', title: 'Thug Therapy II', year: 2021, label: 'Bloc Hustle Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19202011-Bossolo-Thug-Therapy-II', stampSeed: {} },
       { id: 4631, artist: 'Bossolo', title: 'The Compound', year: 2020, label: 'Bloc Hustle Inc.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15777552-Bossolo-The-Compound', stampSeed: {} },
       { id: 4630, artist: 'Bossolo', title: 'The Cure', year: 2020, label: 'Bloc Hustle Inc.', youtubeId: null,
@@ -5923,6 +5957,8 @@ const REGIONS = [
     id: 'chicago', name: 'Chicago', area: 'Illinois',
     lng: -87.6298, lat: 41.8781,
     albums: [
+      { id: 4648, artist: 'King Von', title: 'Welcome To O\'Block', year: 2020, label: 'Only The Family', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19468876-King-Von-Welcome-To-OBlock', stampSeed: {} },
       { id: 4633, artist: 'Do Or Die', title: 'The Pass Out', year: 2020, label: 'Do Or Die Nation', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15696495-Do-Or-Die-The-Pass-Out', stampSeed: {} },
       { id: 4514, artist: 'Puppet', title: 'Chapter 9: Eye Of The Storm', year: 2018, label: 'Pura Desmadre Records', youtubeId: null,
@@ -6265,6 +6301,12 @@ const REGIONS = [
     id: 'berlin', name: 'Berlin', area: 'Germany — 世界のG-RAP',
     lng: 13.3951309, lat: 52.5173885,
     albums: [
+      { id: 4664, artist: 'King Orgasmus One', title: 'Manifest', year: 2021, label: 'I Luv Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35950414-King-Orgasmus-One-Manifest', stampSeed: {} },
+      { id: 4658, artist: 'Sentino', title: 'Zabójstwo Liryczne 2.0', year: 2021, label: 'Sicarios', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22266016-Sentino-Zab%C3%B3jstwo-Liryczne-20', stampSeed: {} },
+      { id: 4656, artist: 'Frauenarzt', title: 'Dr. Sex Vinyl Bundle', year: 2021, label: 'Ghetto Musik', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20491252-Frauenarzt-Dr-Sex-Vinyl-Bundle', stampSeed: {} },
       { id: 4620, artist: 'AK AusserKontrolle', title: 'A.S.S.N. 2', year: 2020, label: 'XY Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15801783-AK-AusserKontrolle-ASSN-2', stampSeed: {} },
       { id: 4591, artist: 'Sido', title: '8 Kostbarkeiten - Studio Vinyl Box', year: 2020, label: 'Urban', youtubeId: null,
@@ -6519,6 +6561,8 @@ const REGIONS = [
     id: 'cleveland', name: 'Cleveland', area: 'Ohio',
     lng: -81.6944, lat: 41.4993,
     albums: [
+      { id: 4674, artist: 'Krayzie Bone', title: 'Leaves Of Legends', year: 2021, label: 'The Life Apparel', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/18491722-Krayzie-Bone-Leaves-Of-Legends', stampSeed: {} },
       { id: 4589, artist: 'Chxpo', title: 'So Icy Nightmare Soldier', year: 2019, label: 'Band Boy Ent', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/21337675-Chxpo-So-Icy-Nightmare-Soldier', stampSeed: {} },
       { id: 4584, artist: 'Chxpo', title: 'King Slayer', year: 2019, label: 'So Icy Goth', youtubeId: null,
@@ -6625,6 +6669,10 @@ const REGIONS = [
     id: 'batonrouge', name: 'Baton Rouge', area: 'Louisiana',
     lng: -91.1871, lat: 30.4515,
     albums: [
+      { id: 4670, artist: 'YoungBoy Never Broke Again', title: 'Sincerely, Kentrell', year: 2021, label: 'Never Broke Again', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20693143-YoungBoy-Never-Broke-Again-Sincerely-Kentrell', stampSeed: {} },
+      { id: 4666, artist: 'Big Head', title: 'Struggle Baby', year: 2021, label: 'Out The Mud Ent.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26242025-Big-Head-Struggle-Baby', stampSeed: {} },
       { id: 4610, artist: 'YoungBoy Never Broke Again', title: 'Top', year: 2020, label: 'Never Broke Again', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15928614-YoungBoy-Never-Broke-Again-Top', stampSeed: {} },
       { id: 4488, artist: 'YoungBoy Never Broke Again', title: 'Until Death Call My Name', year: 2018, label: 'Atlantic', youtubeId: null,
@@ -6890,6 +6938,10 @@ const REGIONS = [
     id: 'kansascity', name: 'Kansas City', area: 'Missouri',
     lng: -94.5786, lat: 39.0997,
     albums: [
+      { id: 4671, artist: 'Rich The Factor', title: 'Mobbligated', year: 2021, label: 'Major Factor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35799013-Rich-The-Factor-Mobbligated', stampSeed: {} },
+      { id: 4653, artist: 'Rich The Factor', title: 'Rich Laden', year: 2020, label: 'Major Factor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35799151-Rich-The-Factor-Rich-Laden-', stampSeed: {} },
       { id: 4557, artist: 'Rich The Factor', title: 'The Tonight Show', year: 2019, label: 'Major Factor Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35799277-Rich-The-Factor-The-Tonight-Show-', stampSeed: {} },
       { id: 4413, artist: 'Rich The Factor', title: 'Whale Mafi 2', year: 2017, label: 'Major Factor Records', youtubeId: null,
@@ -7158,6 +7210,10 @@ const REGIONS = [
     id: 'eastla', name: 'East Los Angeles', area: 'Los Angeles County, CA',
     lng: -118.1717, lat: 34.0239,
     albums: [
+      { id: 4665, artist: 'Terror', title: 'Tha Wake Up', year: 2021, label: 'Sun City Publishing, LLC', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19463254-Terror-Tha-Wake-Up', stampSeed: {} },
+      { id: 4644, artist: 'Terror', title: 'Still Whateva', year: 2020, label: 'Sun City Publishing, LLC', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/15159600-Terror-Still-Whateva', stampSeed: {} },
       { id: 4636, artist: 'Blueface', title: 'Find The Beat', year: 2020, label: 'Cash Money Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14921026-Blueface-Find-The-Beat', stampSeed: {} },
       { id: 4622, artist: 'Conejo', title: 'West Adams', year: 2020, label: 'Sinister Kingdom Music', youtubeId: null,
@@ -7632,6 +7688,10 @@ const REGIONS = [
     id: 'sandiego', name: 'San Diego', area: 'California',
     lng: -117.1611, lat: 32.7157,
     albums: [
+      { id: 4650, artist: 'Twisted Insane', title: 'The Night Before Christmas', year: 2020, label: 'Brainsick Muzik', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/16604202-Twisted-Insane-The-Night-Before-Christmas', stampSeed: {} },
+      { id: 4640, artist: 'Jayo Felony', title: 'Hood Invasion', year: 2020, label: 'Loco Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21393823-Jayo-Felony-Hood-Invasion', stampSeed: {} },
       { id: 4585, artist: 'Twisted Insane', title: 'Sick James', year: 2019, label: 'Brainsick Muzik', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14935324-Twisted-Insane-Sick-James', stampSeed: {} },
       { id: 4552, artist: 'Mr. Knightowl', title: 'The Untouchable Owl Pacino', year: 2019, label: 'Sawed Off Records', youtubeId: null,
@@ -8194,6 +8254,8 @@ const REGIONS = [
     id: 'birminghamal', name: 'Birmingham', area: 'Alabama',
     lng: -86.8024, lat: 33.5207,
     albums: [
+      { id: 4667, artist: 'Gucci Mane', title: 'So Icy Boyz', year: 2021, label: '1017 Global Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24803630-Gucci-Mane-So-Icy-Boyz', stampSeed: {} },
       { id: 4289, artist: 'Gucci Mane', title: 'Everybody Looking', year: 2016, label: 'Atlantic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/9466619-Gucci-Mane-Everybody-Looking', stampSeed: {} },
       { id: 3336, artist: 'Gucci Mane', title: 'Murder Was The Case', year: 2009, label: 'Big Cat Records', youtubeId: null,
@@ -8408,6 +8470,8 @@ const REGIONS = [
     id: 'inglewood', name: 'Inglewood', area: 'California',
     lng: -118.3531, lat: 33.9617,
     albums: [
+      { id: 4672, artist: 'GB', title: 'Ghetto Boy', year: 2021, label: 'Street Certified Block Approved', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37764783-GB-Ghetto-Boy', stampSeed: {} },
       { id: 4607, artist: 'GB', title: '186.22', year: 2020, label: 'Street Certified Block Approved', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/18734809-GB-18622', stampSeed: {} },
       { id: 4491, artist: 'GB', title: '1 Way In, 2 Wayz Out', year: 2018, label: 'Not On Label (GB (26) Self-released)', youtubeId: null,
@@ -9021,6 +9085,10 @@ const REGIONS = [
     id: 'bonn', name: 'Bonn', area: 'Germany',
     lng: 7.1024635, lat: 50.7352621,
     albums: [
+      { id: 4662, artist: 'Ssio', title: 'Das Neue Album', year: 2021, label: 'Alles Oder Nix Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/20227477-Ssio-Das-Neue-Album', stampSeed: {} },
+      { id: 4660, artist: 'Bushido', title: 'Sonny Black II', year: 2021, label: 'ersguterjunge', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21386299-Bushido-Sonny-Black-II', stampSeed: {} },
       { id: 4447, artist: 'Bushido', title: 'Mythos', year: 2018, label: 'ersguterjunge', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12906116-Bushido-Mythos', stampSeed: {} },
       { id: 4247, artist: 'Schwartz', title: 'Bis Du Schwartz Siehst', year: 2015, label: 'Hirntot Records', youtubeId: null,
@@ -9089,6 +9157,8 @@ const REGIONS = [
     id: 'aarhus', name: 'Aarhus', area: 'Denmark',
     lng: 10.2134046, lat: 56.1496278,
     albums: [
+      { id: 4668, artist: 'L.O.C.', title: 'Dominologi (Anniversary Edition)', year: 2021, label: 'Parlophone Music Denmark', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26868662-LOC-Dominologi-Anniversary-Edition', stampSeed: {} },
       { id: 3710, artist: 'L.O.C.', title: 'Libertiner', year: 2012, label: 'Virgin', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/6592830-LOC-Libertiner', stampSeed: {} },
       { id: 3219, artist: 'L.O.C.', title: 'Melankolia / XxxCouture', year: 2008, label: 'Virgin', youtubeId: null,
@@ -9183,6 +9253,8 @@ const REGIONS = [
     id: 'valdemarne', name: 'Val-de-Marne', area: 'France',
     lng: 2.4543321, lat: 48.7744893,
     albums: [
+      { id: 4673, artist: 'Lacrim', title: 'Persona Non Grata', year: 2021, label: 'Plata O Plomo Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21310258-Lacrim-Persona-Non-Grata', stampSeed: {} },
       { id: 4638, artist: 'Franglish', title: 'Monsieur (Mood)', year: 2020, label: 'MCA Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/16571436-Franglish-Monsieur-Mood', stampSeed: {} },
       { id: 4575, artist: 'Suprême NTM', title: '1993... J\'appuie Sur La Gachette', year: 2019, label: 'Epic', youtubeId: null,
@@ -9395,6 +9467,8 @@ const REGIONS = [
     id: 'copenhagen', name: 'Copenhagen', area: 'Denmark',
     lng: 12.5700724, lat: 55.6867243,
     albums: [
+      { id: 4645, artist: 'Suspekt', title: 'Sindssyge Ting + Instrumental', year: 2020, label: 'Tabu Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/14786473-Suspekt-Sindssyge-Ting-Instrumental', stampSeed: {} },
       { id: 4629, artist: 'Suspekt', title: 'Sindssyge Ting', year: 2020, label: 'Universal Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15715304-Suspekt-Sindssyge-Ting', stampSeed: {} },
       { id: 2977, artist: 'Suspekt', title: 'Prima Nocte + Instrumental Version', year: 2007, label: 'Tabu Records', youtubeId: null,
@@ -9801,6 +9875,8 @@ const REGIONS = [
     id: 'longisland', name: 'Long Island', area: 'New York',
     lng: -73.0994297, lat: 40.8514971,
     albums: [
+      { id: 4659, artist: 'Roc Marciano', title: 'Mt. Marci', year: 2021, label: 'Marci Enterprises', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/18108385-Roc-Marciano-Mt-Marci', stampSeed: {} },
       { id: 3877, artist: 'Tre Eiht Special', title: 'The Trelude EP', year: 2017, label: 'Predominante Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10809274-Tre-Eiht-Special-The-Trelude-EP', stampSeed: {} },
       { id: 3805, artist: 'Roc Marciano', title: 'Reloaded', year: 2012, label: 'Decon', youtubeId: null,
@@ -9879,6 +9955,8 @@ const REGIONS = [
     id: 'jamaicaqueens', name: 'Jamaica', area: 'Queens, NY',
     lng: -73.7949, lat: 40.7027,
     albums: [
+      { id: 4669, artist: 'Onyx', title: '#Turndafucup (The Original Sessions)', year: 2021, label: 'X-Ray Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22732340-Onyx-Turndafucup-The-Original-Sessions', stampSeed: {} },
       { id: 4121, artist: '50 Cent', title: 'Animal Ambition (A Cappellas)', year: 2014, label: 'G Unit', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/37322607-50-Cent-Animal-Ambition-A-Cappellas', stampSeed: {} },
       { id: 3739, artist: 'Waka Flocka Flame', title: 'Triple F Life: Friends Fans & Family', year: 2012, label: 'Warner Bros. Records', youtubeId: null,
@@ -9903,6 +9981,8 @@ const REGIONS = [
     id: 'brownsvillebk', name: 'Brownsville', area: 'Brooklyn, NY',
     lng: -73.9073, lat: 40.6633,
     albums: [
+      { id: 4675, artist: 'Pop Smoke', title: 'Faith', year: 2021, label: 'Victor Victor', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/19510510-Pop-Smoke-Faith', stampSeed: {} },
       { id: 4593, artist: 'Pop Smoke', title: 'Shoot For The Stars Aim For The Moon', year: 2020, label: 'Victor Victor', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/15690731-Pop-Smoke-Shoot-For-The-Stars-Aim-For-The-Moon', stampSeed: {} },
       { id: 2966, artist: 'Agallah', title: 'You Already Know', year: 2006, label: 'Babygrande', youtubeId: null,
