@@ -1532,6 +1532,8 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 4911, artist: 'Shady Nate', title: 'Courtesy of the Mobb Vol. 1', year: 2025, label: 'Rapbay', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/33836706-Shady-Nate-Courtesy-of-the-Mobb-Vol-1-', stampSeed: {} },
       { id: 4887, artist: 'Joe Blow', title: 'International Blow II', year: 2025, label: 'Rapbay', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/34931603-Joe-Blow-International-Blow-II', stampSeed: {} },
       { id: 4874, artist: 'Joe Blow', title: 'MOB 3 (Men Of Business)', year: 2025, label: 'Blow Money Records', youtubeId: null,
@@ -5620,6 +5622,8 @@ const REGIONS = [
     id: 'detroit', name: 'Detroit', area: 'Michigan',
     lng: -83.0458, lat: 42.3314,
     albums: [
+      { id: 4912, artist: 'Twiztid', title: 'Freek Show (Twiztid’s Version)', year: 2025, label: 'Majik Ninja Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34785608-Twiztid-Freek-Show-Twiztids-Version', stampSeed: {} },
       { id: 4882, artist: 'Nino Toka', title: 'Life Of A Trap Boss : Real Trapper', year: 2025, label: 'Not On Label (Nino Toka Self-released)', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/34641928-Nino-Toka-Life-Of-A-Trap-Boss-Real-Trapper', stampSeed: {} },
       { id: 4782, artist: 'Tee Grizzley', title: 'Tee\'s Coney Island (Deluxe Edition)', year: 2023, label: '300 Entertainment', youtubeId: null,
