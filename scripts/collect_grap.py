@@ -185,7 +185,7 @@ def norm_loose(s):
 
 
 # ---------- 1. Discogs: G-RAP判定の一次データベース ----------
-LATEST_YEAR = 2010  # G-RAPの実質的な最盛期はこのあたりまで。これ以降は対象外。
+LATEST_YEAR = 2025  # 2026-08-09にユーザー指示で2010年打ち切りを解除、2010年代・2020年代も収集対象に拡張。
 
 def discogs_harvest(style, start_year, start_page, pages, per_page=100, fmt='Album', sort='year', sort_order='asc'):
     """指定styleのリリースを取得し、master_id で重複プレスを除去して返す。
