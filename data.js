@@ -426,6 +426,12 @@ const REGIONS = [
     id: 'compton', name: 'Compton', area: 'Los Angeles County, CA',
     lng: -118.2201, lat: 33.8958,
     albums: [
+      { id: 4781, artist: 'Glasses Malone', title: 'Cancel Deeez Nutz', year: 2023, label: 'Blu Division Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29285512-Glasses-Malone-Cancel-Deeez-Nutz', stampSeed: {} },
+      { id: 4767, artist: 'Cypress Hill', title: 'Black Sunday (Deluxe)', year: 2023, label: 'Columbia', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28027281-Cypress-Hill-Black-Sunday-Deluxe', stampSeed: {} },
+      { id: 4731, artist: 'YG', title: 'I Got Issues', year: 2022, label: '4Hunnid Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24732362-YG-I-Got-Issues', stampSeed: {} },
       { id: 4582, artist: 'MC Eiht', title: 'Official', year: 2019, label: 'Blue Stamp Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14685505-MC-Eiht-Official', stampSeed: {} },
       { id: 4446, artist: 'YG', title: 'Stay Dangerous', year: 2018, label: 'Def Jam Recordings', youtubeId: null,
@@ -1506,6 +1512,8 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 4769, artist: 'HD', title: 'Nostalgic The Album', year: 2023, label: 'Bearfaced Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/32532744-HD-Nostalgic-The-Album', stampSeed: {} },
       { id: 4696, artist: 'Dru Down', title: 'Livin Legend (God Willin) Pt.2', year: 2021, label: 'Pimp On Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/18891127-Dru-Down-Livin-Legend-God-Willin-Pt2', stampSeed: {} },
       { id: 4687, artist: 'Philthy Rich', title: 'Phillip Beasley', year: 2021, label: 'Empire', youtubeId: null,
@@ -1998,6 +2006,16 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { id: 4765, artist: 'Mr. 3-2', title: 'Organized Crhyme', year: 2023, label: 'Most Wanted Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27407094-Mr-3-2-Organized-Crhyme', stampSeed: {} },
+      { id: 4761, artist: 'Lil\' Keke', title: '25 Summers', year: 2023, label: 'Slfmade 713', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/33952098-Lil-Keke-25-Summers', stampSeed: {} },
+      { id: 4749, artist: 'Slim Thug', title: 'BIGslim', year: 2022, label: 'Hogg Life', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/32646150-Slim-Thug-BIGslim', stampSeed: {} },
+      { id: 4742, artist: 'Lil Keke', title: 'Lgnd', year: 2022, label: 'Slfmade 713', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25913284-Lil-Keke-Lgnd', stampSeed: {} },
+      { id: 4736, artist: 'Z-Ro', title: 'Pressure', year: 2022, label: 'One Deep Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/23495201-Z-Ro-Pressure', stampSeed: {} },
       { id: 4722, artist: 'K-Rino', title: 'Tele-K-Nesis', year: 2022, label: 'Black Book International', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/24520175-K-Rino-Tele-K-Nesis', stampSeed: {} },
       { id: 4693, artist: 'Big Pokey', title: 'Sensei', year: 2021, label: 'Win Or Regret Music Group', youtubeId: null,
@@ -3160,6 +3178,10 @@ const REGIONS = [
     id: 'memphis', name: 'Memphis', area: 'Tennessee',
     lng: -90.0490, lat: 35.1495,
     albums: [
+      { id: 4759, artist: 'Juicy J', title: 'Mental Trillness', year: 2023, label: 'Trippy Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26613449-Juicy-J-Mental-Trillness', stampSeed: {} },
+      { id: 4729, artist: 'Blac Youngsta', title: '4Life', year: 2022, label: 'Heavy Camp', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24731735-Blac-Youngsta-4Life', stampSeed: {} },
       { id: 4694, artist: 'Juicy J', title: 'The Hustle Still Continues (Deluxe Video Edition)', year: 2021, label: 'Trippy Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/32647056-Juicy-J-The-Hustle-Still-Continues-Deluxe-Video-Edition', stampSeed: {} },
       { id: 4641, artist: 'Juicy J', title: 'The Hustle Continues', year: 2020, label: 'Trippy Music', youtubeId: null,
@@ -4096,6 +4118,8 @@ const REGIONS = [
     id: 'sf', name: 'San Francisco', area: 'Hunters Point / Fillmore, CA',
     lng: -122.4194, lat: 37.7749,
     albums: [
+      { id: 4763, artist: 'Black C', title: 'The Black Album', year: 2023, label: 'The Rightway Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26669051-Black-C-The-Black-Album', stampSeed: {} },
       { id: 4717, artist: 'Berner', title: 'From Seed To $ale', year: 2022, label: 'Bern One Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/25006927-Berner-From-Seed-To-ale', stampSeed: {} },
       { id: 4690, artist: 'Berner', title: 'Gotti', year: 2021, label: 'Bern One Entertainment', youtubeId: null,
@@ -4480,6 +4504,8 @@ const REGIONS = [
     id: 'sacramento', name: 'Sacramento', area: 'California',
     lng: -121.4944, lat: 38.5816,
     albums: [
+      { id: 4766, artist: 'X-Raided', title: 'A Prayer In Hell', year: 2023, label: 'Strange Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27510207-X-Raided-A-Prayer-In-Hell', stampSeed: {} },
       { id: 4663, artist: 'Hollow Tip', title: 'Mercenary Mafia', year: 2021, label: 'Mercenary Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22574756-Hollow-Tip-Mercenary-Mafia', stampSeed: {} },
       { id: 4649, artist: 'Key Loom', title: 'Candlelight Vigils (Hunnid Days)', year: 2020, label: 'Loom Squad Entertainment', youtubeId: null,
@@ -4948,6 +4974,10 @@ const REGIONS = [
     id: 'philly', name: 'Philadelphia', area: 'Pennsylvania',
     lng: -75.1635, lat: 39.9527,
     albums: [
+      { id: 4752, artist: 'Five Finger Posse', title: 'The Bitter End', year: 2022, label: 'Circle 5 Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24423821-Five-Finger-Posse-The-Bitter-End', stampSeed: {} },
+      { id: 4730, artist: 'Skrilla', title: 'Kutthroat', year: 2022, label: 'Not On Label (Skrilla (11) Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/33510062-Skrilla-Kutthroat', stampSeed: {} },
       { id: 4703, artist: 'Kurupt', title: '7Ps Tha Gotti Way', year: 2022, label: 'Penagon Recordz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/30945253-Kurupt-7Ps-Tha-Gotti-Way', stampSeed: {} },
       { id: 4611, artist: 'Black Thought', title: 'Streams Of Thought, Vol. 3: Cane & Able', year: 2020, label: 'UMG Recordings, Inc.', youtubeId: null,
@@ -5302,6 +5332,12 @@ const REGIONS = [
     id: 'atlanta', name: 'Atlanta', area: 'Georgia',
     lng: -84.3898, lat: 33.7545,
     albums: [
+      { id: 4776, artist: 'Homixide Gang', title: '5th Amndmnt', year: 2023, label: 'Opium, Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/32007146-Homixide-Gang-5th-Amndmnt', stampSeed: {} },
+      { id: 4760, artist: 'Homixide Gang', title: 'Snot Or Not', year: 2023, label: 'Opium', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28057341-Homixide-Gang-Snot-Or-Not', stampSeed: {} },
+      { id: 4728, artist: 'Homixide Gang', title: 'Homixide Lifestyle', year: 2022, label: 'Opium', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28057401-Homixide-Gang-Homixide-Lifestyle', stampSeed: {} },
       { id: 4682, artist: 'Homixide Gang', title: 'Snotty World', year: 2021, label: 'Snotty World', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/23980022-Homixide-Gang-Snotty-World', stampSeed: {} },
       { id: 4583, artist: 'Big Kuntry King', title: 'Blu Paypa', year: 2019, label: 'Breadbox Cartel', youtubeId: null,
@@ -5508,6 +5544,10 @@ const REGIONS = [
     id: 'detroit', name: 'Detroit', area: 'Michigan',
     lng: -83.0458, lat: 42.3314,
     albums: [
+      { id: 4782, artist: 'Tee Grizzley', title: 'Tee\'s Coney Island (Deluxe Edition)', year: 2023, label: '300 Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28829065-Tee-Grizzley-Tees-Coney-Island-Deluxe-Edition', stampSeed: {} },
+      { id: 4751, artist: 'Peezy', title: 'Only Built 4 Diamond Links', year: 2022, label: 'Empire', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25286386-Peezy-Only-Built-4-Diamond-Links', stampSeed: {} },
       { id: 4725, artist: 'Tee Grizzley', title: 'Chapters Of The Trenches', year: 2022, label: '300 Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/24825242-Tee-Grizzley-Chapters-Of-The-Trenches', stampSeed: {} },
       { id: 4597, artist: 'Blaze Ya Dead Homie', title: 'Cadaver', year: 2020, label: 'Majik Ninja Entertainment', youtubeId: null,
@@ -5827,6 +5867,10 @@ const REGIONS = [
     id: 'miami', name: 'Miami', area: 'Florida',
     lng: -80.1918, lat: 25.7617,
     albums: [
+      { id: 4764, artist: 'SpaceGhostPurrp', title: 'Belaire Black Bottle Boyz (Carol City To West Atlanta Zone 1)', year: 2023, label: 'Not On Label (SpaceGhostPurrp Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/32624109-SpaceGhostPurrp-Belaire-Black-Bottle-Boyz-Carol-City-To-West-Atlanta-Zone-1', stampSeed: {} },
+      { id: 4757, artist: 'SpaceGhostPurrp', title: 'Blvcklvnd Rvdix 66​​​.​​​6', year: 2023, label: 'Forced Resignation Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29270908-SpaceGhostPurrp-Blvcklvnd-Rvdix-666', stampSeed: {} },
       { id: 4724, artist: 'SpaceGhostPurrp', title: 'BMW', year: 2022, label: 'Tape House USA', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/23521601-SpaceGhostPurrp-BMW', stampSeed: {} },
       { id: 4716, artist: 'SpaceGhostPurrp', title: 'NASA: The Mixtape', year: 2022, label: 'Bratty Dog Tapes', youtubeId: null,
@@ -5991,6 +6035,16 @@ const REGIONS = [
     id: 'chicago', name: 'Chicago', area: 'Illinois',
     lng: -87.6298, lat: 41.8781,
     albums: [
+      { id: 4768, artist: 'Lil Durk', title: 'Almost Healed', year: 2023, label: 'Alamo Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27215889-Lil-Durk-Almost-Healed', stampSeed: {} },
+      { id: 4762, artist: 'Chief Keef', title: 'Mansion Musick', year: 2023, label: 'RBC Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26848160-Chief-Keef-Mansion-Musick', stampSeed: {} },
+      { id: 4755, artist: 'Chief Keef', title: 'Finally Rich (Complete Edition)', year: 2022, label: 'Interscope Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25483147-Chief-Keef-Finally-Rich-Complete-Edition', stampSeed: {} },
+      { id: 4746, artist: 'Chief Keef', title: 'Sorry 4 The Weight (Deluxe Edition)', year: 2022, label: 'RBC Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22981973-Chief-Keef-Sorry-4-The-Weight-Deluxe-Edition', stampSeed: {} },
+      { id: 4740, artist: 'Vic Spencer', title: 'Psychological Cheat Sheet 3', year: 2022, label: 'Tuff Kong Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25418011-Vic-Spencer-Psychological-Cheat-Sheet-3', stampSeed: {} },
       { id: 4710, artist: 'King Von', title: 'What It Means To Be King', year: 2022, label: 'Only The Family', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22388866-King-Von-What-It-Means-To-Be-King', stampSeed: {} },
       { id: 4705, artist: 'Do Or Die', title: 'The Storm', year: 2022, label: 'Do Or Die Nation', youtubeId: null,
@@ -6345,6 +6399,14 @@ const REGIONS = [
     id: 'berlin', name: 'Berlin', area: 'Germany — 世界のG-RAP',
     lng: 13.3951309, lat: 52.5173885,
     albums: [
+      { id: 4773, artist: 'AK AusserKontrolle', title: 'Blackout', year: 2023, label: 'XY Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29075986-AK-AusserKontrolle-Blackout', stampSeed: {} },
+      { id: 4758, artist: 'King Orgasmus One', title: 'I Luv Money', year: 2023, label: 'I Luv Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29285002-King-Orgasmus-One-I-Luv-Money', stampSeed: {} },
+      { id: 4743, artist: 'NNOC', title: 'Phantom', year: 2022, label: 'NNOC Media', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36385858-NNOC-Phantom', stampSeed: {} },
+      { id: 4733, artist: 'Sentino', title: 'Aporofobia', year: 2022, label: 'Sicarios', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/21660226-Sentino-Aporofobia', stampSeed: {} },
       { id: 4723, artist: 'Eisman', title: 'Frost', year: 2022, label: 'Feinster Hip Hop', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/33080058-Eisman-Frost', stampSeed: {} },
       { id: 4713, artist: 'Mosh36', title: 'Balance', year: 2022, label: 'WL Records', youtubeId: null,
@@ -6725,6 +6787,10 @@ const REGIONS = [
     id: 'batonrouge', name: 'Baton Rouge', area: 'Louisiana',
     lng: -91.1871, lat: 30.4515,
     albums: [
+      { id: 4775, artist: 'YoungBoy Never Broke Again', title: 'Don\'t Try This At Home', year: 2023, label: 'Never Broke Again', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26875568-YoungBoy-Never-Broke-Again-Dont-Try-This-At-Home', stampSeed: {} },
+      { id: 4753, artist: 'YoungBoy Never Broke Again', title: 'Lost Files', year: 2022, label: 'Never Broke Again', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25556497-YoungBoy-Never-Broke-Again-Lost-Files', stampSeed: {} },
       { id: 4706, artist: 'YoungBoy Never Broke Again', title: 'The Last Slimeto', year: 2022, label: 'Atlantic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/24304610-YoungBoy-Never-Broke-Again-The-Last-Slimeto', stampSeed: {} },
       { id: 4670, artist: 'YoungBoy Never Broke Again', title: 'Sincerely, Kentrell', year: 2021, label: 'Never Broke Again', youtubeId: null,
@@ -6998,6 +7064,14 @@ const REGIONS = [
     id: 'kansascity', name: 'Kansas City', area: 'Missouri',
     lng: -94.5786, lat: 39.0997,
     albums: [
+      { id: 4771, artist: 'Rich The Factor', title: 'The North Face Whale', year: 2023, label: 'Major Factor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35799655-Rich-The-Factor-The-North-Face-Whale', stampSeed: {} },
+      { id: 4770, artist: 'Rich The Factor', title: 'Scratch Tenth Avenue', year: 2023, label: 'Major Factor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35800480-Rich-The-Factor-Scratch-Tenth-Avenue-', stampSeed: {} },
+      { id: 4745, artist: 'Rich The Factor', title: 'NFT Scritch 2', year: 2022, label: 'Major Factor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35799928-Rich-The-Factor-NFT-Scritch-2', stampSeed: {} },
+      { id: 4744, artist: 'Rich The Factor', title: 'Leaving It All On The Field', year: 2022, label: 'Major Factor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35800360-Rich-The-Factor-Leaving-It-All-On-The-Field', stampSeed: {} },
       { id: 4712, artist: 'Rich The Factor', title: 'NFT Scritch', year: 2022, label: 'Major Factor Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35799901-Rich-The-Factor-NFT-Scritch', stampSeed: {} },
       { id: 4698, artist: 'Rich The Factor', title: 'Orca Jargon', year: 2021, label: 'Major Factor Records', youtubeId: null,
@@ -7274,6 +7348,8 @@ const REGIONS = [
     id: 'eastla', name: 'East Los Angeles', area: 'Los Angeles County, CA',
     lng: -118.1717, lat: 34.0239,
     albums: [
+      { id: 4774, artist: 'OhGeesy', title: 'Geezyworld 2', year: 2023, label: 'Atlantic', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27693885-OhGeesy-Geezyworld-2', stampSeed: {} },
       { id: 4707, artist: 'The Game', title: 'Drillmatic - Heart Vs. Mind', year: 2022, label: '100 Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/30180965-The-Game-Drillmatic-Heart-Vs-Mind', stampSeed: {} },
       { id: 4689, artist: 'OhGeesy', title: 'GeezyWorld', year: 2021, label: 'Atlantic', youtubeId: null,
@@ -8092,6 +8168,8 @@ const REGIONS = [
     id: 'newyork', name: 'New York', area: 'New York',
     lng: -73.9857, lat: 40.7484,
     albums: [
+      { id: 4756, artist: 'BFD', title: 'Silence Is Gold, Ductape Is Silver', year: 2022, label: 'All Star Criminal Music Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37697793-BFD-Silence-Is-Gold-Ductape-Is-Silver', stampSeed: {} },
       { id: 4335, artist: 'Yatta', title: 'Cutthroat', year: 2016, label: 'Corkoland Crazy Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/28021593-Yatta-Cutthroat', stampSeed: {} },
       { id: 3633, artist: 'The Hit-Men', title: 'By Any Means', year: 2011, label: 'Not On Label', youtubeId: null,
@@ -8684,6 +8762,8 @@ const REGIONS = [
     id: 'deerfieldbeach', name: 'Deerfield Beach', area: 'Florida',
     lng: -80.0998, lat: 26.3184,
     albums: [
+      { id: 4737, artist: 'Kodak Black', title: 'Kutthroat Bill: Vol. 1', year: 2022, label: 'Atlantic', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28720951-Kodak-Black-Kutthroat-Bill-Vol-1', stampSeed: {} },
       { id: 2266, artist: 'Ovadose', title: 'The New Beginning (Life... It Is What It Is)', year: 2004, label: 'Lil Sum Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/11054776', stampSeed: {} },
       { id: 1494, artist: 'Cheeba', title: 'Concrete Jungle', year: 2000, label: 'Platinum Groove Entertainment', youtubeId: null,
@@ -8816,6 +8896,8 @@ const REGIONS = [
     id: 'akron', name: 'Akron', area: 'Ohio',
     lng: -81.519, lat: 41.0814,
     albums: [
+      { id: 4741, artist: 'Ampichino', title: 'Da Krazies 3: The Pandemic', year: 2022, label: 'Rapbay', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22537343-Ampichino-Da-Krazies-3-The-Pandemic', stampSeed: {} },
       { id: 4598, artist: 'Ampichino', title: 'Quarantine', year: 2020, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/31928167-Ampichino-Quarantine-', stampSeed: {} },
       { id: 4427, artist: 'Ampichino', title: 'Chasin Chicken', year: 2017, label: 'Double F Records', youtubeId: null,
@@ -9259,6 +9341,8 @@ const REGIONS = [
     id: 'richmondva', name: 'Richmond', area: 'Virginia',
     lng: -77.43428, lat: 37.5385087,
     albums: [
+      { id: 4778, artist: 'Big Ed', title: 'The Assassin (25th Year Anniversary Remastered)', year: 2023, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28159039-Big-Ed-The-Assassin-25th-Year-Anniversary-Remastered', stampSeed: {} },
       { id: 4091, artist: 'Chilee Powdah', title: 'Tired Of All The Bullsh*t', year: 2014, label: 'Powdahland Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/36783925-Chilee-Powdah-Tired-Of-All-The-Bullsht', stampSeed: {} },
       { id: 3900, artist: 'G-Mo Skee', title: 'Chaly & The Filth Factory', year: 2018, label: 'Majik Ninja Entertainment', youtubeId: null,
@@ -9329,6 +9413,8 @@ const REGIONS = [
     id: 'valdemarne', name: 'Val-de-Marne', area: 'France',
     lng: 2.4543321, lat: 48.7744893,
     albums: [
+      { id: 4754, artist: 'Tovaritch', title: 'Mikhailov', year: 2022, label: 'Not On Label', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22284394-Tovaritch-Mikhailov', stampSeed: {} },
       { id: 4709, artist: 'Tiakola', title: 'Mélo', year: 2022, label: 'Wati B', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/25134460-Tiakola-M%C3%A9lo-', stampSeed: {} },
       { id: 4673, artist: 'Lacrim', title: 'Persona Non Grata', year: 2021, label: 'Plata O Plomo Records', youtubeId: null,
@@ -10425,6 +10511,10 @@ const REGIONS = [
   {
     id: 'friedberg', name: 'Friedberg', area: 'Germany', lng: 10.9786498, lat: 48.3551962,
     albums: [
+      { id: 4779, artist: 'Kollegah', title: 'Kollegah (15 Years Anniversary Edition)', year: 2023, label: 'Selfmade Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29301298-Kollegah-Kollegah-15-Years-Anniversary-Edition', stampSeed: {} },
+      { id: 4747, artist: 'Kollegah', title: 'Free Spirit', year: 2022, label: 'Alpha Music Empire', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/24134090-Kollegah-Free-Spirit', stampSeed: {} },
       { id: 3595, artist: 'Kollegah', title: 'Bossaura (Deluxe Video Edition)', year: 2011, label: 'Selfmade Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10048082-Kollegah-Bossaura-Deluxe-Video-Edition', stampSeed: {} },
       { id: 3270, artist: 'Kollegah', title: 'Kollegah', year: 2008, label: 'Selfmade Records', youtubeId: null,
@@ -10436,6 +10526,10 @@ const REGIONS = [
   {
     id: 'napoli', name: 'Napoli', area: 'Italy', lng: 14.2487679, lat: 40.8358846,
     albums: [
+      { id: 4735, artist: 'Ntò', title: 'Col Sangue', year: 2022, label: 'No Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/23882750-Nt%C3%B2-Col-Sangue', stampSeed: {} },
+      { id: 4734, artist: 'Paky', title: 'Salvatore Vive', year: 2022, label: 'Universal Music Group', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28530919-Paky-Salvatore-Vive', stampSeed: {} },
       { id: 4078, artist: 'Ntò', title: 'Ntò Presenta Stirpe Nova Numero9', year: 2014, label: 'No Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/12068265-Nt%C3%B2-Nt%C3%B2-Presenta-Stirpe-Nova-Numero9', stampSeed: {} },
       { id: 3101, artist: 'DJ Enzo', title: 'Vuoti A Perdere', year: 2007, label: 'Vibrarecords', youtubeId: null,
@@ -10547,6 +10641,8 @@ const REGIONS = [
   {
     id: 'linz', name: 'Linz', area: 'Austria', lng: 14.286198, lat: 48.3059078,
     albums: [
+      { id: 4772, artist: 'Chakuza', title: 'Liebe & KI', year: 2023, label: 'Mehr Als Musik', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26351711-Chakuza-Liebe-KI', stampSeed: {} },
       { id: 3209, artist: 'Chakuza', title: 'Unter Der Sonne', year: 2008, label: 'ersguterjunge', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35013506-Chakuza-Unter-Der-Sonne', stampSeed: {} },
     ],
@@ -10648,6 +10744,8 @@ const REGIONS = [
   {
     id: 'marseille', name: 'Marseille', area: 'France', lng: 5.3777888, lat: 43.2963986,
     albums: [
+      { id: 4780, artist: 'Sch', title: 'JVLIVS II', year: 2023, label: 'Rec. 118', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27578787-Sch-JVLIVS-II', stampSeed: {} },
       { id: 4337, artist: 'Elams', title: 'Je Suis Elams', year: 2016, label: 'Réussir Ou Mourir', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/10218198-Elams-Je-Suis-Elams', stampSeed: {} },
       { id: 3464, artist: 'Alonzo', title: 'Les Temps Modernes', year: 2010, label: 'Barclay', youtubeId: null,
@@ -10673,6 +10771,10 @@ const REGIONS = [
   {
     id: 'buffalo', name: 'Buffalo', area: 'New York', lng: -78.8781493, lat: 42.8864163,
     albums: [
+      { id: 4732, artist: 'Conway The Machine', title: 'God Don\'t Make Mistakes', year: 2022, label: 'Shady Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/22302910-Conway-The-Machine-God-Dont-Make-Mistakes', stampSeed: {} },
+      { id: 4727, artist: 'Conway The Machine', title: 'Greetings Earthlings', year: 2022, label: 'Near Mint', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25362772-Conway-The-Machine-Greetings-Earthlings', stampSeed: {} },
       { id: 4708, artist: 'Westside Gunn', title: 'Hitler Wears Hermes III', year: 2022, label: 'Daupe!', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22366153-Westside-Gunn-Hitler-Wears-Hermes-III-', stampSeed: {} },
       { id: 4572, artist: 'Elcamino', title: 'Don\'t Eat The Fruit', year: 2019, label: 'GGBR Records & Tapes', youtubeId: null,
@@ -10837,6 +10939,41 @@ const REGIONS = [
     albums: [
       { id: 4616, artist: 'M Huncho', title: 'Huncholini The 1st', year: 2020, label: 'MYB Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14863777-M-Huncho-Huncholini-The-1st', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'poznan', name: 'Poznań', area: 'Poland', lng: 16.9335199, lat: 52.4082663,
+    albums: [
+      { id: 4738, artist: 'Slums Attack', title: '25 Anniversary', year: 2022, label: 'RPS Enterteyment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25423966-Slums-Attack-25-Anniversary', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'chateauroux', name: 'Châteauroux', area: 'France', lng: 1.6770956, lat: 46.8203785,
+    albums: [
+      { id: 4739, artist: 'Gazo', title: 'KMT', year: 2022, label: 'BSB Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/23994407-Gazo-KMT', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'bratislava', name: 'Bratislava', area: 'Slovakia', lng: 17.1093063, lat: 48.1516988,
+    albums: [
+      { id: 4748, artist: 'Luca Brassi10x', title: 'Ghetto Maradona', year: 2022, label: 'Ruka Hore', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/25273840-Luca-Brassi10x-Ghetto-Maradona', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'praha', name: 'Praha', area: 'Czechia', lng: 14.4212535, lat: 50.0874654,
+    albums: [
+      { id: 4750, artist: 'Edúv Syn', title: 'Mám Červené Oči Lebo Stále Plačem', year: 2022, label: 'Haluzeum Produkt', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/23518760-Ed%C3%BAv-Syn-M%C3%A1m-%C4%8Cerven%C3%A9-O%C4%8Di-Lebo-St%C3%A1le-Pla%C4%8Dem', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'roubaix', name: 'Roubaix', area: 'France', lng: 3.1741734, lat: 50.6915893,
+    albums: [
+      { id: 4777, artist: 'Nyda', title: 'Acte II : Le Loup Dans La Bergerie', year: 2023, label: 'Danger Productions', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28290664-Nyda-Acte-II-Le-Loup-Dans-La-Bergerie', stampSeed: {} },
     ],
   },
 ];
