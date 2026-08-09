@@ -664,6 +664,48 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && searchOverlay?.classList.contains('open')) closeSearch();
 });
 
+// ---------- 外部リンクプレビュー(iframe埋め込み) ----------
+// Discogs/Apple MusicはX-Frame-Options等でiframe埋め込みを拒否するため、
+// 実際に表示できるかはサイト側次第。拒否された場合でもヘッダーの
+// 「新しいタブで開く」から通常どおり遷移できるようにしておく。
+const linkOverlay = document.getElementById('linkOverlay');
+const linkOverlayBody = document.getElementById('linkOverlayBody');
+const linkOverlayTitle = document.getElementById('linkOverlayTitle');
+const linkOverlayOpen = document.getElementById('linkOverlayOpen');
+
+function openLinkPreview(embedUrl, openUrl, title) {
+  linkOverlayTitle.textContent = title || openUrl;
+  linkOverlayOpen.href = openUrl;
+  // sandbox属性や referrerpolicy="no-referrer" を付けるとYouTube埋め込み
+  // プレーヤーの初期化に失敗する(エラー153: オリジン検証に失敗するため)
+  // ので付けない。Discogs/Apple MusicはX-Frame-Options等でそもそも埋め込み
+  // 自体を拒否してくるため、この設定でも実害はない。
+  linkOverlayBody.innerHTML = `<iframe src="${embedUrl}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  linkOverlay.classList.add('open');
+  document.body.classList.add('search-open');
+}
+function closeLinkPreview() {
+  linkOverlay.classList.remove('open');
+  document.body.classList.remove('search-open');
+  linkOverlayBody.innerHTML = ''; // 裏で再生され続けたりしないよう閉じたら破棄する
+}
+if (linkOverlay) {
+  document.getElementById('linkOverlayClose')?.addEventListener('click', closeLinkPreview);
+  linkOverlay.addEventListener('click', (e) => { if (e.target === linkOverlay) closeLinkPreview(); });
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && linkOverlay?.classList.contains('open')) closeLinkPreview();
+});
+// .ext-link を持つリンクは修飾キー無しの左クリックだけ横取りしてポップアップにする
+// (Ctrl/Cmd/中クリックは新規タブを開く通常動作のまま)
+document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('a.ext-link');
+  if (!a) return;
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  openLinkPreview(a.dataset.embed || a.href, a.href, a.textContent.trim());
+});
+
 // ---------- 一覧 ----------
 const listEl = document.getElementById('list');
 
@@ -938,8 +980,8 @@ function renderDisc(album, push = true) {
         : `<span>${t('notOn')}</span>`}</div>
       <div class="disc-side">
         <p class="m">${album.year} / ${album.label} / ${album.format || 'CD'}${
-          e?.link ? ` / <a class="apple" href="${e.link}" target="_blank" rel="noopener">Apple Music ↗</a>` : ''}${
-          album.discogsUrl ? ` / <a class="apple" href="${album.discogsUrl}" target="_blank" rel="noopener">Discogs ↗</a>` : ''}</p>
+          e?.link ? ` / <a class="apple ext-link" href="${e.link}" target="_blank" rel="noopener">Apple Music ↗</a>` : ''}${
+          album.discogsUrl ? ` / <a class="apple ext-link" href="${album.discogsUrl}" target="_blank" rel="noopener">Discogs ↗</a>` : ''}</p>
         <div class="disc-actions">
           <button class="tr-toggle have-d${favsHave.has(key) ? ' on' : ''}">${t('have')}</button>
           <button class="tr-toggle want-d${favsWant.has(key) ? ' on' : ''}">${t('want')}</button>
@@ -1000,7 +1042,7 @@ function renderDisc(album, push = true) {
 function fullAlbumLinkRow(vid) {
   const row = document.createElement('div');
   row.className = 'track yt-full';
-  row.innerHTML = `<a href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener">Full Album [YouTube ↗]</a>`;
+  row.innerHTML = `<a class="ext-link" href="https://www.youtube.com/watch?v=${vid}" data-embed="https://www.youtube.com/embed/${vid}?autoplay=1" target="_blank" rel="noopener">Full Album [YouTube ↗]</a>`;
   return row;
 }
 
