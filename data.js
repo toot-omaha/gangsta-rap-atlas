@@ -754,6 +754,8 @@ const REGIONS = [
     id: 'longbeach', name: 'Long Beach', area: 'Los Angeles County, CA',
     lng: -118.1937, lat: 33.7701,
     albums: [
+      { id: 4793, artist: 'Daz Dillinger', title: 'Molly Whop', year: 2023, label: 'Dilly Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29056843-Daz-Dillinger-Molly-Whop', stampSeed: {} },
       { id: 4726, artist: 'Snoop Dogg', title: 'BODR', year: 2022, label: 'Death Row Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22117582-Snoop-Dogg-BODR', stampSeed: {} },
       { id: 4469, artist: 'Daz Dillinger', title: 'Smoke Me Out', year: 2018, label: 'The Mix Unit', youtubeId: null,
@@ -1206,6 +1208,10 @@ const REGIONS = [
     id: 'vallejo', name: 'Vallejo', area: 'Bay Area, CA',
     lng: -122.2566, lat: 38.1041,
     albums: [
+      { id: 4800, artist: 'B-Legit', title: 'Throwblock Music II: 88\' D Boi', year: 2023, label: 'Block Movement', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35706676-B-Legit-Throwblock-Music-II-88-D-Boi', stampSeed: {} },
+      { id: 4789, artist: 'J Diggs', title: '30 Day Run', year: 2023, label: 'Rapbay', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34494619-J-Diggs-30-Day-Run', stampSeed: {} },
       { id: 4619, artist: 'Celly Cel', title: 'Focused', year: 2020, label: 'Realside Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/16192783-Celly-Cel-Focused', stampSeed: {} },
       { id: 4562, artist: 'E-40', title: 'Practice Makes Paper', year: 2019, label: 'Heavy On The Grind Entertainment', youtubeId: null,
@@ -2006,6 +2012,8 @@ const REGIONS = [
     id: 'houston', name: 'Houston', area: 'Texas',
     lng: -95.3698, lat: 29.7604,
     albums: [
+      { id: 4795, artist: 'Lil\' Flip', title: 'Worthing Wesley', year: 2023, label: 'One Deep Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/31727699-Lil-Flip-Worthing-Wesley', stampSeed: {} },
       { id: 4765, artist: 'Mr. 3-2', title: 'Organized Crhyme', year: 2023, label: 'Most Wanted Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/27407094-Mr-3-2-Organized-Crhyme', stampSeed: {} },
       { id: 4761, artist: 'Lil\' Keke', title: '25 Summers', year: 2023, label: 'Slfmade 713', youtubeId: null,
@@ -3178,6 +3186,8 @@ const REGIONS = [
     id: 'memphis', name: 'Memphis', area: 'Tennessee',
     lng: -90.0490, lat: 35.1495,
     albums: [
+      { id: 4796, artist: 'Blac Youngsta', title: 'Blac Sheep', year: 2023, label: 'Heavy Camp', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34221169-Blac-Youngsta-Blac-Sheep', stampSeed: {} },
       { id: 4759, artist: 'Juicy J', title: 'Mental Trillness', year: 2023, label: 'Trippy Music', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/26613449-Juicy-J-Mental-Trillness', stampSeed: {} },
       { id: 4729, artist: 'Blac Youngsta', title: '4Life', year: 2022, label: 'Heavy Camp', youtubeId: null,
@@ -3714,6 +3724,8 @@ const REGIONS = [
     id: 'neworleans', name: 'New Orleans', area: 'Louisiana',
     lng: -90.0715, lat: 29.9511,
     albums: [
+      { id: 4791, artist: 'Lil Wayne', title: 'I Am Music', year: 2023, label: 'Young Money Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29117047-Lil-Wayne-I-Am-Music', stampSeed: {} },
       { id: 4676, artist: 'Lil Wayne', title: 'Tha Carter IV (Complete Edition)', year: 2021, label: 'Young Money Records, Inc.', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/20044315-Lil-Wayne-Tha-Carter-IV-Complete-Edition', stampSeed: {} },
       { id: 4652, artist: 'Lil Slim', title: 'Robbery‘s My Specialty', year: 2020, label: 'Graveyard Funk Records', youtubeId: null,
@@ -5048,6 +5060,8 @@ const REGIONS = [
     id: 'bronx', name: 'The Bronx', area: 'New York, NY',
     lng: -73.9167, lat: 40.8448,
     albums: [
+      { id: 4790, artist: 'DJ Kay Slay', title: 'Rolling 200 Deep', year: 2023, label: 'Not On Label (DJ Kay Slay Self-released)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28873396-DJ-Kay-Slay-Rolling-200-Deep', stampSeed: {} },
       { id: 4704, artist: 'Jim Jones', title: '12 Days Of Xmas', year: 2022, label: 'Vamplife', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/25486117-Jim-Jones-12-Days-Of-Xmas', stampSeed: {} },
       { id: 4643, artist: 'Children Of The Corn', title: 'The Final Chapter', year: 2020, label: 'SIC Records', youtubeId: null,
@@ -5867,6 +5881,8 @@ const REGIONS = [
     id: 'miami', name: 'Miami', area: 'Florida',
     lng: -80.1918, lat: 25.7617,
     albums: [
+      { id: 4783, artist: 'SpaceGhostPurrp', title: 'Dragon Nigga No Slime', year: 2023, label: 'XUM Studios', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28152565-SpaceGhostPurrp-Dragon-Nigga-No-Slime', stampSeed: {} },
       { id: 4764, artist: 'SpaceGhostPurrp', title: 'Belaire Black Bottle Boyz (Carol City To West Atlanta Zone 1)', year: 2023, label: 'Not On Label (SpaceGhostPurrp Self-released)', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/32624109-SpaceGhostPurrp-Belaire-Black-Bottle-Boyz-Carol-City-To-West-Atlanta-Zone-1', stampSeed: {} },
       { id: 4757, artist: 'SpaceGhostPurrp', title: 'Blvcklvnd Rvdix 66​​​.​​​6', year: 2023, label: 'Forced Resignation Records', youtubeId: null,
@@ -6035,6 +6051,10 @@ const REGIONS = [
     id: 'chicago', name: 'Chicago', area: 'Illinois',
     lng: -87.6298, lat: 41.8781,
     albums: [
+      { id: 4792, artist: 'King Von', title: 'Grandson', year: 2023, label: 'Empire', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28891798-King-Von-Grandson', stampSeed: {} },
+      { id: 4784, artist: 'Vic Spencer', title: 'If George Bush Was Cool', year: 2023, label: 'Near Mint', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27082215-Vic-Spencer-If-George-Bush-Was-Cool', stampSeed: {} },
       { id: 4768, artist: 'Lil Durk', title: 'Almost Healed', year: 2023, label: 'Alamo Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/27215889-Lil-Durk-Almost-Healed', stampSeed: {} },
       { id: 4762, artist: 'Chief Keef', title: 'Mansion Musick', year: 2023, label: 'RBC Records', youtubeId: null,
@@ -7064,6 +7084,10 @@ const REGIONS = [
     id: 'kansascity', name: 'Kansas City', area: 'Missouri',
     lng: -94.5786, lat: 39.0997,
     albums: [
+      { id: 4798, artist: 'Rich The Factor', title: 'The North Face Whale 2', year: 2023, label: 'Major Factor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35799712-Rich-The-Factor-The-North-Face-Whale-2-', stampSeed: {} },
+      { id: 4785, artist: 'Rich The Factor', title: 'Whale Mafi 3 The Mobb Did', year: 2023, label: 'Major Factor Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/35800510-Rich-The-Factor-Whale-Mafi-3-The-Mobb-Did', stampSeed: {} },
       { id: 4771, artist: 'Rich The Factor', title: 'The North Face Whale', year: 2023, label: 'Major Factor Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35799655-Rich-The-Factor-The-North-Face-Whale', stampSeed: {} },
       { id: 4770, artist: 'Rich The Factor', title: 'Scratch Tenth Avenue', year: 2023, label: 'Major Factor Records', youtubeId: null,
@@ -7348,6 +7372,8 @@ const REGIONS = [
     id: 'eastla', name: 'East Los Angeles', area: 'Los Angeles County, CA',
     lng: -118.1717, lat: 34.0239,
     albums: [
+      { id: 4799, artist: 'Too $hort', title: 'Shorty The Pimp', year: 2023, label: 'Jive', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/28075603-Too-hort-Shorty-The-Pimp', stampSeed: {} },
       { id: 4774, artist: 'OhGeesy', title: 'Geezyworld 2', year: 2023, label: 'Atlantic', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/27693885-OhGeesy-Geezyworld-2', stampSeed: {} },
       { id: 4707, artist: 'The Game', title: 'Drillmatic - Heart Vs. Mind', year: 2022, label: '100 Entertainment', youtubeId: null,
@@ -7592,6 +7618,8 @@ const REGIONS = [
     id: 'stockton', name: 'Stockton', area: 'California',
     lng: -121.2908, lat: 37.9577,
     albums: [
+      { id: 4787, artist: 'EBK Jaaybo', title: 'Sinners Prayer', year: 2023, label: 'Awal Recordings America, Inc.', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/34100437-EBK-Jaaybo-Sinners-Prayer', stampSeed: {} },
       { id: 4022, artist: 'Doja Clik', title: 'Speed Kills (20th Anniversary Remastered)', year: 2020, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/14966159-Doja-Clik-Speed-Kills-20th-Anniversary-Remastered', stampSeed: {} },
       { id: 3861, artist: 'Tony Muthaphukkn G', title: 'Mixd Feelnz', year: 2016, label: 'Tony Muthaphukkn G', youtubeId: null,
@@ -9217,6 +9245,8 @@ const REGIONS = [
     id: 'elmonte', name: 'El Monte', area: 'California',
     lng: -118.0272, lat: 34.0686,
     albums: [
+      { id: 4794, artist: 'Young Noble', title: 'Lucky #7', year: 2023, label: 'Outlaw Recordz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/29250919-Young-Noble-Lucky-7', stampSeed: {} },
       { id: 1547, artist: 'G\'Fellas', title: 'Gangster 4 Life', year: 2001, label: 'Hit A Lick Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3558015', youtubeIds: ["8ruD4alDAbE", "BULyaSszsnI", "i_6IvKgNr1g", "L3lA6KwSGng", "0F8TkwIr5I0", "w4LeDQSivqY", "Bw1IbX5bU24", "hNwNKVA3STk", "BzFGK-IX4dc", "gSh84QnW3Mo", "rt1eQUoARrc", "9A0Ebpey9rA", "XO7tPjhtFdI", "7RHmEVfzZT0", "38UOncl0lg8", "8-TSYDjcJM8", "dfdNsO0hIoY", "Xdl7OR41Ho0"], discogsArt: "https://i.discogs.com/mZ3Jll7Vcfm9Q79Fi5tGTqhywVt8-ytrmGs_PeKgz7Y/rs:fit/g:sm/q:90/h:501/w:505/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM1NTgw/MTUtMTMzNTIwMzQw/OS5qcGVn.jpeg", stampSeed: {} },
     ],
@@ -9413,6 +9443,8 @@ const REGIONS = [
     id: 'valdemarne', name: 'Val-de-Marne', area: 'France',
     lng: 2.4543321, lat: 48.7744893,
     albums: [
+      { id: 4788, artist: 'Werenoi', title: 'Carré ²', year: 2023, label: 'PLR Music', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/26407604-Werenoi-Carr%C3%A9-%C2%B2', stampSeed: {} },
       { id: 4754, artist: 'Tovaritch', title: 'Mikhailov', year: 2022, label: 'Not On Label', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22284394-Tovaritch-Mikhailov', stampSeed: {} },
       { id: 4709, artist: 'Tiakola', title: 'Mélo', year: 2022, label: 'Wati B', youtubeId: null,
@@ -9719,6 +9751,8 @@ const REGIONS = [
     id: 'nurnberg', name: 'Nürnberg', area: 'Germany',
     lng: 11.077298, lat: 49.453872,
     albums: [
+      { id: 4797, artist: 'Perverz', title: 'Das Ist Für Die Atzen Mega Deal', year: 2023, label: '23Klikk', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/31604413-Perverz-Das-Ist-F%C3%BCr-Die-Atzen-Mega-Deal', stampSeed: {} },
       { id: 4701, artist: 'Perverz', title: 'Gegen Das Gesetz / Weiter Gegen Das Gesetz', year: 2022, label: 'Hirntot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/31537507-Perverz-Gegen-Das-Gesetz-Weiter-Gegen-Das-Gesetz', stampSeed: {} },
       { id: 4401, artist: 'Kraliban', title: 'B4 Da Mob Vol. 1', year: 2017, label: 'Mobshyt', youtubeId: null,
@@ -10125,6 +10159,8 @@ const REGIONS = [
     id: 'jamaicaqueens', name: 'Jamaica', area: 'Queens, NY',
     lng: -73.7949, lat: 40.7027,
     albums: [
+      { id: 4786, artist: 'Onyx', title: 'Blood On Da X', year: 2023, label: 'X-Ray Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/27204333-Onyx-Blood-On-Da-X', stampSeed: {} },
       { id: 4669, artist: 'Onyx', title: '#Turndafucup (The Original Sessions)', year: 2021, label: 'X-Ray Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22732340-Onyx-Turndafucup-The-Original-Sessions', stampSeed: {} },
       { id: 4121, artist: '50 Cent', title: 'Animal Ambition (A Cappellas)', year: 2014, label: 'G Unit', youtubeId: null,
