@@ -696,9 +696,16 @@ if (linkOverlay) {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && linkOverlay?.classList.contains('open')) closeLinkPreview();
 });
+// Android TWA(twa-manifest.jsonでfallbackType: customtabs設定済み)で
+// 動いている時は、スコープ外リンクへの通常遷移がOS側で自動的にChrome
+// Custom Tabsのアプリ内ブラウザ表示に化けてくれる。iframeポップアップで
+// 横取りするとこの挙動を潰してしまうので、TWA内では素通しする。
+const isTwa = document.referrer.startsWith('android-app://');
+
 // .ext-link を持つリンクは修飾キー無しの左クリックだけ横取りしてポップアップにする
 // (Ctrl/Cmd/中クリックは新規タブを開く通常動作のまま)
 document.addEventListener('click', (e) => {
+  if (isTwa) return;
   const a = e.target.closest?.('a.ext-link');
   if (!a) return;
   if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
