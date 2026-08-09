@@ -106,10 +106,20 @@ def load_processed():
 
 
 def add_processed(items, status):
-    """items: [(discogs_id, artist, title), ...] / status: 'merged' か 'rejected'"""
+    """items: [(discogs_id, artist, title), ...] または
+    [{'discogs_id':..., 'artist':..., 'title':...}, ...] のどちらでも可。
+    status: 'merged' か 'rejected'
+    (2026-08-10: dict形式を渡すと3要素タプルアンパックがdictのキー名
+    ('discogs_id','artist','title'という文字列そのもの)を拾ってしまい、
+    実データが一切記録されないままidsないしtitlesに定数だけが溜まり続ける
+    事故があったため、dictも受け付けるようここで吸収する。)"""
     assert status in ('merged', 'rejected')
     cur = load_processed()
-    for did, artist, title in items:
+    for it in items:
+        if isinstance(it, dict):
+            did, artist, title = it['discogs_id'], it['artist'], it['title']
+        else:
+            did, artist, title = it
         cur[status]['ids'].add(str(did))
         cur[status]['titles'].add(f'{norm(artist)}|{norm(title)}')
     PROCESSED_FILE.write_text(json.dumps(
