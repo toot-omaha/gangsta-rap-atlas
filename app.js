@@ -504,7 +504,6 @@ REGIONS.forEach((region) => {
   const icon = region.unclassified
     ? `<svg class="grave buoy" viewBox="0 0 24 26" aria-hidden="true">
          <circle cx="12" cy="12" r="9"/>
-         <rect x="10.5" y="19" width="3" height="6"/>
        </svg>
        <span class="q">?</span>`
     : `<svg class="grave" viewBox="0 0 24 26" aria-hidden="true">
@@ -533,8 +532,8 @@ function refreshMarkers() {
     el.style.width = el.style.height = `${size}px`;
     el.querySelector('.n').textContent = n || '';
     // 0件の墓標は非表示(フィルター中に該当なしの地域も消える)。
-    // 未確認情報の置き場だけは0件でも常に見せる。
-    el.classList.toggle('hidden', n === 0 && !r.unclassified);
+    // 未確認情報の置き場も同様に0件なら隠す。
+    el.classList.toggle('hidden', n === 0);
     el.classList.toggle('hit', shotRegions.has(r.id));
     el.classList.toggle('selected', r.id === selectedRegionId);
     el.title = `${r.name} — ${n}枚`;
