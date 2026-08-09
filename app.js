@@ -453,11 +453,15 @@ const ERA_KEY = 'gra.eraFilters.v1';
 const ERAS = [
   { id: 'pre2000', label: '〜1999' },
   { id: 'y2000s', label: '2000〜2009' },
-  { id: 'y2010s', label: '2010〜' },
+  { id: 'y2010s', label: '2010〜2019' },
+  { id: 'y2020s', label: '2020〜' },
 ];
 const eraFilters = new Set(JSON.parse(localStorage.getItem(ERA_KEY) || 'null') || ERAS.map((e) => e.id));
+// 2010〜が2010年代/2020〜に分割される前の保存データを引き継ぐ場合、
+// 2020年代のディスクが急に非表示になってユーザーを驚かせないよう補完する
+if (eraFilters.has('y2010s') && !eraFilters.has('y2020s')) eraFilters.add('y2020s');
 const saveEras = () => localStorage.setItem(ERA_KEY, JSON.stringify([...eraFilters]));
-const eraOf = (a) => (a.year <= 1999 ? 'pre2000' : a.year <= 2009 ? 'y2000s' : 'y2010s');
+const eraOf = (a) => (a.year <= 1999 ? 'pre2000' : a.year <= 2009 ? 'y2000s' : a.year <= 2019 ? 'y2010s' : 'y2020s');
 
 const albumsOf = (r) => {
   let list = r.albums.filter((a) => eraFilters.has(eraOf(a)));
