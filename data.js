@@ -4160,8 +4160,6 @@ const REGIONS = [
         discogsUrl: 'https://www.discogs.com/release/1346919', stampSeed: { bangin: 18, dark: 13, doro: 10 } },
       { id: 878, artist: 'S.A.C. Mafia', title: 'Socca Ballin', year: 1998, label: 'Untouchable Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/3852239', stampSeed: { bangin: 16, dark: 12, doro: 9 } },
-      { id: 879, artist: 'Silky Slim', title: 'Finally Here', year: 1998, label: 'K5 Records', youtubeId: null,
-        discogsUrl: 'https://www.discogs.com/release/6677562', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
       { id: 880, artist: 'Tre-8', title: 'Ghetto Stories', year: 1995, label: 'No Limit Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2322174', stampSeed: { dark: 15, doro: 12, bangin: 9 } },
       { id: 881, artist: 'Tre-8', title: 'Fright Night', year: 1995, label: 'Smoke 1 Records', youtubeId: null,
@@ -11313,6 +11311,13 @@ const REGIONS = [
     albums: [
       { id: 4895, artist: 'Kempi', title: 'Du Zoon', year: 2025, label: 'TopNotch', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35983201-Kempi-Du-Zoon', stampSeed: {} },
+    ],
+  },
+  {
+    id: 'palmdale', name: 'Palmdale', area: 'California', lng: -118.1164613, lat: 34.5793678,
+    albums: [
+      { id: 879, artist: 'Silky Slim', title: 'Finally Here', year: 1998, label: 'K5 Records', youtubeIds: ['NTzL9SdDVPM', 'SRPxtCkQYD0', 'LZSsR7FCunU', 'h3czxgvTtzU', 'QDkJ709KCS8'], youtubeFullAlbumId: 'qLnav16S-OA',
+        discogsUrl: 'https://www.discogs.com/release/6677562', discogsArt: 'https://i.discogs.com/So9pO_ae_GwMtaFzgI7oSMKbopXOHNuCFgDyZNm0oC4/rs:fit/g:sm/q:90/h:598/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTY2Nzc1/NjItMTc3NTExMTM3/NS01ODUyLnBuZw.jpeg', stampSeed: { dark: 18, doro: 14, bangin: 11 } },
     ],
   },
 ];
