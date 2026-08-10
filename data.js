@@ -426,6 +426,10 @@ const REGIONS = [
     id: 'compton', name: 'Compton', area: 'Los Angeles County, CA',
     lng: -118.2201, lat: 33.8958,
     albums: [
+      { id: 4938, artist: 'Dr. Dre', title: 'The Chronic (Instrumentals)', year: 2026, label: 'Aftermath Entertainment', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37197312-Dr-Dre-The-Chronic-Instrumentals', stampSeed: {} },
+      { id: 4930, artist: 'Dr. Dre', title: 'The Chronic Dpg Smoked Out Edition', year: 2026, label: 'Dogg Pound', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37510671-Dr-Dre-The-Chronic-Dpg-Smoked-Out-Edition', stampSeed: {} },
       { id: 4863, artist: 'Dr. Dre', title: 'Compton (A Soundtrack By Dr. Dre) Instrumentals', year: 2025, label: 'Aftermath Entertainment', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/36109930-Dr-Dre-Compton-A-Soundtrack-By-Dr-Dre-Instrumentals', stampSeed: {} },
       { id: 4849, artist: 'WestCoast Stone', title: 'Popping Muzik 4 The Culture', year: 2024, label: 'Not On Label', youtubeId: null,
@@ -758,6 +762,10 @@ const REGIONS = [
     id: 'longbeach', name: 'Long Beach', area: 'Los Angeles County, CA',
     lng: -118.1937, lat: 33.7701,
     albums: [
+      { id: 4932, artist: 'Daz Dillinger', title: 'Valentine\'s Day', year: 2026, label: 'Daz Dillinger Recordings', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36658978-Daz-Dillinger-Valentines-Day', stampSeed: {} },
+      { id: 4929, artist: 'Daz Dillinger', title: 'MO\'WEED 4 SALE', year: 2026, label: 'Daz Dillinger Recordingz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37476144-Daz-Dillinger-MOWEED-4-SALE', stampSeed: {} },
       { id: 4848, artist: 'RBX', title: 'Hibernation Shivers', year: 2024, label: 'Labcabin Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/31111205-RBX-Hibernation-Shivers', stampSeed: {} },
       { id: 4845, artist: 'Vince Staples', title: 'Summertime \'06 (Segment 2)', year: 2024, label: 'Def Jam Recordings', youtubeId: null,
@@ -1560,6 +1568,8 @@ const REGIONS = [
     id: 'oakland', name: 'Oakland', area: 'Bay Area, CA',
     lng: -122.2712, lat: 37.8044,
     albums: [
+      { id: 4931, artist: 'Joe Blow', title: 'Jacka Flow', year: 2026, label: 'Urbanlife Distribution', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37128876-Joe-Blow-Jacka-Flow', stampSeed: {} },
       { id: 4911, artist: 'Shady Nate', title: 'Courtesy of the Mobb Vol. 1', year: 2025, label: 'Rapbay', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/33836706-Shady-Nate-Courtesy-of-the-Mobb-Vol-1-', stampSeed: {} },
       { id: 4887, artist: 'Joe Blow', title: 'International Blow II', year: 2025, label: 'Rapbay', youtubeId: null,
@@ -5064,6 +5074,8 @@ const REGIONS = [
     id: 'philly', name: 'Philadelphia', area: 'Pennsylvania',
     lng: -75.1635, lat: 39.9527,
     albums: [
+      { id: 4928, artist: 'Kurupt', title: 'Tha Streetz Iz A Mutha: DPG Edition', year: 2026, label: 'Daz Dillinger Distribution', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37208682-Kurupt-Tha-Streetz-Iz-A-Mutha-DPG-Edition-', stampSeed: {} },
       { id: 4832, artist: 'Skrilla', title: 'Underworld', year: 2024, label: 'Priority Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/33509951-Skrilla-Underworld', stampSeed: {} },
       { id: 4824, artist: 'Skrilla', title: 'Zombie Love Kensington Paradise', year: 2024, label: 'Priority Records', youtubeId: null,
@@ -5981,6 +5993,8 @@ const REGIONS = [
     id: 'miami', name: 'Miami', area: 'Florida',
     lng: -80.1918, lat: 25.7617,
     albums: [
+      { id: 4939, artist: 'Yung Simmie', title: 'Tha Underground Mixtape: XXL Freshman xf 1993', year: 2026, label: 'Circle 5 Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36850594-Yung-Simmie-Tha-Underground-Mixtape-XXL-Freshman-xf-1993', stampSeed: {} },
       { id: 4906, artist: 'SpaceGhostPurrp', title: 'Dino 4200', year: 2025, label: 'XUM Studios', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/33542880-SpaceGhostPurrp-Dino-4200', stampSeed: {} },
       { id: 4892, artist: 'SpaceGhostPurrp', title: 'Miami Musicc 305', year: 2025, label: 'XUM Studios', youtubeId: null,
@@ -6533,6 +6547,8 @@ const REGIONS = [
     id: 'berlin', name: 'Berlin', area: 'Germany — 世界のG-RAP',
     lng: 13.3951309, lat: 52.5173885,
     albums: [
+      { id: 4934, artist: 'King Orgasmus One', title: 'Eros (The God Of Love)', year: 2026, label: 'I Luv Money Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36314020-King-Orgasmus-One-Eros-The-God-Of-Love', stampSeed: {} },
       { id: 4907, artist: 'Blokkmonsta', title: '2K5', year: 2025, label: 'Hirntot Records', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/34377073-Blokkmonsta-2K5-', stampSeed: {} },
       { id: 4900, artist: 'Eisman', title: 'Stahlbeton', year: 2025, label: '2311 Music', youtubeId: null,
@@ -6825,6 +6841,8 @@ const REGIONS = [
     id: 'cleveland', name: 'Cleveland', area: 'Ohio',
     lng: -81.6944, lat: 41.4993,
     albums: [
+      { id: 4927, artist: 'Dababy', title: 'Be More Grateful', year: 2026, label: 'Not On Label (DaBaby)', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37704672-Dababy-Be-More-Grateful', stampSeed: {} },
       { id: 4699, artist: 'Chxpo', title: 'Xyber Punk 009', year: 2021, label: 'So Icy Goth', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/22208458-Chxpo-Xyber-Punk-009', stampSeed: {} },
       { id: 4674, artist: 'Krayzie Bone', title: 'Leaves Of Legends', year: 2021, label: 'The Life Apparel', youtubeId: null,
@@ -9451,6 +9469,8 @@ const REGIONS = [
     id: 'bonn', name: 'Bonn', area: 'Germany',
     lng: 7.1024635, lat: 50.7352621,
     albums: [
+      { id: 4935, artist: 'Ssio', title: '0,9 - 10 Jahre Jubiläumsedition', year: 2026, label: 'Alles Oder Nix Records', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36759601-Ssio-09-10-Jahre-Jubil%C3%A4umsedition', stampSeed: {} },
       { id: 4899, artist: 'Ssio', title: 'Alles Oder Nix', year: 2025, label: 'Universal Music Group', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/35545984-Ssio-Alles-Oder-Nix', stampSeed: {} },
       { id: 4810, artist: 'Bushido', title: 'König Für Immer -', year: 2024, label: 'Not On Label (Bushido (2) Self-released)', youtubeId: null,
@@ -9725,6 +9745,8 @@ const REGIONS = [
     id: 'osnabruck', name: 'Osnabrück', area: 'Germany',
     lng: 8.047635, lat: 52.2719595,
     albums: [
+      { id: 4933, artist: '4.9.0 Friedhof Chiller', title: 'Manchmal Kommen Sie Wieder (Ltd. MKSW-Box)', year: 2026, label: '4.9.0 Studioz', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37608318-490-Friedhof-Chiller-Manchmal-Kommen-Sie-Wieder-Ltd-MKSW-Box', stampSeed: {} },
       { id: 2579, artist: '4.9.0 Clizzic', title: 'In Den Strassen Von 4.9.0', year: 2005, label: '4.9.0 Studioz', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/2729501', stampSeed: {} },
       { id: 2085, artist: '4.9.0 Friedhof Chiller', title: 'Willkommen Im Tal Der Finsternis', year: 2004, label: '4.9.0 Studioz', youtubeId: null,
@@ -9951,6 +9973,10 @@ const REGIONS = [
     id: 'nurnberg', name: 'Nürnberg', area: 'Germany',
     lng: 11.077298, lat: 49.453872,
     albums: [
+      { id: 4937, artist: 'Perverz', title: 'Perverze Sommer Sause', year: 2026, label: '23Klikk', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/37793859-Perverz-Perverze-Sommer-Sause-', stampSeed: {} },
+      { id: 4936, artist: 'Perverz', title: 'Musik Als Therapie', year: 2026, label: '23Klikk', youtubeId: null,
+        discogsUrl: 'https://www.discogs.com/release/36637180-Perverz-Musik-Als-Therapie-', stampSeed: {} },
       { id: 4884, artist: 'Perverz', title: '20 Jahre', year: 2025, label: '23Klikk', youtubeId: null,
         discogsUrl: 'https://www.discogs.com/release/36415126-Perverz-20-Jahre', stampSeed: {} },
       { id: 4881, artist: 'Perverz', title: '23k064', year: 2025, label: '23Klikk', youtubeId: null,
