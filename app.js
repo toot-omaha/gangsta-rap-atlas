@@ -9,10 +9,11 @@ const I18N = {
     releases: 'RELEASES', discs: 'DISCS',
     favs: 'MY FAVS', favSub: 'お気に入りディスク',
     have: '持ッテル', want: 'ホシイ',
-    haveSection: '持ッテルディスク', wantSection: 'ホシイディスク',
+    haveSection: '持ッテルディスク', wantSection: 'ホシイディスク', stampedSection: '自分ガチェックした曲',
     exportCsv: '⬇ CSV保存', importCsv: '⬆ CSV読込',
     importOk: (n) => `${n}件反映シタ`, importNone: '一致スルディスクガナカッタ',
     favEmpty: 'まだ空。ディスクの☆を押して集めよう。',
+    stampedEmpty: 'まだ空。曲にスタンプを押すとここに並ぶ。',
     noMatch: 'この絞り込みに合うリリースはありません。',
     rarity: '発掘度',
     notOn: 'NOT ON<br>STREAMING<br>─ 激レア ─',
@@ -43,10 +44,11 @@ const I18N = {
     releases: 'RELEASES', discs: 'DISCS',
     favs: 'MY FAVS', favSub: 'Favorite discs',
     have: 'HAVE', want: 'WANT',
-    haveSection: 'Discs I have', wantSection: 'Discs I want',
+    haveSection: 'Discs I have', wantSection: 'Discs I want', stampedSection: 'Tracks I stamped',
     exportCsv: '⬇ Export CSV', importCsv: '⬆ Import CSV',
     importOk: (n) => `${n} matched and applied`, importNone: 'No matching discs found',
     favEmpty: 'Empty. Hit ☆ on a disc to collect.',
+    stampedEmpty: 'Empty. Stamp a track to see it here.',
     noMatch: 'No releases match this filter.',
     rarity: 'DIG LEVEL',
     notOn: 'NOT ON<br>STREAMING<br>─ RARE ─',
@@ -961,7 +963,7 @@ function albumCard(album) {
   const wrap = card.querySelector('.album-stamps');
   STAMPS.filter((s) => stampCount(album, s.id) > 0)
     .sort((a, b) => stampCount(album, b.id) - stampCount(album, a.id))
-    .forEach((s) => wrap.appendChild(discChip(album, s, true, null)));
+    .forEach((s) => wrap.appendChild(discChip(album, s)));
 
   // カードのどこを押してもディスク専用ページへ(ボタン類は除く)
   card.addEventListener('click', (ev) => {
@@ -1040,14 +1042,29 @@ function renderDisc(album, push = true) {
   listEl.querySelector('.share').addEventListener('click', () => shareCurrentPage(`${album.artist} - ${album.title}`));
 
   const wrap = listEl.querySelector('.album-stamps');
-  if (tracks.length) {
-    // スタンプは曲側で押す(ここは集計表示)
+  if (tracks.length || youtubeIdsFor(album).length) {
+    // スタンプは曲側(iTunes/YouTubeどちらの曲行でも)で押す(ここは0件を除いた集計表示)
     STAMPS.filter((s) => stampCount(album, s.id) > 0)
       .sort((a, b) => stampCount(album, b.id) - stampCount(album, a.id))
-      .forEach((s) => wrap.appendChild(discChip(album, s, true, null)));
+      .forEach((s) => wrap.appendChild(discChip(album, s)));
   } else {
-    // 曲データのない激レア盤はディスクに直接押せる
-    STAMPS.forEach((s) => wrap.appendChild(discChip(album, s, false, rerender)));
+    // 曲データが一切無い激レア盤はディスクに直接、曲行と同じ単一枠+ポップアップ形式で押す
+    const key = albumKey(album);
+    const slot = document.createElement('button');
+    slot.className = 'stamp-slot';
+    const paintDiscSlot = () => {
+      const id = stampsAt(key)[0];
+      const s = id && STAMPS.find((x) => x.id === id);
+      slot.classList.toggle('set', !!s);
+      slot.style.color = s ? s.color : '';
+      slot.textContent = s ? stampName(s) : '＋ スタンプ';
+      slot.title = s ? `${stampName(s)}(タップで変更)` : 'このディスクにスタンプ';
+    };
+    paintDiscSlot();
+    slot.addEventListener('click', () => {
+      openStampPicker(key, album.title, (id) => { toggleStampAt(key, id); paintDiscSlot(); rerender(); });
+    });
+    wrap.appendChild(slot);
   }
 
   listEl.querySelector('.disc-play')?.addEventListener('click', () => playAlbum(album));
@@ -1150,6 +1167,11 @@ function renderFavs(push = true) {
   const all = allKnownAlbums();
   const haveItems = all.filter(({ a }) => favsHave.has(albumKey(a)));
   const wantItems = all.filter(({ a }) => favsWant.has(albumKey(a)));
+  // myStampsのキーは albumKey か albumKey#トラック名/yt:動画ID なので、
+  // '#'より前だけ見ればディスク単位に集約できる。
+  const stampedAlbumKeys = new Set(
+    Object.entries(myStamps).filter(([, ids]) => ids.length).map(([k]) => k.split('#')[0]));
+  const stampedItems = all.filter(({ a }) => stampedAlbumKeys.has(albumKey(a)));
   const total = new Set([...favsHave, ...favsWant]).size;
 
   const section = (title, items) => `
@@ -1188,7 +1210,8 @@ function renderFavs(push = true) {
       <span class="form-msg" id="favIoMsg"></span>
     </div>
     ${section(t('wantSection'), wantItems)}
-    ${section(t('haveSection'), haveItems)}`;
+    ${section(t('haveSection'), haveItems)}
+    ${section(t('stampedSection'), stampedItems)}`;
   listEl.querySelector('.close').addEventListener('click', closeList);
 
   const $sname = listEl.querySelector('#streetNameVal');
@@ -1216,18 +1239,19 @@ function renderFavs(push = true) {
     if (ok) { $sname.textContent = streetName; updateFavCount(); renderFavs(false); }
   });
 
-  // セクションの表示順は ホシイ→持ッテル(DOM上の1つ目がwant)
-  const [wantGrid, haveGrid] = listEl.querySelectorAll('.fav-section .grid');
-  const fillGrid = (grid, items) => {
-    if (!items.length) { grid.innerHTML = `<p style="font-size:12px">${t('favEmpty')}</p>`; return; }
+  // セクションの表示順は ホシイ→持ッテル→自分のスタンプ(DOM上の1つ目がwant)
+  const [wantGrid, haveGrid, stampedGrid] = listEl.querySelectorAll('.fav-section .grid');
+  const fillGrid = (grid, items, empty) => {
+    if (!items.length) { grid.innerHTML = `<p style="font-size:12px">${empty}</p>`; return; }
     items.forEach(({ a, r }) => {
       const c = albumCard(a);
       c.querySelector('.album-info .m').insertAdjacentHTML('beforeend', ` / <b>${r.name}</b>`);
       grid.appendChild(c);
     });
   };
-  fillGrid(haveGrid, haveItems);
-  fillGrid(wantGrid, wantItems);
+  fillGrid(haveGrid, haveItems, t('favEmpty'));
+  fillGrid(wantGrid, wantItems, t('favEmpty'));
+  fillGrid(stampedGrid, stampedItems, t('stampedEmpty'));
 
   listEl.querySelector('#favExport').addEventListener('click', exportFavsCsv);
   const fileInput = listEl.querySelector('#favImportFile');
@@ -1342,14 +1366,13 @@ function placeActionButtons() {
 narrowMq.addEventListener('change', placeActionButtons);
 placeActionButtons();
 
-// ディスクのチップ。曲データがある盤では集計表示(押すのは曲側)、ない盤ではトグル可
-function discChip(album, s, readonly, rerender) {
+// ディスクのチップ(0件を除いた集計表示専用。押すのは曲側のスタンプ枠)
+function discChip(album, s) {
   const key = albumKey(album);
   const b = document.createElement('button');
-  b.className = 'stamp' + (stampsAt(key).includes(s.id) ? ' mine' : '') + (readonly ? ' agg' : '');
+  b.className = 'stamp agg' + (stampsAt(key).includes(s.id) ? ' mine' : '');
   b.style.color = s.color;
   b.innerHTML = `<span>${stampName(s)}</span><span class="count">${stampCount(album, s.id)}</span>`;
-  if (!readonly) b.addEventListener('click', () => { toggleStampAt(key, s.id); rerender(); });
   return b;
 }
 
