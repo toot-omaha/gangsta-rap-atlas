@@ -19,6 +19,7 @@ const STAMPS = [
   { id: 'laidbk',  label: 'レイドバック', en: 'laid-back', color: '#5f9e5f' },
   { id: 'dark',    label: 'ダーク',     en: 'dark',     color: '#5a5f70' },
   { id: 'party',   label: 'パーティー', en: 'party',    color: '#d4568c' },
+  { id: 'through', label: 'スルー',     en: 'skip',     color: '#6b6b6b' },
 ];
 
 // 地域(出身地)が特定できなかった収集物の置き場。

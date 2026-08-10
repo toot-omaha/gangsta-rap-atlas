@@ -130,16 +130,22 @@ const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9぀-ヿ一-龯]+/g,
 const trackKey = (a, name) => `${albumKey(a)}#${name}`;
 
 const stampsAt = (key) => myStamps[key] || [];
+// スタンプは1曲/1盤につき1個だけ(印象がブレるため複数掛けは不可)。
+// 別スタンプを選ぶと前の分は自分の記録から外れる(取り消しはローカルのみ、共有集計には残る)。
+// Street Name経由でfav_syncにも積んで他端末の「自分がチェックした曲」一覧として同期する。
 function toggleStampAt(key, id) {
   const cur = myStamps[key] || (myStamps[key] = []);
   const i = cur.indexOf(id);
   if (i >= 0) {
-    cur.splice(i, 1); // 取り消しはローカルのみ(共有集計には残る)
+    cur.splice(i, 1);
   } else {
+    cur.length = 0;
     cur.push(id);
     bumpShared(key, id); // みんなの集計へ反映
   }
+  if (!cur.length) delete myStamps[key];
   saveStamps();
+  pushFavSync();
 }
 
 // ディスクの表示合計 = レビュー実測シード + みんなのスタンプ集計(ディスク+収録曲)
@@ -232,8 +238,16 @@ async function reserveStreetName(name) {
     let res = await fetch(`${SB_URL}/fav_sync`, {
       method: 'POST',
       headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant], eras: [...eraFilters] }),
+      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant], eras: [...eraFilters], mystamps: myStamps }),
     });
+    if (res.status === 400) {
+      // mystamps列のマイグレーション未実施のDBへのフォールバック
+      res = await fetch(`${SB_URL}/fav_sync`, {
+        method: 'POST',
+        headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+        body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant], eras: [...eraFilters] }),
+      });
+    }
     if (res.status === 400) {
       // eras列のマイグレーション未実施のDBへのフォールバック
       res = await fetch(`${SB_URL}/fav_sync`, {
@@ -302,21 +316,32 @@ async function pushFavSync() {
     const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
       method: 'PATCH',
       headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-      body: JSON.stringify({ have: [...favsHave], want: [...favsWant], eras: [...eraFilters], updated_at: new Date().toISOString() }),
+      body: JSON.stringify({ have: [...favsHave], want: [...favsWant], eras: [...eraFilters], mystamps: myStamps, updated_at: new Date().toISOString() }),
     });
     if (!res.ok) {
-      // eras列のマイグレーション未実施のDBでもhave/want同期は壊さない
-      await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+      // mystamps/eras列のマイグレーション未実施のDBでもhave/want同期は壊さない
+      const res2 = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
         method: 'PATCH',
         headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-        body: JSON.stringify({ have: [...favsHave], want: [...favsWant], updated_at: new Date().toISOString() }),
+        body: JSON.stringify({ have: [...favsHave], want: [...favsWant], eras: [...eraFilters], updated_at: new Date().toISOString() }),
       });
+      if (!res2.ok) {
+        await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+          method: 'PATCH',
+          headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+          body: JSON.stringify({ have: [...favsHave], want: [...favsWant], updated_at: new Date().toISOString() }),
+        });
+      }
     }
   } catch { /* オフラインでもローカルは正常に動く */ }
 }
 
 async function pullFavSync(name) {
-  let res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want,eras`, { headers: SB_HEADERS });
+  let res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want,eras,mystamps`, { headers: SB_HEADERS });
+  if (!res.ok) {
+    // mystamps列のマイグレーション未実施のDBへのフォールバック
+    res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want,eras`, { headers: SB_HEADERS });
+  }
   if (!res.ok) {
     // eras列のマイグレーション未実施のDBへのフォールバック
     res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want`, { headers: SB_HEADERS });
@@ -340,6 +365,7 @@ async function autoPullFavSync() {
   adoptStreetName(name);
   if (!row) return;
   applyErasFromRow(row);
+  applyMyStampsFromRow(row);
   const newHave = new Set(row.have || []);
   const newWant = new Set(row.want || []);
   const changed = newHave.size !== favsHave.size || newWant.size !== favsWant.size
@@ -350,6 +376,18 @@ async function autoPullFavSync() {
   saveFavs();
   updateFavCount();
   if (listView === 'favs') renderFavs(false);
+}
+
+// サーバー行のmystamps(自分のチェック済みスタンプ)をローカルへ反映する。
+// 列が無ければ何もしない(have/want同様、サーバー側を正とするlast-write-wins)。
+function applyMyStampsFromRow(row) {
+  if (!row.mystamps || typeof row.mystamps !== 'object') return;
+  const same = JSON.stringify(row.mystamps) === JSON.stringify(myStamps);
+  if (same) return;
+  Object.keys(myStamps).forEach((k) => delete myStamps[k]);
+  Object.entries(row.mystamps).forEach(([k, v]) => { myStamps[k] = v; });
+  saveStamps();
+  if (activeRegion) renderList(activeRegion);
 }
 
 // サーバー行のeras(年代フィルター)をローカルへ反映する。列が無い/空なら何もしない
