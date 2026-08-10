@@ -156,6 +156,7 @@ function stampCount(album, id) {
   const seed = (album.seedSrc?.length ? album.stampSeed?.[id] : 0) || 0;
   let n = seed + (SHARED[key]?.[id] || 0);
   (enrichOf(album)?.tracks || []).forEach((tr) => { n += SHARED[trackKey(album, tr.name)]?.[id] || 0; });
+  youtubeIdsFor(album).forEach((vid) => { n += SHARED[trackKey(album, `yt:${vid}`)]?.[id] || 0; });
   // 共有集計に未反映のローカル分(オフライン時)を補完
   if (!SHARED[key]?.[id] && stampsAt(key).includes(id)) n += 1;
   return n;
@@ -1064,7 +1065,7 @@ function renderDisc(album, push = true) {
   // (Discogsに複数曲が個別に貼られていれば全て並べる。再生ボタンを押すと
   // playAlbum()経由でYouTube側が再生される)。
   if (!tracks.length) {
-    youtubeIdsFor(album).forEach((vid) => tracksEl.appendChild(youtubeTrackRow(album, vid)));
+    youtubeIdsFor(album).forEach((vid) => tracksEl.appendChild(youtubeTrackRow(album, vid, rerender)));
     const fullId = fullAlbumIdFor(album);
     if (fullId) tracksEl.appendChild(fullAlbumLinkRow(fullId));
   }
@@ -1081,24 +1082,44 @@ function fullAlbumLinkRow(vid) {
 
 // iTunesに試聴の無い盤のYouTube代替を、曲リストと統一した見た目の1行で表示する。
 // タイトルはYouTube oEmbed(無料・キー不要)で取得し、届くまでは仮表示にしておく。
-function youtubeTrackRow(album, vid) {
+function youtubeTrackRow(album, vid, rerender) {
   const row = document.createElement('div');
   row.className = 'track';
+  // タイトルはoEmbed取得完了まで確定しないため、キーは動画ID基準で
+  // 最初から固定する(読み込み中でもスタンプが押せるように)。
+  const key = trackKey(album, `yt:${vid}`);
   row.innerHTML = `
     <button class="tp" title="YouTubeで再生(30秒)">▶</button>
     <span class="no">YT</span>
-    <span class="name">読込中…</span>`;
+    <span class="name">読込中…</span>
+    <button class="stamp-slot" title="この曲にスタンプ">＋</button>`;
   row.querySelector('.tp').addEventListener('click', () => {
     const e = enrichOf(album);
     playSingle({ title: album.title, artist: album.artist, preview: null, youtube: vid, art: artUrl(e, 100, album), album });
   });
+
+  const slot = row.querySelector('.stamp-slot');
+  const paintSlot = () => {
+    const id = stampsAt(key)[0];
+    const s = id && STAMPS.find((x) => x.id === id);
+    slot.classList.toggle('set', !!s);
+    slot.style.color = s ? s.color : '';
+    slot.textContent = s ? stampName(s) : '＋';
+    slot.title = s ? `${stampName(s)}(タップで変更)` : 'この曲にスタンプ';
+  };
+  paintSlot();
+  slot.addEventListener('click', () => {
+    const title = row.querySelector('.name').textContent;
+    openStampPicker(key, title, (id) => { toggleStampAt(key, id); paintSlot(); rerender?.(); });
+  });
+
   const url = `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}&format=json`;
   fetch(url).then((res) => (res.ok ? res.json() : Promise.reject())).then((data) => {
     if (data?.title) row.querySelector('.name').textContent = data.title;
   }).catch(() => {
     // Discogsには載っているがYouTube側で削除/非公開になった動画。
     // 読込中のまま固まったり再生できないまま止まったりしないよう、
-    // 行ごと無効化してキューに入らないようにする。
+    // 行ごと無効化してキューに入らないようにする(スタンプは押せたままにする)。
     row.querySelector('.name').textContent = '動画が見つかりません';
     row.querySelector('.tp').disabled = true;
     row.classList.add('yt-unavailable');
