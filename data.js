@@ -18,6 +18,7 @@ const STAMPS = [
   { id: 'doro',    label: 'ドロドロ',   en: 'murky',    color: '#7b5cff' },
   { id: 'dark',    label: 'ダーク',     en: 'dark',     color: '#5a5f70' },
   { id: 'horror',  label: 'ホラー',     en: 'horror',   color: '#c2372f' },
+  { id: 'surreal', label: 'シュール',   en: 'surreal',  color: '#8f9c3f' },
   { id: 'through', label: 'スルーした', en: 'skipped',  color: '#6b6b6b' },
 ];
 
