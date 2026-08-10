@@ -1202,14 +1202,14 @@ function renderFavs(push = true) {
           <button class="tr-toggle" id="streetLinkBtn">${t('link')}</button>
         </div>
         <span class="form-msg" id="streetSyncMsg"></span>
+        <div class="fav-io">
+          <button class="tr-toggle" id="favExport">${t('exportCsv')}</button>
+          <button class="tr-toggle" id="favImportBtn">${t('importCsv')}</button>
+          <input type="file" id="favImportFile" accept=".csv,text/csv" hidden>
+          <span class="form-msg" id="favIoMsg"></span>
+        </div>
       </div>
     </details>
-    <div class="fav-io">
-      <button class="tr-toggle" id="favExport">${t('exportCsv')}</button>
-      <button class="tr-toggle" id="favImportBtn">${t('importCsv')}</button>
-      <input type="file" id="favImportFile" accept=".csv,text/csv" hidden>
-      <span class="form-msg" id="favIoMsg"></span>
-    </div>
     <div class="fav-tabs">
       <button class="fav-tab${favTab === 'want' ? ' on' : ''}" data-tab="want">${t('wantSection')} <span class="cnt">${wantItems.length}</span></button>
       <button class="fav-tab${favTab === 'have' ? ' on' : ''}" data-tab="have">${t('haveSection')} <span class="cnt">${haveItems.length}</span></button>
