@@ -9,7 +9,7 @@ const I18N = {
     releases: 'RELEASES', discs: 'DISCS',
     favs: 'MY FAVS', favSub: 'お気に入りディスク',
     have: '持ッテル', want: 'ホシイ',
-    haveSection: '持ッテルディスク', wantSection: 'ホシイディスク', stampedSection: '自分ガチェックした曲',
+    haveSection: '持ッテルディスク', wantSection: 'ホシイディスク', stampedSection: '自分ガチェックした曲', stamp: 'スタンプ',
     exportCsv: '⬇ CSV保存', importCsv: '⬆ CSV読込',
     importOk: (n) => `${n}件反映シタ`, importNone: '一致スルディスクガナカッタ',
     favEmpty: 'まだ空。ディスクの☆を押して集めよう。',
@@ -44,7 +44,7 @@ const I18N = {
     releases: 'RELEASES', discs: 'DISCS',
     favs: 'MY FAVS', favSub: 'Favorite discs',
     have: 'HAVE', want: 'WANT',
-    haveSection: 'Discs I have', wantSection: 'Discs I want', stampedSection: 'Tracks I stamped',
+    haveSection: 'Discs I have', wantSection: 'Discs I want', stampedSection: 'Tracks I stamped', stamp: 'Stamps',
     exportCsv: '⬇ Export CSV', importCsv: '⬆ Import CSV',
     importOk: (n) => `${n} matched and applied`, importNone: 'No matching discs found',
     favEmpty: 'Empty. Hit ☆ on a disc to collect.',
@@ -1211,9 +1211,9 @@ function renderFavs(push = true) {
       </div>
     </details>
     <div class="fav-tabs">
-      <button class="fav-tab${favTab === 'want' ? ' on' : ''}" data-tab="want">${t('wantSection')} <span class="cnt">${wantItems.length}</span></button>
-      <button class="fav-tab${favTab === 'have' ? ' on' : ''}" data-tab="have">${t('haveSection')} <span class="cnt">${haveItems.length}</span></button>
-      <button class="fav-tab${favTab === 'stamped' ? ' on' : ''}" data-tab="stamped">${t('stampedSection')} <span class="cnt">${stampedItems.length}</span></button>
+      <button class="fav-tab${favTab === 'want' ? ' on' : ''}" data-tab="want">${t('want')} <span class="cnt">${wantItems.length}</span></button>
+      <button class="fav-tab${favTab === 'have' ? ' on' : ''}" data-tab="have">${t('have')} <span class="cnt">${haveItems.length}</span></button>
+      <button class="fav-tab${favTab === 'stamped' ? ' on' : ''}" data-tab="stamped">${t('stamp')} <span class="cnt">${stampedItems.length}</span></button>
     </div>
     ${section('want', t('wantSection'), wantItems)}
     ${section('have', t('haveSection'), haveItems)}

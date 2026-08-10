@@ -471,6 +471,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   flex: 1; border: 2px solid var(--ink); border-bottom: none; background: var(--paper-2);
   color: var(--ink-2); font-weight: 800; font-size: 12px; letter-spacing: .04em;
   padding: 8px 6px; cursor: pointer; transform: translateY(2px);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .fav-tab .cnt { font-size: 10px; font-weight: 700; opacity: .7; }
 .fav-tab.on { background: var(--paper); color: var(--ink); transform: translateY(0); }
