@@ -466,6 +466,16 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   border-bottom: 2px solid var(--ink); padding-bottom: 6px;
 }
 .fav-section h3 .cnt { font-size: 11px; font-weight: 700; color: var(--ink-2); letter-spacing: .08em; }
+.fav-tabs { display: flex; gap: 6px; margin-top: 14px; border-bottom: 2px solid var(--ink); }
+.fav-tab {
+  flex: 1; border: 2px solid var(--ink); border-bottom: none; background: var(--paper-2);
+  color: var(--ink-2); font-weight: 800; font-size: 12px; letter-spacing: .04em;
+  padding: 8px 6px; cursor: pointer; transform: translateY(2px);
+}
+.fav-tab .cnt { font-size: 10px; font-weight: 700; opacity: .7; }
+.fav-tab.on { background: var(--paper); color: var(--ink); transform: translateY(0); }
+.fav-tab:hover { color: var(--ink); }
+.fav-section[data-tab] { margin-top: 14px; }
 
 .top-actions {
   display: flex; align-items: center; gap: 8px;

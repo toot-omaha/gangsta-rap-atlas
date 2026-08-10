@@ -1144,7 +1144,8 @@ function youtubeTrackRow(album, vid, rerender) {
   return row;
 }
 
-// ---------- お気に入りリスト表示(持ってる/ほしい の2セクション) ----------
+// ---------- お気に入りリスト表示(ホシイ/持ッテル/自分のスタンプ をタブ切替) ----------
+let favTab = 'have'; // 縦に全部並べると件数が多い人ほど画面が伸びすぎるためタブ化
 function allKnownAlbums() {
   const out = [];
   REGIONS.forEach((r) => r.albums.forEach((a) => out.push({ a, r })));
@@ -1174,8 +1175,8 @@ function renderFavs(push = true) {
   const stampedItems = all.filter(({ a }) => stampedAlbumKeys.has(albumKey(a)));
   const total = new Set([...favsHave, ...favsWant]).size;
 
-  const section = (title, items) => `
-    <div class="fav-section">
+  const section = (tab, title, items) => `
+    <div class="fav-section" data-tab="${tab}"${tab === favTab ? '' : ' hidden'}>
       <h3>${title} <span class="cnt">${items.length} ${t('discs')}</span></h3>
       <div class="grid"></div>
     </div>`;
@@ -1209,10 +1210,23 @@ function renderFavs(push = true) {
       <input type="file" id="favImportFile" accept=".csv,text/csv" hidden>
       <span class="form-msg" id="favIoMsg"></span>
     </div>
-    ${section(t('wantSection'), wantItems)}
-    ${section(t('haveSection'), haveItems)}
-    ${section(t('stampedSection'), stampedItems)}`;
+    <div class="fav-tabs">
+      <button class="fav-tab${favTab === 'want' ? ' on' : ''}" data-tab="want">${t('wantSection')} <span class="cnt">${wantItems.length}</span></button>
+      <button class="fav-tab${favTab === 'have' ? ' on' : ''}" data-tab="have">${t('haveSection')} <span class="cnt">${haveItems.length}</span></button>
+      <button class="fav-tab${favTab === 'stamped' ? ' on' : ''}" data-tab="stamped">${t('stampedSection')} <span class="cnt">${stampedItems.length}</span></button>
+    </div>
+    ${section('want', t('wantSection'), wantItems)}
+    ${section('have', t('haveSection'), haveItems)}
+    ${section('stamped', t('stampedSection'), stampedItems)}`;
   listEl.querySelector('.close').addEventListener('click', closeList);
+
+  listEl.querySelectorAll('.fav-tab').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      favTab = btn.dataset.tab;
+      listEl.querySelectorAll('.fav-tab').forEach((b) => b.classList.toggle('on', b === btn));
+      listEl.querySelectorAll('.fav-section').forEach((sec) => { sec.hidden = sec.dataset.tab !== favTab; });
+    });
+  });
 
   const $sname = listEl.querySelector('#streetNameVal');
   const $syncMsg = listEl.querySelector('#streetSyncMsg');
