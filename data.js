@@ -14,6 +14,7 @@ const STAMPS = [
   { id: 'laidbk',  label: 'レイドバック', en: 'laid-back', color: '#5f9e5f' },
   { id: 'bangin',  label: 'バンギン',   en: "bangin'",  color: '#d9822b' },
   { id: 'boogie',  label: 'ブギー',     en: 'boogie',   color: '#d4568c' },
+  { id: 'shibui',  label: '渋い',       en: 'shibui',   color: '#4f6b7d' },
   { id: 'doro',    label: 'ドロドロ',   en: 'murky',    color: '#7b5cff' },
   { id: 'dark',    label: 'ダーク',     en: 'dark',     color: '#5a5f70' },
   { id: 'horror',  label: 'ホラー',     en: 'horror',   color: '#c2372f' },
