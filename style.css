@@ -576,6 +576,10 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   /* モバイルでは.era-filterはドロワー内(fixed)にあり右寄せ役を担えないので、
      こちらにmargin-left:autoを戻す */
   .top-actions { gap: 6px; padding: 5px 10px; margin-left: auto; }
+  /* 投稿・言語ボタンはJS(placeActionButtons)がドロワー下部へ移すまでの間、
+     ヘッダー上に一瞬表示されてしまう(FOUC)のを防ぐ。JSが移動すると
+     .top-actionsの子ではなくなるのでこのルールの対象から自然に外れる */
+  .top-actions #submitBtn, .top-actions #langBtn { display: none; }
   /* 検索ボタンはヘッダー右下に独立配置(✕ボタンと被りやすいので
      詳細ページ・一覧が開いている間は隠す) */
   .fav-toggle.search {
