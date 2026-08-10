@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/icon/icon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/icon/icon-180.png">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-<link rel="stylesheet" href="style.css?v=47">
+<link rel="stylesheet" href="style.css?v=48">
 </head>
 <body>
 
@@ -68,6 +68,16 @@
     </div>
   </div>
 
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+    </div>
+  </div>
+
 </main>
 
 <footer id="player" class="player">
@@ -93,10 +103,10 @@
 
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
-<script src="data.js?v=85"></script>
+<script src="data.js?v=86"></script>
 <script src="enrich.js?v=73"></script>
 <script src="rarity.js?v=65"></script>
 <script src="youtube.js?v=1"></script>
-<script src="app.js?v=75"></script>
+<script src="app.js?v=76"></script>
 </body>
 </html>

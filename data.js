@@ -9,17 +9,15 @@
 // 使用後はその値+1で上書きしておくこと(採番の重複防止)。
 
 const STAMPS = [
-  { id: 'doro',    label: 'ドロドロ',   en: 'murky',    color: '#7b5cff' },
-  { id: 'horror',  label: 'ホラー',     en: 'horror',   color: '#c2372f' },
-  { id: 'mellow',  label: 'メロウ',     en: 'mellow',   color: '#4aa3a0' },
-  { id: 'smooth',  label: 'スムース',   en: 'smooth',   color: '#3f7fd6' },
+  { id: 'amacha',  label: '甘茶',       en: 'amacha',   color: '#b98d3e' },
   { id: 'aishu',   label: '哀愁',       en: 'melancholy', color: '#8a6fa8' },
-  { id: 'bangin',  label: 'バンギン',   en: "bangin'",  color: '#d9822b' },
-  { id: 'funky',   label: 'ファンキー', en: 'funky',    color: '#c9a227' },
   { id: 'laidbk',  label: 'レイドバック', en: 'laid-back', color: '#5f9e5f' },
+  { id: 'bangin',  label: 'バンギン',   en: "bangin'",  color: '#d9822b' },
+  { id: 'boogie',  label: 'ブギー',     en: 'boogie',   color: '#d4568c' },
+  { id: 'doro',    label: 'ドロドロ',   en: 'murky',    color: '#7b5cff' },
   { id: 'dark',    label: 'ダーク',     en: 'dark',     color: '#5a5f70' },
-  { id: 'party',   label: 'パーティー', en: 'party',    color: '#d4568c' },
-  { id: 'through', label: 'スルー',     en: 'skip',     color: '#6b6b6b' },
+  { id: 'horror',  label: 'ホラー',     en: 'horror',   color: '#c2372f' },
+  { id: 'through', label: 'スルーした', en: 'skipped',  color: '#6b6b6b' },
 ];
 
 // 地域(出身地)が特定できなかった収集物の置き場。

@@ -705,6 +705,40 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && searchOverlay?.classList.contains('open')) closeSearch();
 });
 
+// ---------- 曲スタンプ選択ポップアップ ----------
+// ＋ボタンが小さくて押しにくい問題への対応。押し間違い防止のため曲名を
+// 見出しとして表示してから選ばせる。
+const stampOverlay = document.getElementById('stampOverlay');
+const stampOverlayTitle = document.getElementById('stampOverlayTitle');
+const stampOverlayList = document.getElementById('stampOverlayList');
+
+function openStampPicker(key, title, onPick) {
+  stampOverlayTitle.textContent = title;
+  stampOverlayList.innerHTML = '';
+  const mine = stampsAt(key);
+  STAMPS.forEach((s) => {
+    const b = document.createElement('button');
+    b.className = 'stamp' + (mine.includes(s.id) ? ' mine' : '');
+    b.style.color = s.color;
+    b.innerHTML = `<span>${stampName(s)}</span>`;
+    b.addEventListener('click', () => { onPick(s.id); closeStampPicker(); });
+    stampOverlayList.appendChild(b);
+  });
+  stampOverlay.classList.add('open');
+  document.body.classList.add('search-open');
+}
+function closeStampPicker() {
+  stampOverlay.classList.remove('open');
+  document.body.classList.remove('search-open');
+}
+if (stampOverlay) {
+  document.getElementById('stampOverlayClose')?.addEventListener('click', closeStampPicker);
+  stampOverlay.addEventListener('click', (e) => { if (e.target === stampOverlay) closeStampPicker(); });
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && stampOverlay?.classList.contains('open')) closeStampPicker();
+});
+
 // ---------- 一覧 ----------
 const listEl = document.getElementById('list');
 
@@ -1302,37 +1336,29 @@ function trackRow(album, track, idx, rerender) {
   const key = trackKey(album, track.name);
   const row = document.createElement('div');
   row.className = 'track';
-  const mine = stampsAt(key);
   row.innerHTML = `
     <button class="tp" title="この曲を再生">▶</button>
     <span class="no">${String(idx + 1).padStart(2, '0')}</span>
     <span class="name">${track.name}</span>
-    <span class="mini"></span>
-    <button class="add" title="この曲にスタンプ">＋</button>`;
+    <button class="stamp-slot" title="この曲にスタンプ">＋</button>`;
 
-  const mini = row.querySelector('.mini');
-  mine.forEach((id) => {
-    const s = STAMPS.find((x) => x.id === id);
-    if (s) { const m = document.createElement('i'); m.style.background = s.color; m.title = stampName(s); mini.appendChild(m); }
-  });
+  const slot = row.querySelector('.stamp-slot');
+  const paintSlot = () => {
+    const id = stampsAt(key)[0];
+    const s = id && STAMPS.find((x) => x.id === id);
+    slot.classList.toggle('set', !!s);
+    slot.style.color = s ? s.color : '';
+    slot.textContent = s ? stampName(s) : '＋';
+    slot.title = s ? `${stampName(s)}(タップで変更)` : 'この曲にスタンプ';
+  };
+  paintSlot();
 
   row.querySelector('.tp').addEventListener('click', () => {
     const e = enrichOf(album);
     playSingle({ title: track.name, artist: album.artist, preview: track.preview, youtube: null, art: artUrl(e, 100, album), album });
   });
-  row.querySelector('.add').addEventListener('click', () => {
-    const picker = document.createElement('div');
-    picker.className = 'picker';
-    STAMPS.forEach((s) => {
-      const b = document.createElement('button');
-      b.className = 'stamp' + (mine.includes(s.id) ? ' mine' : '');
-      b.style.color = s.color;
-      b.innerHTML = `<span>${stampName(s)}</span>`;
-      b.addEventListener('click', () => { toggleStampAt(key, s.id); rerender(); });
-      picker.appendChild(b);
-    });
-    row.after(picker);
-    row.querySelector('.add').disabled = true;
+  slot.addEventListener('click', () => {
+    openStampPicker(key, track.name, (id) => { toggleStampAt(key, id); paintSlot(); rerender(); });
   });
   return row;
 }

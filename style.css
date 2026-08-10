@@ -154,6 +154,30 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
 .search-box .close:hover { color: var(--red); }
 .search-results { overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
 
+/* ---------- スタンプ選択ポップアップ ---------- */
+.stamp-box {
+  position: relative; width: min(420px, 92vw); max-height: 76vh;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 rgba(20,18,15,.5);
+  padding: 16px; display: flex; flex-direction: column; gap: 12px;
+}
+.stamp-box-head {
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 2px solid var(--ink); padding-bottom: 10px;
+}
+.stamp-overlay-title { font-weight: 900; font-size: 15px; flex: 1; }
+.stamp-box-head .close {
+  border: none; background: transparent; color: var(--ink);
+  font-size: 16px; font-weight: 900; cursor: pointer;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+}
+.stamp-box-head .close:hover { color: var(--red); }
+.stamp-overlay-list { display: flex; flex-wrap: wrap; gap: 8px; overflow-y: auto; }
+.stamp-overlay-list .stamp {
+  font-size: 13px; padding: 10px 14px; min-height: 40px;
+}
+
 .search-results .sr-item {
   display: flex; align-items: baseline; gap: 8px; padding: 8px 6px;
   cursor: pointer; border-bottom: 1px solid var(--dot);
@@ -486,26 +510,25 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 /* ---------- 収録曲(曲単位スタンプ) ---------- */
 .tracks { margin-top: 8px; border-top: 2px solid var(--ink); padding-top: 6px; }
 .tracks:empty { display: none; }
-.track { display: flex; align-items: center; gap: 6px; padding: 2px 0; font-size: 11px; }
+.track { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; }
 .track .tp {
-  flex: 0 0 auto; width: 18px; height: 18px; border: 1px solid var(--ink);
-  background: transparent; cursor: pointer; font-size: 8px; padding: 0;
+  flex: 0 0 auto; width: 26px; height: 26px; border: 1px solid var(--ink);
+  background: transparent; cursor: pointer; font-size: 11px; padding: 0;
 }
 .track .tp:hover { background: var(--ink); color: var(--paper); }
-.track .no { color: var(--ink-2); font-size: 9px; letter-spacing: .05em; }
+.track .no { color: var(--ink-2); font-size: 12px; letter-spacing: .05em; }
 .track .name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
-.track .mini { display: flex; gap: 2px; }
-.track .mini i { width: 8px; height: 8px; border: 1px solid var(--ink); display: block; }
-.track .add {
-  flex: 0 0 auto; width: 18px; height: 18px; border: 1px dashed var(--ink-2);
-  background: transparent; color: var(--ink-2); cursor: pointer; font-size: 10px; padding: 0;
+.track .stamp-slot {
+  flex: 0 0 auto; border: 1px dashed var(--ink-2); border-radius: 0;
+  background: transparent; color: var(--ink-2); cursor: pointer;
+  font-size: 12px; font-weight: 800; letter-spacing: .04em;
+  min-width: 32px; height: 28px; padding: 0 10px;
 }
-.track .add:hover { border-style: solid; color: var(--ink); }
-.track .add:disabled { opacity: .3; cursor: default; }
+.track .stamp-slot:hover { border-style: solid; color: var(--ink); }
+.track .stamp-slot.set { border-style: solid; border-color: currentColor; }
 .track.yt-full { margin-top: 4px; padding-top: 6px; border-top: 1px dashed var(--ink-2); }
 .track.yt-full a { color: var(--ink-2); font-size: 10px; letter-spacing: .03em; text-decoration: underline; }
 .track.yt-full a:hover { color: var(--ink); }
-.picker { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px 0 6px 24px; }
 
 /* ---------- プレイヤー ---------- */
 .player {
