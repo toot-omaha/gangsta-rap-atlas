@@ -705,32 +705,67 @@ function refreshMarkers() {
 
 // ---------- スタンプ絞り込み ----------
 const filterBar = document.getElementById('stampFilter');
-// 絞り込みパネルに出す全体件数(このディスク/このタグを持つ曲・盤の合計)。
+// 絞り込みパネルに出す全体件数(このスタンプ/このタグを持つ曲の合計)。
 // 開閉のたびではなく初期表示・言語切替時だけ計算すれば十分な頻度なので、
 // 4800枚超を毎回舐めても実用上のコストにはならない。
-// 年代フィルターで絞ってる間は、その範囲内での件数になるようeraFilters対象だけ数える
-const globalStampCount = (id) => allKnownAlbums()
-  .reduce((n, { a }) => n + (eraFilters.has(eraOf(a)) ? stampCount(a, id) : 0), 0);
-// タグは投票の合算ではなく「net>0で確定してるディスク数」を件数として出す
-// (票数を合算すると訂正の-1がキャンセルし合って何を数えてるか分かりにくくなるため)
-const globalTagCount = (id) => allKnownAlbums()
-  .reduce((n, { a }) => n + (eraFilters.has(eraOf(a)) && albumHasTag(a, id) ? 1 : 0), 0);
+// 曲単位(album.tracks/YouTube代替/曲データ無しならディスク本体)のkeyを列挙する。
+// stampCount/albumHasTag内部の集計ロジックと合わせてある。
+function albumKeys(album) {
+  const tracks = enrichOf(album)?.tracks || [];
+  const ytIds = youtubeIdsFor(album);
+  if (!tracks.length && !ytIds.length) return [albumKey(album)];
+  return [
+    ...tracks.map((tr) => trackKey(album, tr.name)),
+    ...ytIds.map((vid) => trackKey(album, `yt:${vid}`)),
+  ];
+}
+// スタンプとタグは双方向に絞り込みが連動する: スタンプ側のパネルでは
+// 現在選択中のタグ(tagFilters)に該当する曲だけを数え、タグ側のパネルでは
+// 現在選択中のスタンプ(activeFilters)に該当する曲だけを数える。
+// 年代フィルターの範囲外はどちらも対象外。
+const globalStampCount = (id) => {
+  let n = 0;
+  allKnownAlbums().forEach(({ a }) => {
+    if (!eraFilters.has(eraOf(a))) return;
+    albumKeys(a).forEach((key) => {
+      if ((SHARED[key]?.[id] || 0) <= 0) return;
+      if (tagFilters.size && ![...tagFilters].some((t) => netTagScore(key, t) > 0)) return;
+      n++;
+    });
+  });
+  return n;
+};
+const globalTagCount = (id) => {
+  let n = 0;
+  allKnownAlbums().forEach(({ a }) => {
+    if (!eraFilters.has(eraOf(a))) return;
+    albumKeys(a).forEach((key) => {
+      if (netTagScore(key, id) <= 0) return;
+      if (activeFilters.size && ![...activeFilters].every((s) => (SHARED[key]?.[s] || 0) > 0)) return;
+      n++;
+    });
+  });
+  return n;
+};
 
 function buildFilterBar() {
   filterBar.innerHTML = '';
   STAMPS.forEach((s) => {
+    const n = globalStampCount(s.id);
+    if (n === 0 && !activeFilters.has(s.id)) return; // 0件は非表示(選択中のものは外せるよう残す)
     const b = document.createElement('button');
     b.className = 'stamp' + (activeFilters.has(s.id) ? ' on' : '');
     b.style.color = s.color;
-    b.innerHTML = `<span>${stampName(s)}</span><span class="count">${globalStampCount(s.id)}</span>`;
+    b.innerHTML = `<span>${stampName(s)}</span><span class="count">${n}</span>`;
     b.addEventListener('click', () => {
       const wasOn = activeFilters.has(s.id);
       activeFilters.clear();
       if (!wasOn) activeFilters.add(s.id);
-      filterBar.querySelectorAll('.stamp').forEach((el) => el.classList.remove('on'));
-      b.classList.toggle('on', activeFilters.has(s.id));
       refreshMarkers();
       if (activeRegion) renderList(activeRegion);
+      // タグ側の絞り込み表示に連動するので、双方作り直す
+      buildFilterBar();
+      buildTagBar();
     });
     filterBar.appendChild(b);
   });
@@ -771,16 +806,20 @@ function buildTagBar() {
   if (!tagBar) return;
   tagBar.innerHTML = '';
   TAGS.forEach((tg) => {
+    const n = globalTagCount(tg.id);
+    if (n === 0 && !tagFilters.has(tg.id)) return; // 0件は非表示(選択中のものは外せるよう残す)
     const label = document.createElement('label');
     label.className = 'era-chk' + (tagFilters.has(tg.id) ? ' on' : '');
-    label.innerHTML = `<input type="checkbox"${tagFilters.has(tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span><span class="count">${globalTagCount(tg.id)}</span>`;
+    label.innerHTML = `<input type="checkbox"${tagFilters.has(tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span><span class="count">${n}</span>`;
     label.querySelector('input').addEventListener('change', (ev) => {
       if (ev.target.checked) tagFilters.add(tg.id); else tagFilters.delete(tg.id);
-      label.classList.toggle('on', ev.target.checked);
       saveTagFilters();
       refreshMarkers();
       if (activeRegion) renderList(activeRegion);
       if (searchOverlay.classList.contains('open')) runSearch(searchInput.value);
+      // スタンプ側の絞り込み表示に連動するので、双方作り直す
+      buildFilterBar();
+      buildTagBar();
     });
     tagBar.appendChild(label);
   });
