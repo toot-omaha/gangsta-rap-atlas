@@ -630,13 +630,19 @@ function refreshMarkers() {
 
 // ---------- スタンプ絞り込み ----------
 const filterBar = document.getElementById('stampFilter');
+// 絞り込みパネルに出す全体件数(このディスク/このタグを持つ曲・盤の合計)。
+// 開閉のたびではなく初期表示・言語切替時だけ計算すれば十分な頻度なので、
+// 4800枚超を毎回舐めても実用上のコストにはならない。
+const globalStampCount = (id) => allKnownAlbums().reduce((n, { a }) => n + stampCount(a, id), 0);
+const globalTagCount = (id) => allKnownAlbums().reduce((n, { a }) => n + tagCount(a, id), 0);
+
 function buildFilterBar() {
   filterBar.innerHTML = '';
   STAMPS.forEach((s) => {
     const b = document.createElement('button');
     b.className = 'stamp' + (activeFilters.has(s.id) ? ' on' : '');
     b.style.color = s.color;
-    b.innerHTML = `<span>${stampName(s)}</span>`;
+    b.innerHTML = `<span>${stampName(s)}</span><span class="count">${globalStampCount(s.id)}</span>`;
     b.addEventListener('click', () => {
       const wasOn = activeFilters.has(s.id);
       activeFilters.clear();
@@ -649,7 +655,9 @@ function buildFilterBar() {
     filterBar.appendChild(b);
   });
 }
-buildFilterBar();
+// 初回描画はapplyLang()内で行う(ここで即時呼ぶとglobalStampCount→stampCount→
+// enrichOfの参照が、enrichOf自体の定義(constでこれより後方)より先に走ってしまい
+// TDZエラーになるため)。
 
 // ---------- 年代フィルターUI ----------
 const eraBar = document.getElementById('eraFilter');
@@ -682,7 +690,7 @@ function buildTagBar() {
   TAGS.forEach((tg) => {
     const label = document.createElement('label');
     label.className = 'era-chk' + (tagFilters.has(tg.id) ? ' on' : '');
-    label.innerHTML = `<input type="checkbox"${tagFilters.has(tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span>`;
+    label.innerHTML = `<input type="checkbox"${tagFilters.has(tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span><span class="count">${globalTagCount(tg.id)}</span>`;
     label.querySelector('input').addEventListener('change', (ev) => {
       if (ev.target.checked) tagFilters.add(tg.id); else tagFilters.delete(tg.id);
       label.classList.toggle('on', ev.target.checked);
@@ -694,7 +702,7 @@ function buildTagBar() {
     tagBar.appendChild(label);
   });
 }
-buildTagBar();
+// 初回描画はapplyLang()内で行う(buildFilterBarと同じ理由でここでは呼ばない)。
 
 // ---------- 検索 ----------
 const searchOverlay = document.getElementById('searchOverlay');
