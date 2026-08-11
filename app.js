@@ -208,16 +208,12 @@ async function loadTagScores() {
     const res = await fetch(`${SB_URL}/tag_scores?select=target_key,tag_id,net`, { headers: SB_HEADERS });
     if (!res.ok) return;
     (await res.json()).forEach((r) => { (TAG_SCORES[r.target_key] ||= {})[r.tag_id] = r.net; });
-    // 過去にサーバーへ送れていなかった投票(tag_votesテーブル未作成の間に
-    // 押した分など)を送り直す。UPSERTなので同じ値を何度再送しても
-    // 二重集計にはならず安全。
+    // 過去にサーバーへ送れていなかった投票(tag_votesテーブル未作成/権限不足
+    // だった間に押した分など)だけを送り直す。送信成功済みのものは
+    // tagVotesSyncedに記録済みなので、毎回全部を再送して重くなることはない。
     Object.entries(myTagVotes).forEach(([key, votes]) => {
       Object.entries(votes).forEach(([tagId, value]) => {
-        fetch(`${SB_URL}/tag_votes`, {
-          method: 'POST',
-          headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
-          body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, tag_id: tagId, value }),
-        }).catch(() => {});
+        if (!tagVotesSynced.has(`${key}::${tagId}::${value}`)) pushTagVote(key, tagId, value);
       });
     });
     refreshMarkers();
@@ -239,17 +235,30 @@ const tagChecked = (key, id) => {
   return mine != null ? mine === 1 : netTagScore(key, id) > 0;
 };
 
+// サーバーへの送信に成功済みの投票の記録(key::tagId::value)。
+// 値が変わった場合は別のledgerKeyになるので、投票し直した時はちゃんと再送される。
+const TAG_SYNCED_KEY = 'gra.tagvotessynced.v1';
+const tagVotesSynced = new Set(JSON.parse(localStorage.getItem(TAG_SYNCED_KEY) || '[]'));
+const saveTagSynced = () => localStorage.setItem(TAG_SYNCED_KEY, JSON.stringify([...tagVotesSynced]));
+
+async function pushTagVote(key, id, value) {
+  try {
+    const res = await fetch(`${SB_URL}/tag_votes`, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, tag_id: id, value }),
+    });
+    if (res.ok) { tagVotesSynced.add(`${key}::${id}::${value}`); saveTagSynced(); }
+  } catch { /* オフラインならまた次回の起動時に再送される */ }
+}
+
 function castTagVote(key, id, value) {
   const prev = myTagVote(key, id) || 0;
   if (prev === value) return;
   (TAG_SCORES[key] ||= {})[id] = (TAG_SCORES[key]?.[id] || 0) + (value - prev);
   (myTagVotes[key] ||= {})[id] = value;
   saveTagVotes();
-  fetch(`${SB_URL}/tag_votes`, {
-    method: 'POST',
-    headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
-    body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, tag_id: id, value }),
-  }).catch(() => {});
+  pushTagVote(key, id, value);
 }
 
 // ディスク全体(曲データがあれば全曲のいずれか)で、このタグがnet>0で
