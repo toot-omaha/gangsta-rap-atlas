@@ -27,8 +27,8 @@ const STAMPS = [
 // 廃止した。トークボックス使用曲はクレジット記載が乏しいものが多い)。
 // abbr は曲一覧でのワンレター表示用。
 const TAGS = [
-  { id: 'talkbox', label: 'トークボックス', abbr: 'ト', en: 'talkbox' },
-  { id: 'sample',  label: 'ネタモノ',      abbr: 'ネ', en: 'sample-based' },
+  { id: 'talkbox', label: 'トークボックス', abbr: 'T', en: 'Talkbox' },
+  { id: 'sample',  label: 'ネタモノ',      abbr: 'S', en: 'Sampling' },
 ];
 
 // 地域(出身地)が特定できなかった収集物の置き場。

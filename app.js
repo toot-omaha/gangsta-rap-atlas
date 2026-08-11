@@ -37,6 +37,7 @@ const I18N = {
     rerollConfirm: '再生成スルト今ノSTREET NAMEハ無効ニナル(持ッテル/ホシイト連携済ミ端末ハ新シイ名前ニ引キ継ガレル)。ヨロシイ？',
     issueCode: '連携コード発行', codeHint: '他端末デ連携スルニハ、元端末デ発行シタコードモ必要(10分有効・1回限リ)',
     codePlaceholder: '連携コード', codeIssued: (c) => `連携コード: ${c} (10分有効)`,
+    filterHint: 'トークボックス/ネタモノは曲のスタンプ画面でチェックできます。<b>誰もチェックしていない曲はここでは見つかりません。</b>視聴後のスタンプ・チェックにご協力ください。',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -72,11 +73,13 @@ const I18N = {
     rerollConfirm: 'Rerolling retires your current Street Name (have/want and linked devices carry over to the new name). Continue?',
     issueCode: 'Issue link code', codeHint: 'Linking on another device also requires a code issued on this one (valid 10 min, single use)',
     codePlaceholder: 'Link code', codeIssued: (c) => `Link code: ${c} (valid 10 min)`,
+    filterHint: 'Talkbox/Sampling can be checked on a track\'s stamp screen. <b>Tracks nobody has checked won\'t show up here.</b> Please check them after listening.',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
 const t = (k) => I18N[lang][k];
 const stampName = (s) => (lang === 'ja' ? s.label : s.en.toUpperCase());
+const tagName = (tg) => (lang === 'ja' ? tg.label : tg.en);
 
 // ---------- Supabase(共有データ) ----------
 // anonキーは「投稿とスタンプの書き込み+集計の読み取り」しかできない公開用キー
@@ -679,7 +682,7 @@ function buildTagBar() {
   TAGS.forEach((tg) => {
     const label = document.createElement('label');
     label.className = 'era-chk' + (tagFilters.has(tg.id) ? ' on' : '');
-    label.innerHTML = `<input type="checkbox"${tagFilters.has(tg.id) ? ' checked' : ''}><span>${tg.label}</span>`;
+    label.innerHTML = `<input type="checkbox"${tagFilters.has(tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span>`;
     label.querySelector('input').addEventListener('change', (ev) => {
       if (ev.target.checked) tagFilters.add(tg.id); else tagFilters.delete(tg.id);
       label.classList.toggle('on', ev.target.checked);
@@ -798,7 +801,7 @@ function openStampPicker(key, title, onPick, onTagChange) {
   TAGS.forEach((tg) => {
     const label = document.createElement('label');
     label.className = 'stamp-tag-chk' + (hasMyTag(key, tg.id) ? ' on' : '');
-    label.innerHTML = `<input type="checkbox"${hasMyTag(key, tg.id) ? ' checked' : ''}><span>${tg.label}</span>`;
+    label.innerHTML = `<input type="checkbox"${hasMyTag(key, tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span>`;
     label.querySelector('input').addEventListener('change', () => {
       toggleTagAt(key, tg.id);
       label.classList.toggle('on', hasMyTag(key, tg.id));
@@ -820,7 +823,7 @@ function paintTagBadges(el, key) {
     const b = document.createElement('i');
     b.className = 'tag-badge' + (hasMyTag(key, tg.id) ? ' mine' : '');
     b.textContent = tg.abbr;
-    b.title = tg.label;
+    b.title = tagName(tg);
     el.appendChild(b);
   });
 }
@@ -1873,7 +1876,7 @@ function renderSubmit(push = true) {
       <label>${t('fTitleOpt')}<input name="title" maxlength="200"></label>
       <label>${t('fComment')}<textarea name="comment" maxlength="1000" rows="4"></textarea></label>
       <div class="fTags">
-        ${TAGS.map((tg) => `<label class="fTag"><input type="checkbox" name="tags" value="${tg.id}"><span>${tg.label}</span></label>`).join('')}
+        ${TAGS.map((tg) => `<label class="fTag"><input type="checkbox" name="tags" value="${tg.id}"><span>${tagName(tg)}</span></label>`).join('')}
       </div>
       <p class="form-note">${t('noPii')}</p>
       <button type="submit" class="tr-toggle send">${t('send')}</button>
@@ -1931,7 +1934,9 @@ function applyLang() {
   document.querySelector('.player-queue .credit').textContent = t('credit');
   document.getElementById('langBtn').textContent = lang === 'ja' ? 'EN' : 'JA';
   document.getElementById('submitBtn').textContent = t('submit');
+  document.getElementById('filterHintText').innerHTML = t('filterHint');
   buildFilterBar();
+  buildTagBar();
   paint();
   // 開いている画面を同じ状態のまま描き直す
   if (document.body.classList.contains('detail')) {
