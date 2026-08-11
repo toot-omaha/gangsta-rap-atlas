@@ -6,10 +6,6 @@ scripts/candidates.json
 scripts/unclassified.json
 scripts/submission_candidates.json
 
-# tag_talkbox_samples.py の生成物(再実行すれば再生成される)
-scripts/tag_backfill.json
-scripts/tag_backfill.log
-
 # 手動アップロード用の生成物(GitHub連携後は不要)
 dist/
 

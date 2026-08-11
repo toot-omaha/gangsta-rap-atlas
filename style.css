@@ -53,27 +53,44 @@ body::before {
 .brand { cursor: pointer; }
 .brand:hover .brand-mark { transform: scale(1.1); }
 
-/* デスクトップではドロワーは透明なラッパー(中身がヘッダーに並ぶ) */
-.drawer { display: contents; }
-.drawer-actions { display: none; }
-/* 年代フィルター(デスクトップ: ヘッダー内で右寄せ表示。
-   モバイルのドロワー内ではブロック要素が全幅になるためmargin-left:autoは効かず無害) */
-.era-filter { display: flex; gap: 10px; align-items: center; padding: 0 10px; flex: 0 0 auto; margin-left: auto; }
-.tag-filter { display: flex; gap: 10px; align-items: center; padding: 0 10px; flex: 0 0 auto; }
+/* 墓石アイコン(★の右)を押すとヘッダー右下にポップダウンする絞り込みパネル。
+   以前はPC幅だけヘッダーに常時展開(display:contents)していたが、
+   トークボックス/ネタモノの説明文を足すスペースが要るため、幅を問わず
+   アイコンで開閉する方式に統一した。 */
+.drawer {
+  display: none;
+  position: fixed; top: calc(var(--topbar-h, 58px) + 4px); right: 8px; left: auto; z-index: 35;
+  max-width: 340px;
+  background: var(--paper); border: 3px solid var(--ink);
+  box-shadow: 6px 6px 0 rgba(20,18,15,.4);
+}
+body.stamps-open .drawer { display: block; }
+.era-filter, .tag-filter {
+  display: flex; gap: 8px 12px; align-items: center; flex-wrap: wrap;
+  border-bottom: 2px solid var(--ink); padding: 10px;
+}
 .era-chk {
   display: inline-flex; align-items: center; gap: 4px;
-  font-size: 10px; font-weight: 900; letter-spacing: .06em;
+  font-size: 12px; font-weight: 900; letter-spacing: .06em;
   color: var(--ink-2); cursor: pointer; white-space: nowrap; user-select: none;
 }
 .era-chk input { accent-color: var(--ink); margin: 0; cursor: pointer; }
 .era-chk.on { color: var(--ink); }
 .stamp-filter {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
-  padding: 7px 12px; flex: 1; overflow-x: auto;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  padding: 10px; overflow: visible;
 }
-/* スタンプ機能は準備中のため、ヘッダー/ドロワー内の絞り込みチップのみ一旦非表示
-   (レイアウト・墓石ボタン・ドロワー構造には手を付けない) */
-.stamp-filter { display: none !important; }
+.filter-hint {
+  margin: 0; padding: 10px; font-size: 11px; line-height: 1.6; color: var(--ink-2);
+  border-bottom: 2px solid var(--ink);
+}
+.filter-hint b { color: var(--ink); }
+.drawer-actions:empty { display: none; }
+.drawer-actions {
+  display: flex; gap: 8px; align-items: center;
+  padding: 10px;
+}
+.drawer-actions .fav-toggle { flex: 1; text-align: center; padding: 7px 10px; }
 
 /* ---------- スタンプ(ゴム印っぽく) ---------- */
 .stamp {
@@ -178,6 +195,16 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
 .stamp-overlay-list .stamp {
   font-size: 13px; padding: 10px 14px; min-height: 40px;
 }
+.stamp-overlay-tags {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  border-top: 2px dashed var(--ink-2); padding-top: 12px;
+}
+.stamp-tag-chk {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+  font-size: 12px; font-weight: 800; letter-spacing: .04em; color: var(--ink-2);
+}
+.stamp-tag-chk.on { color: var(--ink); }
+.stamp-tag-chk input { accent-color: var(--ink); margin: 0; cursor: pointer; }
 
 .search-results .sr-item {
   display: flex; align-items: baseline; gap: 8px; padding: 8px 6px;
@@ -501,10 +528,10 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .fav-toggle.search { border-color: var(--ink); display: flex; align-items: center; padding: 5px 9px; }
 .fav-toggle.search:hover { background: var(--ink); color: var(--paper); }
 
-/* 墓石メニュー(狭い画面のみ) */
+/* 墓石メニュー(絞り込みパネルの開閉。PC/モバイル共通で★の右に置く) */
 .stamp-menu-btn {
-  display: none; border: 2px solid var(--ink); background: transparent; color: var(--ink);
-  width: 34px; height: 34px; padding: 4px; cursor: pointer;
+  display: block; border: 2px solid var(--ink); background: transparent; color: var(--ink);
+  width: 34px; height: 34px; padding: 4px; cursor: pointer; flex: 0 0 auto;
 }
 .stamp-menu-btn:hover, body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); }
 
@@ -536,6 +563,14 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .track .tp:hover { background: var(--ink); color: var(--paper); }
 .track .no { color: var(--ink-2); font-size: 12px; letter-spacing: .05em; }
 .track .name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.track .tag-badges { display: flex; gap: 3px; flex: 0 0 auto; }
+.track .tag-badges:empty { display: none; }
+.tag-badge {
+  display: flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border: 1px solid var(--ink-2); color: var(--ink-2);
+  font-size: 10px; font-weight: 900; font-style: normal;
+}
+.tag-badge.mine { border-color: var(--ink); color: var(--ink); background: var(--paper-2); }
 .track .stamp-slot {
   flex: 0 0 auto; border: 1px dashed var(--ink-2); border-radius: 0;
   background: transparent; color: var(--ink-2); cursor: pointer;
@@ -579,9 +614,6 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 
 /* 狭い画面: スタンプ列は墓石メニューからのドロップダウンに切り替え */
 @media (max-width: 860px) {
-  .stamp-menu-btn { display: block; }
-  /* モバイルでは.era-filterはドロワー内(fixed)にあり右寄せ役を担えないので、
-     こちらにmargin-left:autoを戻す */
   .top-actions { gap: 6px; padding: 5px 10px; margin-left: auto; }
   /* 投稿・言語ボタンはJS(placeActionButtons)がドロワー下部へ移すまでの間、
      ヘッダー上に一瞬表示されてしまう(FOUC)のを防ぐ。JSが移動すると
@@ -594,26 +626,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
     background: var(--paper);
   }
   body.detail .fav-toggle.search, body.search-open .fav-toggle.search { display: none; }
-  /* ドロワー: スタンプ絞り込み+下部にアクションセクション */
-  .drawer {
-    display: none;
-    position: fixed; top: calc(var(--topbar-h, 58px) + 4px); right: 8px; left: auto; z-index: 35;
-    max-width: 340px;
-    background: var(--paper); border: 3px solid var(--ink);
-    box-shadow: 6px 6px 0 rgba(20,18,15,.4);
-  }
-  body.stamps-open .drawer { display: block; }
-  /* 年代フィルターはドロワー最上段のセクションにする */
-  .drawer .era-filter { border-bottom: 2px solid var(--ink); padding: 10px; gap: 8px 12px; flex-wrap: wrap; margin-left: 0; }
-  .drawer .tag-filter { border-bottom: 2px solid var(--ink); padding: 10px; gap: 8px 12px; flex-wrap: wrap; }
-  .drawer .era-chk { font-size: 12px; }
-  .drawer .stamp-filter { padding: 10px; gap: 6px; overflow: visible; }
-  .drawer-actions {
-    display: flex; gap: 8px; align-items: center;
-    border-top: 2px solid var(--ink);
-    padding: 10px; margin: 0 0 0 0;
-  }
-  .drawer-actions .fav-toggle { flex: 1; text-align: center; padding: 7px 10px; }
+  .drawer-actions { border-top: 2px solid var(--ink); }
   #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 12px; }
   /* スマホ: 1行目=都市名(+右上の閉じる) / 2行目=州名+DISCS数 */
   .list-head { flex-wrap: wrap; gap: 2px 12px; }

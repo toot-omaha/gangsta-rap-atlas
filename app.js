@@ -166,6 +166,38 @@ function stampCount(album, id) {
 const totalStamps = (a) => STAMPS.reduce((n, s) => n + stampCount(a, s.id), 0);
 const hasStamp = (a, id) => stampCount(a, id) > 0;
 
+// ---------- サウンドタグ(トークボックス/ネタモノ)の個人チェック+共有集計 ----------
+// ムードスタンプと違い1曲に複数チェック可(トークボックスかつネタモノ、もあり得る)。
+// 共有集計はスタンプと同じ stamps テーブル/SHARED を再利用する
+// (client_id + target_key + stamp_id の汎用スキーマなので talkbox/sample という
+// idを積むだけで済み、新しいテーブルは要らない)。
+const TAG_STORE_KEY = 'gra.mytags.v1';
+const myTags = JSON.parse(localStorage.getItem(TAG_STORE_KEY) || '{}'); // { key: [tagId] }
+const saveTags = () => localStorage.setItem(TAG_STORE_KEY, JSON.stringify(myTags));
+const myTagsAt = (key) => myTags[key] || [];
+const hasMyTag = (key, id) => myTagsAt(key).includes(id);
+function toggleTagAt(key, id) {
+  const cur = myTags[key] || (myTags[key] = []);
+  const i = cur.indexOf(id);
+  if (i >= 0) cur.splice(i, 1);
+  else { cur.push(id); bumpShared(key, id); }
+  if (!cur.length) delete myTags[key];
+  saveTags();
+}
+// keyそのもの(曲/ディスク単位)での集計。未反映のローカル分(オフライン時)を補完するのはスタンプと同様
+function sharedTagCountAt(key, id) {
+  const n = SHARED[key]?.[id] || 0;
+  return n || (myTagsAt(key).includes(id) ? 1 : 0);
+}
+// ディスク全体(曲データがあれば全曲合算)での集計。フィルターの「該当あり」判定に使う
+function tagCount(album, id) {
+  const key = albumKey(album);
+  let n = sharedTagCountAt(key, id);
+  (enrichOf(album)?.tracks || []).forEach((tr) => { n += sharedTagCountAt(trackKey(album, tr.name), id); });
+  youtubeIdsFor(album).forEach((vid) => { n += sharedTagCountAt(trackKey(album, `yt:${vid}`), id); });
+  return n;
+}
+
 // 発掘度 — Discogsのコレクション登録数(have)による実測レア度。
 // have が少ない盤ほど現物を持っている人が少ない=発掘し甲斐がある。
 // have<=10 ≒ ★5 / 100前後 ≒ ★2-3 / 1000超のメジャー盤 ≒ ★1。
@@ -506,11 +538,13 @@ const eraOf = (a) => (a.year <= 1999 ? 'pre2000' : a.year <= 2009 ? 'y2000s' : a
 
 // ---------- サウンドタグ絞り込み(トークボックス/ネタモノ) ----------
 // 年代とは違い「該当する曲だけ探したい」がユースケースなので、デフォルトは
-// 全部OFF(絞り込み無し)。チェックしたタグのどれかを持つディスクだけ表示する。
+// 全部OFF(絞り込み無し)。誰か1人でもチェックしたタグを持つディスクだけ表示する
+// (=誰もチェックしていない曲はヒットしない。トークボックス使用曲がDiscogsの
+// クレジットだけでは拾いきれなかったため、ユーザーの申告に切り替えた)。
 const TAG_KEY = 'gra.tagFilters.v1';
 const tagFilters = new Set(JSON.parse(localStorage.getItem(TAG_KEY) || '[]'));
 const saveTagFilters = () => localStorage.setItem(TAG_KEY, JSON.stringify([...tagFilters]));
-const matchesTagFilter = (a) => !tagFilters.size || (a.tags || []).some((tg) => tagFilters.has(tg));
+const matchesTagFilter = (a) => !tagFilters.size || [...tagFilters].some((tg) => tagCount(a, tg) > 0);
 
 const albumsOf = (r) => {
   let list = r.albums.filter((a) => eraFilters.has(eraOf(a)) && matchesTagFilter(a));
@@ -744,8 +778,11 @@ document.addEventListener('keydown', (e) => {
 const stampOverlay = document.getElementById('stampOverlay');
 const stampOverlayTitle = document.getElementById('stampOverlayTitle');
 const stampOverlayList = document.getElementById('stampOverlayList');
+const stampOverlayTags = document.getElementById('stampOverlayTags');
 
-function openStampPicker(key, title, onPick) {
+// onPick(id): ムードスタンプ(1個だけ選択、選ぶとポップアップは閉じる)
+// onTagChange(): トークボックス/ネタモノのチェック変更時に呼ばれる(ポップアップは開いたまま)
+function openStampPicker(key, title, onPick, onTagChange) {
   stampOverlayTitle.textContent = title;
   stampOverlayList.innerHTML = '';
   const mine = stampsAt(key);
@@ -757,8 +794,35 @@ function openStampPicker(key, title, onPick) {
     b.addEventListener('click', () => { onPick(s.id); closeStampPicker(); });
     stampOverlayList.appendChild(b);
   });
+  stampOverlayTags.innerHTML = '';
+  TAGS.forEach((tg) => {
+    const label = document.createElement('label');
+    label.className = 'stamp-tag-chk' + (hasMyTag(key, tg.id) ? ' on' : '');
+    label.innerHTML = `<input type="checkbox"${hasMyTag(key, tg.id) ? ' checked' : ''}><span>${tg.abbr} ${tg.label}</span>`;
+    label.querySelector('input').addEventListener('change', () => {
+      toggleTagAt(key, tg.id);
+      label.classList.toggle('on', hasMyTag(key, tg.id));
+      onTagChange?.();
+      refreshMarkers();
+      if (activeRegion) renderList(activeRegion);
+    });
+    stampOverlayTags.appendChild(label);
+  });
   stampOverlay.classList.add('open');
   document.body.classList.add('search-open');
+}
+// 曲行/ディスクの「ト」「ネ」ワンレター表示。誰か1人でもチェック済みのタグだけ出す
+// (mineクラスは自分もチェック済みの場合)
+function paintTagBadges(el, key) {
+  el.innerHTML = '';
+  TAGS.forEach((tg) => {
+    if (sharedTagCountAt(key, tg.id) <= 0) return;
+    const b = document.createElement('i');
+    b.className = 'tag-badge' + (hasMyTag(key, tg.id) ? ' mine' : '');
+    b.textContent = tg.abbr;
+    b.title = tg.label;
+    el.appendChild(b);
+  });
 }
 function closeStampPicker() {
   stampOverlay.classList.remove('open');
@@ -1080,6 +1144,9 @@ function renderDisc(album, push = true) {
   } else {
     // 曲データが一切無い激レア盤はディスクに直接、曲行と同じ単一枠+ポップアップ形式で押す
     const key = albumKey(album);
+    const badges = document.createElement('span');
+    badges.className = 'tag-badges';
+    paintTagBadges(badges, key);
     const slot = document.createElement('button');
     slot.className = 'stamp-slot';
     const paintDiscSlot = () => {
@@ -1092,8 +1159,11 @@ function renderDisc(album, push = true) {
     };
     paintDiscSlot();
     slot.addEventListener('click', () => {
-      openStampPicker(key, album.title, (id) => { toggleStampAt(key, id); paintDiscSlot(); rerender(); });
+      openStampPicker(key, album.title,
+        (id) => { toggleStampAt(key, id); paintDiscSlot(); rerender(); },
+        () => paintTagBadges(badges, key));
     });
+    wrap.appendChild(badges);
     wrap.appendChild(slot);
   }
 
@@ -1139,12 +1209,15 @@ function youtubeTrackRow(album, vid, rerender) {
     <button class="tp" title="YouTubeで再生(30秒)">▶</button>
     <span class="no">YT</span>
     <span class="name">読込中…</span>
+    <span class="tag-badges"></span>
     <button class="stamp-slot" title="この曲にスタンプ">＋</button>`;
   row.querySelector('.tp').addEventListener('click', () => {
     const e = enrichOf(album);
     playSingle({ title: album.title, artist: album.artist, preview: null, youtube: vid, art: artUrl(e, 100, album), album });
   });
 
+  const badges = row.querySelector('.tag-badges');
+  paintTagBadges(badges, key);
   const slot = row.querySelector('.stamp-slot');
   const paintSlot = () => {
     const id = stampsAt(key)[0];
@@ -1157,7 +1230,9 @@ function youtubeTrackRow(album, vid, rerender) {
   paintSlot();
   slot.addEventListener('click', () => {
     const title = row.querySelector('.name').textContent;
-    openStampPicker(key, title, (id) => { toggleStampAt(key, id); paintSlot(); rerender?.(); });
+    openStampPicker(key, title,
+      (id) => { toggleStampAt(key, id); paintSlot(); rerender?.(); },
+      () => paintTagBadges(badges, key));
   });
 
   const url = `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}&format=json`;
@@ -1403,8 +1478,8 @@ function placeActionButtons() {
   if (narrowMq.matches) {
     document.getElementById('drawerActions').append(submitB, langB);
   } else {
-    // 検索, ★, 投稿, 言語 の順になるよう、スタンプボタンの直前に差し込む
-    document.getElementById('stampMenuBtn').before(submitB, langB);
+    // 検索, ★, 墓石(絞り込み), 投稿, 言語 の順になるよう、墓石ボタンの直後に差し込む
+    document.getElementById('stampMenuBtn').after(submitB, langB);
   }
 }
 narrowMq.addEventListener('change', placeActionButtons);
@@ -1428,8 +1503,11 @@ function trackRow(album, track, idx, rerender) {
     <button class="tp" title="この曲を再生">▶</button>
     <span class="no">${String(idx + 1).padStart(2, '0')}</span>
     <span class="name">${track.name}</span>
+    <span class="tag-badges"></span>
     <button class="stamp-slot" title="この曲にスタンプ">＋</button>`;
 
+  const badges = row.querySelector('.tag-badges');
+  paintTagBadges(badges, key);
   const slot = row.querySelector('.stamp-slot');
   const paintSlot = () => {
     const id = stampsAt(key)[0];
@@ -1446,7 +1524,9 @@ function trackRow(album, track, idx, rerender) {
     playSingle({ title: track.name, artist: album.artist, preview: track.preview, youtube: null, art: artUrl(e, 100, album), album });
   });
   slot.addEventListener('click', () => {
-    openStampPicker(key, track.name, (id) => { toggleStampAt(key, id); paintSlot(); rerender(); });
+    openStampPicker(key, track.name,
+      (id) => { toggleStampAt(key, id); paintSlot(); rerender(); },
+      () => paintTagBadges(badges, key));
   });
   return row;
 }
