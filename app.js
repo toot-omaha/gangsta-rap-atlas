@@ -208,6 +208,18 @@ async function loadTagScores() {
     const res = await fetch(`${SB_URL}/tag_scores?select=target_key,tag_id,net`, { headers: SB_HEADERS });
     if (!res.ok) return;
     (await res.json()).forEach((r) => { (TAG_SCORES[r.target_key] ||= {})[r.tag_id] = r.net; });
+    // 過去にサーバーへ送れていなかった投票(tag_votesテーブル未作成の間に
+    // 押した分など)を送り直す。UPSERTなので同じ値を何度再送しても
+    // 二重集計にはならず安全。
+    Object.entries(myTagVotes).forEach(([key, votes]) => {
+      Object.entries(votes).forEach(([tagId, value]) => {
+        fetch(`${SB_URL}/tag_votes`, {
+          method: 'POST',
+          headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
+          body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, tag_id: tagId, value }),
+        }).catch(() => {});
+      });
+    });
     refreshMarkers();
     buildFilterBar();
     buildTagBar();
