@@ -1565,13 +1565,14 @@ function renderFavs(push = true) {
   const [wantGrid, haveGrid, stampedGrid] = listEl.querySelectorAll('.fav-section .grid');
   const fillGrid = (grid, items, empty, favSet) => {
     if (!items.length) { grid.innerHTML = `<p style="font-size:12px">${empty}</p>`; return; }
-    let lastArtist = null;
+    let lastGroup = null;
     sortFavItems(items, favSet).forEach(({ a, r }) => {
-      if (favSort === 'artist' && a.artist !== lastArtist) {
-        lastArtist = a.artist;
+      const groupLabel = favSort === 'artist' ? a.artist : favSort === 'region' ? r.name : null;
+      if (groupLabel != null && groupLabel !== lastGroup) {
+        lastGroup = groupLabel;
         const h = document.createElement('h4');
-        h.className = 'fav-artist-heading';
-        h.textContent = a.artist;
+        h.className = 'fav-group-heading';
+        h.textContent = groupLabel;
         grid.appendChild(h);
       }
       const c = albumCard(a, true); // お気に入り画面は自分だけの空間: 自分のスタンプだけ出す

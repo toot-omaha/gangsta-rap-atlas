@@ -523,12 +523,12 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   font: inherit; font-size: 12px; border: 2px solid var(--ink);
   background: var(--paper); color: var(--ink); padding: 3px 6px;
 }
-.fav-artist-heading {
+.fav-group-heading {
   margin: 14px 0 4px; font-size: 12px; font-weight: 900; letter-spacing: .04em;
   color: var(--ink-2); border-bottom: 1px solid var(--dot); padding-bottom: 3px;
   break-inside: avoid;
 }
-.grid > .fav-artist-heading:first-child { margin-top: 0; }
+.grid > .fav-group-heading:first-child { margin-top: 0; }
 
 .top-actions {
   display: flex; align-items: center; gap: 8px;
