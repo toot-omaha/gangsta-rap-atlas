@@ -114,25 +114,27 @@ async function loadSharedStamps() {
   } catch { /* オフラインでもローカルだけで動く */ }
 }
 
-// このクライアントが(key, id)の組み合わせに一度でも加点したかの記録。
-// サーバー側はunique制約で同じclient_idからの重複INSERTを弾いてくれるが、
-// クライアント側のSHARED表示はそのガードが無いと、スタンプを押し直す
-// (A→B→Aと切り替える)たびに毎回+1されてしまい、実際より多く見える
-// 「点数稼ぎ」ができてしまっていた。localStorageに残すのはページ内の
-// 切り替えだけでなく別セッションでも二重加点しないようにするため。
-const BUMPED_KEY = 'gra.bumped.v1';
-const bumped = new Set(JSON.parse(localStorage.getItem(BUMPED_KEY) || '[]'));
+// サーバー側は(client_id, target_key)ごとに1行だけを持ち、stamp_idは
+// UPSERTで上書きする(スタンプの切り替え=前の分の自動退場)。
+// このクライアントが最後にサーバーへ記録した値をローカルに覚えておき、
+// 同じ値を再送してもクライアント側の表示だけ余計に加点しないようにする
+// (以前はA→B→Aと切り替えるたびに毎回+1され、点数を稼げてしまっていた)。
+const SERVER_STAMP_KEY = 'gra.serverstamp.v1';
+const myServerStamp = JSON.parse(localStorage.getItem(SERVER_STAMP_KEY) || '{}'); // { key: stampId }
+const saveServerStamp = () => localStorage.setItem(SERVER_STAMP_KEY, JSON.stringify(myServerStamp));
+
 function bumpShared(key, id) {
-  const ledgerKey = `${key}::${id}`;
-  if (bumped.has(ledgerKey)) return; // このクライアントは既にこの組み合わせへ1票入れ済み
-  bumped.add(ledgerKey);
-  localStorage.setItem(BUMPED_KEY, JSON.stringify([...bumped]));
+  const prev = myServerStamp[key];
+  if (prev === id) return; // サーバーには既にこの値を記録済み
+  if (prev && SHARED[key]?.[prev]) SHARED[key][prev] = Math.max(0, SHARED[key][prev] - 1);
   (SHARED[key] ||= {})[id] = (SHARED[key]?.[id] || 0) + 1;
-  // 素のINSERT。重複はunique制約が409で弾くので無視する
+  myServerStamp[key] = id;
+  saveServerStamp();
+  // UPSERT: (client_id, target_key)が既にあれば上書き、無ければ新規作成
   // (on_conflict方式はSELECT権限が必要になり、生データ公開につながるため使わない)
   fetch(`${SB_URL}/stamps`, {
     method: 'POST',
-    headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+    headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
     body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, stamp_id: id }),
   }).catch(() => {});
 }
