@@ -22,6 +22,14 @@ const STAMPS = [
   { id: 'through', label: 'スルーした', en: 'skipped',  color: '#6b6b6b' },
 ];
 
+// サウンド上の特徴タグ(年代フィルターと同じ「別プロパティで絞り込み」方式)。
+// 各アルバムの tags: ['talkbox', 'sample'] に入る。Discogsのクレジット/notes欄
+// から機械的に判定できたものと、投稿フォーム経由でユーザー申告されたものが混在する。
+const TAGS = [
+  { id: 'talkbox', label: 'トークボックス', en: 'talkbox' },
+  { id: 'sample',  label: 'ネタモノ',      en: 'sample-based' },
+];
+
 // 地域(出身地)が特定できなかった収集物の置き場。
 // 西海岸から少し離した太平洋上に浮かべ、「まだ漂着していない情報」として見せる。
 // scripts/collect_grap.py が地域を解決できなかった候補はここに集約する想定。

@@ -59,6 +59,7 @@ body::before {
 /* 年代フィルター(デスクトップ: ヘッダー内で右寄せ表示。
    モバイルのドロワー内ではブロック要素が全幅になるためmargin-left:autoは効かず無害) */
 .era-filter { display: flex; gap: 10px; align-items: center; padding: 0 10px; flex: 0 0 auto; margin-left: auto; }
+.tag-filter { display: flex; gap: 10px; align-items: center; padding: 0 10px; flex: 0 0 auto; }
 .era-chk {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 10px; font-weight: 900; letter-spacing: .06em;
@@ -401,6 +402,12 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .submit-form .send { align-self: flex-start; font-size: 13px; padding: 8px 22px; }
 .submit-form .form-msg { margin: 0; font-size: 12px; font-weight: 800; color: var(--red); min-height: 1em; }
 .submit-form .form-note { margin: 0; font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--red); }
+.fTags { display: flex; gap: 14px; }
+.fTag {
+  display: flex !important; flex-direction: row !important; align-items: center; gap: 6px;
+  font-size: 12px; letter-spacing: .04em; color: var(--ink); cursor: pointer;
+}
+.fTag input { accent-color: var(--ink); margin: 0; cursor: pointer; }
 .album-art.has-img { background: none; }
 .album-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92) contrast(1.04); }
 .album-info { flex: 1; min-width: 0; }
@@ -598,6 +605,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   body.stamps-open .drawer { display: block; }
   /* 年代フィルターはドロワー最上段のセクションにする */
   .drawer .era-filter { border-bottom: 2px solid var(--ink); padding: 10px; gap: 8px 12px; flex-wrap: wrap; margin-left: 0; }
+  .drawer .tag-filter { border-bottom: 2px solid var(--ink); padding: 10px; gap: 8px 12px; flex-wrap: wrap; }
   .drawer .era-chk { font-size: 12px; }
   .drawer .stamp-filter { padding: 10px; gap: 6px; overflow: visible; }
   .drawer-actions {

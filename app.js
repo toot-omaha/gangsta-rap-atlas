@@ -504,8 +504,16 @@ if (eraFilters.has('y2010s') && !eraFilters.has('y2020s')) eraFilters.add('y2020
 const saveEras = () => localStorage.setItem(ERA_KEY, JSON.stringify([...eraFilters]));
 const eraOf = (a) => (a.year <= 1999 ? 'pre2000' : a.year <= 2009 ? 'y2000s' : a.year <= 2019 ? 'y2010s' : 'y2020s');
 
+// ---------- サウンドタグ絞り込み(トークボックス/ネタモノ) ----------
+// 年代とは違い「該当する曲だけ探したい」がユースケースなので、デフォルトは
+// 全部OFF(絞り込み無し)。チェックしたタグのどれかを持つディスクだけ表示する。
+const TAG_KEY = 'gra.tagFilters.v1';
+const tagFilters = new Set(JSON.parse(localStorage.getItem(TAG_KEY) || '[]'));
+const saveTagFilters = () => localStorage.setItem(TAG_KEY, JSON.stringify([...tagFilters]));
+const matchesTagFilter = (a) => !tagFilters.size || (a.tags || []).some((tg) => tagFilters.has(tg));
+
 const albumsOf = (r) => {
-  let list = r.albums.filter((a) => eraFilters.has(eraOf(a)));
+  let list = r.albums.filter((a) => eraFilters.has(eraOf(a)) && matchesTagFilter(a));
   if (activeFilters.size) list = list.filter((a) => [...activeFilters].every((f) => hasStamp(a, f)));
   return list;
 };
@@ -629,6 +637,28 @@ function buildEraBar() {
 }
 buildEraBar();
 
+// ---------- サウンドタグ絞り込みUI ----------
+const tagBar = document.getElementById('tagFilter');
+function buildTagBar() {
+  if (!tagBar) return;
+  tagBar.innerHTML = '';
+  TAGS.forEach((tg) => {
+    const label = document.createElement('label');
+    label.className = 'era-chk' + (tagFilters.has(tg.id) ? ' on' : '');
+    label.innerHTML = `<input type="checkbox"${tagFilters.has(tg.id) ? ' checked' : ''}><span>${tg.label}</span>`;
+    label.querySelector('input').addEventListener('change', (ev) => {
+      if (ev.target.checked) tagFilters.add(tg.id); else tagFilters.delete(tg.id);
+      label.classList.toggle('on', ev.target.checked);
+      saveTagFilters();
+      refreshMarkers();
+      if (activeRegion) renderList(activeRegion);
+      if (searchOverlay.classList.contains('open')) runSearch(searchInput.value);
+    });
+    tagBar.appendChild(label);
+  });
+}
+buildTagBar();
+
 // ---------- 検索 ----------
 const searchOverlay = document.getElementById('searchOverlay');
 const searchInput = document.getElementById('searchInput');
@@ -665,7 +695,7 @@ function runSearch(q) {
   const hits = [];
   REGIONS.forEach((r) => {
     r.albums.forEach((a) => {
-      if (!eraFilters.has(eraOf(a))) return; // 年代フィルターは検索にも適用
+      if (!eraFilters.has(eraOf(a)) || !matchesTagFilter(a)) return; // 年代・タグの絞り込みは検索にも適用
       if (norm(a.artist).includes(nq) || norm(a.title).includes(nq)) hits.push({ a, r });
     });
   });
@@ -1762,6 +1792,9 @@ function renderSubmit(push = true) {
       <label>${t('fArtistOpt')}<input name="artist" maxlength="120"></label>
       <label>${t('fTitleOpt')}<input name="title" maxlength="200"></label>
       <label>${t('fComment')}<textarea name="comment" maxlength="1000" rows="4"></textarea></label>
+      <div class="fTags">
+        ${TAGS.map((tg) => `<label class="fTag"><input type="checkbox" name="tags" value="${tg.id}"><span>${tg.label}</span></label>`).join('')}
+      </div>
       <p class="form-note">${t('noPii')}</p>
       <button type="submit" class="tr-toggle send">${t('send')}</button>
       <p class="form-msg"></p>
@@ -1779,15 +1812,24 @@ function renderSubmit(push = true) {
       title: (f.get('title') || '').trim() || null,
       comment: (f.get('comment') || '').trim() || null,
     };
+    const tags = f.getAll('tags');
     if (!body.url) { msg.textContent = t('needFields'); return; }
     msg.textContent = t('sending');
     form.querySelector('.send').disabled = true;
     try {
-      const res = await fetch(`${SB_URL}/submissions`, {
+      let res = await fetch(`${SB_URL}/submissions`, {
         method: 'POST',
         headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ ...body, tags }),
       });
+      if (!res.ok) {
+        // tags列のマイグレーション未実施のDBへのフォールバック
+        res = await fetch(`${SB_URL}/submissions`, {
+          method: 'POST',
+          headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+          body: JSON.stringify(body),
+        });
+      }
       if (!res.ok) throw new Error(res.status);
       form.reset();
       msg.textContent = t('sent');
