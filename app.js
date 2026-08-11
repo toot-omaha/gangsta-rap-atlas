@@ -803,11 +803,15 @@ function openStampPicker(key, title, onPick, onTagChange) {
     label.className = 'stamp-tag-chk' + (hasMyTag(key, tg.id) ? ' on' : '');
     label.innerHTML = `<input type="checkbox"${hasMyTag(key, tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span>`;
     label.querySelector('input').addEventListener('change', () => {
+      // このポップアップは常にディスク詳細ページ(曲行/ディスク直押し)から開く。
+      // renderList(activeRegion)を呼ぶと裏の#listがディスク詳細から地域の
+      // アルバム一覧に差し替わってしまう(ポップアップを閉じると一覧に
+      // 飛んだように見えるバグだった)ので、ここでは呼ばない。
+      // ローカルの見た目更新はonTagChange(バッジ再描画)だけで十分。
       toggleTagAt(key, tg.id);
       label.classList.toggle('on', hasMyTag(key, tg.id));
       onTagChange?.();
-      refreshMarkers();
-      if (activeRegion) renderList(activeRegion);
+      refreshMarkers(); // 絞り込みの該当件数が変わるので地図側だけは更新する
     });
     stampOverlayTags.appendChild(label);
   });
