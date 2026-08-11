@@ -107,6 +107,10 @@ async function loadSharedStamps() {
       ids.forEach((id) => { if (!SHARED[key]?.[id]) bumpShared(key, id); }));
     refreshMarkers();
     if (activeRegion) renderList(activeRegion);
+    // 絞り込みパネルの件数(globalStampCount/globalTagCount)はSHARED依存なので、
+    // 読み込み完了後に作り直さないと0のまま表示され続けてしまう
+    buildFilterBar();
+    buildTagBar();
   } catch { /* オフラインでもローカルだけで動く */ }
 }
 
