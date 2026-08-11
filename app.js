@@ -597,6 +597,11 @@ let selectedRegionId = null;
 // 同じ検索結果へ自動で戻す(アーティストの他のアルバムを続けて確認しやすくする)。
 // マーカークリック等ふつうの地域遷移ではopenRegion()内で毎回nullに戻す。
 let searchReturnQuery = null;
+// お気に入り画面から開いたディスク(および、そこから「他のアルバム」で
+// 続けて開いた別ディスク)かどうか。trueの間は「他のアルバム」ジャンプでも
+// 地域一覧を経由させず、戻り先をお気に入り画面のまま維持する。
+// openRegion()を通る通常の地域遷移では毎回falseに戻る。
+let favsDiscChain = false;
 
 // ---------- 年代フィルター ----------
 // 3区分のチェックボックス(デフォルト全ON)。外した年代のディスクは
@@ -999,6 +1004,7 @@ window.addEventListener('popstate', (e) => {
 function openRegion(region, push = true) {
   document.body.classList.remove('stamps-open'); // 墓石アイコンの絞り込みパネルを開いたままだったら閉じる
   searchReturnQuery = null; // ふつうの地域遷移(マーカークリック等)では検索への戻り先を引きずらない
+  favsDiscChain = false; // 同上、お気に入りへの戻り先も引きずらない
   activeRegion = region;
   selectedRegionId = region.id; // 次に別の地域を選ぶまで赤表示を維持
   shotRegions.add(region.id);
@@ -1212,6 +1218,10 @@ function albumCard(album, mineOnly = false) {
   card.addEventListener('click', (ev) => {
     if (ev.target.closest('button, a')) return;
     saveListScrollBeforeDisc();
+    // お気に入り発(mineOnly)かどうかを覚えておく。ディスクページの
+    // 「他のアルバム」から別ディスクへ飛んだ時も、戻り先をお気に入りの
+    // ままにするために使う(favsDiscChain参照)
+    favsDiscChain = mineOnly;
     renderDisc(album);
   });
 
@@ -1354,7 +1364,10 @@ function renderDisc(album, push = true) {
       row.className = 'other-album-row';
       row.innerHTML = `<span class="t">${other.title}</span><span class="y">${other.year}</span><span class="rgn">${otherRegion.name}</span>`;
       row.addEventListener('click', () => {
-        if (otherRegion === activeRegion) {
+        if (favsDiscChain) {
+          // お気に入りから来た流れ: 地域一覧を経由させず、戻り先はお気に入りのまま
+          renderDisc(other, true);
+        } else if (otherRegion === activeRegion) {
           renderDisc(other, true);
         } else {
           openRegion(otherRegion, true);
@@ -2076,6 +2089,7 @@ document.querySelector('.player-now').addEventListener('click', () => {
   // 着弾演出のためdetailクラスの付与を450ms遅らせるが、ここではその場で
   // ディスク詳細まで一気に開くので、演出を待たず即座に付け直す
   // (待ってしまうとその間タップしても反応しないように見えるバグになる)。
+  favsDiscChain = false; // 再生バーからの直接ジャンプはお気に入りの続きではない
   if (navLevel === 0) {
     const region = REGIONS.find((r) => r.albums.includes(album));
     if (region) openRegion(region, true);
