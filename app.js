@@ -14,6 +14,7 @@ const I18N = {
     importOk: (n) => `${n}件反映シタ`, importNone: '一致スルディスクガナカッタ',
     favEmpty: 'まだ空。ディスクの☆を押して集めよう。',
     stampedEmpty: 'まだ空。曲にスタンプを押すとここに並ぶ。',
+    sortBy: '並び順', sortAdded: '追加順', sortRegion: '地域ごと', sortArtist: 'アーティスト順',
     noMatch: 'この絞り込みに合うリリースはありません。',
     rarity: '発掘度',
     notOn: 'NOT ON<br>STREAMING<br>─ 激レア ─',
@@ -50,6 +51,7 @@ const I18N = {
     importOk: (n) => `${n} matched and applied`, importNone: 'No matching discs found',
     favEmpty: 'Empty. Hit ☆ on a disc to collect.',
     stampedEmpty: 'Empty. Stamp a track to see it here.',
+    sortBy: 'Sort', sortAdded: 'Date added', sortRegion: 'By region', sortArtist: 'By artist',
     noMatch: 'No releases match this filter.',
     rarity: 'DIG LEVEL',
     notOn: 'NOT ON<br>STREAMING<br>─ RARE ─',
@@ -1163,7 +1165,18 @@ const artUrl = (e, size, album) => {
   return album?.discogsArt || null;
 };
 
-function albumCard(album) {
+// このディスクの曲/ディスク本体のどのキーであれ、自分が押したスタンプのidを集める
+function myStampIdsForAlbum(album) {
+  const ids = new Set();
+  stampsAt(albumKey(album)).forEach((id) => ids.add(id));
+  (enrichOf(album)?.tracks || []).forEach((tr) => stampsAt(trackKey(album, tr.name)).forEach((id) => ids.add(id)));
+  youtubeIdsFor(album).forEach((vid) => stampsAt(trackKey(album, `yt:${vid}`)).forEach((id) => ids.add(id)));
+  return ids;
+}
+
+// mineOnly: お気に入り画面など「自分だけの空間」では、みんなの集計ではなく
+// 自分が押したスタンプだけを表示する
+function albumCard(album, mineOnly = false) {
   const card = document.createElement('div');
   card.className = 'album';
   const r = rarity(album);
@@ -1201,13 +1214,25 @@ function albumCard(album) {
     </div>
     <div class="album-stamps"></div>`;
 
-  const rerender = () => { card.replaceWith(albumCard(album)); refreshMarkers(); };
+  const rerender = () => { card.replaceWith(albumCard(album, mineOnly)); refreshMarkers(); };
 
-  // ディスクのスタンプ = 曲スタンプ+分析初期値の集計(表示のみ。押すのは専用ページで)
   const wrap = card.querySelector('.album-stamps');
-  STAMPS.filter((s) => stampCount(album, s.id) > 0)
-    .sort((a, b) => stampCount(album, b.id) - stampCount(album, a.id))
-    .forEach((s) => wrap.appendChild(discChip(album, s)));
+  if (mineOnly) {
+    // 自分が押したものだけ(件数はみんなの集計なので出さない)
+    const mine = myStampIdsForAlbum(album);
+    STAMPS.filter((s) => mine.has(s.id)).forEach((s) => {
+      const b = document.createElement('span');
+      b.className = 'stamp mine';
+      b.style.color = s.color;
+      b.innerHTML = `<span>${stampName(s)}</span>`;
+      wrap.appendChild(b);
+    });
+  } else {
+    // ディスクのスタンプ = 曲スタンプ+分析初期値の集計(表示のみ。押すのは専用ページで)
+    STAMPS.filter((s) => stampCount(album, s.id) > 0)
+      .sort((a, b) => stampCount(album, b.id) - stampCount(album, a.id))
+      .forEach((s) => wrap.appendChild(discChip(album, s)));
+  }
 
   // カードのどこを押してもディスク専用ページへ(ボタン類は除く)
   card.addEventListener('click', (ev) => {
@@ -1431,6 +1456,19 @@ function youtubeTrackRow(album, vid, rerender) {
 
 // ---------- お気に入りリスト表示(ホシイ/持ッテル/自分のスタンプ をタブ切替) ----------
 let favTab = 'have'; // 縦に全部並べると件数が多い人ほど画面が伸びすぎるためタブ化
+let favSort = 'added'; // 'added' | 'region' | 'artist'
+// items: [{a, r}], favSet: 対応するSet(favsHave/favsWant/stampedAlbumKeys)。
+// Setの反復順は挿入順そのものなので「追加順」はここから素直に取れる。
+function sortFavItems(items, favSet) {
+  if (favSort === 'region') {
+    return items.slice().sort((x, y) => x.r.name.localeCompare(y.r.name) || x.a.artist.localeCompare(y.a.artist));
+  }
+  if (favSort === 'artist') {
+    return items.slice().sort((x, y) => x.a.artist.localeCompare(y.a.artist) || x.a.year - y.a.year);
+  }
+  const order = [...favSet];
+  return items.slice().sort((x, y) => order.indexOf(albumKey(x.a)) - order.indexOf(albumKey(y.a)));
+}
 function allKnownAlbums() {
   const out = [];
   REGIONS.forEach((r) => r.albums.forEach((a) => out.push({ a, r })));
@@ -1500,6 +1538,13 @@ function renderFavs(push = true) {
       <button class="fav-tab${favTab === 'have' ? ' on' : ''}" data-tab="have">${t('have')} <span class="cnt">${haveItems.length}</span></button>
       <button class="fav-tab${favTab === 'stamped' ? ' on' : ''}" data-tab="stamped">${t('stamp')} <span class="cnt">${stampedItems.length}</span></button>
     </div>
+    <label class="fav-sort">${t('sortBy')}
+      <select id="favSortSelect">
+        <option value="added"${favSort === 'added' ? ' selected' : ''}>${t('sortAdded')}</option>
+        <option value="region"${favSort === 'region' ? ' selected' : ''}>${t('sortRegion')}</option>
+        <option value="artist"${favSort === 'artist' ? ' selected' : ''}>${t('sortArtist')}</option>
+      </select>
+    </label>
     ${section('want', t('wantSection'), wantItems)}
     ${section('have', t('haveSection'), haveItems)}
     ${section('stamped', t('stampedSection'), stampedItems)}`;
@@ -1511,6 +1556,10 @@ function renderFavs(push = true) {
       listEl.querySelectorAll('.fav-tab').forEach((b) => b.classList.toggle('on', b === btn));
       listEl.querySelectorAll('.fav-section').forEach((sec) => { sec.hidden = sec.dataset.tab !== favTab; });
     });
+  });
+  listEl.querySelector('#favSortSelect').addEventListener('change', (ev) => {
+    favSort = ev.target.value;
+    renderFavs(false);
   });
 
   const $sname = listEl.querySelector('#streetNameVal');
@@ -1540,17 +1589,25 @@ function renderFavs(push = true) {
 
   // セクションの表示順は ホシイ→持ッテル→自分のスタンプ(DOM上の1つ目がwant)
   const [wantGrid, haveGrid, stampedGrid] = listEl.querySelectorAll('.fav-section .grid');
-  const fillGrid = (grid, items, empty) => {
+  const fillGrid = (grid, items, empty, favSet) => {
     if (!items.length) { grid.innerHTML = `<p style="font-size:12px">${empty}</p>`; return; }
-    items.forEach(({ a, r }) => {
-      const c = albumCard(a);
+    let lastArtist = null;
+    sortFavItems(items, favSet).forEach(({ a, r }) => {
+      if (favSort === 'artist' && a.artist !== lastArtist) {
+        lastArtist = a.artist;
+        const h = document.createElement('h4');
+        h.className = 'fav-artist-heading';
+        h.textContent = a.artist;
+        grid.appendChild(h);
+      }
+      const c = albumCard(a, true); // お気に入り画面は自分だけの空間: 自分のスタンプだけ出す
       c.querySelector('.album-info .m').insertAdjacentHTML('beforeend', ` / <b>${r.name}</b>`);
       grid.appendChild(c);
     });
   };
-  fillGrid(haveGrid, haveItems, t('favEmpty'));
-  fillGrid(wantGrid, wantItems, t('favEmpty'));
-  fillGrid(stampedGrid, stampedItems, t('stampedEmpty'));
+  fillGrid(haveGrid, haveItems, t('favEmpty'), favsHave);
+  fillGrid(wantGrid, wantItems, t('favEmpty'), favsWant);
+  fillGrid(stampedGrid, stampedItems, t('stampedEmpty'), stampedAlbumKeys);
 
   listEl.querySelector('#favExport').addEventListener('click', exportFavsCsv);
   const fileInput = listEl.querySelector('#favImportFile');
@@ -1573,7 +1630,15 @@ document.getElementById('brandHome').addEventListener('click', () => {
   history.replaceState(null, '', location.pathname + location.search);
   location.reload();
 });
-document.getElementById('favBtn').addEventListener('click', renderFavs);
+document.getElementById('favBtn').addEventListener('click', () => {
+  // 開いてる状態でもう一度押したら閉じる(トグル)
+  if (listView === 'favs' && document.body.classList.contains('detail')) {
+    navBack();
+    return;
+  }
+  document.body.classList.remove('stamps-open'); // 墓石アイコンのドロワーと同時に開かせない
+  renderFavs();
+});
 updateFavCount();
 
 // ---------- CSV エクスポート/インポート(ブラウザ内完結・サーバー送信なし) ----------
@@ -1645,8 +1710,12 @@ function importFavsCsv(text) {
   return matched;
 }
 
-// 墓石メニュー(狭い画面): スタンプ絞り込みの開閉
+// 墓石メニュー: 絞り込みドロワーの開閉。お気に入り画面と同時には開かせない
 document.getElementById('stampMenuBtn').addEventListener('click', () => {
+  const opening = !document.body.classList.contains('stamps-open');
+  if (opening && listView === 'favs' && document.body.classList.contains('detail')) {
+    navBack();
+  }
   document.body.classList.toggle('stamps-open');
 });
 

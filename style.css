@@ -110,6 +110,7 @@ body.stamps-open .drawer { display: block; }
 .stamp.on span:not(.count) { color: var(--paper); }
 .stamp.on .count { color: var(--paper); opacity: .9; }
 .stamp.mine { box-shadow: 3px 3px 0 rgba(20,18,15,.35); }
+span.stamp.mine { cursor: default; }
 
 /* ---------- ステージ ---------- */
 #stage { position: fixed; inset: 58px 0 74px 0; z-index: 1; }
@@ -514,6 +515,20 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .fav-tab.on { background: var(--paper); color: var(--ink); transform: translateY(0); }
 .fav-tab:hover { color: var(--ink); }
 .fav-section[data-tab] { margin-top: 14px; }
+.fav-sort {
+  display: flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-size: 11px; font-weight: 800; letter-spacing: .04em; color: var(--ink-2);
+}
+.fav-sort select {
+  font: inherit; font-size: 12px; border: 2px solid var(--ink);
+  background: var(--paper); color: var(--ink); padding: 3px 6px;
+}
+.fav-artist-heading {
+  margin: 14px 0 4px; font-size: 12px; font-weight: 900; letter-spacing: .04em;
+  color: var(--ink-2); border-bottom: 1px solid var(--dot); padding-bottom: 3px;
+  break-inside: avoid;
+}
+.grid > .fav-artist-heading:first-child { margin-top: 0; }
 
 .top-actions {
   display: flex; align-items: center; gap: 8px;
