@@ -707,48 +707,22 @@ function refreshMarkers() {
 
 // ---------- スタンプ絞り込み ----------
 const filterBar = document.getElementById('stampFilter');
-// 絞り込みパネルに出す全体件数(このスタンプ/このタグを持つ曲の合計)。
+// 絞り込みパネルに出す全体件数。地図側(albumsOf/refreshMarkers)は
+// 「該当ディスクの枚数」で数えているので、ここも曲単位(track)ではなく
+// ディスク単位で数える(以前はtrack単位で数えていたため、パネルの数字と
+// 地図に表示される件数が一致しないバグになっていた)。
+// 判定はalbumsOfが使っているmatchesTagFilter/hasStampをそのまま再利用し、
+// 両者が食い違わないようにする。
 // 開閉のたびではなく初期表示・言語切替時だけ計算すれば十分な頻度なので、
 // 4800枚超を毎回舐めても実用上のコストにはならない。
-// 曲単位(album.tracks/YouTube代替/曲データ無しならディスク本体)のkeyを列挙する。
-// stampCount/albumHasTag内部の集計ロジックと合わせてある。
-function albumKeys(album) {
-  const tracks = enrichOf(album)?.tracks || [];
-  const ytIds = youtubeIdsFor(album);
-  if (!tracks.length && !ytIds.length) return [albumKey(album)];
-  return [
-    ...tracks.map((tr) => trackKey(album, tr.name)),
-    ...ytIds.map((vid) => trackKey(album, `yt:${vid}`)),
-  ];
-}
-// スタンプとタグは双方向に絞り込みが連動する: スタンプ側のパネルでは
-// 現在選択中のタグ(tagFilters)に該当する曲だけを数え、タグ側のパネルでは
-// 現在選択中のスタンプ(activeFilters)に該当する曲だけを数える。
-// 年代フィルターの範囲外はどちらも対象外。
-const globalStampCount = (id) => {
-  let n = 0;
-  allKnownAlbums().forEach(({ a }) => {
-    if (!eraFilters.has(eraOf(a))) return;
-    albumKeys(a).forEach((key) => {
-      if ((SHARED[key]?.[id] || 0) <= 0) return;
-      if (tagFilters.size && ![...tagFilters].some((t) => netTagScore(key, t) > 0)) return;
-      n++;
-    });
-  });
-  return n;
-};
-const globalTagCount = (id) => {
-  let n = 0;
-  allKnownAlbums().forEach(({ a }) => {
-    if (!eraFilters.has(eraOf(a))) return;
-    albumKeys(a).forEach((key) => {
-      if (netTagScore(key, id) <= 0) return;
-      if (activeFilters.size && ![...activeFilters].every((s) => (SHARED[key]?.[s] || 0) > 0)) return;
-      n++;
-    });
-  });
-  return n;
-};
+const globalStampCount = (id) => allKnownAlbums()
+  .reduce((n, { a }) => n + (eraFilters.has(eraOf(a)) && matchesTagFilter(a) && hasStamp(a, id) ? 1 : 0), 0);
+const globalTagCount = (id) => allKnownAlbums()
+  .reduce((n, { a }) => n + (
+    eraFilters.has(eraOf(a)) && albumHasTag(a, id)
+    && (!activeFilters.size || [...activeFilters].every((s) => hasStamp(a, s)))
+      ? 1 : 0
+  ), 0);
 
 function buildFilterBar() {
   filterBar.innerHTML = '';
