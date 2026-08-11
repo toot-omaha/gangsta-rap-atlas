@@ -524,8 +524,8 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   background: var(--paper); color: var(--ink); padding: 3px 6px;
 }
 .fav-group-heading {
-  margin: 14px 0 4px; font-size: 12px; font-weight: 900; letter-spacing: .04em;
-  color: var(--ink-2); border-bottom: 1px solid var(--dot); padding-bottom: 3px;
+  margin: 16px 0 6px; font-size: 14px; font-weight: 900; letter-spacing: .04em;
+  color: var(--ink); border-bottom: 1px solid var(--dot); padding-bottom: 4px;
   break-inside: avoid;
 }
 .grid > .fav-group-heading:first-child { margin-top: 0; }
