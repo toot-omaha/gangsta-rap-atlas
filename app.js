@@ -19,7 +19,7 @@ const I18N = {
     notOn: 'NOT ON<br>STREAMING<br>─ 激レア ─',
     queueAll: '＋ キューニ追加',
     qEmptyT: '再生キューハ空', qEmptyA: 'アルバムノ ▶ ヲ押ストキューニ入ル',
-    preview: '30秒試聴', noAudio: '試聴音源ナシ(激レア)',
+    noAudio: '試聴音源ナシ(激レア)',
     clear: 'クリア', credit: '試聴・ジャケ写: Apple Music',
     submit: '✚ 投稿', submitTitle: 'タレコミ', submitSub: 'ディスク情報ヲ投稿(承認後ニ掲載)',
     fUrl: 'URL(iTunes/YouTube/Spotifyなど) *', fUrlHint: 'アルバム・曲・動画のリンクを貼るダケでOK。詳細ハこちらで裏取りシマス。',
@@ -55,7 +55,7 @@ const I18N = {
     notOn: 'NOT ON<br>STREAMING<br>─ RARE ─',
     queueAll: '＋ ADD TO QUEUE',
     qEmptyT: 'QUEUE IS EMPTY', qEmptyA: 'Hit ▶ on a disc to queue it',
-    preview: '30s preview', noAudio: 'No preview audio (rare!)',
+    noAudio: 'No preview audio (rare!)',
     clear: 'CLEAR', credit: 'Previews & artwork: Apple Music',
     submit: '✚ SUBMIT', submitTitle: 'DROP A DIME', submitSub: 'Submit a disc (published after review)',
     fUrl: 'URL (iTunes/YouTube/Spotify etc.) *', fUrlHint: 'Just paste a link to the album/track/video — we\'ll look up the details.',
@@ -934,6 +934,7 @@ window.addEventListener('popstate', (e) => {
 });
 
 function openRegion(region, push = true) {
+  document.body.classList.remove('stamps-open'); // 墓石アイコンの絞り込みパネルを開いたままだったら閉じる
   activeRegion = region;
   selectedRegionId = region.id; // 次に別の地域を選ぶまで赤表示を維持
   shotRegions.add(region.id);
@@ -1648,10 +1649,24 @@ function restoreQueue() {
 }
 
 const $title = document.getElementById('playerTitle');
+const $titleInner = $title.querySelector('.scroll-inner');
 const $artist = document.getElementById('playerArtist');
 const $count = document.getElementById('queueCount');
 const $art = document.querySelector('.player-art');
 const $play = document.getElementById('playBtn');
+
+// 曲名が枠に入りきらない時だけ、少し止まってスライドし後半を見せる
+// マーキー演出を有効化する(入りきる曲名では何もしない)
+function updateTitleMarquee() {
+  const overflow = $titleInner.scrollWidth - $title.clientWidth;
+  if (overflow > 4) {
+    $title.style.setProperty('--scroll-dist', `-${overflow + 4}px`);
+    $title.classList.add('marquee');
+  } else {
+    $title.classList.remove('marquee');
+    $title.style.removeProperty('--scroll-dist');
+  }
+}
 
 // 試聴は1曲30秒しかないので曲単位のキュー管理はせず、試聴のある曲だけを
 // 並べたフラットなキューを再生位置(cursor)を軸に組み立てる。
@@ -1826,18 +1841,18 @@ function paint() {
   $play.textContent = (q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶';
   syncMediaSession(q);
   if (!q) {
-    $title.textContent = t('qEmptyT');
+    $titleInner.textContent = t('qEmptyT');
     $artist.textContent = t('qEmptyA');
     $art.innerHTML = '♪';
+    updateTitleMarquee();
     return;
   }
-  $title.textContent = q.title;
-  $artist.textContent = q.preview
-    ? `${q.artist} — ${cursor + 1}/${queue.length} (${t('preview')})`
-    : q.youtube
-      ? `${q.artist} — ${cursor + 1}/${queue.length} (YouTube)`
-      : `${q.artist} — ${t('noAudio')}`;
+  $titleInner.textContent = q.title;
+  $artist.textContent = (q.preview || q.youtube)
+    ? `${q.artist} — ${cursor + 1}/${queue.length}`
+    : `${q.artist} — ${t('noAudio')}`;
   $art.innerHTML = q.art ? `<img src="${q.art}" alt="">` : '♪';
+  updateTitleMarquee();
 }
 
 // キューがまだ残っていればそのまま進む。尽きたら、直前まで再生していた
@@ -1875,6 +1890,18 @@ $play.addEventListener('click', () => {
   } else if (q?.youtube && ytReady) {
     ytIsPlaying() ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
   }
+});
+// 再生バーから直接、今流れてる曲にスタンプを押せるように
+// (曲一覧まで戻らなくてもその場で押せた方が使い勝手が良い)
+document.getElementById('playerStampBtn').addEventListener('click', () => {
+  const q = queue[cursor];
+  if (!q?.album) return;
+  const key = q.youtube ? trackKey(q.album, `yt:${q.youtube}`) : trackKey(q.album, q.title);
+  // 開いているディスク詳細がまさに今流れてるアルバムなら、押した内容をそこにも反映する
+  const rerenderIfOpen = () => { if (currentDisc === q.album) renderDisc(q.album, false); };
+  openStampPicker(key, q.title,
+    (id) => { toggleStampAt(key, id); rerenderIfOpen(); },
+    rerenderIfOpen);
 });
 document.querySelector('.player-now').addEventListener('click', () => {
   const album = queue[cursor]?.album;

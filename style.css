@@ -599,7 +599,19 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .player-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .player-queue .credit { opacity: .6; font-size: 9px; }
 .player-meta { min-width: 0; }
-.player-meta strong { display: block; font-size: 13px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player-meta strong { display: block; font-size: 13px; font-weight: 900; }
+/* 曲名が入りきらない時だけ、少し止まって左へスライドし後半を見せてから
+   戻る動きをループさせる(JS側でオーバーフロー時だけ.marqueeを付与) */
+.player-meta strong.scroll-box { overflow: hidden; white-space: nowrap; }
+.player-meta strong .scroll-inner { display: inline-block; }
+.player-meta strong.marquee .scroll-inner {
+  animation: player-marquee 8s ease-in-out infinite;
+}
+@keyframes player-marquee {
+  0%, 15% { transform: translateX(0); }
+  50%, 65% { transform: translateX(var(--scroll-dist, 0px)); }
+  100% { transform: translateX(0); }
+}
 .player-meta span { display: block; font-size: 10px; letter-spacing: .08em; color: var(--paper-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-controls { display: flex; align-items: center; gap: 8px; }
 .player-queue { display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: .1em; color: var(--paper-2); }
