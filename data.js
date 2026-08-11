@@ -28,7 +28,7 @@ const STAMPS = [
 // abbr は曲一覧でのワンレター表示用。
 const TAGS = [
   { id: 'talkbox', label: 'トークボックス', abbr: 'T', en: 'Talkbox' },
-  { id: 'sample',  label: 'ネタモノ',      abbr: 'S', en: 'Sampling' },
+  { id: 'sample',  label: 'サンプルド',    abbr: 'S', en: 'Sampled' },
 ];
 
 // 地域(出身地)が特定できなかった収集物の置き場。
