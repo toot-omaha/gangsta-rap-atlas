@@ -798,7 +798,7 @@ function openStampPicker(key, title, onPick, onTagChange) {
   TAGS.forEach((tg) => {
     const label = document.createElement('label');
     label.className = 'stamp-tag-chk' + (hasMyTag(key, tg.id) ? ' on' : '');
-    label.innerHTML = `<input type="checkbox"${hasMyTag(key, tg.id) ? ' checked' : ''}><span>${tg.abbr} ${tg.label}</span>`;
+    label.innerHTML = `<input type="checkbox"${hasMyTag(key, tg.id) ? ' checked' : ''}><span>${tg.label}</span>`;
     label.querySelector('input').addEventListener('change', () => {
       toggleTagAt(key, tg.id);
       label.classList.toggle('on', hasMyTag(key, tg.id));
