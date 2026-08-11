@@ -599,7 +599,7 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .player-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .player-queue .credit { opacity: .6; font-size: 9px; }
 .player-meta { min-width: 0; }
-.player-meta strong { display: block; font-size: 13px; font-weight: 900; }
+.player-meta strong { display: block; font-size: 15px; font-weight: 900; }
 /* 曲名が入りきらない時だけ、少し止まって左へスライドし後半を見せてから
    戻る動きをループさせる(JS側でオーバーフロー時だけ.marqueeを付与) */
 .player-meta strong.scroll-box { overflow: hidden; white-space: nowrap; }
