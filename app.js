@@ -173,36 +173,67 @@ function stampCount(album, id) {
 const totalStamps = (a) => STAMPS.reduce((n, s) => n + stampCount(a, s.id), 0);
 const hasStamp = (a, id) => stampCount(a, id) > 0;
 
-// ---------- サウンドタグ(トークボックス/ネタモノ)の個人チェック+共有集計 ----------
-// ムードスタンプと違い1曲に複数チェック可(トークボックスかつネタモノ、もあり得る)。
-// 共有集計はスタンプと同じ stamps テーブル/SHARED を再利用する
-// (client_id + target_key + stamp_id の汎用スキーマなので talkbox/sample という
-// idを積むだけで済み、新しいテーブルは要らない)。
-const TAG_STORE_KEY = 'gra.mytags.v1';
-const myTags = JSON.parse(localStorage.getItem(TAG_STORE_KEY) || '{}'); // { key: [tagId] }
-const saveTags = () => localStorage.setItem(TAG_STORE_KEY, JSON.stringify(myTags));
-const myTagsAt = (key) => myTags[key] || [];
-const hasMyTag = (key, id) => myTagsAt(key).includes(id);
-function toggleTagAt(key, id) {
-  const cur = myTags[key] || (myTags[key] = []);
-  const i = cur.indexOf(id);
-  if (i >= 0) cur.splice(i, 1);
-  else { cur.push(id); bumpShared(key, id); }
-  if (!cur.length) delete myTags[key];
-  saveTags();
+// ---------- サウンドタグ(トークボックス/ネタモノ)の+1/-1投票 ----------
+// ムードスタンプは「印象」なので加算オンリーの集計でよかったが、タグは
+// 「トークボックスかどうか」のような客観的な正解がある情報なので、
+// 間違ったチェックを他の人が後から訂正できるようにネットスコア方式にする。
+// 各ユーザーは1曲/1タグにつき+1(チェック)か-1(訂正で解除)のどちらか1票を
+// 持ち、あとから投票し直せる(スタンプと違い1人1回きりの加算ではない)。
+// 誰も投票していない/自分が未投票の曲は集計(net>0か)を初期値として見せる。
+// 自分が能動的に「違う」と判断して外した場合は、その意思をmyTagVotesに
+// ローカル保存して優先する(集計側が後で正に転じても自分の画面には
+// 引きずられない)。
+//
+// サーバー側はSupabaseの tag_votes テーブル(client_id+target_key+tag_id が
+// 主キーのUPSERT)+ tag_scores ビュー(SUM(value))。タグの種類を
+// テーブル側に決め打ちしていないため、TAGSに新しい種類を増やすだけで
+// このまま使い回せる。
+const TAG_SCORES = {}; // { key: { tagId: net } } サーバー取得値をこのセッション中は投票のたびに直接書き換える(楽観的更新)
+async function loadTagScores() {
+  try {
+    const res = await fetch(`${SB_URL}/tag_scores?select=target_key,tag_id,net`, { headers: SB_HEADERS });
+    if (!res.ok) return;
+    (await res.json()).forEach((r) => { (TAG_SCORES[r.target_key] ||= {})[r.tag_id] = r.net; });
+    refreshMarkers();
+    buildFilterBar();
+    buildTagBar();
+    if (activeRegion) renderList(activeRegion);
+  } catch { /* オフラインでもローカルだけで動く */ }
 }
-// keyそのもの(曲/ディスク単位)での集計。未反映のローカル分(オフライン時)を補完するのはスタンプと同様
-function sharedTagCountAt(key, id) {
-  const n = SHARED[key]?.[id] || 0;
-  return n || (myTagsAt(key).includes(id) ? 1 : 0);
+
+const TAG_VOTES_KEY = 'gra.tagvotes.v1';
+const myTagVotes = JSON.parse(localStorage.getItem(TAG_VOTES_KEY) || '{}'); // { key: { tagId: 1|-1 } }
+const saveTagVotes = () => localStorage.setItem(TAG_VOTES_KEY, JSON.stringify(myTagVotes));
+const myTagVote = (key, id) => myTagVotes[key]?.[id] ?? null;
+const netTagScore = (key, id) => TAG_SCORES[key]?.[id] || 0;
+// このタグのチェックボックスを今どちらで表示すべきか。
+// 自分が投票済みならそれを優先、未投票ならみんなの集計(net>0か)に従う。
+const tagChecked = (key, id) => {
+  const mine = myTagVote(key, id);
+  return mine != null ? mine === 1 : netTagScore(key, id) > 0;
+};
+
+function castTagVote(key, id, value) {
+  const prev = myTagVote(key, id) || 0;
+  if (prev === value) return;
+  (TAG_SCORES[key] ||= {})[id] = (TAG_SCORES[key]?.[id] || 0) + (value - prev);
+  (myTagVotes[key] ||= {})[id] = value;
+  saveTagVotes();
+  fetch(`${SB_URL}/tag_votes`, {
+    method: 'POST',
+    headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, tag_id: id, value }),
+  }).catch(() => {});
 }
-// ディスク全体(曲データがあれば全曲合算)での集計。フィルターの「該当あり」判定に使う
-function tagCount(album, id) {
+
+// ディスク全体(曲データがあれば全曲のいずれか)で、このタグがnet>0で
+// 確定しているか。フィルターの「該当あり」判定に使う(件数の合算ではなく
+// 「1つでも確定曲があるか」の真偽値)。
+function albumHasTag(album, id) {
   const key = albumKey(album);
-  let n = sharedTagCountAt(key, id);
-  (enrichOf(album)?.tracks || []).forEach((tr) => { n += sharedTagCountAt(trackKey(album, tr.name), id); });
-  youtubeIdsFor(album).forEach((vid) => { n += sharedTagCountAt(trackKey(album, `yt:${vid}`), id); });
-  return n;
+  if (netTagScore(key, id) > 0) return true;
+  if ((enrichOf(album)?.tracks || []).some((tr) => netTagScore(trackKey(album, tr.name), id) > 0)) return true;
+  return youtubeIdsFor(album).some((vid) => netTagScore(trackKey(album, `yt:${vid}`), id) > 0);
 }
 
 // 発掘度 — Discogsのコレクション登録数(have)による実測レア度。
@@ -551,7 +582,7 @@ const eraOf = (a) => (a.year <= 1999 ? 'pre2000' : a.year <= 2009 ? 'y2000s' : a
 const TAG_KEY = 'gra.tagFilters.v1';
 const tagFilters = new Set(JSON.parse(localStorage.getItem(TAG_KEY) || '[]'));
 const saveTagFilters = () => localStorage.setItem(TAG_KEY, JSON.stringify([...tagFilters]));
-const matchesTagFilter = (a) => !tagFilters.size || [...tagFilters].some((tg) => tagCount(a, tg) > 0);
+const matchesTagFilter = (a) => !tagFilters.size || [...tagFilters].some((tg) => albumHasTag(a, tg));
 
 const albumsOf = (r) => {
   let list = r.albums.filter((a) => eraFilters.has(eraOf(a)) && matchesTagFilter(a));
@@ -638,7 +669,9 @@ const filterBar = document.getElementById('stampFilter');
 // 開閉のたびではなく初期表示・言語切替時だけ計算すれば十分な頻度なので、
 // 4800枚超を毎回舐めても実用上のコストにはならない。
 const globalStampCount = (id) => allKnownAlbums().reduce((n, { a }) => n + stampCount(a, id), 0);
-const globalTagCount = (id) => allKnownAlbums().reduce((n, { a }) => n + tagCount(a, id), 0);
+// タグは投票の合算ではなく「net>0で確定してるディスク数」を件数として出す
+// (票数を合算すると訂正の-1がキャンセルし合って何を数えてるか分かりにくくなるため)
+const globalTagCount = (id) => allKnownAlbums().reduce((n, { a }) => n + (albumHasTag(a, id) ? 1 : 0), 0);
 
 function buildFilterBar() {
   filterBar.innerHTML = '';
@@ -812,16 +845,16 @@ function openStampPicker(key, title, onPick, onTagChange) {
   stampOverlayTags.innerHTML = '';
   TAGS.forEach((tg) => {
     const label = document.createElement('label');
-    label.className = 'stamp-tag-chk' + (hasMyTag(key, tg.id) ? ' on' : '');
-    label.innerHTML = `<input type="checkbox"${hasMyTag(key, tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span>`;
-    label.querySelector('input').addEventListener('change', () => {
+    label.className = 'stamp-tag-chk' + (tagChecked(key, tg.id) ? ' on' : '');
+    label.innerHTML = `<input type="checkbox"${tagChecked(key, tg.id) ? ' checked' : ''}><span>${tagName(tg)}</span>`;
+    label.querySelector('input').addEventListener('change', (ev) => {
       // このポップアップは常にディスク詳細ページ(曲行/ディスク直押し)から開く。
       // renderList(activeRegion)を呼ぶと裏の#listがディスク詳細から地域の
       // アルバム一覧に差し替わってしまう(ポップアップを閉じると一覧に
       // 飛んだように見えるバグだった)ので、ここでは呼ばない。
       // ローカルの見た目更新はonTagChange(バッジ再描画)だけで十分。
-      toggleTagAt(key, tg.id);
-      label.classList.toggle('on', hasMyTag(key, tg.id));
+      castTagVote(key, tg.id, ev.target.checked ? 1 : -1);
+      label.classList.toggle('on', ev.target.checked);
       onTagChange?.();
       refreshMarkers(); // 絞り込みの該当件数が変わるので地図側だけは更新する
     });
@@ -830,14 +863,14 @@ function openStampPicker(key, title, onPick, onTagChange) {
   stampOverlay.classList.add('open');
   document.body.classList.add('search-open');
 }
-// 曲行/ディスクの「ト」「ネ」ワンレター表示。誰か1人でもチェック済みのタグだけ出す
-// (mineクラスは自分もチェック済みの場合)
+// 曲行/ディスクの「ト」「ネ」ワンレター表示。net>0で確定してるタグだけ出す
+// (mineクラスは自分が+1に投票して確定に貢献している場合)
 function paintTagBadges(el, key) {
   el.innerHTML = '';
   TAGS.forEach((tg) => {
-    if (sharedTagCountAt(key, tg.id) <= 0) return;
+    if (netTagScore(key, tg.id) <= 0) return;
     const b = document.createElement('i');
-    b.className = 'tag-badge' + (hasMyTag(key, tg.id) ? ' mine' : '');
+    b.className = 'tag-badge' + (myTagVote(key, tg.id) === 1 ? ' mine' : '');
     b.textContent = tg.abbr;
     b.title = tagName(tg);
     el.appendChild(b);
@@ -1974,6 +2007,7 @@ document.getElementById('langBtn').addEventListener('click', () => {
 restoreQueue();
 applyLang();
 loadSharedStamps();
+loadTagScores();
 autoPullFavSync();
 
 refreshMarkers();
