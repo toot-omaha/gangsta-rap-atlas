@@ -627,9 +627,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   animation: player-marquee 8s ease-in-out infinite;
 }
 @keyframes player-marquee {
-  0%, 15% { transform: translateX(0); }
-  50%, 65% { transform: translateX(var(--scroll-dist, 0px)); }
-  100% { transform: translateX(0); }
+  0%, 20% { transform: translateX(0); }
+  60%, 85% { transform: translateX(var(--scroll-dist, 0px)); }
+  85.01%, 100% { transform: translateX(0); } /* 右端まで見せたら滑らかに戻さず先頭へ瞬間移動 */
 }
 .player-meta span { display: block; font-size: 10px; letter-spacing: .08em; color: var(--paper-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-controls { display: flex; align-items: center; gap: 8px; }

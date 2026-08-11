@@ -1299,6 +1299,7 @@ function renderDisc(album, push = true) {
       otherList.appendChild(row);
     });
   }
+  listEl.scrollTop = 0; // 地域一覧のスクロール位置を引き継がず、常に先頭からディスク詳細を見せる
 }
 
 // Full Album尺の動画は30秒プレビューにしても意味が無いので、再生ボタンは
