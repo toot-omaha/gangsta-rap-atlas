@@ -557,6 +557,23 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 /* ---------- 収録曲(曲単位スタンプ) ---------- */
 .tracks { margin-top: 8px; border-top: 2px solid var(--ink); padding-top: 6px; }
 .tracks:empty { display: none; }
+
+/* ---------- 同じアーティストの他のアルバム ---------- */
+.other-albums:empty { display: none; }
+.other-albums h3 {
+  margin: 18px 0 8px; font-size: 13px; font-weight: 900; letter-spacing: .04em;
+  border-top: 2px solid var(--ink); padding-top: 12px;
+}
+.other-albums-list { display: flex; flex-direction: column; gap: 2px; }
+.other-album-row {
+  display: flex; align-items: baseline; gap: 10px; width: 100%;
+  border: none; background: transparent; cursor: pointer; text-align: left;
+  padding: 6px 4px; font: inherit; color: var(--ink);
+}
+.other-album-row:hover { background: var(--paper-2); }
+.other-album-row .t { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; font-size: 13px; }
+.other-album-row .y { font-size: 11px; color: var(--ink-2); }
+.other-album-row .rgn { font-size: 11px; color: var(--ink-2); white-space: nowrap; }
 .track { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; }
 .track .tp {
   flex: 0 0 auto; width: 26px; height: 26px; border: 1px solid var(--ink);

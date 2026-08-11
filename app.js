@@ -569,6 +569,11 @@ const shotRegions = new Set(); // 一度クリックした土地は弾痕が残�
 // 直近で開いた地域のid。マーカーを赤く保つ&地図に戻った時の中央寄せに使う。
 // 次に別の地域を選ぶまで維持する(検索経由で開いた場合に特に有効)。
 let selectedRegionId = null;
+// 検索のアルバム結果から開いた時だけセットする「戻り先」の検索語。
+// 地図まで戻った(navLevel 0)瞬間にこれが残っていれば、地図を見せる代わりに
+// 同じ検索結果へ自動で戻す(アーティストの他のアルバムを続けて確認しやすくする)。
+// マーカークリック等ふつうの地域遷移ではopenRegion()内で毎回nullに戻す。
+let searchReturnQuery = null;
 
 // ---------- 年代フィルター ----------
 // 3区分のチェックボックス(デフォルト全ON)。外した年代のディスクは
@@ -815,8 +820,10 @@ function runSearch(q) {
     row.className = 'sr-item';
     row.innerHTML = `<span class="t">${a.title}</span><span class="a">${a.artist}</span><span class="r">${r.name}</span>`;
     row.addEventListener('click', () => {
+      const q = searchInput.value;
       closeSearch();
-      openRegion(r);
+      openRegion(r); // ここでsearchReturnQueryは一旦nullに戻るので、直後に戻り先として設定し直す
+      searchReturnQuery = q;
       setTimeout(() => { saveListScrollBeforeDisc(); renderDisc(a); }, 460);
     });
     searchResults.appendChild(row);
@@ -949,6 +956,7 @@ window.addEventListener('popstate', (e) => {
 
 function openRegion(region, push = true) {
   document.body.classList.remove('stamps-open'); // 墓石アイコンの絞り込みパネルを開いたままだったら閉じる
+  searchReturnQuery = null; // ふつうの地域遷移(マーカークリック等)では検索への戻り先を引きずらない
   activeRegion = region;
   selectedRegionId = region.id; // 次に別の地域を選ぶまで赤表示を維持
   shotRegions.add(region.id);
@@ -970,6 +978,15 @@ function closeListUI() {
     if (region) map.easeTo({ center: [region.lng, region.lat], duration: 500 });
   }
   refreshMarkers();
+  // 検索のアルバム結果から辿り着いていた場合は、地図を見せる代わりに
+  // 同じ検索結果へ自動で戻す(アーティストの他のアルバムを続けて探しやすくする)
+  if (searchReturnQuery != null) {
+    const q = searchReturnQuery;
+    searchReturnQuery = null;
+    openSearch();
+    searchInput.value = q;
+    runSearch(q);
+  }
 }
 function closeList() { navBack(); }
 
@@ -1193,7 +1210,8 @@ function renderDisc(album, push = true) {
         <div class="album-stamps"></div>
       </div>
     </div>
-    <div class="tracks"></div>`;
+    <div class="tracks"></div>
+    <div class="other-albums"></div>`;
 
   // ◀ も ✕ も「元のディスク一覧」へ戻る(地図まで一気に閉じない)。
   // historyを1つ戻すことでpopstateハンドラに実際の描画を任せる
@@ -1252,6 +1270,34 @@ function renderDisc(album, push = true) {
     youtubeIdsFor(album).forEach((vid) => tracksEl.appendChild(youtubeTrackRow(album, vid, rerender)));
     const fullId = fullAlbumIdFor(album);
     if (fullId) tracksEl.appendChild(fullAlbumLinkRow(fullId));
+  }
+
+  // 検索から曲を確認していく時に、いちいち検索へ戻らず同じアーティストの
+  // 他のアルバムも続けて見られるように。ただしジャンプした先を閉じた時も
+  // 必ずその盤の地域一覧を経由させたい(地図起点の体験を薄めないため)ので、
+  // 単にディスクだけ差し替えるのではなく、別地域ならopenRegion()から
+  // やり直して履歴・activeRegionを正しく積み直す。
+  const others = allKnownAlbums()
+    .filter(({ a }) => a.artist === album.artist && a !== album)
+    .sort((x, y) => x.a.year - y.a.year);
+  if (others.length) {
+    const box = listEl.querySelector('.other-albums');
+    box.innerHTML = `<h3>${album.artist} の他のアルバム</h3><div class="other-albums-list"></div>`;
+    const otherList = box.querySelector('.other-albums-list');
+    others.forEach(({ a: other, r: otherRegion }) => {
+      const row = document.createElement('button');
+      row.className = 'other-album-row';
+      row.innerHTML = `<span class="t">${other.title}</span><span class="y">${other.year}</span><span class="rgn">${otherRegion.name}</span>`;
+      row.addEventListener('click', () => {
+        if (otherRegion === activeRegion) {
+          renderDisc(other, true);
+        } else {
+          openRegion(otherRegion, true);
+          setTimeout(() => { saveListScrollBeforeDisc(); renderDisc(other, true); }, 460);
+        }
+      });
+      otherList.appendChild(row);
+    });
   }
 }
 
