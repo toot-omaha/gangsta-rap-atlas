@@ -78,7 +78,8 @@ body.stamps-open .drawer { display: block; }
 .era-chk.on { color: var(--ink); }
 .stamp-filter {
   display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
-  padding: 10px; overflow: visible;
+  padding: 10px 10px 6px; overflow: visible;
+  border-bottom: 2px solid var(--ink);
 }
 .filter-hint {
   margin: 0; padding: 10px; font-size: 11px; line-height: 1.6; color: var(--ink-2);

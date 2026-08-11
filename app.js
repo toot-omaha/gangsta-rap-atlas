@@ -37,7 +37,7 @@ const I18N = {
     rerollConfirm: '再生成スルト今ノSTREET NAMEハ無効ニナル(持ッテル/ホシイト連携済ミ端末ハ新シイ名前ニ引キ継ガレル)。ヨロシイ？',
     issueCode: '連携コード発行', codeHint: '他端末デ連携スルニハ、元端末デ発行シタコードモ必要(10分有効・1回限リ)',
     codePlaceholder: '連携コード', codeIssued: (c) => `連携コード: ${c} (10分有効)`,
-    filterHint: 'トークボックス/ネタモノは曲のスタンプ画面でチェックできます。<b>誰もチェックしていない曲はここでは見つかりません。</b>視聴後のスタンプ・チェックにご協力ください。',
+    filterHint: 'こちらから他のユーザーがスタンプ済みのDISCを検索できます。曲名の右側の＋ボタンからスタンプにご協力ください。曲探しの情報源になります。秘密にしたい曲はスタンプしないのもアリです。',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -73,7 +73,7 @@ const I18N = {
     rerollConfirm: 'Rerolling retires your current Street Name (have/want and linked devices carry over to the new name). Continue?',
     issueCode: 'Issue link code', codeHint: 'Linking on another device also requires a code issued on this one (valid 10 min, single use)',
     codePlaceholder: 'Link code', codeIssued: (c) => `Link code: ${c} (valid 10 min)`,
-    filterHint: 'Talkbox/Sampling can be checked on a track\'s stamp screen. <b>Tracks nobody has checked won\'t show up here.</b> Please check them after listening.',
+    filterHint: 'Use these to search discs other users have stamped. Hit the ＋ button next to a track name to add your own — it helps everyone dig up new tracks. Feel free to skip stamping anything you\'d rather keep to yourself.',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
