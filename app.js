@@ -1834,10 +1834,14 @@ document.querySelector('.player-now').addEventListener('click', () => {
   // 一覧が一段も開いていない(navLevel 0)ことがある。
   // その状態からいきなりディスク詳細を開くと #list に body.detail が
   // 付かないままになり、描画はされてもopacity:0で操作できなくなる。
-  // 地域一覧を経由させて階層とdetailクラスを正しく積み直す。
+  // 地域一覧を経由させて階層を正しく積み直す。openRegion()自体は
+  // 着弾演出のためdetailクラスの付与を450ms遅らせるが、ここではその場で
+  // ディスク詳細まで一気に開くので、演出を待たず即座に付け直す
+  // (待ってしまうとその間タップしても反応しないように見えるバグになる)。
   if (navLevel === 0) {
     const region = REGIONS.find((r) => r.albums.includes(album));
     if (region) openRegion(region, true);
+    document.body.classList.add('detail');
   }
   renderDisc(album);
 });
