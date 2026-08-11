@@ -37,7 +37,7 @@ const I18N = {
     rerollConfirm: '再生成スルト今ノSTREET NAMEハ無効ニナル(持ッテル/ホシイト連携済ミ端末ハ新シイ名前ニ引キ継ガレル)。ヨロシイ？',
     issueCode: '連携コード発行', codeHint: '他端末デ連携スルニハ、元端末デ発行シタコードモ必要(10分有効・1回限リ)',
     codePlaceholder: '連携コード', codeIssued: (c) => `連携コード: ${c} (10分有効)`,
-    filterHint: 'こちらから他のユーザーがスタンプ済みのDISCを検索できます。曲名の右側の＋ボタンからスタンプにご協力ください。曲探しの情報源になります。秘密にしたい曲はスタンプしないのもアリです。',
+    filterHint: 'こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -73,7 +73,7 @@ const I18N = {
     rerollConfirm: 'Rerolling retires your current Street Name (have/want and linked devices carry over to the new name). Continue?',
     issueCode: 'Issue link code', codeHint: 'Linking on another device also requires a code issued on this one (valid 10 min, single use)',
     codePlaceholder: 'Link code', codeIssued: (c) => `Link code: ${c} (valid 10 min)`,
-    filterHint: 'Use these to search discs other users have stamped. Hit the ＋ button next to a track name to add your own — it helps everyone dig up new tracks. Feel free to skip stamping anything you\'d rather keep to yourself.',
+    filterHint: 'Use these to search discs other users have stamped. It helps everyone dig up new tracks, so click the ＋ button to add your own.',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -687,10 +687,13 @@ const filterBar = document.getElementById('stampFilter');
 // 絞り込みパネルに出す全体件数(このディスク/このタグを持つ曲・盤の合計)。
 // 開閉のたびではなく初期表示・言語切替時だけ計算すれば十分な頻度なので、
 // 4800枚超を毎回舐めても実用上のコストにはならない。
-const globalStampCount = (id) => allKnownAlbums().reduce((n, { a }) => n + stampCount(a, id), 0);
+// 年代フィルターで絞ってる間は、その範囲内での件数になるようeraFilters対象だけ数える
+const globalStampCount = (id) => allKnownAlbums()
+  .reduce((n, { a }) => n + (eraFilters.has(eraOf(a)) ? stampCount(a, id) : 0), 0);
 // タグは投票の合算ではなく「net>0で確定してるディスク数」を件数として出す
 // (票数を合算すると訂正の-1がキャンセルし合って何を数えてるか分かりにくくなるため)
-const globalTagCount = (id) => allKnownAlbums().reduce((n, { a }) => n + (albumHasTag(a, id) ? 1 : 0), 0);
+const globalTagCount = (id) => allKnownAlbums()
+  .reduce((n, { a }) => n + (eraFilters.has(eraOf(a)) && albumHasTag(a, id) ? 1 : 0), 0);
 
 function buildFilterBar() {
   filterBar.innerHTML = '';
@@ -732,6 +735,9 @@ function buildEraBar() {
       refreshMarkers();
       if (activeRegion) renderList(activeRegion);
       if (searchOverlay.classList.contains('open')) runSearch(searchInput.value);
+      // スタンプ/タグの件数は年代フィルターの範囲に連動するので作り直す
+      buildFilterBar();
+      buildTagBar();
     });
     eraBar.appendChild(label);
   });
@@ -818,7 +824,7 @@ function runSearch(q) {
   hits.slice(0, 60).forEach(({ a, r }) => {
     const row = document.createElement('div');
     row.className = 'sr-item';
-    row.innerHTML = `<span class="t">${a.title}</span><span class="a">${a.artist}</span><span class="r">${r.name}</span>`;
+    row.innerHTML = `<span class="t">${a.title}</span><span class="a">${a.artist}</span><span class="y">${a.year}</span><span class="r">${r.name}</span>`;
     row.addEventListener('click', () => {
       const q = searchInput.value;
       closeSearch();
@@ -1584,19 +1590,12 @@ document.getElementById('stampMenuBtn').addEventListener('click', () => {
   document.body.classList.toggle('stamps-open');
 });
 
-// 狭い画面では 投稿・言語ボタンをドロワー下部のセクションへ移す
-const narrowMq = matchMedia('(max-width: 860px)');
+// 投稿・言語ボタンはPC/モバイル共通でドロワー下部のセクションへ移す
 function placeActionButtons() {
   const submitB = document.getElementById('submitBtn');
   const langB = document.getElementById('langBtn');
-  if (narrowMq.matches) {
-    document.getElementById('drawerActions').append(submitB, langB);
-  } else {
-    // 検索, ★, 墓石(絞り込み), 投稿, 言語 の順になるよう、墓石ボタンの直後に差し込む
-    document.getElementById('stampMenuBtn').after(submitB, langB);
-  }
+  document.getElementById('drawerActions').append(submitB, langB);
 }
-narrowMq.addEventListener('change', placeActionButtons);
 placeActionButtons();
 
 // ディスクのチップ(0件を除いた集計表示専用。押すのは曲側のスタンプ枠)
