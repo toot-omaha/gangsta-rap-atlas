@@ -1908,9 +1908,7 @@ function paint() {
     return;
   }
   $titleInner.textContent = q.title;
-  $artist.textContent = (q.preview || q.youtube)
-    ? `${q.artist} — ${cursor + 1}/${queue.length}`
-    : `${q.artist} — ${t('noAudio')}`;
+  $artist.textContent = (q.preview || q.youtube) ? q.artist : `${q.artist} — ${t('noAudio')}`;
   $art.innerHTML = q.art ? `<img src="${q.art}" alt="">` : '♪';
   updateTitleMarquee();
 }

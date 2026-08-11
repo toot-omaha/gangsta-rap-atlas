@@ -620,7 +620,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 /* 曲名が入りきらない時だけ、少し止まって左へスライドし後半を見せてから
    戻る動きをループさせる(JS側でオーバーフロー時だけ.marqueeを付与) */
 .player-meta strong.scroll-box { overflow: hidden; white-space: nowrap; }
-.player-meta strong .scroll-inner { display: inline-block; }
+/* .scroll-innerもspanなので、下の.player-meta spanルール(#playerArtist用に
+   font-size:10pxを敷いている)に食われないよう明示的に上書きする */
+.player-meta strong .scroll-inner { display: inline-block; font-size: inherit; }
 .player-meta strong.marquee .scroll-inner {
   animation: player-marquee 8s ease-in-out infinite;
 }
