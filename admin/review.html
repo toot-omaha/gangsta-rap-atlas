@@ -49,6 +49,10 @@
     <option value="undone">未確認のみ</option>
     <option value="checked">採用にした分のみ</option>
   </select>
+  <span class="stat">年代</span>
+  <input type="number" id="yearMin" placeholder="下限" style="width:70px">
+  〜
+  <input type="number" id="yearMax" placeholder="上限(例: 1999)" style="width:110px">
   <span class="stat" id="stat"></span>
   <span class="stat" id="saveStatus"></span>
   <button id="exportBtn">⬇ 選択結果を書き出す</button>
@@ -135,6 +139,19 @@ function render() {
   if (q) items = items.filter((a) => a.artist.toLowerCase().includes(q));
   if (mode === 'undone') items = items.filter((a) => !state[a.artist]);
   if (mode === 'checked') items = items.filter((a) => state[a.artist]?.include);
+  // Phonk等、ジャンルが派生して境界が曖昧になった後の年代を除外して、
+  // まず古い(=ガンスタ色がはっきりしてる)年代だけレビューできるように。
+  // どちらか1つのリリースでも範囲内ならそのアーティストごと表示する。
+  const yMin = parseInt(document.getElementById('yearMin').value, 10);
+  const yMax = parseInt(document.getElementById('yearMax').value, 10);
+  if (!isNaN(yMin) || !isNaN(yMax)) {
+    items = items.filter((a) => a.releases.some((r) => {
+      if (!r.year) return false;
+      if (!isNaN(yMin) && r.year < yMin) return false;
+      if (!isNaN(yMax) && r.year > yMax) return false;
+      return true;
+    }));
+  }
 
   const doneCount = Object.keys(state).length;
   document.getElementById('stat').textContent = `${doneCount}/${ARTISTS.length} 確認済み`;
@@ -185,6 +202,8 @@ function render() {
 
 document.getElementById('search').addEventListener('input', render);
 document.getElementById('filterMode').addEventListener('change', render);
+document.getElementById('yearMin').addEventListener('input', render);
+document.getElementById('yearMax').addEventListener('input', render);
 document.getElementById('exportBtn').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(state, null, 1)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
