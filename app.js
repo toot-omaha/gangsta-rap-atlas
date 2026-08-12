@@ -824,13 +824,19 @@ function clearStampFilter() {
 // 積んでおく。積まないと、検索窓を開いた状態でスワイプ/端末の戻るを
 // 押した時にhistoryに戻る先が無く、アプリ自体が閉じてしまっていた。
 let searchHistoryOpen = false;
+// フォーカスを遅延させるsetTimeoutの予約IDを覚えておき、閉じる時に必ず
+// キャンセルする。キャンセルし忘れると、検索結果をすぐ選んで画面を
+// 閉じた後にこのタイマーだけ発火してsearchInputへ再フォーカスしてしまい、
+// オーバーレイは閉じているのにキーボードだけ勝手に開く不具合になっていた。
+let searchFocusTimer = null;
 function openSearch() {
   clearStampFilter(); // スタンプ絞り込み中に検索を開いたら解除し、全件対象で探せるようにする
   searchOverlay.classList.add('open');
   document.body.classList.add('search-open'); // スマホでは虫眼鏡ボタン自体を隠す
   searchInput.value = '';
   searchResults.innerHTML = '';
-  setTimeout(() => searchInput.focus(), 50);
+  clearTimeout(searchFocusTimer);
+  searchFocusTimer = setTimeout(() => searchInput.focus(), 50);
   if (!searchHistoryOpen) {
     history.pushState({ level: navLevel, search: true }, '');
     searchHistoryOpen = true;
@@ -839,12 +845,28 @@ function openSearch() {
 // fromPopstate: 戻る操作(popstate)からの呼び出しならtrue。この場合は
 // historyが既に1つ消化された後なので、二重にhistory.back()しない。
 function closeSearch(fromPopstate = false) {
+  clearTimeout(searchFocusTimer);
   searchOverlay.classList.remove('open');
   document.body.classList.remove('search-open');
+  searchInput.blur();
   if (searchHistoryOpen) {
     searchHistoryOpen = false;
     if (!fromPopstate) history.back(); // ×ボタン等での明示的な閉じ操作は積んだ分を消化しておく
   }
+}
+// 検索結果を選んで別の画面(地域/ディスク)へ進む場合に使う。history.back()を
+// 呼ぶcloseSearch()と違い、こちらはUIを閉じるだけでhistoryには触らない。
+// 検索結果クリック直後にopenRegion()のhistory.pushState()が続けて走るため、
+// closeSearch()のhistory.back()(非同期)と競合してnavLevel/historyの
+// 整合性が崩れ、後で無関係な地域タップ時に検索が勝手に開き直る
+// (キーボードが開く)不具合になっていた。積んだ分は行き先のpushStateに
+// そのまま埋もれさせて無害化する。
+function closeSearchUI() {
+  clearTimeout(searchFocusTimer);
+  searchOverlay.classList.remove('open');
+  document.body.classList.remove('search-open');
+  searchInput.blur();
+  searchHistoryOpen = false;
 }
 
 function runSearch(q) {
@@ -871,7 +893,7 @@ function runSearch(q) {
     row.className = 'sr-item sr-region';
     row.innerHTML = `<span class="t">📍 ${r.name}</span><span class="a">${r.area}</span><span class="r">${albumsOf(r).length} ${t('discs')}</span>`;
     row.addEventListener('click', () => {
-      closeSearch();
+      closeSearchUI();
       openRegion(r);
     });
     searchResults.appendChild(row);
@@ -882,7 +904,7 @@ function runSearch(q) {
     row.innerHTML = `<span class="t">${a.title}</span><span class="a">${a.artist}</span><span class="y">${a.year}</span><span class="r">${r.name}</span>`;
     row.addEventListener('click', () => {
       const q = searchInput.value;
-      closeSearch();
+      closeSearchUI();
       openRegion(r); // ここでsearchReturnQueryは一旦nullに戻るので、直後に戻り先として設定し直す
       searchReturnQuery = q;
       setTimeout(() => { saveListScrollBeforeDisc(); renderDisc(a); }, 460);
