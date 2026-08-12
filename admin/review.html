@@ -39,7 +39,7 @@
 
 <header>
   <h1>REJECT救済レビュー(非公開ページ)</h1>
-  <p>トップページからはリンクしていません。チェックを入れて地域を選ぶと、あとで data.js への合流に使えます。進捗はこの端末のブラウザに自動保存されます。</p>
+  <p>トップページからはリンクしていません。チェックを入れて地域を選ぶと、その場でサーバーに保存されます(複数人・複数端末で同時に埋めていけます)。</p>
 </header>
 
 <div class="toolbar">
@@ -50,6 +50,7 @@
     <option value="checked">採用にした分のみ</option>
   </select>
   <span class="stat" id="stat"></span>
+  <span class="stat" id="saveStatus"></span>
   <button id="exportBtn">⬇ 選択結果を書き出す</button>
 </div>
 
@@ -60,20 +61,62 @@
 </footer>
 
 <script>
+// メインサイトと同じSupabaseプロジェクト・匿名anon書き込みモデル
+// (stamps/tag_votes/fav_syncと同様、認証無し・即時UPSERT)。
+// 複数人で同時にレビューを埋めていけるよう、ローカル保存ではなく
+// review_decisionsテーブルへ即時保存する。
+const SB_URL = 'https://xqtoyvhupioztljkejnw.supabase.co/rest/v1';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxdG95dmh1cGlvenRsamtlam53Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5Mjc2MDgsImV4cCI6MjEwMTUwMzYwOH0.gW4xkwC3GzdKcnTT-490-75Sssx49wIIBcVOEW-MKHw';
+const SB_HEADERS = { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' };
+
 const STORE_KEY = 'gra.admin.review.v1';
+// 起動直後~サーバーから取得できるまでの間だけローカルキャッシュを見せる
+// (体感の初期表示を速くするため。取得できたらサーバー側で上書きする)
 const state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); // { artist: { include: bool, regionId: string, custom: string } }
 const save = () => localStorage.setItem(STORE_KEY, JSON.stringify(state));
 
 let ARTISTS = [];
 let REGIONS = [];
+let saveStatusEl = null;
+
+async function loadServerState() {
+  try {
+    const res = await fetch(`${SB_URL}/review_decisions?select=artist,include,region_id,custom_region`, { headers: SB_HEADERS });
+    if (!res.ok) return;
+    (await res.json()).forEach((r) => {
+      state[r.artist] = { include: r.include, regionId: r.region_id, custom: r.custom_region };
+    });
+    save();
+  } catch { /* サーバーに繋がらなくてもローカルキャッシュだけで見られるようにする */ }
+}
+
+async function pushDecision(artist, decision) {
+  if (saveStatusEl) { saveStatusEl.textContent = '保存中…'; }
+  try {
+    const res = await fetch(`${SB_URL}/review_decisions`, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify({
+        artist, include: decision.include, region_id: decision.regionId, custom_region: decision.custom,
+        updated_at: new Date().toISOString(),
+      }),
+    });
+    if (saveStatusEl) saveStatusEl.textContent = res.ok ? '保存済み' : '保存失敗(オフライン?)';
+  } catch {
+    if (saveStatusEl) saveStatusEl.textContent = '保存失敗(オフライン?)';
+  }
+}
 
 async function boot() {
+  saveStatusEl = document.getElementById('saveStatus');
   const [artistsRes, regionsRes] = await Promise.all([
     fetch('candidates.json'), fetch('regions.json'),
   ]);
   ARTISTS = await artistsRes.json();
   REGIONS = await regionsRes.json();
   render();
+  await loadServerState();
+  render(); // サーバー側の最新状態(他の人の入力分も含む)で再描画
 }
 
 function regionOptions(selectedId) {
@@ -123,8 +166,10 @@ function render() {
     const select = row.querySelector('select');
     const custom = row.querySelector('.custom');
     const commit = () => {
-      state[a.artist] = { include: checkbox.checked, regionId: select.value || null, custom: custom.value.trim() || null };
+      const decision = { include: checkbox.checked, regionId: select.value || null, custom: custom.value.trim() || null };
+      state[a.artist] = decision;
       save();
+      pushDecision(a.artist, decision); // サーバーへ即時保存(他の人とも共有)
       row.classList.add('done');
       document.getElementById('stat').textContent = `${Object.keys(state).length}/${ARTISTS.length} 確認済み`;
       const cc = Object.values(state).filter((x) => x.include).length;
