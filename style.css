@@ -541,18 +541,25 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   border: 2px solid var(--gold); background: transparent; color: var(--ink);
   font-size: 12px; font-weight: 900; letter-spacing: .08em; padding: 4px 10px; cursor: pointer;
 }
-.fav-toggle:hover { background: var(--gold); }
 .fav-toggle.lang { border-color: var(--ink); }
-.fav-toggle.lang:hover { background: var(--ink); color: var(--paper); }
 .fav-toggle.search { border-color: var(--ink); display: flex; align-items: center; padding: 5px 9px; }
-.fav-toggle.search:hover { background: var(--ink); color: var(--paper); }
 
 /* 墓石メニュー(絞り込みパネルの開閉。PC/モバイル共通で★の右に置く) */
 .stamp-menu-btn {
   display: block; border: 2px solid var(--ink); background: transparent; color: var(--ink);
   width: 34px; height: 34px; padding: 4px; cursor: pointer; flex: 0 0 auto;
 }
-.stamp-menu-btn:hover, body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); }
+/* ドロワーが実際に開いている時の状態表示はホバーと切り離す(タッチ端末で
+   タップ後もホバー相当の見た目が残り続ける不具合とは無関係にしたいため) */
+body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); }
+/* :hoverはマウス等ポインターデバイスでのみ有効にする。タッチ端末だと
+   タップ後も:hoverが残り続け、ボタンが「押しっぱなし」に見えてしまうため */
+@media (hover: hover) and (pointer: fine) {
+  .fav-toggle:hover { background: var(--gold); }
+  .fav-toggle.lang:hover { background: var(--ink); color: var(--paper); }
+  .fav-toggle.search:hover { background: var(--ink); color: var(--paper); }
+  .stamp-menu-btn:hover { background: var(--ink); color: var(--paper); }
+}
 
 .rarity { display: flex; align-items: center; gap: 8px; margin: 9px 0 7px; font-size: 10px; letter-spacing: .08em; }
 .rarity .lab { font-weight: 900; color: var(--red); white-space: nowrap; }
@@ -648,9 +655,11 @@ body.detail .intro { opacity: 0; pointer-events: none; }
   background: transparent; border: 2px solid var(--paper-2); color: var(--paper);
   width: 32px; height: 32px; cursor: pointer; font-size: 12px;
 }
-.icon-btn:hover { background: var(--red); border-color: var(--red); }
 .icon-btn.play { width: 40px; height: 40px; border-color: var(--red); color: var(--red); font-size: 14px; }
-.icon-btn.play:hover { background: var(--red); color: var(--paper); }
+@media (hover: hover) and (pointer: fine) {
+  .icon-btn:hover { background: var(--red); border-color: var(--red); }
+  .icon-btn.play:hover { background: var(--red); color: var(--paper); }
+}
 .text-btn { background: none; border: none; color: var(--paper-2); cursor: pointer; font-size: 10px; text-decoration: underline; letter-spacing: .08em; }
 .yt-host { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
