@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>REJECT救済レビュー(非公開)</title>
+<style>
+  :root { --paper: #e8e4d9; --ink: #14120f; --ink-2: #4a453c; --red: #c1272d; --gold: #b8912f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Helvetica Neue", Helvetica, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--ink); color: var(--paper); padding: 14px 16px; border-bottom: 3px solid var(--red); }
+  header h1 { margin: 0 0 4px; font-size: 18px; letter-spacing: .04em; }
+  header p { margin: 0; font-size: 11px; color: #cfc9ba; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px; background: #ddd8c8; border-bottom: 2px solid var(--ink); position: sticky; top: 62px; z-index: 5; }
+  .toolbar input[type="text"] { font: inherit; font-size: 13px; padding: 6px 8px; border: 2px solid var(--ink); background: var(--paper); flex: 1; min-width: 140px; }
+  .toolbar select { font: inherit; font-size: 12px; padding: 5px 6px; border: 2px solid var(--ink); background: var(--paper); }
+  .toolbar button { font: inherit; font-size: 12px; font-weight: 800; padding: 6px 12px; border: 2px solid var(--ink); background: var(--paper); cursor: pointer; }
+  .toolbar button:hover { background: var(--ink); color: var(--paper); }
+  .toolbar .stat { font-size: 11px; color: var(--ink-2); white-space: nowrap; }
+  main { padding: 10px 16px 80px; max-width: 900px; margin: 0 auto; }
+  .row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 8px; border-bottom: 1px solid rgba(20,18,15,.15); }
+  .row.done { opacity: .55; }
+  .row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--red); cursor: pointer; }
+  .row .main { flex: 1; min-width: 0; }
+  .row .artist { font-weight: 900; font-size: 14px; }
+  .row .releases { margin: 4px 0 0; font-size: 11px; color: var(--ink-2); line-height: 1.6; }
+  .row .releases a { color: var(--ink-2); }
+  .row .region { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .row select, .row input[type="text"].custom { font: inherit; font-size: 12px; padding: 4px 6px; border: 2px solid var(--ink); background: var(--paper); }
+  .row select { min-width: 160px; }
+  .empty { padding: 40px; text-align: center; color: var(--ink-2); font-size: 13px; }
+  footer { position: fixed; left: 0; right: 0; bottom: 0; background: var(--ink); color: var(--paper); padding: 10px 16px; display: flex; gap: 10px; align-items: center; border-top: 3px solid var(--red); font-size: 12px; }
+  footer button { font: inherit; font-weight: 800; padding: 8px 16px; border: 2px solid var(--paper); background: transparent; color: var(--paper); cursor: pointer; }
+  footer button:hover { background: var(--paper); color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>REJECT救済レビュー(非公開ページ)</h1>
+  <p>トップページからはリンクしていません。チェックを入れて地域を選ぶと、あとで data.js への合流に使えます。進捗はこの端末のブラウザに自動保存されます。</p>
+</header>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="アーティスト名で絞り込み">
+  <select id="filterMode">
+    <option value="all">すべて表示</option>
+    <option value="undone">未確認のみ</option>
+    <option value="checked">採用にした分のみ</option>
+  </select>
+  <span class="stat" id="stat"></span>
+  <button id="exportBtn">⬇ 選択結果を書き出す</button>
+</div>
+
+<main id="list"><p class="empty">読み込み中…</p></main>
+
+<footer>
+  <span id="footerStat"></span>
+</footer>
+
+<script>
+const STORE_KEY = 'gra.admin.review.v1';
+const state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); // { artist: { include: bool, regionId: string, custom: string } }
+const save = () => localStorage.setItem(STORE_KEY, JSON.stringify(state));
+
+let ARTISTS = [];
+let REGIONS = [];
+
+async function boot() {
+  const [artistsRes, regionsRes] = await Promise.all([
+    fetch('candidates.json'), fetch('regions.json'),
+  ]);
+  ARTISTS = await artistsRes.json();
+  REGIONS = await regionsRes.json();
+  render();
+}
+
+function regionOptions(selectedId) {
+  const opts = ['<option value="">-- 地域を選ぶ --</option>'];
+  REGIONS.filter((r) => !r.unclassified).forEach((r) => {
+    opts.push(`<option value="${r.id}"${r.id === selectedId ? ' selected' : ''}>${r.name}(${r.area}）</option>`);
+  });
+  return opts.join('');
+}
+
+function render() {
+  const list = document.getElementById('list');
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const mode = document.getElementById('filterMode').value;
+  let items = ARTISTS;
+  if (q) items = items.filter((a) => a.artist.toLowerCase().includes(q));
+  if (mode === 'undone') items = items.filter((a) => !state[a.artist]);
+  if (mode === 'checked') items = items.filter((a) => state[a.artist]?.include);
+
+  const doneCount = Object.keys(state).length;
+  document.getElementById('stat').textContent = `${doneCount}/${ARTISTS.length} 確認済み`;
+  const checkedCount = Object.values(state).filter((s) => s.include).length;
+  document.getElementById('footerStat').textContent =
+    `全${ARTISTS.length}組 / 確認済み${doneCount} / 採用${checkedCount}`;
+
+  if (!items.length) { list.innerHTML = '<p class="empty">該当なし</p>'; return; }
+
+  list.innerHTML = '';
+  items.forEach((a) => {
+    const s = state[a.artist] || {};
+    const row = document.createElement('div');
+    row.className = 'row' + (state[a.artist] ? ' done' : '');
+    const releasesHtml = a.releases.map((r) =>
+      `<a href="${r.url}" target="_blank" rel="noopener">${r.title}</a>${r.year ? ` (${r.year})` : ''}`
+    ).join(' / ');
+    row.innerHTML = `
+      <input type="checkbox" ${s.include ? 'checked' : ''}>
+      <div class="main">
+        <div class="artist">${a.artist}</div>
+        <p class="releases">${releasesHtml}</p>
+        <div class="region">
+          <select>${regionOptions(s.regionId)}</select>
+          <input type="text" class="custom" placeholder="候補に無ければ地名を直接入力" value="${s.custom || ''}">
+        </div>
+      </div>`;
+    const checkbox = row.querySelector('input[type="checkbox"]');
+    const select = row.querySelector('select');
+    const custom = row.querySelector('.custom');
+    const commit = () => {
+      state[a.artist] = { include: checkbox.checked, regionId: select.value || null, custom: custom.value.trim() || null };
+      save();
+      row.classList.add('done');
+      document.getElementById('stat').textContent = `${Object.keys(state).length}/${ARTISTS.length} 確認済み`;
+      const cc = Object.values(state).filter((x) => x.include).length;
+      document.getElementById('footerStat').textContent =
+        `全${ARTISTS.length}組 / 確認済み${Object.keys(state).length} / 採用${cc}`;
+    };
+    checkbox.addEventListener('change', commit);
+    select.addEventListener('change', commit);
+    custom.addEventListener('change', commit);
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('filterMode').addEventListener('change', render);
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(state, null, 1)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'review_result.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+boot();
+</script>
+</body>
+</html>

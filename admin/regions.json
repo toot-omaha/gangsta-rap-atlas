@@ -1,0 +1,1688 @@
+[
+ {
+  "id": "unclassified",
+  "name": "出身地不明",
+  "area": "UNCHARTED — 出身地未特定",
+  "unclassified": true
+ },
+ {
+  "id": "compton",
+  "name": "Compton",
+  "area": "Los Angeles County, CA",
+  "unclassified": false
+ },
+ {
+  "id": "longbeach",
+  "name": "Long Beach",
+  "area": "Los Angeles County, CA",
+  "unclassified": false
+ },
+ {
+  "id": "southcentral",
+  "name": "South Central LA",
+  "area": "Los Angeles, CA",
+  "unclassified": false
+ },
+ {
+  "id": "vallejo",
+  "name": "Vallejo",
+  "area": "Bay Area, CA",
+  "unclassified": false
+ },
+ {
+  "id": "seaside",
+  "name": "Seaside",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "oakland",
+  "name": "Oakland",
+  "area": "Bay Area, CA",
+  "unclassified": false
+ },
+ {
+  "id": "houston",
+  "name": "Houston",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "portarthur",
+  "name": "Port Arthur",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "memphis",
+  "name": "Memphis",
+  "area": "Tennessee",
+  "unclassified": false
+ },
+ {
+  "id": "neworleans",
+  "name": "New Orleans",
+  "area": "Louisiana",
+  "unclassified": false
+ },
+ {
+  "id": "sf",
+  "name": "San Francisco",
+  "area": "Hunters Point / Fillmore, CA",
+  "unclassified": false
+ },
+ {
+  "id": "sacramento",
+  "name": "Sacramento",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "yokohama",
+  "name": "Yokohama",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "queens",
+  "name": "Queensbridge",
+  "area": "New York, NY",
+  "unclassified": false
+ },
+ {
+  "id": "philly",
+  "name": "Philadelphia",
+  "area": "Pennsylvania",
+  "unclassified": false
+ },
+ {
+  "id": "bronx",
+  "name": "The Bronx",
+  "area": "New York, NY",
+  "unclassified": false
+ },
+ {
+  "id": "dallas",
+  "name": "Dallas",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "seattle",
+  "name": "Seattle",
+  "area": "Washington",
+  "unclassified": false
+ },
+ {
+  "id": "atlanta",
+  "name": "Atlanta",
+  "area": "Georgia",
+  "unclassified": false
+ },
+ {
+  "id": "sanantonio",
+  "name": "San Antonio",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "detroit",
+  "name": "Detroit",
+  "area": "Michigan",
+  "unclassified": false
+ },
+ {
+  "id": "flint",
+  "name": "Flint",
+  "area": "Michigan",
+  "unclassified": false
+ },
+ {
+  "id": "saopaulo",
+  "name": "São Paulo",
+  "area": "Brazil — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "riodejaneiro",
+  "name": "Rio de Janeiro",
+  "area": "Brazil — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "manila",
+  "name": "Manila",
+  "area": "Philippines — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "carson",
+  "name": "Carson",
+  "area": "Los Angeles County, CA",
+  "unclassified": false
+ },
+ {
+  "id": "amsterdam",
+  "name": "Amsterdam",
+  "area": "Netherlands — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "miami",
+  "name": "Miami",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "eastorange",
+  "name": "East Orange",
+  "area": "New Jersey",
+  "unclassified": false
+ },
+ {
+  "id": "riverside",
+  "name": "Riverside",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "chicago",
+  "name": "Chicago",
+  "area": "Illinois",
+  "unclassified": false
+ },
+ {
+  "id": "pittsburgca",
+  "name": "Pittsburg",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "portland",
+  "name": "Portland",
+  "area": "Oregon",
+  "unclassified": false
+ },
+ {
+  "id": "brooklyn",
+  "name": "Brooklyn",
+  "area": "New York, NY",
+  "unclassified": false
+ },
+ {
+  "id": "princegeorges",
+  "name": "Prince George's County",
+  "area": "Maryland",
+  "unclassified": false
+ },
+ {
+  "id": "frankfurt",
+  "name": "Frankfurt",
+  "area": "Germany — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "berlin",
+  "name": "Berlin",
+  "area": "Germany — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "cleveland",
+  "name": "Cleveland",
+  "area": "Ohio",
+  "unclassified": false
+ },
+ {
+  "id": "batonrouge",
+  "name": "Baton Rouge",
+  "area": "Louisiana",
+  "unclassified": false
+ },
+ {
+  "id": "jacksonms",
+  "name": "Jackson",
+  "area": "Mississippi",
+  "unclassified": false
+ },
+ {
+  "id": "richmondca",
+  "name": "Richmond",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "corpuschristi",
+  "name": "Corpus Christi",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "pomona",
+  "name": "Pomona",
+  "area": "Los Angeles County, CA",
+  "unclassified": false
+ },
+ {
+  "id": "yonkers",
+  "name": "Yonkers",
+  "area": "New York",
+  "unclassified": false
+ },
+ {
+  "id": "milwaukee",
+  "name": "Milwaukee",
+  "area": "Wisconsin",
+  "unclassified": false
+ },
+ {
+  "id": "kansascity",
+  "name": "Kansas City",
+  "area": "Missouri",
+  "unclassified": false
+ },
+ {
+  "id": "glendaleca",
+  "name": "Glendale",
+  "area": "Los Angeles County, CA",
+  "unclassified": false
+ },
+ {
+  "id": "indianapolis",
+  "name": "Indianapolis",
+  "area": "Indiana",
+  "unclassified": false
+ },
+ {
+  "id": "denver",
+  "name": "Denver",
+  "area": "Colorado",
+  "unclassified": false
+ },
+ {
+  "id": "charlestonsc",
+  "name": "Charleston",
+  "area": "South Carolina",
+  "unclassified": false
+ },
+ {
+  "id": "eastla",
+  "name": "East Los Angeles",
+  "area": "Los Angeles County, CA",
+  "unclassified": false
+ },
+ {
+  "id": "stockton",
+  "name": "Stockton",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "mckeesport",
+  "name": "McKeesport",
+  "area": "Pennsylvania",
+  "unclassified": false
+ },
+ {
+  "id": "garyin",
+  "name": "Gary",
+  "area": "Indiana",
+  "unclassified": false
+ },
+ {
+  "id": "cincinnati",
+  "name": "Cincinnati",
+  "area": "Ohio",
+  "unclassified": false
+ },
+ {
+  "id": "hayward",
+  "name": "Hayward",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "savannah",
+  "name": "Savannah",
+  "area": "Georgia",
+  "unclassified": false
+ },
+ {
+  "id": "lincoln",
+  "name": "Lincoln",
+  "area": "Nebraska",
+  "unclassified": false
+ },
+ {
+  "id": "merced",
+  "name": "Merced",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "oklahomacity",
+  "name": "Oklahoma City",
+  "area": "Oklahoma",
+  "unclassified": false
+ },
+ {
+  "id": "lakecharles",
+  "name": "Lake Charles",
+  "area": "Louisiana",
+  "unclassified": false
+ },
+ {
+  "id": "houma",
+  "name": "Houma",
+  "area": "Louisiana",
+  "unclassified": false
+ },
+ {
+  "id": "jeanerette",
+  "name": "Jeanerette",
+  "area": "Louisiana",
+  "unclassified": false
+ },
+ {
+  "id": "waco",
+  "name": "Waco",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "ponce",
+  "name": "Ponce",
+  "area": "Puerto Rico",
+  "unclassified": false
+ },
+ {
+  "id": "sandiego",
+  "name": "San Diego",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "jacksontn",
+  "name": "Jackson",
+  "area": "Tennessee",
+  "unclassified": false
+ },
+ {
+  "id": "trinidad",
+  "name": "Port of Spain",
+  "area": "Trinidad and Tobago",
+  "unclassified": false
+ },
+ {
+  "id": "marincity",
+  "name": "Marin City",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "phoenix",
+  "name": "Phoenix",
+  "area": "Arizona",
+  "unclassified": false
+ },
+ {
+  "id": "newark",
+  "name": "Newark",
+  "area": "New Jersey",
+  "unclassified": false
+ },
+ {
+  "id": "trenton",
+  "name": "Trenton",
+  "area": "New Jersey",
+  "unclassified": false
+ },
+ {
+  "id": "anniston",
+  "name": "Anniston",
+  "area": "Alabama",
+  "unclassified": false
+ },
+ {
+  "id": "lemoore",
+  "name": "Lemoore",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "columbus",
+  "name": "Columbus",
+  "area": "Ohio",
+  "unclassified": false
+ },
+ {
+  "id": "antioch",
+  "name": "Antioch",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "pacifica",
+  "name": "Pacifica",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "redwoodcity",
+  "name": "Redwood City",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "meridian",
+  "name": "Meridian",
+  "area": "Mississippi",
+  "unclassified": false
+ },
+ {
+  "id": "newyork",
+  "name": "New York",
+  "area": "New York",
+  "unclassified": false
+ },
+ {
+  "id": "chattanooga",
+  "name": "Chattanooga",
+  "area": "Tennessee",
+  "unclassified": false
+ },
+ {
+  "id": "littlerock",
+  "name": "Little Rock",
+  "area": "Arkansas",
+  "unclassified": false
+ },
+ {
+  "id": "tacoma",
+  "name": "Tacoma",
+  "area": "Washington",
+  "unclassified": false
+ },
+ {
+  "id": "fortwayne",
+  "name": "Fort Wayne",
+  "area": "Indiana",
+  "unclassified": false
+ },
+ {
+  "id": "channelview",
+  "name": "Channelview",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "orlando",
+  "name": "Orlando",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "ocala",
+  "name": "Ocala",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "baltimore",
+  "name": "Baltimore",
+  "area": "Maryland",
+  "unclassified": false
+ },
+ {
+  "id": "collegepark",
+  "name": "College Park",
+  "area": "Georgia",
+  "unclassified": false
+ },
+ {
+  "id": "nashville",
+  "name": "Nashville",
+  "area": "Tennessee",
+  "unclassified": false
+ },
+ {
+  "id": "birminghamal",
+  "name": "Birmingham",
+  "area": "Alabama",
+  "unclassified": false
+ },
+ {
+  "id": "knoxville",
+  "name": "Knoxville",
+  "area": "Tennessee",
+  "unclassified": false
+ },
+ {
+  "id": "lexington",
+  "name": "Lexington",
+  "area": "Kentucky",
+  "unclassified": false
+ },
+ {
+  "id": "madison",
+  "name": "Madison",
+  "area": "Wisconsin",
+  "unclassified": false
+ },
+ {
+  "id": "westcovina",
+  "name": "West Covina",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "elkhart",
+  "name": "Elkhart",
+  "area": "Indiana",
+  "unclassified": false
+ },
+ {
+  "id": "topeka",
+  "name": "Topeka",
+  "area": "Kansas",
+  "unclassified": false
+ },
+ {
+  "id": "minneapolis",
+  "name": "Minneapolis",
+  "area": "Minnesota",
+  "unclassified": false
+ },
+ {
+  "id": "eastpaloalto",
+  "name": "East Palo Alto",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "westpalmbeach",
+  "name": "West Palm Beach",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "oxnard",
+  "name": "Oxnard",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "berkeley",
+  "name": "Berkeley",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "macon",
+  "name": "Macon",
+  "area": "Georgia",
+  "unclassified": false
+ },
+ {
+  "id": "davenport",
+  "name": "Davenport",
+  "area": "Iowa",
+  "unclassified": false
+ },
+ {
+  "id": "batesville",
+  "name": "Batesville",
+  "area": "Mississippi",
+  "unclassified": false
+ },
+ {
+  "id": "westpoint",
+  "name": "West Point",
+  "area": "Mississippi",
+  "unclassified": false
+ },
+ {
+  "id": "inglewood",
+  "name": "Inglewood",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "mobile",
+  "name": "Mobile",
+  "area": "Alabama",
+  "unclassified": false
+ },
+ {
+  "id": "sanjose",
+  "name": "San Jose",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "monroe",
+  "name": "Monroe",
+  "area": "Louisiana",
+  "unclassified": false
+ },
+ {
+  "id": "fresno",
+  "name": "Fresno",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "pontiac",
+  "name": "Pontiac",
+  "area": "Michigan",
+  "unclassified": false
+ },
+ {
+  "id": "montgomery",
+  "name": "Montgomery",
+  "area": "Alabama",
+  "unclassified": false
+ },
+ {
+  "id": "deerfieldbeach",
+  "name": "Deerfield Beach",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "tulsa",
+  "name": "Tulsa",
+  "area": "Oklahoma",
+  "unclassified": false
+ },
+ {
+  "id": "gulfport",
+  "name": "Gulfport",
+  "area": "Mississippi",
+  "unclassified": false
+ },
+ {
+  "id": "washingtondc",
+  "name": "Washington",
+  "area": "D.C.",
+  "unclassified": false
+ },
+ {
+  "id": "inkster",
+  "name": "Inkster",
+  "area": "Michigan",
+  "unclassified": false
+ },
+ {
+  "id": "tyler",
+  "name": "Tyler",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "shreveport",
+  "name": "Shreveport",
+  "area": "Louisiana",
+  "unclassified": false
+ },
+ {
+  "id": "akron",
+  "name": "Akron",
+  "area": "Ohio",
+  "unclassified": false
+ },
+ {
+  "id": "hendersontn",
+  "name": "Henderson",
+  "area": "Tennessee",
+  "unclassified": false
+ },
+ {
+  "id": "fortworth",
+  "name": "Fort Worth",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "austin",
+  "name": "Austin",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "statenisland",
+  "name": "Staten Island",
+  "area": "New York",
+  "unclassified": false
+ },
+ {
+  "id": "pinebluff",
+  "name": "Pine Bluff",
+  "area": "Arkansas",
+  "unclassified": false
+ },
+ {
+  "id": "dayton",
+  "name": "Dayton",
+  "area": "Ohio",
+  "unclassified": false
+ },
+ {
+  "id": "lafayette",
+  "name": "Lafayette",
+  "area": "Louisiana",
+  "unclassified": false
+ },
+ {
+  "id": "fairfield",
+  "name": "Fairfield",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "stlouis",
+  "name": "St. Louis",
+  "area": "Missouri",
+  "unclassified": false
+ },
+ {
+  "id": "jacksonville",
+  "name": "Jacksonville",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "omaha",
+  "name": "Omaha",
+  "area": "Nebraska",
+  "unclassified": false
+ },
+ {
+  "id": "virginiabeach",
+  "name": "Virginia Beach",
+  "area": "Virginia",
+  "unclassified": false
+ },
+ {
+  "id": "laredo",
+  "name": "Laredo",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "decatur",
+  "name": "Decatur",
+  "area": "Georgia",
+  "unclassified": false
+ },
+ {
+  "id": "lubbock",
+  "name": "Lubbock",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "greenville",
+  "name": "Greenville",
+  "area": "Mississippi",
+  "unclassified": false
+ },
+ {
+  "id": "paramount",
+  "name": "Paramount",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "torrance",
+  "name": "Torrance",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "tupelo",
+  "name": "Tupelo",
+  "area": "Mississippi",
+  "unclassified": false
+ },
+ {
+  "id": "hapeville",
+  "name": "Hapeville",
+  "area": "Georgia",
+  "unclassified": false
+ },
+ {
+  "id": "elmonte",
+  "name": "El Monte",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "boise",
+  "name": "Boise",
+  "area": "Idaho",
+  "unclassified": false
+ },
+ {
+  "id": "fargo",
+  "name": "Fargo",
+  "area": "North Dakota",
+  "unclassified": false
+ },
+ {
+  "id": "bonn",
+  "name": "Bonn",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "greenvillesc",
+  "name": "Greenville",
+  "area": "South Carolina",
+  "unclassified": false
+ },
+ {
+  "id": "aarhus",
+  "name": "Aarhus",
+  "area": "Denmark",
+  "unclassified": false
+ },
+ {
+  "id": "richmondva",
+  "name": "Richmond",
+  "area": "Virginia",
+  "unclassified": false
+ },
+ {
+  "id": "athensga",
+  "name": "Athens",
+  "area": "Georgia",
+  "unclassified": false
+ },
+ {
+  "id": "vancouver",
+  "name": "Vancouver",
+  "area": "British Columbia",
+  "unclassified": false
+ },
+ {
+  "id": "mexicocity",
+  "name": "Ciudad de México",
+  "area": "Mexico",
+  "unclassified": false
+ },
+ {
+  "id": "boston",
+  "name": "Boston",
+  "area": "Massachusetts",
+  "unclassified": false
+ },
+ {
+  "id": "valdemarne",
+  "name": "Val-de-Marne",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "hannover",
+  "name": "Hannover",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "krefeld",
+  "name": "Krefeld",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "osnabruck",
+  "name": "Osnabrück",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "aalborg",
+  "name": "Aalborg",
+  "area": "Denmark",
+  "unclassified": false
+ },
+ {
+  "id": "ottawa",
+  "name": "Ottawa",
+  "area": "Ontario",
+  "unclassified": false
+ },
+ {
+  "id": "jueterbog",
+  "name": "Jüterbog",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "regina",
+  "name": "Regina",
+  "area": "Saskatchewan",
+  "unclassified": false
+ },
+ {
+  "id": "tampa",
+  "name": "Tampa",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "caxiasdosul",
+  "name": "Caxias do Sul",
+  "area": "Brazil",
+  "unclassified": false
+ },
+ {
+  "id": "bodo",
+  "name": "Bodø",
+  "area": "Norway",
+  "unclassified": false
+ },
+ {
+  "id": "riga",
+  "name": "Rīga",
+  "area": "Latvia",
+  "unclassified": false
+ },
+ {
+  "id": "lonestar",
+  "name": "Lone Star",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "wilkesbarre",
+  "name": "Wilkes-Barre",
+  "area": "Pennsylvania",
+  "unclassified": false
+ },
+ {
+  "id": "sanangelo",
+  "name": "San Angelo",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "calgary",
+  "name": "Calgary",
+  "area": "Alberta",
+  "unclassified": false
+ },
+ {
+  "id": "toronto",
+  "name": "Toronto",
+  "area": "Ontario",
+  "unclassified": false
+ },
+ {
+  "id": "copenhagen",
+  "name": "Copenhagen",
+  "area": "Denmark",
+  "unclassified": false
+ },
+ {
+  "id": "seoul",
+  "name": "Seoul",
+  "area": "South Korea",
+  "unclassified": false
+ },
+ {
+  "id": "gottingen",
+  "name": "Göttingen",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "santacatarina",
+  "name": "Santa Catarina",
+  "area": "Mexico",
+  "unclassified": false
+ },
+ {
+  "id": "nurnberg",
+  "name": "Nürnberg",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "wichita",
+  "name": "Wichita",
+  "area": "Kansas",
+  "unclassified": false
+ },
+ {
+  "id": "providence",
+  "name": "Providence",
+  "area": "Rhode Island",
+  "unclassified": false
+ },
+ {
+  "id": "auburn",
+  "name": "Auburn",
+  "area": "Alabama",
+  "unclassified": false
+ },
+ {
+  "id": "albuquerque",
+  "name": "Albuquerque",
+  "area": "New Mexico",
+  "unclassified": false
+ },
+ {
+  "id": "tangier",
+  "name": "Tangier",
+  "area": "Morocco",
+  "unclassified": false
+ },
+ {
+  "id": "bucharest",
+  "name": "București",
+  "area": "Romania",
+  "unclassified": false
+ },
+ {
+  "id": "izmir",
+  "name": "İzmir",
+  "area": "Turkey",
+  "unclassified": false
+ },
+ {
+  "id": "lasvegas",
+  "name": "Las Vegas",
+  "area": "Nevada",
+  "unclassified": false
+ },
+ {
+  "id": "bloomington",
+  "name": "Bloomington",
+  "area": "Indiana",
+  "unclassified": false
+ },
+ {
+  "id": "campinas",
+  "name": "Campinas",
+  "area": "Brazil",
+  "unclassified": false
+ },
+ {
+  "id": "pembroke",
+  "name": "Pembroke",
+  "area": "Ontario",
+  "unclassified": false
+ },
+ {
+  "id": "durango",
+  "name": "Durango",
+  "area": "Mexico",
+  "unclassified": false
+ },
+ {
+  "id": "nagoya",
+  "name": "Nagoya",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "budapest",
+  "name": "Budapest",
+  "area": "Hungary",
+  "unclassified": false
+ },
+ {
+  "id": "fallriver",
+  "name": "Fall River",
+  "area": "Massachusetts",
+  "unclassified": false
+ },
+ {
+  "id": "charlotte",
+  "name": "Charlotte",
+  "area": "North Carolina",
+  "unclassified": false
+ },
+ {
+  "id": "huntsville",
+  "name": "Huntsville",
+  "area": "Alabama",
+  "unclassified": false
+ },
+ {
+  "id": "redwater",
+  "name": "Redwater",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "desmoines",
+  "name": "Des Moines",
+  "area": "Iowa",
+  "unclassified": false
+ },
+ {
+  "id": "lansing",
+  "name": "Lansing",
+  "area": "Michigan",
+  "unclassified": false
+ },
+ {
+  "id": "grigny",
+  "name": "Grigny",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "champaign",
+  "name": "Champaign",
+  "area": "Illinois",
+  "unclassified": false
+ },
+ {
+  "id": "longisland",
+  "name": "Long Island",
+  "area": "New York",
+  "unclassified": false
+ },
+ {
+  "id": "crenshaw",
+  "name": "Crenshaw",
+  "area": "Los Angeles, CA",
+  "unclassified": false
+ },
+ {
+  "id": "gomel",
+  "name": "Gomel",
+  "area": "Belarus",
+  "unclassified": false
+ },
+ {
+  "id": "lufkin",
+  "name": "Lufkin",
+  "area": "Texas",
+  "unclassified": false
+ },
+ {
+  "id": "lehavre",
+  "name": "Le Havre",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "yokohama",
+  "name": "Yokohama",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "tucson",
+  "name": "Tucson",
+  "area": "Arizona",
+  "unclassified": false
+ },
+ {
+  "id": "jamaicaqueens",
+  "name": "Jamaica",
+  "area": "Queens, NY",
+  "unclassified": false
+ },
+ {
+  "id": "brownsvillebk",
+  "name": "Brownsville",
+  "area": "Brooklyn, NY",
+  "unclassified": false
+ },
+ {
+  "id": "toledo",
+  "name": "Toledo",
+  "area": "Ohio",
+  "unclassified": false
+ },
+ {
+  "id": "hamburg",
+  "name": "Hamburg",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "aachen",
+  "name": "Aachen",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "beograd",
+  "name": "Beograd",
+  "area": "Serbia",
+  "unclassified": false
+ },
+ {
+  "id": "chisholm",
+  "name": "Chisholm",
+  "area": "Minnesota",
+  "unclassified": false
+ },
+ {
+  "id": "raleigh",
+  "name": "Raleigh",
+  "area": "North Carolina",
+  "unclassified": false
+ },
+ {
+  "id": "gainesvillefl",
+  "name": "Gainesville",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "augustaga",
+  "name": "Augusta",
+  "area": "Georgia",
+  "unclassified": false
+ },
+ {
+  "id": "gary",
+  "name": "Gary",
+  "area": "Indiana",
+  "unclassified": false
+ },
+ {
+  "id": "louisville",
+  "name": "Louisville",
+  "area": "Kentucky",
+  "unclassified": false
+ },
+ {
+  "id": "mito",
+  "name": "Mito",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "noda",
+  "name": "Noda",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "lyon",
+  "name": "Lyon",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "lompoc",
+  "name": "Lompoc",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "joetsu",
+  "name": "Jōetsu",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "montreal",
+  "name": "Montréal",
+  "area": "Quebec",
+  "unclassified": false
+ },
+ {
+  "id": "saarbrucken",
+  "name": "Saarbrücken",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "toyohashi",
+  "name": "Toyohashi",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "hiroshima",
+  "name": "Hiroshima",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "fukui",
+  "name": "Fukui",
+  "area": "Japan — 世界のG-RAP",
+  "unclassified": false
+ },
+ {
+  "id": "salerno",
+  "name": "Salerno",
+  "area": "Italy",
+  "unclassified": false
+ },
+ {
+  "id": "portauprince",
+  "name": "Port-au-Prince",
+  "area": "Haiti",
+  "unclassified": false
+ },
+ {
+  "id": "christchurch",
+  "name": "Christchurch",
+  "area": "New Zealand",
+  "unclassified": false
+ },
+ {
+  "id": "singapore",
+  "name": "Singapore",
+  "area": "Singapore",
+  "unclassified": false
+ },
+ {
+  "id": "roma",
+  "name": "Roma",
+  "area": "Italy",
+  "unclassified": false
+ },
+ {
+  "id": "friedberg",
+  "name": "Friedberg",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "napoli",
+  "name": "Napoli",
+  "area": "Italy",
+  "unclassified": false
+ },
+ {
+  "id": "orsainville",
+  "name": "Orsainville",
+  "area": "Québec, Canada",
+  "unclassified": false
+ },
+ {
+  "id": "pasadena",
+  "name": "Pasadena",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "linz",
+  "name": "Linz",
+  "area": "Austria",
+  "unclassified": false
+ },
+ {
+  "id": "krakow",
+  "name": "Kraków",
+  "area": "Poland",
+  "unclassified": false
+ },
+ {
+  "id": "fortmyers",
+  "name": "Fort Myers",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "pinardelrio",
+  "name": "Pinar del Río",
+  "area": "Cuba",
+  "unclassified": false
+ },
+ {
+  "id": "craiova",
+  "name": "Craiova",
+  "area": "Romania",
+  "unclassified": false
+ },
+ {
+  "id": "stpetersburg",
+  "name": "Sankt-Peterburg",
+  "area": "Russia",
+  "unclassified": false
+ },
+ {
+  "id": "basel",
+  "name": "Basel",
+  "area": "Switzerland",
+  "unclassified": false
+ },
+ {
+  "id": "portstlucie",
+  "name": "Port St. Lucie",
+  "area": "Florida",
+  "unclassified": false
+ },
+ {
+  "id": "milano",
+  "name": "Milano",
+  "area": "Italy",
+  "unclassified": false
+ },
+ {
+  "id": "quebec",
+  "name": "Québec",
+  "area": "Canada",
+  "unclassified": false
+ },
+ {
+  "id": "mannheim",
+  "name": "Mannheim",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "marseille",
+  "name": "Marseille",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "ravensburg",
+  "name": "Ravensburg",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "gothenburg",
+  "name": "Gothenburg",
+  "area": "Sweden",
+  "unclassified": false
+ },
+ {
+  "id": "buffalo",
+  "name": "Buffalo",
+  "area": "New York",
+  "unclassified": false
+ },
+ {
+  "id": "namur",
+  "name": "Namur",
+  "area": "Belgium",
+  "unclassified": false
+ },
+ {
+  "id": "oldenburg",
+  "name": "Oldenburg",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "espoo",
+  "name": "Espoo",
+  "area": "Finland",
+  "unclassified": false
+ },
+ {
+  "id": "sanbenito",
+  "name": "San Benito",
+  "area": "California",
+  "unclassified": false
+ },
+ {
+  "id": "bandung",
+  "name": "Bandung",
+  "area": "Indonesia",
+  "unclassified": false
+ },
+ {
+  "id": "shanghai",
+  "name": "Shanghai",
+  "area": "China",
+  "unclassified": false
+ },
+ {
+  "id": "metz",
+  "name": "Metz",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "bietigheimbissingen",
+  "name": "Bietigheim-Bissingen",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "mission",
+  "name": "Mission",
+  "area": "British Columbia, Canada",
+  "unclassified": false
+ },
+ {
+  "id": "orleans",
+  "name": "Orléans",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "omsk",
+  "name": "Omsk",
+  "area": "Russia",
+  "unclassified": false
+ },
+ {
+  "id": "niagarafalls",
+  "name": "Niagara Falls",
+  "area": "Canada",
+  "unclassified": false
+ },
+ {
+  "id": "moscow",
+  "name": "Moscow",
+  "area": "Russia",
+  "unclassified": false
+ },
+ {
+  "id": "meschede",
+  "name": "Meschede",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "columbiasc",
+  "name": "Columbia",
+  "area": "South Carolina",
+  "unclassified": false
+ },
+ {
+  "id": "bern",
+  "name": "Bern",
+  "area": "Switzerland",
+  "unclassified": false
+ },
+ {
+  "id": "stockholm",
+  "name": "Stockholm",
+  "area": "Sweden",
+  "unclassified": false
+ },
+ {
+  "id": "almaty",
+  "name": "Almaty",
+  "area": "Kazakhstan",
+  "unclassified": false
+ },
+ {
+  "id": "goppingen",
+  "name": "Göppingen",
+  "area": "Germany",
+  "unclassified": false
+ },
+ {
+  "id": "london",
+  "name": "London",
+  "area": "United Kingdom",
+  "unclassified": false
+ },
+ {
+  "id": "poznan",
+  "name": "Poznań",
+  "area": "Poland",
+  "unclassified": false
+ },
+ {
+  "id": "chateauroux",
+  "name": "Châteauroux",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "bratislava",
+  "name": "Bratislava",
+  "area": "Slovakia",
+  "unclassified": false
+ },
+ {
+  "id": "praha",
+  "name": "Praha",
+  "area": "Czechia",
+  "unclassified": false
+ },
+ {
+  "id": "roubaix",
+  "name": "Roubaix",
+  "area": "France",
+  "unclassified": false
+ },
+ {
+  "id": "valencia",
+  "name": "Valencia",
+  "area": "Spain",
+  "unclassified": false
+ },
+ {
+  "id": "warsaw",
+  "name": "Warsaw",
+  "area": "Poland",
+  "unclassified": false
+ },
+ {
+  "id": "huddersfield",
+  "name": "Huddersfield",
+  "area": "United Kingdom",
+  "unclassified": false
+ },
+ {
+  "id": "vimercate",
+  "name": "Vimercate",
+  "area": "Italy",
+  "unclassified": false
+ },
+ {
+  "id": "helmond",
+  "name": "Helmond",
+  "area": "Netherlands",
+  "unclassified": false
+ },
+ {
+  "id": "palmdale",
+  "name": "Palmdale",
+  "area": "California",
+  "unclassified": false
+ }
+]
