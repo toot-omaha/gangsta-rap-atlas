@@ -6,6 +6,10 @@ scripts/candidates.json
 scripts/unclassified.json
 scripts/submission_candidates.json
 
+# recover_rejected.py の生成物(再実行すれば再生成される)
+scripts/recovered_candidates.json
+scripts/recover_rejected.log
+
 # 手動アップロード用の生成物(GitHub連携後は不要)
 dist/
 
