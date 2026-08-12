@@ -1881,8 +1881,9 @@ const $play = document.getElementById('playBtn');
 // スライド距離から等速(px/秒一定、イージング無し)の時間を計算し、
 // transitionをJS側で組み立てて回す。末尾到達後は1.5秒待ってから
 // アニメーション無しで瞬間的に先頭へ戻し、また等速でスライドし直す。
-const MARQUEE_SPEED = 45; // px/秒
-const MARQUEE_END_HOLD = 1500; // 末尾での停止時間(ms)
+const MARQUEE_SPEED = 22; // px/秒(前回の半分程度の速さに)
+const MARQUEE_START_HOLD = 2000; // 先頭で待ってからスライドを始めるまでの時間(ms)
+const MARQUEE_END_HOLD = 2000; // 末尾での停止時間(ms)
 let marqueeTimer = null;
 function updateTitleMarquee() {
   clearTimeout(marqueeTimer);
@@ -1893,7 +1894,7 @@ function updateTitleMarquee() {
   if (overflow <= 4) return;
   const dist = overflow + 4;
   const slideMs = Math.max(1200, (dist / MARQUEE_SPEED) * 1000);
-  const loop = () => {
+  const startSlide = () => {
     $titleInner.style.transition = 'none';
     $titleInner.style.transform = 'translateX(0)';
     void $titleInner.offsetWidth; // 強制リフローでリセットを確定させてからtransitionを再適用する
@@ -1904,6 +1905,9 @@ function updateTitleMarquee() {
       $titleInner.style.transform = 'translateX(0)';
       marqueeTimer = setTimeout(loop, 30); // リセットの反映を待ってから再スタート
     }, slideMs + MARQUEE_END_HOLD);
+  };
+  const loop = () => {
+    marqueeTimer = setTimeout(startSlide, MARQUEE_START_HOLD);
   };
   loop();
 }
