@@ -2154,6 +2154,8 @@ $play.addEventListener('click', () => {
 // 再生バーから直接、今流れてる曲にスタンプを押せるように
 // (曲一覧まで戻らなくてもその場で押せた方が使い勝手が良い)
 document.getElementById('playerStampBtn').addEventListener('click', () => {
+  // 開いている状態でもう一度押したら閉じる(トグル)
+  if (stampOverlay.classList.contains('open')) { closeStampPicker(); return; }
   const q = queue[cursor];
   if (!q?.album) return;
   const key = q.youtube ? trackKey(q.album, `yt:${q.youtube}`) : trackKey(q.album, q.title);
