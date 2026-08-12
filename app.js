@@ -1881,9 +1881,9 @@ const $play = document.getElementById('playBtn');
 // スライド距離から等速(px/秒一定、イージング無し)の時間を計算し、
 // transitionをJS側で組み立てて回す。末尾到達後は1.5秒待ってから
 // アニメーション無しで瞬間的に先頭へ戻し、また等速でスライドし直す。
-const MARQUEE_SPEED = 22; // px/秒(前回の半分程度の速さに)
-const MARQUEE_START_HOLD = 2000; // 先頭で待ってからスライドを始めるまでの時間(ms)
-const MARQUEE_END_HOLD = 2000; // 末尾での停止時間(ms)
+const MARQUEE_SPEED = 33; // px/秒(22の1.5倍。半分にしすぎたので中間へ戻す)
+const MARQUEE_START_HOLD = 3000; // 先頭で待ってからスライドを始めるまでの時間(ms)
+const MARQUEE_END_HOLD = 3000; // 末尾での停止時間(ms)
 let marqueeTimer = null;
 function updateTitleMarquee() {
   clearTimeout(marqueeTimer);
