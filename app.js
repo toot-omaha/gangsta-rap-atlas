@@ -1952,10 +1952,16 @@ function playAlbum(album, startIndex = 0) {
   playCurrent();
 }
 
-// 単曲の▶: アルバム全曲をキューに積まず、その1曲だけを今の再生位置に差し込む。
+// 単曲の▶: その1曲だけでなく、そのアルバム内でその曲以降の曲も続けて
+// キューに積む(この曲が終わったら元のキュー/前の曲に戻ってしまい
+// 使い勝手が悪かったため。この曲番号から先のキューは丸ごと置き換える)。
 function playSingle(item) {
+  const items = trackItemsOf(item.album);
+  const idx = items.findIndex((it) =>
+    (item.preview && it.preview === item.preview) || (item.youtube && it.youtube === item.youtube));
+  const rest = idx >= 0 ? items.slice(idx) : [item];
   const insertPos = Math.max(cursor, 0);
-  queue.splice(insertPos, 0, item);
+  queue.splice(insertPos, queue.length - insertPos, ...rest);
   cursor = insertPos;
   playCurrent();
 }
