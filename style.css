@@ -634,23 +634,12 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .player-queue .credit { opacity: .6; font-size: 9px; }
 .player-meta { min-width: 0; }
 .player-meta strong { display: block; font-size: 14px; font-weight: 900; }
-/* 曲名が入りきらない時だけ、少し止まって左へスライドし後半を見せてから
-   戻る動きをループさせる(JS側でオーバーフロー時だけ.marqueeを付与) */
+/* 曲名が入りきらない時だけ、等速でスライドして後半を見せる
+   (タイミング制御はJS側のupdateTitleMarquee()がtransformを直接操作する) */
 .player-meta strong.scroll-box { overflow: hidden; white-space: nowrap; }
 /* .scroll-innerもspanなので、下の.player-meta spanルール(#playerArtist用に
    font-size:10pxを敷いている)に食われないよう明示的に上書きする */
 .player-meta strong .scroll-inner { display: inline-block; font-size: inherit; }
-.player-meta strong.marquee .scroll-inner {
-  animation: player-marquee 8s ease-in-out infinite;
-}
-/* 先頭で一旦止まり→右方向(後半を見せる)へスライド→止まり→左方向(先頭)へ
-   同じ時間をかけてスライドして戻る、を繰り返す。往復のスライド時間は
-   均等(それぞれ35%ずつ)にしてある */
-@keyframes player-marquee {
-  0%, 15% { transform: translateX(0); }
-  50%, 65% { transform: translateX(var(--scroll-dist, 0px)); }
-  100% { transform: translateX(0); }
-}
 .player-meta span { display: block; font-size: 10px; letter-spacing: .08em; color: var(--paper-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-controls { display: flex; align-items: center; gap: 8px; }
 .player-queue { display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: .1em; color: var(--paper-2); }

@@ -1876,15 +1876,36 @@ const $play = document.getElementById('playBtn');
 
 // 曲名が枠に入りきらない時だけ、少し止まってスライドし後半を見せる
 // マーキー演出を有効化する(入りきる曲名では何もしない)
+// CSS @keyframesの割合指定だと「末尾で必ず1.5秒待つ」を曲名の長さに依らず
+// 一定にできない(スライド区間の割合が曲ごとに変わってしまう)ため、
+// スライド距離から等速(px/秒一定、イージング無し)の時間を計算し、
+// transitionをJS側で組み立てて回す。末尾到達後は1.5秒待ってから
+// アニメーション無しで瞬間的に先頭へ戻し、また等速でスライドし直す。
+const MARQUEE_SPEED = 45; // px/秒
+const MARQUEE_END_HOLD = 1500; // 末尾での停止時間(ms)
+let marqueeTimer = null;
 function updateTitleMarquee() {
+  clearTimeout(marqueeTimer);
+  marqueeTimer = null;
+  $titleInner.style.transition = 'none';
+  $titleInner.style.transform = 'translateX(0)';
   const overflow = $titleInner.scrollWidth - $title.clientWidth;
-  if (overflow > 4) {
-    $title.style.setProperty('--scroll-dist', `-${overflow + 4}px`);
-    $title.classList.add('marquee');
-  } else {
-    $title.classList.remove('marquee');
-    $title.style.removeProperty('--scroll-dist');
-  }
+  if (overflow <= 4) return;
+  const dist = overflow + 4;
+  const slideMs = Math.max(1200, (dist / MARQUEE_SPEED) * 1000);
+  const loop = () => {
+    $titleInner.style.transition = 'none';
+    $titleInner.style.transform = 'translateX(0)';
+    void $titleInner.offsetWidth; // 強制リフローでリセットを確定させてからtransitionを再適用する
+    $titleInner.style.transition = `transform ${slideMs}ms linear`;
+    $titleInner.style.transform = `translateX(-${dist}px)`;
+    marqueeTimer = setTimeout(() => {
+      $titleInner.style.transition = 'none';
+      $titleInner.style.transform = 'translateX(0)';
+      marqueeTimer = setTimeout(loop, 30); // リセットの反映を待ってから再スタート
+    }, slideMs + MARQUEE_END_HOLD);
+  };
+  loop();
 }
 
 // 試聴は1曲30秒しかないので曲単位のキュー管理はせず、試聴のある曲だけを
