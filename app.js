@@ -96,6 +96,12 @@ const CLIENT_ID = (() => {
   return v;
 })();
 
+// YouTube動画のタイトルはoEmbedで非同期に解決するまで曲名が分からないため、
+// 判明したものを{videoId: title}でキャッシュしておく。再生バーにアルバム名
+// ではなく実際の曲名を出すために、キューに積む時・オーバーレイなしで
+// 再生する時のどちらでも参照する。
+const ytTitleCache = {};
+
 // みんなのスタンプ集計 { targetKey: { stampId: n } }
 const SHARED = {};
 
@@ -1447,7 +1453,7 @@ function youtubeTrackRow(album, vid, rerender) {
     <button class="stamp-slot" title="この曲にスタンプ">＋</button>`;
   row.querySelector('.tp').addEventListener('click', () => {
     const e = enrichOf(album);
-    playSingle({ title: album.title, artist: album.artist, preview: null, youtube: vid, art: artUrl(e, 100, album), album });
+    playSingle({ title: ytTitleCache[vid] || album.title, artist: album.artist, preview: null, youtube: vid, art: artUrl(e, 100, album), album });
   });
 
   const badges = row.querySelector('.tag-badges');
@@ -1471,7 +1477,13 @@ function youtubeTrackRow(album, vid, rerender) {
 
   const url = `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}&format=json`;
   fetch(url).then((res) => (res.ok ? res.json() : Promise.reject())).then((data) => {
-    if (data?.title) row.querySelector('.name').textContent = data.title;
+    if (data?.title) {
+      row.querySelector('.name').textContent = data.title;
+      ytTitleCache[vid] = data.title;
+      // ちょうど今この曲を再生中(=タイトル未解決のままキューに積まれた)なら、
+      // 再生バーの表示も後追いで曲名に更新する
+      if (queue[cursor]?.youtube === vid) { queue[cursor].title = data.title; paint(); }
+    }
   }).catch(() => {
     // Discogsには載っているがYouTube側で削除/非公開になった動画。
     // 読込中のまま固まったり再生できないまま止まったりしないよう、
@@ -1940,7 +1952,7 @@ function trackItemsOf(album) {
   const items = itunesTracks.length ? itunesTracks : (() => {
     const vids = youtubeIdsFor(album);
     if (!vids.length) return [];
-    return vids.map((vid) => ({ title: album.title, artist: album.artist, preview: null, youtube: vid, art, album }));
+    return vids.map((vid) => ({ title: ytTitleCache[vid] || album.title, artist: album.artist, preview: null, youtube: vid, art, album }));
   })();
   items.forEach((it, i) => { it.idx = i; }); // キュー復元時にtrackItemsOfの何番目かを特定するため
   return items;
