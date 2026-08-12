@@ -820,6 +820,10 @@ function clearStampFilter() {
   if (activeRegion) renderList(activeRegion);
 }
 
+// 検索オーバーレイはnavLevelの階層とは別物だが、開いた分もhistoryに1つ
+// 積んでおく。積まないと、検索窓を開いた状態でスワイプ/端末の戻るを
+// 押した時にhistoryに戻る先が無く、アプリ自体が閉じてしまっていた。
+let searchHistoryOpen = false;
 function openSearch() {
   clearStampFilter(); // スタンプ絞り込み中に検索を開いたら解除し、全件対象で探せるようにする
   searchOverlay.classList.add('open');
@@ -827,10 +831,20 @@ function openSearch() {
   searchInput.value = '';
   searchResults.innerHTML = '';
   setTimeout(() => searchInput.focus(), 50);
+  if (!searchHistoryOpen) {
+    history.pushState({ level: navLevel, search: true }, '');
+    searchHistoryOpen = true;
+  }
 }
-function closeSearch() {
+// fromPopstate: 戻る操作(popstate)からの呼び出しならtrue。この場合は
+// historyが既に1つ消化された後なので、二重にhistory.back()しない。
+function closeSearch(fromPopstate = false) {
   searchOverlay.classList.remove('open');
   document.body.classList.remove('search-open');
+  if (searchHistoryOpen) {
+    searchHistoryOpen = false;
+    if (!fromPopstate) history.back(); // ×ボタン等での明示的な閉じ操作は積んだ分を消化しておく
+  }
 }
 
 function runSearch(q) {
@@ -991,6 +1005,12 @@ function navBack() {
   if (navLevel > 0) history.back();
 }
 window.addEventListener('popstate', (e) => {
+  // 検索窓が開いている間のスワイプ/戻るは、アプリごと閉じずに検索窓だけ閉じる
+  if (searchHistoryOpen) {
+    searchHistoryOpen = false;
+    closeSearch(true);
+    return;
+  }
   const level = e.state?.level ?? 0;
   navLevel = level;
   if (level === 0) closeListUI();
