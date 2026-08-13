@@ -53,6 +53,7 @@
   <input type="number" id="yearMin" placeholder="下限" style="width:70px">
   〜
   <input type="number" id="yearMax" placeholder="上限(例: 1999)" style="width:110px">
+  <select id="styleFilter"><option value="">スタイルタグ: すべて</option></select>
   <span class="stat" id="stat"></span>
   <span class="stat" id="saveStatus"></span>
   <button id="exportBtn">⬇ 選択結果を書き出す</button>
@@ -82,6 +83,9 @@ const save = () => localStorage.setItem(STORE_KEY, JSON.stringify(state));
 let ARTISTS = [];
 let REGIONS = [];
 let saveStatusEl = null;
+const PAGE_SIZE = 150;
+let renderLimit = PAGE_SIZE;
+const resetPageAndRender = () => { renderLimit = PAGE_SIZE; render(); };
 
 async function loadServerState() {
   try {
@@ -118,17 +122,40 @@ async function boot() {
   ]);
   ARTISTS = await artistsRes.json();
   REGIONS = await regionsRes.json();
+  populateStyleFilter();
+  buildRegionOptionsHtml();
   render();
   await loadServerState();
   render(); // サーバー側の最新状態(他の人の入力分も含む)で再描画
 }
 
-function regionOptions(selectedId) {
+// 各リリースに付いてるDiscogsスタイルタグを集計し、頻度順でドロップダウンに出す。
+// Memphis Rap/Phonkのように、Gangsta/G-Funkと重なるが必ずしもガンスタ色が
+// はっきりしないタグだけを抜き出して確認したい時用。
+function populateStyleFilter() {
+  const counts = {};
+  ARTISTS.forEach((a) => a.releases.forEach((r) => (r.styles || []).forEach((s) => {
+    counts[s] = (counts[s] || 0) + 1;
+  })));
+  const sel = document.getElementById('styleFilter');
+  Object.entries(counts).sort((a, b) => b[1] - a[1]).forEach(([style, n]) => {
+    const opt = document.createElement('option');
+    opt.value = style;
+    opt.textContent = `${style}(${n})`;
+    sel.appendChild(opt);
+  });
+}
+
+// 280件近い地域の<option>を行ごとに毎回文字列生成すると、全件表示時に
+// 数百万ノード分のHTML解析が走ってページが固まっていた。共通HTMLは
+// 一度だけ作っておき、選択状態は後からselect.valueで当てる。
+let REGION_OPTIONS_HTML = '';
+function buildRegionOptionsHtml() {
   const opts = ['<option value="">-- 地域を選ぶ --</option>'];
   REGIONS.filter((r) => !r.unclassified).forEach((r) => {
-    opts.push(`<option value="${r.id}"${r.id === selectedId ? ' selected' : ''}>${r.name}(${r.area}）</option>`);
+    opts.push(`<option value="${r.id}">${r.name}(${r.area}）</option>`);
   });
-  return opts.join('');
+  REGION_OPTIONS_HTML = opts.join('');
 }
 
 function render() {
@@ -152,6 +179,8 @@ function render() {
       return true;
     }));
   }
+  const style = document.getElementById('styleFilter').value;
+  if (style) items = items.filter((a) => a.releases.some((r) => (r.styles || []).includes(style)));
 
   const doneCount = Object.keys(state).length;
   document.getElementById('stat').textContent = `${doneCount}/${ARTISTS.length} 確認済み`;
@@ -161,8 +190,12 @@ function render() {
 
   if (!items.length) { list.innerHTML = '<p class="empty">該当なし</p>'; return; }
 
+  // 全件を一度にDOM化すると(select×280option×7000行超で)固まってしまうため、
+  // 一度に描画するのは一部だけにして「もっと見る」で追加していく
+  const page = items.slice(0, renderLimit);
+
   list.innerHTML = '';
-  items.forEach((a) => {
+  page.forEach((a) => {
     const s = state[a.artist] || {};
     const row = document.createElement('div');
     row.className = 'row' + (state[a.artist] ? ' done' : '');
@@ -175,12 +208,13 @@ function render() {
         <div class="artist">${a.artist}</div>
         <p class="releases">${releasesHtml}</p>
         <div class="region">
-          <select>${regionOptions(s.regionId)}</select>
+          <select>${REGION_OPTIONS_HTML}</select>
           <input type="text" class="custom" placeholder="候補に無ければ地名を直接入力" value="${s.custom || ''}">
         </div>
       </div>`;
     const checkbox = row.querySelector('input[type="checkbox"]');
     const select = row.querySelector('select');
+    if (s.regionId) select.value = s.regionId;
     const custom = row.querySelector('.custom');
     const commit = () => {
       const decision = { include: checkbox.checked, regionId: select.value || null, custom: custom.value.trim() || null };
@@ -198,12 +232,21 @@ function render() {
     custom.addEventListener('change', commit);
     list.appendChild(row);
   });
+
+  if (items.length > page.length) {
+    const more = document.createElement('button');
+    more.textContent = `さらに表示(残り${items.length - page.length}組)`;
+    more.style.cssText = 'display:block; width:100%; margin-top:10px; padding:12px; font:inherit; font-weight:800; border:2px solid var(--ink); background:var(--paper); cursor:pointer;';
+    more.addEventListener('click', () => { renderLimit += PAGE_SIZE; render(); });
+    list.appendChild(more);
+  }
 }
 
-document.getElementById('search').addEventListener('input', render);
-document.getElementById('filterMode').addEventListener('change', render);
-document.getElementById('yearMin').addEventListener('input', render);
-document.getElementById('yearMax').addEventListener('input', render);
+document.getElementById('search').addEventListener('input', resetPageAndRender);
+document.getElementById('filterMode').addEventListener('change', resetPageAndRender);
+document.getElementById('yearMin').addEventListener('input', resetPageAndRender);
+document.getElementById('yearMax').addEventListener('input', resetPageAndRender);
+document.getElementById('styleFilter').addEventListener('change', resetPageAndRender);
 document.getElementById('exportBtn').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(state, null, 1)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
