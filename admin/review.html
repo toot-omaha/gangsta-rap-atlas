@@ -60,6 +60,7 @@
 </div>
 
 <main id="list"><p class="empty">読み込み中…</p></main>
+<datalist id="regionNames"></datalist>
 
 <footer>
   <span id="footerStat"></span>
@@ -159,6 +160,19 @@ function buildRegionOptionsHtml() {
       opts.push(`<option value="${r.id}">${r.name}(${r.area}）</option>`);
     });
   REGION_OPTIONS_HTML = opts.join('');
+
+  // 自由入力欄からも既存の地名をサジェストできるように(datalist)。
+  // 都市名が重複する地域(例: 同名の別州の街)もあるので、選ばれた時にどれを
+  // 指すかは分からない前提 — あくまで入力補助・タイプミス防止用。
+  const datalist = document.getElementById('regionNames');
+  const seen = new Set();
+  const dOpts = [];
+  REGIONS.filter((r) => !r.unclassified).forEach((r) => {
+    if (seen.has(r.name)) return;
+    seen.add(r.name);
+    dOpts.push(`<option value="${r.name}">`);
+  });
+  datalist.innerHTML = dOpts.join('');
 }
 
 function render() {
@@ -212,7 +226,7 @@ function render() {
         <p class="releases">${releasesHtml}</p>
         <div class="region">
           <select>${REGION_OPTIONS_HTML}</select>
-          <input type="text" class="custom" placeholder="候補に無ければ地名を直接入力" value="${s.custom || ''}">
+          <input type="text" class="custom" list="regionNames" placeholder="候補に無ければ地名を直接入力" value="${s.custom || ''}">
         </div>
       </div>`;
     const checkbox = row.querySelector('input[type="checkbox"]');
