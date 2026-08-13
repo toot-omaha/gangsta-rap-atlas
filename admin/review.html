@@ -152,9 +152,12 @@ function populateStyleFilter() {
 let REGION_OPTIONS_HTML = '';
 function buildRegionOptionsHtml() {
   const opts = ['<option value="">-- 地域を選ぶ --</option>'];
-  REGIONS.filter((r) => !r.unclassified).forEach((r) => {
-    opts.push(`<option value="${r.id}">${r.name}(${r.area}）</option>`);
-  });
+  REGIONS.filter((r) => !r.unclassified)
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name)) // 州名(area)ではなく都市名(name)順
+    .forEach((r) => {
+      opts.push(`<option value="${r.id}">${r.name}(${r.area}）</option>`);
+    });
   REGION_OPTIONS_HTML = opts.join('');
 }
 
