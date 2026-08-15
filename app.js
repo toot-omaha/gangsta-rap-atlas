@@ -1031,7 +1031,14 @@ function fireShot(region) {
 // 同じ階層内の遷移(別の地域を開く等)はreplaceStateで上書きし、
 // 「戻る」1回で必ず1階層だけ上がるようにする。
 let navLevel = 0;
-history.replaceState({ level: 0 }, '');
+// 共有リンクで開いた場合、地図(level 0)のhistoryエントリにそのままリンクの
+// ハッシュを残すと、「閉じる」で最後まで戻ったときにそのハッシュへ戻る
+// hashchangeが発火し、共有リンクをもう一度開いたのと同じ扱いで再度ディスクが
+// 開いてしまう(閉じても閉じても同じページが復活するように見えるバグだった)。
+// 元のハッシュはopenFromHash()に渡すため先に控えておき、level 0のURLからは
+// 消しておく。
+const initialShareHash = location.hash;
+history.replaceState({ level: 0 }, '', location.pathname + location.search);
 function navGoto(level, hash) {
   const url = hash != null ? hash : undefined;
   if (level > navLevel) history.pushState({ level }, '', url);
@@ -2329,12 +2336,19 @@ map.on('load', () => { map.resize(); refreshMarkers(); });
 // この場合ブラウザはhashchangeイベントだけを発火させ、下のnavGoto()自体は
 // pushState/replaceStateしか呼ばないためhashchange/popstateは発火しない、
 // という前提で組んである)。
-function openFromHash() {
-  const h = location.hash.slice(1);
+function openFromHash(rawHash) {
+  const h = (rawHash != null ? rawHash : location.hash).slice(1);
   if (!h.startsWith('r/')) return;
   const [regionId, discId] = h.slice(2).split('/');
   const region = REGIONS.find((r) => r.id === decodeURIComponent(regionId));
   if (!region) return;
+  // 同じ内容へ既に遷移済みなら何もしない。hashchangeとpopstateの両方が発火する
+  // 環境(Android版アプリのWebViewなど)だと、この関数が同じ1回のリンク操作で
+  // 二重に呼ばれ、そのたびにopenRegion()/renderDisc()がhistoryへpushしてしまい、
+  // 「閉じる」を何度も押さないと地図まで戻れなくなる不具合になっていた。
+  const discIdNum = discId != null ? Number(discId) : null;
+  if (activeRegion?.id === region.id
+    && (discIdNum == null ? navLevel !== 2 : currentDisc?.id === discIdNum)) return;
   openRegion(region);
   if (discId != null) {
     const album = resolveDiscShareId(region, discId);
@@ -2352,10 +2366,10 @@ function openFromHash() {
     }
   }
 }
-openFromHash();
+openFromHash(initialShareHash);
 // Android版アプリ(TWA)がバックグラウンド起動中に共有リンクを開いた場合など、
 // hashchangeとして届くケースをここで拾う。
-window.addEventListener('hashchange', openFromHash);
+window.addEventListener('hashchange', () => openFromHash());
 
 // PWAとしてインストール可能にするための最小Service Worker登録
 if ('serviceWorker' in navigator) {
