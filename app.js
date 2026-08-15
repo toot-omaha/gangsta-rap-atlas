@@ -114,7 +114,7 @@ async function loadSharedStamps() {
     Object.entries(myStamps).forEach(([key, ids]) =>
       ids.forEach((id) => { if (!SHARED[key]?.[id]) bumpShared(key, id); }));
     refreshMarkers();
-    if (activeRegion) renderList(activeRegion);
+    refreshActiveListView();
     // 絞り込みパネルの件数(globalStampCount/globalTagCount)はSHARED依存なので、
     // 読み込み完了後に作り直さないと0のまま表示され続けてしまう
     buildFilterBar();
@@ -227,7 +227,7 @@ async function loadTagScores() {
     refreshMarkers();
     buildFilterBar();
     buildTagBar();
-    if (activeRegion) renderList(activeRegion);
+    refreshActiveListView();
   } catch { /* オフラインでもローカルだけで動く */ }
 }
 
@@ -494,6 +494,16 @@ async function autoPullFavSync() {
   if (listView === 'favs') renderFavs(false);
 }
 
+// 非同期の同期処理(autoPullFavSync等)完了時に一覧を再描画するための共通処理。
+// ディスク詳細を見ている最中にactiveRegionだけを見てrenderList()すると、
+// 裏の#listが地域一覧に差し替わってしまう(共有リンクでディスクを開いた直後に
+// autoPullFavSyncのfetchが遅れて返ってくると再現しやすいバグだった)ので、
+// 詳細表示中はrenderDisc()側を再描画する。
+function refreshActiveListView() {
+  if (navLevel === 2 && currentDisc) renderDisc(currentDisc, false);
+  else if (activeRegion) renderList(activeRegion);
+}
+
 // サーバー行のmystamps(自分のチェック済みスタンプ)をローカルへ反映する。
 // 列が無ければ何もしない(have/want同様、サーバー側を正とするlast-write-wins)。
 function applyMyStampsFromRow(row) {
@@ -503,7 +513,7 @@ function applyMyStampsFromRow(row) {
   Object.keys(myStamps).forEach((k) => delete myStamps[k]);
   Object.entries(row.mystamps).forEach(([k, v]) => { myStamps[k] = v; });
   saveStamps();
-  if (activeRegion) renderList(activeRegion);
+  refreshActiveListView();
 }
 
 // サーバー行のeras(年代フィルター)をローカルへ反映する。列が無い/空なら何もしない
@@ -516,7 +526,7 @@ function applyErasFromRow(row) {
   saveEras();
   buildEraBar();
   refreshMarkers();
-  if (activeRegion) renderList(activeRegion);
+  refreshActiveListView();
 }
 
 // サイコロ: 新しい名前の行を現在のローカル状態で作成し、旧行には移転先マーカーを残す。
@@ -2313,7 +2323,18 @@ map.on('load', () => { map.resize(); refreshMarkers(); });
   openRegion(region);
   if (discId != null) {
     const album = resolveDiscShareId(region, discId);
-    if (album) setTimeout(() => renderDisc(album), 460);
+    if (album) {
+      setTimeout(() => {
+        // openRegion()はbody.detailの付与を着弾演出のため450ms遅延させるが、
+        // ページ読み込み直後は他の初期化処理が重なってこのタイマーの発火が
+        // ずれやすく、renderDisc()側のタイマー(460ms)がそれより先に走ると
+        // #listがopacity:0のまま操作できないバグになっていた
+        // (共有リンクを開いた直後だけ再現しやすかった理由)。
+        // ここで明示的に付け直すことで、どちらが先に発火しても確実にする。
+        document.body.classList.add('detail');
+        renderDisc(album);
+      }, 460);
+    }
   }
 })();
 
