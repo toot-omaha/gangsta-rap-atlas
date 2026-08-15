@@ -1049,6 +1049,13 @@ window.addEventListener('popstate', (e) => {
     closeSearch(true);
     return;
   }
+  // e.stateが無い(=このアプリのnavGoto経由ではない)状態でr/...のハッシュに
+  // 変わっている場合は、共有リンクを開いた遷移とみなしてそちらを優先する
+  // (hashchangeが発火しない環境向けの保険、openFromHash()参照)。
+  if (!e.state && location.hash.slice(1).startsWith('r/')) {
+    openFromHash();
+    return;
+  }
   const level = e.state?.level ?? 0;
   navLevel = level;
   if (level === 0) closeListUI();
@@ -2313,8 +2320,16 @@ autoPullFavSync();
 refreshMarkers();
 map.on('load', () => { map.resize(); refreshMarkers(); });
 
-// 共有リンク(#r/<地域ID>または#r/<地域ID>/<artist|title>)を開いたときの復元
-(function openFromHash() {
+// 共有リンク(#r/<地域ID>または#r/<地域ID>/<artist|title>)を開いたときの復元。
+// ページの初回読み込み時だけでなく、ページを閉じずに(=スクリプトを再実行せずに)
+// 別の共有リンクを開いた場合にも呼ばれる必要があるため、hashchange/popstateの
+// リスナーからも呼べるよう独立した関数にしてある(Android版アプリがバックグラウンド
+// 起動中に共有リンクを開くと、URLのハッシュ部分だけが変わる「同一ドキュメント内
+// 遷移」としてOS/ブラウザに扱われ、ページの初回読み込み処理は再実行されない。
+// この場合ブラウザはhashchangeイベントだけを発火させ、下のnavGoto()自体は
+// pushState/replaceStateしか呼ばないためhashchange/popstateは発火しない、
+// という前提で組んである)。
+function openFromHash() {
   const h = location.hash.slice(1);
   if (!h.startsWith('r/')) return;
   const [regionId, discId] = h.slice(2).split('/');
@@ -2336,7 +2351,11 @@ map.on('load', () => { map.resize(); refreshMarkers(); });
       }, 460);
     }
   }
-})();
+}
+openFromHash();
+// Android版アプリ(TWA)がバックグラウンド起動中に共有リンクを開いた場合など、
+// hashchangeとして届くケースをここで拾う。
+window.addEventListener('hashchange', openFromHash);
 
 // PWAとしてインストール可能にするための最小Service Worker登録
 if ('serviceWorker' in navigator) {
