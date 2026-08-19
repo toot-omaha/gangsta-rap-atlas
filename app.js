@@ -467,6 +467,40 @@ async function pullFavSync(name) {
   return rows[0] || null;
 }
 
+// admin/review.html(非公開のレビューツール)で「地図に公開」されたリリースを
+// 読み足す。data.js自体は書き換えず、REGIONSへその場でpush()して重ねるだけ
+// なので、レビューでの追加はgit commit無しに即座に地図へ反映される。
+// 既存の地図データと衝突しないよう、公開リリースのidには大きなオフセットを足す
+// (このオフセット未満は将来もdata.js側の採番として使い続ける想定)。
+const PUBLISHED_ID_OFFSET = 1000000;
+async function loadPublishedReleases() {
+  try {
+    const [regionsRes, albumsRes] = await Promise.all([
+      fetch(`${SB_URL}/published_regions?select=id,name,area,lat,lng`, { headers: SB_HEADERS }),
+      fetch(`${SB_URL}/published_albums?select=id,title,artist,year,label,discogs_url,region_id`, { headers: SB_HEADERS }),
+    ]);
+    if (!regionsRes.ok || !albumsRes.ok) return;
+    const pubRegions = await regionsRes.json();
+    const pubAlbums = await albumsRes.json();
+    pubRegions.forEach((r) => {
+      if (REGIONS.some((rr) => rr.id === r.id)) return;
+      REGIONS.push({ id: r.id, name: r.name, area: r.area, lng: r.lng, lat: r.lat, albums: [] });
+    });
+    pubAlbums.forEach((a) => {
+      const region = REGIONS.find((r) => r.id === a.region_id);
+      if (!region) return; // 地域側の反映がまだ届いていない/削除された等
+      const id = PUBLISHED_ID_OFFSET + a.id;
+      if (region.albums.some((al) => al.id === id)) return;
+      region.albums.push({
+        id, artist: a.artist, title: a.title, year: a.year, label: a.label,
+        youtubeId: null, discogsUrl: a.discogs_url, stampSeed: {},
+      });
+    });
+    refreshMarkers();
+    refreshActiveListView();
+  } catch { /* オフラインでもローカルだけで動く */ }
+}
+
 // ページ読込時: 既にStreet Nameがあればサーバー側の内容で置き換える
 // (プッシュは変更のたびに即時実行されるので、ここは主に「他端末での変更」を拾うためのプル)
 // 注意: 以前はサーバー側と和集合マージしてから書き戻していたが、それだと
@@ -2124,7 +2158,11 @@ function paint() {
   const q = queue[cursor];
   saveQueue();
   $count.textContent = `${Math.max(0, queue.length - Math.max(cursor, 0))} 曲`;
-  $play.textContent = (q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶';
+  // キューが空の間は、押すと年代・スタンプの絞り込み範囲内からランダム再生が
+  // 始まることが見た目で分かるよう、シャッフルアイコン+専用配色にする
+  // (押しても無反応に見えるボタンにしないため)。
+  $play.classList.toggle('shuffle', !q);
+  $play.textContent = !q ? '🔀' : ((q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶');
   syncMediaSession(q);
   if (!q) {
     $titleInner.textContent = t('qEmptyT');
@@ -2163,12 +2201,25 @@ function next() {
 }
 function prev() { if (cursor > 0) { cursor--; playCurrent(); } }
 
+// キューが空の状態で▶を押した時のランダム再生用。年代・スタンプの絞り込み
+// (albumsOf()と同じ条件)を尊重し、試聴/動画が1曲も無い盤は対象から外す。
+function randomPlayableAlbum() {
+  const pool = REGIONS.flatMap((r) => albumsOf(r)).filter((a) => trackItemsOf(a).length > 0);
+  if (!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
 audio.addEventListener('play', paint);
 audio.addEventListener('pause', paint);
 document.getElementById('nextBtn').addEventListener('click', next);
 document.getElementById('prevBtn').addEventListener('click', prev);
 $play.addEventListener('click', () => {
   const q = queue[cursor];
+  if (!q) {
+    const album = randomPlayableAlbum();
+    if (album) playAlbum(album, Math.floor(Math.random() * trackItemsOf(album).length));
+    return;
+  }
   if (q?.preview) {
     audio.paused ? audio.play().catch(() => {}) : audio.pause();
   } else if (q?.youtube && ytReady) {
@@ -2323,6 +2374,7 @@ applyLang();
 loadSharedStamps();
 loadTagScores();
 autoPullFavSync();
+loadPublishedReleases();
 
 refreshMarkers();
 map.on('load', () => { map.resize(); refreshMarkers(); });

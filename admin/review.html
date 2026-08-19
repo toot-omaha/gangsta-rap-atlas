@@ -29,6 +29,12 @@
   .row .region { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
   .row select, .row input[type="text"].custom { font: inherit; font-size: 12px; padding: 4px 6px; border: 2px solid var(--ink); background: var(--paper); }
   .row select { min-width: 160px; }
+  .row .pub { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .row .pub button { font: inherit; font-size: 11px; font-weight: 800; padding: 4px 10px; border: 2px solid var(--gold); background: transparent; color: var(--ink); cursor: pointer; }
+  .row .pub button:hover { background: var(--gold); }
+  .row .pub button:disabled { opacity: .5; cursor: default; background: transparent; }
+  .row .pub .pubstat { font-size: 11px; color: var(--ink-2); }
+  .row .pub .pubstat.on { color: var(--red); font-weight: 800; }
   .empty { padding: 40px; text-align: center; color: var(--ink-2); font-size: 13px; }
   footer { position: fixed; left: 0; right: 0; bottom: 0; background: var(--ink); color: var(--paper); padding: 10px 16px; display: flex; gap: 10px; align-items: center; border-top: 3px solid var(--red); font-size: 12px; }
   footer button { font: inherit; font-weight: 800; padding: 8px 16px; border: 2px solid var(--paper); background: transparent; color: var(--paper); cursor: pointer; }
@@ -49,6 +55,11 @@
     <option value="undone">未確認のみ</option>
     <option value="checked">採用にした分のみ</option>
   </select>
+  <select id="publishFilter">
+    <option value="unpublished">未公開</option>
+    <option value="published">公開済み</option>
+    <option value="allPublish">公開状態: すべて</option>
+  </select>
   <span class="stat">年代</span>
   <input type="number" id="yearMin" placeholder="下限" style="width:70px">
   〜
@@ -57,6 +68,8 @@
   <span class="stat" id="stat"></span>
   <span class="stat" id="saveStatus"></span>
   <button id="exportBtn">⬇ 選択結果を書き出す</button>
+  <button id="publishAllBtn">📍 表示中の採用ぶんをまとめて公開</button>
+  <span class="stat" id="publishStatus"></span>
 </div>
 
 <main id="list"><p class="empty">読み込み中…</p></main>
@@ -88,6 +101,102 @@ const PAGE_SIZE = 150;
 let renderLimit = PAGE_SIZE;
 const resetPageAndRender = () => { renderLimit = PAGE_SIZE; render(); };
 
+// 「地図に公開」機能。data.js自体は書き換えず、published_regions/
+// published_albumsへ書き込み、メインサイト側がそれを読み足して重ねて表示する。
+let publishedMap = {}; // { artist: regionId } (公開済みなら入る)
+let publishedRegionsCache = []; // 既にジオコーディング済みのカスタム地域(重複ジオコーディング回避用)
+let publishStatusEl = null;
+let lastFilteredItems = [];
+const normalizeName = (s) => (s || '').trim().toLowerCase();
+
+async function loadPublishedState() {
+  try {
+    const [albumsRes, regionsRes] = await Promise.all([
+      fetch(`${SB_URL}/published_albums?select=source_artist,region_id`, { headers: SB_HEADERS }),
+      fetch(`${SB_URL}/published_regions?select=id,name,area,lat,lng`, { headers: SB_HEADERS }),
+    ]);
+    if (albumsRes.ok) {
+      publishedMap = {};
+      (await albumsRes.json()).forEach((r) => { publishedMap[r.source_artist] = r.region_id; });
+    }
+    if (regionsRes.ok) publishedRegionsCache = await regionsRes.json();
+  } catch { /* 公開状態が引けなくても閲覧自体は継続する */ }
+}
+
+// Nominatim(OSM)で1件だけジオコーディングする。人が1件ずつボタンを押して
+// 呼ぶ想定の低頻度アクセスなので、収集スクリプト側のような専用レート制御は
+// 設けていない(連打だけはボタンのdisabledで抑止する)。
+async function geocodePlace(place) {
+  const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=${encodeURIComponent(place)}`);
+  if (!res.ok) return null;
+  const rows = await res.json();
+  if (!rows.length) return null;
+  const r = rows[0];
+  const addr = r.address || {};
+  const areaBits = [addr.state, addr.country].filter(Boolean);
+  return { lat: parseFloat(r.lat), lng: parseFloat(r.lon), area: areaBits.join(', ') || 'CUSTOM' };
+}
+
+// レビューでの地域指定(既存地域 or 自由入力の地名)を、地図で使えるregion_id
+// に解決する。自由入力の地名は、既存地域名・過去に公開済みの地名と表記が
+// 一致すればそれを再利用し、無ければ新規にジオコーディングして
+// published_regionsへ追加する。
+async function resolveRegionForPublish(decision) {
+  if (decision.regionId) return decision.regionId;
+  const customName = (decision.custom || '').trim();
+  if (!customName) return null;
+  const existing = REGIONS.find((r) => normalizeName(r.name) === normalizeName(customName));
+  if (existing) return existing.id;
+  const already = publishedRegionsCache.find((r) => normalizeName(r.name) === normalizeName(customName));
+  if (already) return already.id;
+  const geo = await geocodePlace(customName);
+  if (!geo) throw new Error(`ジオコーディングに失敗しました: ${customName}`);
+  const slug = customName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'region';
+  let id = `custom-${slug}`;
+  let n = 2;
+  while (REGIONS.some((r) => r.id === id) || publishedRegionsCache.some((r) => r.id === id)) id = `custom-${slug}-${n++}`;
+  const row = { id, name: customName, area: geo.area, lat: geo.lat, lng: geo.lng };
+  const res = await fetch(`${SB_URL}/published_regions`, {
+    method: 'POST',
+    headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify(row),
+  });
+  if (!res.ok) throw new Error(`地域の保存に失敗しました: ${customName}`);
+  publishedRegionsCache.push(row);
+  return id;
+}
+
+// 1アーティスト分(=その候補に載っている全リリース)を公開/更新する。
+// discogs_release_idをキーにUPSERTするので、地域を直してからもう一度
+// 実行すれば同じ行が上書きされる(=あとからの修正にそのまま対応できる)。
+async function publishArtist(a) {
+  const decision = state[a.artist];
+  if (!decision?.include) throw new Error('採用チェックが入っていません');
+  const regionId = await resolveRegionForPublish(decision);
+  if (!regionId) throw new Error('地域が未指定です');
+  const rows = a.releases.map((r) => ({
+    source_artist: a.artist,
+    discogs_release_id: String(r.id),
+    title: r.title, artist: a.artist, year: r.year || null, label: r.label,
+    discogs_url: r.url, region_id: regionId, updated_at: new Date().toISOString(),
+  }));
+  const res = await fetch(`${SB_URL}/published_albums`, {
+    method: 'POST',
+    headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify(rows),
+  });
+  if (!res.ok) throw new Error('公開の保存に失敗しました');
+  publishedMap[a.artist] = regionId;
+}
+
+// 採用が外された(include=false)のに公開済みのままのものを取り下げる。
+async function unpublishArtist(a) {
+  await fetch(`${SB_URL}/published_albums?source_artist=eq.${encodeURIComponent(a.artist)}`, {
+    method: 'DELETE', headers: SB_HEADERS,
+  });
+  delete publishedMap[a.artist];
+}
+
 async function loadServerState() {
   try {
     const res = await fetch(`${SB_URL}/review_decisions?select=artist,include,region_id,custom_region`, { headers: SB_HEADERS });
@@ -118,6 +227,7 @@ async function pushDecision(artist, decision) {
 
 async function boot() {
   saveStatusEl = document.getElementById('saveStatus');
+  publishStatusEl = document.getElementById('publishStatus');
   const [artistsRes, regionsRes] = await Promise.all([
     fetch('candidates.json'), fetch('regions.json'),
   ]);
@@ -126,8 +236,8 @@ async function boot() {
   populateStyleFilter();
   buildRegionOptionsHtml();
   render();
-  await loadServerState();
-  render(); // サーバー側の最新状態(他の人の入力分も含む)で再描画
+  await Promise.all([loadServerState(), loadPublishedState()]);
+  render(); // サーバー側の最新状態(他の人の入力分・公開状態も含む)で再描画
 }
 
 // 各リリースに付いてるDiscogsスタイルタグを集計し、頻度順でドロップダウンに出す。
@@ -198,6 +308,9 @@ function render() {
   }
   const style = document.getElementById('styleFilter').value;
   if (style) items = items.filter((a) => a.releases.some((r) => (r.styles || []).includes(style)));
+  const publishMode = document.getElementById('publishFilter').value;
+  if (publishMode === 'unpublished') items = items.filter((a) => !publishedMap[a.artist]);
+  else if (publishMode === 'published') items = items.filter((a) => !!publishedMap[a.artist]);
 
   const doneCount = Object.keys(state).length;
   document.getElementById('stat').textContent = `${doneCount}/${ARTISTS.length} 確認済み`;
@@ -205,6 +318,7 @@ function render() {
   document.getElementById('footerStat').textContent =
     `全${ARTISTS.length}組 / 確認済み${doneCount} / 採用${checkedCount}`;
 
+  lastFilteredItems = items;
   if (!items.length) { list.innerHTML = '<p class="empty">該当なし</p>'; return; }
 
   // 全件を一度にDOM化すると(select×280option×7000行超で)固まってしまうため、
@@ -228,11 +342,25 @@ function render() {
           <select>${REGION_OPTIONS_HTML}</select>
           <input type="text" class="custom" list="regionNames" placeholder="候補に無ければ地名を直接入力" value="${s.custom || ''}">
         </div>
+        <div class="pub">
+          <span class="pubstat"></span>
+          <button type="button" class="pubbtn"></button>
+        </div>
       </div>`;
     const checkbox = row.querySelector('input[type="checkbox"]');
     const select = row.querySelector('select');
     if (s.regionId) select.value = s.regionId;
     const custom = row.querySelector('.custom');
+    const pubstat = row.querySelector('.pubstat');
+    const pubbtn = row.querySelector('.pubbtn');
+    const refreshPubUi = () => {
+      const isPublished = !!publishedMap[a.artist];
+      pubstat.textContent = isPublished ? '● 公開済み' : '未公開';
+      pubstat.classList.toggle('on', isPublished);
+      pubbtn.textContent = isPublished ? '更新を反映' : '地図に公開';
+      pubbtn.disabled = !checkbox.checked;
+    };
+    refreshPubUi();
     const commit = () => {
       const decision = { include: checkbox.checked, regionId: select.value || null, custom: custom.value.trim() || null };
       state[a.artist] = decision;
@@ -243,10 +371,27 @@ function render() {
       const cc = Object.values(state).filter((x) => x.include).length;
       document.getElementById('footerStat').textContent =
         `全${ARTISTS.length}組 / 確認済み${Object.keys(state).length} / 採用${cc}`;
+      // 採用チェックを外したのに公開済みのままなら、自動で地図からも下げる
+      if (!checkbox.checked && publishedMap[a.artist]) {
+        unpublishArtist(a).then(refreshPubUi);
+      } else {
+        refreshPubUi();
+      }
     };
     checkbox.addEventListener('change', commit);
     select.addEventListener('change', commit);
     custom.addEventListener('change', commit);
+    pubbtn.addEventListener('click', async () => {
+      pubbtn.disabled = true;
+      pubstat.textContent = '公開中…';
+      try {
+        await publishArtist(a);
+        refreshPubUi();
+      } catch (e) {
+        pubstat.textContent = `失敗: ${e.message}`;
+        pubbtn.disabled = false;
+      }
+    });
     list.appendChild(row);
   });
 
@@ -264,6 +409,28 @@ document.getElementById('filterMode').addEventListener('change', resetPageAndRen
 document.getElementById('yearMin').addEventListener('input', resetPageAndRender);
 document.getElementById('yearMax').addEventListener('input', resetPageAndRender);
 document.getElementById('styleFilter').addEventListener('change', resetPageAndRender);
+document.getElementById('publishFilter').addEventListener('change', resetPageAndRender);
+document.getElementById('publishAllBtn').addEventListener('click', async () => {
+  const targets = lastFilteredItems.filter((a) => state[a.artist]?.include && !publishedMap[a.artist]);
+  if (!targets.length) { publishStatusEl.textContent = '対象なし(表示中に未公開の採用ぶんが無い)'; return; }
+  const btn = document.getElementById('publishAllBtn');
+  btn.disabled = true;
+  let ok = 0;
+  let fail = 0;
+  for (const a of targets) {
+    publishStatusEl.textContent = `公開中… ${ok + fail + 1}/${targets.length}(${a.artist})`;
+    try {
+      await publishArtist(a);
+      ok++;
+    } catch (e) {
+      fail++;
+      console.error(a.artist, e);
+    }
+  }
+  publishStatusEl.textContent = fail ? `完了: ${ok}件公開 / ${fail}件失敗(コンソール参照)` : `完了: ${ok}件公開しました`;
+  btn.disabled = false;
+  render();
+});
 document.getElementById('exportBtn').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(state, null, 1)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
