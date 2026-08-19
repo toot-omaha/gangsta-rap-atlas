@@ -1943,8 +1943,10 @@ const $artist = document.getElementById('playerArtist');
 const $count = document.getElementById('queueCount');
 const $art = document.querySelector('.player-art');
 const $play = document.getElementById('playBtn');
-// キューが空の時の▶(=ランダム再生)用アイコン。他のヘッダーアイコンと
-// 同じ線画スタイル(stroke=currentColor)に合わせてある。
+// 再生バーの▶/⏸/シャッフルは絵文字グリフだと環境によって太さ・位置が
+// バラつくため、他のヘッダーアイコンと同じSVG(currentColor)に統一する。
+const PLAY_ICON_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 4l14 8-14 8V4z" fill="currentColor"/></svg>';
+const PAUSE_ICON_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="5" y="4" width="5" height="16" fill="currentColor"/><rect x="14" y="4" width="5" height="16" fill="currentColor"/></svg>';
 const SHUFFLE_ICON_SVG = `<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
   <polyline points="16 3 21 3 21 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <line x1="4" y1="20" x2="21" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -2168,10 +2170,10 @@ function paint() {
   saveQueue();
   $count.textContent = `${Math.max(0, queue.length - Math.max(cursor, 0))} 曲`;
   // キューが空の間は、押すと年代・スタンプの絞り込み範囲内からランダム再生が
-  // 始まることが見た目で分かるよう、他のアイコンボタンと合わせたSVGの
-  // シャッフルアイコンにする(配色は通常の▶と同じまま)。
+  // 始まることが見た目で分かるよう、シャッフルアイコンにする(配色は通常の
+  // ▶と同じまま)。
   $play.innerHTML = !q ? SHUFFLE_ICON_SVG
-    : ((q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶');
+    : ((q?.youtube ? ytIsPlaying() : !audio.paused) ? PAUSE_ICON_SVG : PLAY_ICON_SVG);
   syncMediaSession(q);
   if (!q) {
     $titleInner.textContent = t('qEmptyT');
@@ -2379,6 +2381,7 @@ document.getElementById('langBtn').addEventListener('click', () => {
   applyLang();
 });
 restoreQueue();
+paint(); // restoreQueue()は保存済みキューが無いと何もしないため、真っ新な初回起動時にも▶アイコンをSVGへ差し替える
 applyLang();
 loadSharedStamps();
 loadTagScores();
