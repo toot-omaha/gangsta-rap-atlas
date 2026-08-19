@@ -1882,8 +1882,43 @@ let queue = [], cursor = -1;
 // next()がアルバムを使い切っても地域内の次のアルバムへ進まず、続けて別の
 // ランダムなアルバムへ飛ぶ。ユーザーが自分で何かを選んで再生した時点で解除する。
 let shuffleMode = false;
+// シャッフル中、今の盤の最後の曲まで来た時点で次に流す盤をあらかじめ決めて
+// おく(先読み用)。next()側で使い切ったらnullに戻す。
+let pendingShuffleAlbum = null;
+// 次の試聴だけあらかじめ取得しておく隠しAudio(切り替え時の読み込み待ちを短縮する)
+let preloadAudio = null;
+// ユーザー自身が▶/⏸で一時停止したかどうか。バックグラウンドで再生が
+// 落ちた場合と区別し、後者だけ復帰時に自動再開する。
+let userPaused = false;
 const audio = new Audio();
 audio.addEventListener('ended', () => next());
+
+// キューの次の曲(シャッフル中で盤の末尾まで来ている場合は、先読み済み/
+// これから先読みする次の盤の1曲目)の試聴を先読みしておく。
+function preloadNextTrack() {
+  let nextItem = queue[cursor + 1];
+  if (!nextItem && shuffleMode && cursor === queue.length - 1) {
+    if (!pendingShuffleAlbum) pendingShuffleAlbum = randomPlayableAlbum();
+    nextItem = pendingShuffleAlbum ? trackItemsOf(pendingShuffleAlbum)[0] : null;
+  }
+  if (!nextItem?.preview) return;
+  if (!preloadAudio) preloadAudio = new Audio();
+  if (preloadAudio.src !== nextItem.preview) {
+    preloadAudio.src = nextItem.preview;
+    preloadAudio.preload = 'auto';
+    preloadAudio.load();
+  }
+}
+
+// バックグラウンドで再生が止まってしまっても、アプリに戻ってきたタイミングで
+// (ユーザー自身が一時停止していない限り)自動で再生を再開する。
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden || userPaused) return;
+  const q = queue[cursor];
+  if (!q) return;
+  if (q.preview && audio.paused) audio.play().catch(() => {});
+  else if (q.youtube && ytReady && !ytIsPlaying()) ytPlayer.playVideo();
+});
 
 // ---------- キューの永続化(リロードしても再生が「ゼロから」にならないように) ----------
 // キューの中身そのもの(album等の巨大なオブジェクト)は保存せず、
@@ -2040,7 +2075,7 @@ function albumQueueIndex(album) {
 // 通常の▶(アルバムカード/曲行): 今の再生位置に差し込んで即座に頭出しする。
 // 再生中だった残りのキューはキューから消さず、差し込んだ分だけ後ろへスライドする。
 function playAlbum(album, startIndex = 0) {
-  shuffleMode = false; // ランダム再生中でも、個別に選んで▶したら通常再生に戻す
+  shuffleMode = false; pendingShuffleAlbum = null; // ランダム再生中でも、個別に選んで▶したら通常再生に戻す
   const existing = albumQueueIndex(album);
   if (existing !== -1) {
     // 既にキューにあるなら重複追加せず、その位置から再生し直すだけにする。
@@ -2067,7 +2102,7 @@ function playAlbum(album, startIndex = 0) {
 // キューに積む(この曲が終わったら元のキュー/前の曲に戻ってしまい
 // 使い勝手が悪かったため。この曲番号から先のキューは丸ごと置き換える)。
 function playSingle(item) {
-  shuffleMode = false; // 同上、単曲を選んで▶した場合も通常再生に戻す
+  shuffleMode = false; pendingShuffleAlbum = null; // 同上、単曲を選んで▶した場合も通常再生に戻す
   const items = trackItemsOf(item.album);
   const idx = items.findIndex((it) =>
     (item.preview && it.preview === item.preview) || (item.youtube && it.youtube === item.youtube));
@@ -2143,6 +2178,8 @@ function playCurrent() {
     audio.pause(); audio.removeAttribute('src');
     if (ytReady) ytPlayer.stopVideo();
   }
+  userPaused = false; // 新しい曲の再生を始めたので、以前の一時停止状態は解除
+  preloadNextTrack();
   paint();
 }
 
@@ -2200,7 +2237,8 @@ function paint() {
 function next() {
   if (cursor < queue.length - 1) { cursor++; playCurrent(); return; }
   if (shuffleMode) {
-    const album = randomPlayableAlbum();
+    const album = pendingShuffleAlbum || randomPlayableAlbum();
+    pendingShuffleAlbum = null;
     if (album) {
       const items = trackItemsOf(album);
       queue.push(...items);
@@ -2251,9 +2289,11 @@ $play.addEventListener('click', () => {
     return;
   }
   if (q?.preview) {
-    audio.paused ? audio.play().catch(() => {}) : audio.pause();
+    if (audio.paused) { userPaused = false; audio.play().catch(() => {}); }
+    else { userPaused = true; audio.pause(); }
   } else if (q?.youtube && ytReady) {
-    ytIsPlaying() ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
+    if (ytIsPlaying()) { userPaused = true; ytPlayer.pauseVideo(); }
+    else { userPaused = false; ytPlayer.playVideo(); }
   }
 });
 // 再生バーから直接、今流れてる曲にスタンプを押せるように
@@ -2290,7 +2330,7 @@ document.querySelector('.player-now').addEventListener('click', () => {
   renderDisc(album);
 });
 document.getElementById('clearQueue').addEventListener('click', () => {
-  queue = []; cursor = -1; shuffleMode = false;
+  queue = []; cursor = -1; shuffleMode = false; pendingShuffleAlbum = null;
   audio.pause(); audio.removeAttribute('src');
   if (ytReady) ytPlayer.stopVideo();
   paint();
