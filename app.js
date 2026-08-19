@@ -1943,6 +1943,15 @@ const $artist = document.getElementById('playerArtist');
 const $count = document.getElementById('queueCount');
 const $art = document.querySelector('.player-art');
 const $play = document.getElementById('playBtn');
+// キューが空の時の▶(=ランダム再生)用アイコン。他のヘッダーアイコンと
+// 同じ線画スタイル(stroke=currentColor)に合わせてある。
+const SHUFFLE_ICON_SVG = `<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+  <polyline points="16 3 21 3 21 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="4" y1="20" x2="21" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <polyline points="21 16 21 21 16 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="15" y1="15" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <line x1="4" y1="4" x2="9" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
 
 // 曲名が枠に入りきらない時だけ、少し止まってスライドし後半を見せる
 // マーキー演出を有効化する(入りきる曲名では何もしない)
@@ -2159,10 +2168,10 @@ function paint() {
   saveQueue();
   $count.textContent = `${Math.max(0, queue.length - Math.max(cursor, 0))} 曲`;
   // キューが空の間は、押すと年代・スタンプの絞り込み範囲内からランダム再生が
-  // 始まることが見た目で分かるよう、シャッフルアイコン+専用配色にする
-  // (押しても無反応に見えるボタンにしないため)。
-  $play.classList.toggle('shuffle', !q);
-  $play.textContent = !q ? '🔀' : ((q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶');
+  // 始まることが見た目で分かるよう、他のアイコンボタンと合わせたSVGの
+  // シャッフルアイコンにする(配色は通常の▶と同じまま)。
+  $play.innerHTML = !q ? SHUFFLE_ICON_SVG
+    : ((q?.youtube ? ytIsPlaying() : !audio.paused) ? '⏸' : '▶');
   syncMediaSession(q);
   if (!q) {
     $titleInner.textContent = t('qEmptyT');
