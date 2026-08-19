@@ -1878,6 +1878,10 @@ function trackRow(album, track, idx, rerender) {
 // 曲が終わると ended → next() で次の曲へ。アルバム単位でキューに積む。
 // ※フル再生に広げるときは YouTube IFrame API / Spotify 埋め込みをここに足す。
 let queue = [], cursor = -1;
+// キューが空の時の▶(ランダム再生)から始まった連続再生かどうか。trueの間は
+// next()がアルバムを使い切っても地域内の次のアルバムへ進まず、続けて別の
+// ランダムなアルバムへ飛ぶ。ユーザーが自分で何かを選んで再生した時点で解除する。
+let shuffleMode = false;
 const audio = new Audio();
 audio.addEventListener('ended', () => next());
 
@@ -2036,6 +2040,7 @@ function albumQueueIndex(album) {
 // 通常の▶(アルバムカード/曲行): 今の再生位置に差し込んで即座に頭出しする。
 // 再生中だった残りのキューはキューから消さず、差し込んだ分だけ後ろへスライドする。
 function playAlbum(album, startIndex = 0) {
+  shuffleMode = false; // ランダム再生中でも、個別に選んで▶したら通常再生に戻す
   const existing = albumQueueIndex(album);
   if (existing !== -1) {
     // 既にキューにあるなら重複追加せず、その位置から再生し直すだけにする。
@@ -2062,6 +2067,7 @@ function playAlbum(album, startIndex = 0) {
 // キューに積む(この曲が終わったら元のキュー/前の曲に戻ってしまい
 // 使い勝手が悪かったため。この曲番号から先のキューは丸ごと置き換える)。
 function playSingle(item) {
+  shuffleMode = false; // 同上、単曲を選んで▶した場合も通常再生に戻す
   const items = trackItemsOf(item.album);
   const idx = items.findIndex((it) =>
     (item.preview && it.preview === item.preview) || (item.youtube && it.youtube === item.youtube));
@@ -2193,6 +2199,16 @@ function paint() {
 // 続ける(試聴の無いアルバムは飛ばす)。地域の末尾まで来たら自然に停止する。
 function next() {
   if (cursor < queue.length - 1) { cursor++; playCurrent(); return; }
+  if (shuffleMode) {
+    const album = randomPlayableAlbum();
+    if (album) {
+      const items = trackItemsOf(album);
+      queue.push(...items);
+      cursor++;
+      playCurrent();
+      return;
+    }
+  }
   const lastAlbum = queue[queue.length - 1]?.album;
   const region = lastAlbum && REGIONS.find((r) => r.albums.includes(lastAlbum));
   if (region) {
@@ -2228,7 +2244,10 @@ $play.addEventListener('click', () => {
   const q = queue[cursor];
   if (!q) {
     const album = randomPlayableAlbum();
-    if (album) playAlbum(album, Math.floor(Math.random() * trackItemsOf(album).length));
+    if (album) {
+      playAlbum(album); // 1曲目から(playAlbum内でshuffleMode=falseされるので、その後で立て直す)
+      shuffleMode = true; // このアルバムを聴き終えたら続けて別のランダムなアルバムへ
+    }
     return;
   }
   if (q?.preview) {
@@ -2271,7 +2290,7 @@ document.querySelector('.player-now').addEventListener('click', () => {
   renderDisc(album);
 });
 document.getElementById('clearQueue').addEventListener('click', () => {
-  queue = []; cursor = -1;
+  queue = []; cursor = -1; shuffleMode = false;
   audio.pause(); audio.removeAttribute('src');
   if (ytReady) ytPlayer.stopVideo();
   paint();
