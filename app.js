@@ -1893,6 +1893,22 @@ let userPaused = false;
 const audio = new Audio();
 audio.addEventListener('ended', () => next());
 
+// シャッフルをやめてユーザー選択の再生に切り替える。プレイリスト連結の
+// 先読みでキューに実体化していた未再生のランダムアルバム(shuffleAuto印)は
+// ここで取り除く(残すと、選んだアルバムの後に選んでいないランダム連結分が
+// 延々と続いてしまう)。今流れている曲自体は消さない。
+function exitShuffle() {
+  shuffleMode = false;
+  pendingShuffleAlbum = null;
+  let removed = false;
+  for (let i = queue.length - 1; i > cursor; i--) {
+    if (queue[i].shuffleAuto) { queue.splice(i, 1); removed = true; }
+  }
+  // キューから消した分だけYouTubeプレイヤー上のプレイリストと中身がズレる
+  // ので、控えを破棄して次の再生時に載せ直させる
+  if (removed) resetYtPlaylist();
+}
+
 // キューの次の曲(シャッフル中で盤の末尾まで来ている場合は、先読み済み/
 // これから先読みする次の盤の1曲目)の試聴を先読みしておく。
 function preloadNextTrack() {
@@ -1917,7 +1933,12 @@ document.addEventListener('visibilitychange', () => {
   const q = queue[cursor];
   if (!q) return;
   if (q.preview && audio.paused) audio.play().catch(() => {});
-  else if (q.youtube && ytReady && !ytIsPlaying()) ytPlayer.playVideo();
+  // YouTube側はプレイリストの読み込み自体が背面で拒否されていた可能性が
+  // あるので、単にplayVideo()するのではなくプレイヤーの中身を確かめて
+  // 必要なら載せ直しからやり直す(playYtForCursorが両方を判断する)。
+  // 「鳴ってはいるが控えと別のプレイリスト」という乖離も直したいので、
+  // 再生中かどうかに関わらず通す(一致していれば何もしないので無害)。
+  else if (q.youtube && ytReady) playYtForCursor();
 });
 
 // ---------- キューの永続化(リロードしても再生が「ゼロから」にならないように) ----------
@@ -1932,7 +1953,9 @@ function albumById(id) {
   return null;
 }
 function saveQueue() {
-  const items = queue.map((q) => (q.album ? { albumId: q.album.id, idx: q.idx ?? 0 } : null));
+  const items = queue.map((q) => (q.album
+    ? { albumId: q.album.id, idx: q.idx ?? 0, ...(q.shuffleAuto ? { auto: 1 } : {}) }
+    : null));
   const q = queue[cursor];
   // 直前が再生中だったか一時停止中だったかも記録する。リロード後、
   // 一時停止中だったのに問答無用で再生し始めてしまうのを防ぐため。
@@ -1953,7 +1976,10 @@ function restoreQueue() {
     const album = albumById(it.albumId);
     if (!album) continue;
     const item = trackItemsOf(album)[it.idx];
-    if (item) restored.push(item);
+    if (item) {
+      if (it.auto) item.shuffleAuto = true; // シャッフル連結の先読み分の印も復元する
+      restored.push(item);
+    }
   }
   if (!restored.length) return;
   queue = restored;
@@ -1971,7 +1997,7 @@ function restoreQueue() {
       audio.play().catch(() => {});
     }
   } else if (q?.youtube) {
-    loadYtVideo(q.youtube, !wasPlaying); // 再生中だった時だけ自動再生、それ以外はcueのみ
+    playYtForCursor(!wasPlaying); // 再生中だった時だけ自動再生、それ以外はcueのみ
   }
   paint();
 }
@@ -2075,7 +2101,7 @@ function albumQueueIndex(album) {
 // 通常の▶(アルバムカード/曲行): 今の再生位置に差し込んで即座に頭出しする。
 // 再生中だった残りのキューはキューから消さず、差し込んだ分だけ後ろへスライドする。
 function playAlbum(album, startIndex = 0) {
-  shuffleMode = false; pendingShuffleAlbum = null; // ランダム再生中でも、個別に選んで▶したら通常再生に戻す
+  exitShuffle(); // ランダム再生中でも、個別に選んで▶したら通常再生に戻す
   const existing = albumQueueIndex(album);
   if (existing !== -1) {
     // 既にキューにあるなら重複追加せず、その位置から再生し直すだけにする。
@@ -2102,7 +2128,7 @@ function playAlbum(album, startIndex = 0) {
 // キューに積む(この曲が終わったら元のキュー/前の曲に戻ってしまい
 // 使い勝手が悪かったため。この曲番号から先のキューは丸ごと置き換える)。
 function playSingle(item) {
-  shuffleMode = false; pendingShuffleAlbum = null; // 同上、単曲を選んで▶した場合も通常再生に戻す
+  exitShuffle(); // 同上、単曲を選んで▶した場合も通常再生に戻す
   const items = trackItemsOf(item.album);
   const idx = items.findIndex((it) =>
     (item.preview && it.preview === item.preview) || (item.youtube && it.youtube === item.youtube));
@@ -2127,7 +2153,47 @@ function enqueueAlbum(album) {
 // ---------- YouTube IFrame Player(iTunesに試聴の無い盤の代替再生用) ----------
 // #ytHost は1x1px・opacity:0の非表示ホスト(style.css)。映像は見せず音声だけ
 // 使う。iTunes試聴とテンポを揃えるため30秒で打ち切る(endSeconds)。
-let ytPlayer = null, ytReady = false, ytPendingId = null, ytPendingCueOnly = false;
+let ytPlayer = null, ytReady = false;
+// YouTube盤は以前、動画を1本ずつloadVideoByIdで差し替えていたが、それだと
+// 曲が変わるたびにiframe内の再生が作り直され「新規再生」の扱いになるため、
+// バックグラウンドでは開始を拒否されて そこで止まっていた
+// (曲が終わった瞬間にロック画面の再生コントロールごと消えるのが目印だった。
+// iTunes試聴は同じ<audio>要素のsrcを差し替えるだけで要素が生き続けるので、
+// 曲をまたいでもコントロールが出たままになる ─ この差が原因)。
+// そこでキュー上で連続しているYouTube動画をまとめてプレイリストとして渡し、
+// 曲送りそのものをYouTube側にやらせる。こちらから再生を開始し直さないので、
+// 背面でも<audio>と同じように再生が継続することを狙っている。
+// 30秒カット(endSeconds)はプレイリスト再生では使えないため、下の見張り
+// タイマー(1秒間隔)が再生位置を見てnextVideo()で刻む。音が鳴っている
+// タブのタイマーはOSの間引き対象外なので背面でもおおむね機能し、万一
+// 間引かれてもその曲がフル尺で流れ続けるだけで停止はしない(安全側の劣化)。
+let ytPlaylistIds = null; // 今プレイヤーに載せている(つもりの)動画IDの並び
+let ytPlaylistBase = -1; // その1本目がqueueの何番目にあたるか
+let ytPendingPlaylist = null; // プレイヤー準備前に再生要求が来た場合の保留分
+// 明示的な曲移動(playVideoAt/プレイリスト載せ直し)の直後は、移動前の古い
+// indexを載せたonStateChangeが遅れて届くことがある。移動先のindexを控えて
+// おき、それが観測されるまで同期を保留する(cursorの一瞬の巻き戻り防止)。
+let ytExpectedIndex = null;
+// ユーザーが再生を意図しているか(cueだけの時はfalse)。リロード復元直後の
+// エラーで勝手に鳴り出したりしないよう、onErrorの自動スキップを制御する。
+let ytPlaybackIntended = false;
+let ytErrorSkippedKey = null; // 同じ動画のonError連続発火で二重スキップしないための控え
+function resetYtPlaylist() {
+  ytPlaylistIds = null;
+  ytPlaylistBase = -1;
+  ytPendingPlaylist = null; // 保留中の載せ込みも破棄(放置するとonReady時にゴースト再生される)
+  ytExpectedIndex = null;
+  ytPlaybackIntended = false;
+}
+// プレイヤーに実際に載っているプレイリストが、こちらの控えと一致しているか。
+// 背面で載せ直しが拒否された場合など、控えと実物がズレている間は
+// cursor同期や見張りタイマーが虚構の状態を追わないようにするための確認。
+function ytShadowMatchesActual() {
+  if (!ytReady || !ytPlayer.getPlaylist || !ytPlaylistIds) return false;
+  const actual = ytPlayer.getPlaylist();
+  return !!(actual && actual.length === ytPlaylistIds.length
+    && ytPlaylistIds.every((v, i) => v === actual[i]));
+}
 function initYtPlayer() {
   if (ytPlayer) return;
   ytPlayer = new YT.Player('ytHost', {
@@ -2136,11 +2202,43 @@ function initYtPlayer() {
     events: {
       onReady: () => {
         ytReady = true;
-        if (ytPendingId) { const id = ytPendingId; const cue = ytPendingCueOnly; ytPendingId = null; loadYtVideo(id, cue); }
+        if (ytPendingPlaylist) {
+          const p = ytPendingPlaylist;
+          ytPendingPlaylist = null;
+          loadYtPlaylist(p.ids, p.index, p.cueOnly);
+        }
       },
       onStateChange: (e) => {
-        if (e.data === YT.PlayerState.ENDED) next();
+        // YouTubeが自動で次の動画へ進んだ分を、こちらの再生位置へ反映する
+        // (曲送りをYouTube側に任せているので、cursorは後追いで合わせる)
+        syncCursorToYtPlaylist();
+        if (e.data === YT.PlayerState.ENDED) {
+          // プレイリストの途中ならYouTubeが自動で次へ進むので何もしない。
+          // 最後の1本を終えた時だけ、こちらで次のアルバムへ送る。
+          // 実物と控えがズレている間(背面で載せ直しが拒否された等)のENDEDは
+          // 虚構の位置でnext()しないよう無視する(前面復帰時に立て直す)。
+          if (!ytPlaylistIds) {
+            next();
+          } else if (ytShadowMatchesActual()) {
+            const i = ytPlayer.getPlaylistIndex ? ytPlayer.getPlaylistIndex() : -1;
+            if (i < 0 || i >= ytPlaylistIds.length - 1) next();
+          }
+        }
         paint();
+      },
+      // 埋め込み禁止・地域ブロック・削除済みなどでYouTubeがエラーを返した場合、
+      // 以前は何も起きずそこで永久に停止していた。埋め込みプレイヤーは
+      // watchページと違いエラー動画を自動スキップしないので、こちらで
+      // 即座に次へ送る(背面ではタイマーが間引かれるためsetTimeoutは不可)。
+      // cueだけの時(リロード復元直後)やユーザー停止中は勝手に鳴らさない。
+      onError: () => {
+        if (!ytPlaybackIntended || userPaused) return;
+        const i = ytPlaylistIds && ytPlayer.getPlaylistIndex ? ytPlayer.getPlaylistIndex() : -1;
+        const key = ytPlaylistIds && i >= 0 ? `${ytPlaylistBase}:${i}:${ytPlaylistIds[i]}` : 'single';
+        if (ytErrorSkippedKey === key) return; // 同じ動画での連続発火による二重スキップ防止
+        ytErrorSkippedKey = key;
+        if (ytPlaylistIds && i >= 0 && i < ytPlaylistIds.length - 1) ytPlayer.nextVideo();
+        else next();
       },
     },
   });
@@ -2156,10 +2254,126 @@ window.onYouTubeIframeAPIReady = initYtPlayer;
   setTimeout(pollYtApi, 300);
 })();
 // cueOnly=true だと読み込むだけで再生開始しない(リロード直後のキュー復元用。
-// loadVideoByIdは即再生してしまうため、ユーザーが▶を押すまで待つ場合はcueVideoByIdを使う)。
-function loadYtVideo(videoId, cueOnly = false) {
-  if (!ytReady) { ytPendingId = videoId; ytPendingCueOnly = cueOnly; return; }
-  ytPlayer[cueOnly ? 'cueVideoById' : 'loadVideoById']({ videoId, startSeconds: 0, endSeconds: 30 });
+// loadPlaylistは即再生してしまうため、ユーザーが▶を押すまで待つ場合はcuePlaylistを使う)。
+function loadYtPlaylist(ids, index, cueOnly = false) {
+  if (!ytReady) { ytPendingPlaylist = { ids, index, cueOnly }; return; }
+  ytPlayer[cueOnly ? 'cuePlaylist' : 'loadPlaylist']({ playlist: ids, index, startSeconds: 0 });
+}
+
+// 今のcursorが指すYouTube動画を、プレイリストとして再生する。
+// queue上でYouTube動画が連続している範囲(アルバムをまたいでもよい)を
+// そのまま1本のプレイリストにする。プレイリストの載せ直し=「新規再生」は
+// 背面では拒否されるため、境界を減らすほどバックグラウンド再生が切れにくい。
+const YT_PLAYLIST_MAX = 60; // 1回のプレイリストに載せる動画数の上限
+function playYtForCursor(cueOnly = false) {
+  const q = queue[cursor];
+  if (!q?.youtube) return;
+  ytErrorSkippedKey = null; // 明示的な再生指示が来たのでエラースキップの抑止は解除
+  ytPlaybackIntended = !cueOnly;
+  // まず、プレイヤーに実際に載っているプレイリストの範囲内に今のcursorが
+  // 収まっているなら、載せ直さず頭出し・再開だけで済ませる(載せ直し=
+  // 「新規再生」は背面で拒否されるため、できる限り避ける)。
+  // 窓を毎回計算し直して比較すると、再生が進むにつれ窓がずれて
+  // 「同じプレイリストなのに別物」と誤判定し、⏭のたびに載せ直してしまう
+  // ため、判定は「実物の範囲にcursorが入っているか」で行う。
+  if (ytShadowMatchesActual()) {
+    const rel = cursor - ytPlaylistBase;
+    const actual = ytPlayer.getPlaylist();
+    const inLoaded = rel >= 0 && rel < actual.length
+      && actual.every((v, i) => queue[ytPlaylistBase + i]?.youtube === v); // キュー組み替え検出
+    if (inLoaded) {
+      if (ytPlayer.getPlaylistIndex && ytPlayer.getPlaylistIndex() === rel) {
+        if (!cueOnly && !ytIsPlaying()) ytPlayer.playVideo();
+      } else if (!cueOnly && ytPlayer.playVideoAt) {
+        ytExpectedIndex = rel;
+        ytPlayer.playVideoAt(rel);
+      }
+      return;
+    }
+  }
+  // 現在地の手前は⏮用に少しだけ、先はできるだけ長く載せる(上限あり)。
+  // 巨大な連続範囲(例: 動画100本超のアルバム)でも、cursorが必ず
+  // プレイリストの中に収まるように手前側の伸長は控えめにする。
+  let start = cursor;
+  while (start > 0 && queue[start - 1].youtube && cursor - start < 20) start--;
+  let end = cursor;
+  while (end < queue.length - 1 && queue[end + 1].youtube && end - start + 1 < YT_PLAYLIST_MAX) end++;
+  // シャッフル中でキューの末尾までYouTube盤が続いているなら、この先の
+  // ランダムなアルバムもYouTube盤である限り今のうちにキューへ足して同じ
+  // プレイリストに連結しておく(アルバム境界での載せ直しをなくすため)。
+  if (shuffleMode && end === queue.length - 1) {
+    while (end - start + 1 < YT_PLAYLIST_MAX) {
+      const album = pendingShuffleAlbum || randomPlayableAlbum();
+      pendingShuffleAlbum = null;
+      if (!album) break;
+      const items = trackItemsOf(album);
+      if (!items[0]?.youtube) {
+        pendingShuffleAlbum = album; // 次はiTunes盤 → 境界確定。先読み用に取っておく
+        break;
+      }
+      // 連結で実体化した先読み分には印を付けておく。ユーザーが手動で何かを
+      // 選んでシャッフルを抜けた時(exitShuffle)、この印を頼りに取り除く。
+      items.forEach((it) => { it.shuffleAuto = true; });
+      queue.push(...items);
+      end = Math.min(queue.length - 1, start + YT_PLAYLIST_MAX - 1);
+      if (queue[end].album !== album) break; // 上限で頭切れした場合はそこまで
+    }
+  }
+  const ids = [];
+  for (let i = start; i <= end; i++) ids.push(queue[i].youtube);
+  const index = cursor - start;
+  ytExpectedIndex = index;
+  ytPlaylistIds = ids;
+  ytPlaylistBase = start;
+  loadYtPlaylist(ids, index, cueOnly);
+}
+
+// 30秒カットの見張り。endSecondsの代わりに再生位置を1秒間隔で確認し、
+// 30秒を超えたらプレイリスト内の曲送り(nextVideo=内部継続なので背面でも
+// 通る)で刻む。最後の1本ならnext()で次のアルバムへ。同じ動画への二重発火は
+// キー(プレイリスト位置)で抑止する。
+const YT_CLIP_SECONDS = 30;
+let ytClipFiredKey = null;
+setInterval(() => {
+  if (!ytReady || !ytPlaylistIds || !ytIsPlaying()) return;
+  if (ytExpectedIndex !== null) return; // 明示的な曲移動の完了待ち中は手を出さない
+  if (!ytShadowMatchesActual()) return; // 実物と控えがズレている間は誤射しない
+  const i = ytPlayer.getPlaylistIndex ? ytPlayer.getPlaylistIndex() : -1;
+  if (i < 0) return;
+  const key = `${ytPlaylistBase}:${i}:${ytPlaylistIds[i]}`;
+  if (ytClipFiredKey !== null && ytClipFiredKey !== key) ytClipFiredKey = null; // 次の曲に進んだらガード解除
+  if (ytClipFiredKey === key) return;
+  const t = ytPlayer.getCurrentTime ? ytPlayer.getCurrentTime() : 0;
+  if (t < YT_CLIP_SECONDS) return;
+  ytClipFiredKey = key;
+  if (i < ytPlaylistIds.length - 1) {
+    ytPlayer.nextVideo();
+  } else {
+    // キューに続きが無ければnext()は何もしないので、その場合は
+    // 30秒でフル尺再生が続かないようこちらで止める(旧endSeconds相当)。
+    // userPausedも立てて、前面復帰時の自動再開で鳴り直さないようにする。
+    const before = cursor;
+    next();
+    if (cursor === before && queue[cursor]?.youtube) { userPaused = true; ytPlayer.pauseVideo(); }
+  }
+}, 1000);
+
+// YouTubeが自前で曲送りした結果に、こちらのcursorを合わせる。
+function syncCursorToYtPlaylist() {
+  if (!ytPlaylistIds || ytPlaylistBase < 0) return;
+  if (!ytReady || !ytPlayer.getPlaylistIndex) return;
+  if (!ytShadowMatchesActual()) return; // 背面で載せ直しが拒否された等、実物が別物の間は触らない
+  const i = ytPlayer.getPlaylistIndex();
+  if (i < 0) return;
+  if (ytExpectedIndex !== null) {
+    if (i !== ytExpectedIndex) return; // 明示的な曲移動中に遅れて届く移動前のindexは無視
+    ytExpectedIndex = null;
+  }
+  const target = ytPlaylistBase + i;
+  if (target === cursor || target < 0 || target >= queue.length) return;
+  if (queue[target]?.youtube !== ytPlaylistIds[i]) return; // キューが組み替わっていたら触らない
+  cursor = target;
+  saveQueue();
 }
 function ytIsPlaying() {
   return !!(ytReady && ytPlayer.getPlayerState && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
@@ -2169,14 +2383,16 @@ function playCurrent() {
   const q = queue[cursor];
   if (q?.preview) {
     if (ytReady) ytPlayer.stopVideo();
+    resetYtPlaylist();
     audio.src = q.preview;
     audio.play().catch(() => {}); // 自動再生ブロック時はユーザーの▶待ち
   } else if (q?.youtube) {
     audio.pause(); audio.removeAttribute('src');
-    loadYtVideo(q.youtube);
+    playYtForCursor();
   } else {
     audio.pause(); audio.removeAttribute('src');
     if (ytReady) ytPlayer.stopVideo();
+    resetYtPlaylist();
   }
   userPaused = false; // 新しい曲の再生を始めたので、以前の一時停止状態は解除
   preloadNextTrack();
@@ -2189,7 +2405,7 @@ if ('mediaSession' in navigator) {
   navigator.mediaSession.setActionHandler('play', () => {
     const q = queue[cursor];
     if (q?.preview) audio.play().catch(() => {});
-    else if (q?.youtube && ytReady) ytPlayer.playVideo();
+    else if (q?.youtube && ytReady) { ytPlaybackIntended = true; ytPlayer.playVideo(); }
   });
   navigator.mediaSession.setActionHandler('pause', () => {
     audio.pause();
@@ -2285,6 +2501,10 @@ $play.addEventListener('click', () => {
     if (album) {
       playAlbum(album); // 1曲目から(playAlbum内でshuffleMode=falseされるので、その後で立て直す)
       shuffleMode = true; // このアルバムを聴き終えたら続けて別のランダムなアルバムへ
+      // YouTube盤起点の場合、上のplayAlbum時点ではshuffleModeがfalseで
+      // プレイリスト連結が働いていないので、フラグを立ててからやり直す
+      // (連結しないと最初のアルバム境界の載せ直しが背面で拒否されて止まる)。
+      if (queue[cursor]?.youtube) playYtForCursor();
     }
     return;
   }
@@ -2293,7 +2513,7 @@ $play.addEventListener('click', () => {
     else { userPaused = true; audio.pause(); }
   } else if (q?.youtube && ytReady) {
     if (ytIsPlaying()) { userPaused = true; ytPlayer.pauseVideo(); }
-    else { userPaused = false; ytPlayer.playVideo(); }
+    else { userPaused = false; ytPlaybackIntended = true; ytPlayer.playVideo(); }
   }
 });
 // 再生バーから直接、今流れてる曲にスタンプを押せるように
@@ -2333,6 +2553,7 @@ document.getElementById('clearQueue').addEventListener('click', () => {
   queue = []; cursor = -1; shuffleMode = false; pendingShuffleAlbum = null;
   audio.pause(); audio.removeAttribute('src');
   if (ytReady) ytPlayer.stopVideo();
+  resetYtPlaylist();
   paint();
 });
 
