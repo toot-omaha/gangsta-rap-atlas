@@ -484,7 +484,9 @@ async function loadPublishedReleases() {
     const pubAlbums = await albumsRes.json();
     pubRegions.forEach((r) => {
       if (REGIONS.some((rr) => rr.id === r.id)) return;
-      REGIONS.push({ id: r.id, name: r.name, area: r.area, lng: r.lng, lat: r.lat, albums: [] });
+      const region = { id: r.id, name: r.name, area: r.area, lng: r.lng, lat: r.lat, albums: [] };
+      REGIONS.push(region);
+      createMarkerForRegion(region); // マーカーも作らないとrefreshMarkers()が例外で死ぬ
     });
     pubAlbums.forEach((a) => {
       const region = REGIONS.find((r) => r.id === a.region_id);
@@ -712,7 +714,13 @@ const map = new maplibregl.Map({
 new ResizeObserver(() => map.resize()).observe(document.getElementById('mapWrap'));
 
 const markers = {};
-REGIONS.forEach((region) => {
+// 起動後にREGIONSへ地域が増えることがある(レビューからの公開で新規地域が
+// 追加されるloadPublishedReleases())ため、1地域分のマーカー生成を関数化して
+// 後からも呼べるようにしてある。refreshMarkers()はmarkers[r.id]の存在を
+// 前提にするので、REGIONSに足した地域は必ずこれでマーカーも作ること
+// (作り忘れるとrefreshMarkers()が例外で死に、全ナビゲーションが止まる)。
+function createMarkerForRegion(region) {
+  if (markers[region.id]) return;
   const el = document.createElement('div');
   el.className = 'marker' + (region.unclassified ? ' unclassified' : '');
   // 手で押した判子風に、地域ごとに少しだけ傾ける
@@ -738,7 +746,8 @@ REGIONS.forEach((region) => {
   el.addEventListener('click', (e) => { e.stopPropagation(); openRegion(region); });
   markers[region.id] = el;
   new maplibregl.Marker({ element: el }).setLngLat([region.lng, region.lat]).addTo(map);
-});
+}
+REGIONS.forEach(createMarkerForRegion);
 
 function refreshMarkers() {
   REGIONS.forEach((r) => {
@@ -2184,6 +2193,7 @@ function resetYtPlaylist() {
   ytPendingPlaylist = null; // 保留中の載せ込みも破棄(放置するとonReady時にゴースト再生される)
   ytExpectedIndex = null;
   ytPlaybackIntended = false;
+  clearTimeout(ytStartCheckTimer); // YouTube再生をやめたので開始見張りも止める
 }
 // プレイヤーに実際に載っているプレイリストが、こちらの控えと一致しているか。
 // 背面で載せ直しが拒否された場合など、控えと実物がズレている間は
@@ -2209,6 +2219,11 @@ function initYtPlayer() {
         }
       },
       onStateChange: (e) => {
+        // 再生が始まったら、開始見張りのリトライ間隔をリセットして止める
+        if (e.data === YT.PlayerState.PLAYING) {
+          ytStartRetryDelay = 3000;
+          clearTimeout(ytStartCheckTimer);
+        }
         // YouTubeが自動で次の動画へ進んだ分を、こちらの再生位置へ反映する
         // (曲送りをYouTube側に任せているので、cursorは後追いで合わせる)
         syncCursorToYtPlaylist();
@@ -2267,6 +2282,28 @@ window.onYouTubeIframeAPIReady = initYtPlayer;
 function loadYtPlaylist(ids, index, cueOnly = false) {
   if (!ytReady) { ytPendingPlaylist = { ids, index, cueOnly }; return; }
   ytPlayer[cueOnly ? 'cuePlaylist' : 'loadPlaylist']({ playlist: ids, index, startSeconds: 0 });
+  if (!cueOnly) scheduleYtStartCheck();
+}
+
+// 再生開始の見張り。バックグラウンドのタブではYouTubeの再生開始が
+// ブラウザ/プレイヤー側に握り潰されることがある(iTunes→YouTubeの
+// 切り替え時に無音で止まる報告があった)。開始を指示してから数秒たっても
+// 再生が始まっていなければ、もう一度だけ蹴り直す(それでもダメなら
+// 間隔を倍にして繰り返し、上限60秒。タブ復帰時のvisibilitychange処理でも
+// 立て直すので、ここは背面のままでも復帰できるようにする保険)。
+let ytStartCheckTimer = null;
+let ytStartRetryDelay = 3000;
+function scheduleYtStartCheck() {
+  clearTimeout(ytStartCheckTimer);
+  ytStartCheckTimer = setTimeout(() => {
+    if (!ytPlaybackIntended || userPaused) return;
+    if (!queue[cursor]?.youtube) return;
+    if (ytIsPlaying()) { ytStartRetryDelay = 3000; return; }
+    const st = ytReady && ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : null;
+    if (st === YT.PlayerState.BUFFERING) { scheduleYtStartCheck(); return; } // まだ読み込み中、待つ
+    ytStartRetryDelay = Math.min(ytStartRetryDelay * 2, 60000);
+    playYtForCursor(); // 状態を見て再開/載せ直しを判断してくれる
+  }, ytStartRetryDelay);
 }
 
 // 今のcursorが指すYouTube動画を、プレイリストとして再生する。
@@ -2292,10 +2329,11 @@ function playYtForCursor(cueOnly = false) {
       && actual.every((v, i) => queue[ytPlaylistBase + i]?.youtube === v); // キュー組み替え検出
     if (inLoaded) {
       if (ytPlayer.getPlaylistIndex && ytPlayer.getPlaylistIndex() === rel) {
-        if (!cueOnly && !ytIsPlaying()) ytPlayer.playVideo();
+        if (!cueOnly && !ytIsPlaying()) { ytPlayer.playVideo(); scheduleYtStartCheck(); }
       } else if (!cueOnly && ytPlayer.playVideoAt) {
         ytExpectedIndex = rel;
         ytPlayer.playVideoAt(rel);
+        scheduleYtStartCheck();
       }
       return;
     }
@@ -2411,12 +2449,17 @@ function playCurrent() {
 // Media Session API: ロック画面/通知領域の再生コントロールとバックグラウンド再生に対応。
 // 曲が変わるたびにメタデータを更新し、OS側の▶⏸/前後ボタンをこちらの操作につなぐ。
 if ('mediaSession' in navigator) {
+  // userPausedの更新を忘れると、OSのメディアキーで一時停止→再開した後の
+  // 「ユーザーが止めたか」の判定がズレて、タブ復帰時の自動再開が誤って
+  // 抑止されたままになる(再生バーの⏸/▶と復帰処理の両方が参照するため)。
   navigator.mediaSession.setActionHandler('play', () => {
     const q = queue[cursor];
+    userPaused = false;
     if (q?.preview) audio.play().catch(() => {});
     else if (q?.youtube && ytReady) { ytPlaybackIntended = true; ytPlayer.playVideo(); }
   });
   navigator.mediaSession.setActionHandler('pause', () => {
+    userPaused = true;
     audio.pause();
     if (ytReady) ytPlayer.pauseVideo();
   });
