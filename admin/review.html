@@ -35,6 +35,9 @@
   .row .pub button:disabled { opacity: .5; cursor: default; background: transparent; }
   .row .pub .pubstat { font-size: 11px; color: var(--ink-2); }
   .row .pub .pubstat.on { color: var(--red); font-weight: 800; }
+  .row .sug { margin-top: 6px; font-size: 11px; color: var(--ink-2); background: rgba(184,145,47,.12); border-left: 3px solid var(--gold); padding: 4px 8px; }
+  .row .sug b { color: var(--ink); }
+  .row .sug a { color: var(--ink-2); margin-left: 6px; }
   .empty { padding: 40px; text-align: center; color: var(--ink-2); font-size: 13px; }
   footer { position: fixed; left: 0; right: 0; bottom: 0; background: var(--ink); color: var(--paper); padding: 10px 16px; display: flex; gap: 10px; align-items: center; border-top: 3px solid var(--red); font-size: 12px; }
   footer button { font: inherit; font-weight: 800; padding: 8px 16px; border: 2px solid var(--paper); background: transparent; color: var(--paper); cursor: pointer; }
@@ -54,6 +57,7 @@
     <option value="all">すべて表示</option>
     <option value="undone">未確認のみ</option>
     <option value="checked">採用にした分のみ</option>
+    <option value="suggested">AI提案あり(未確認)</option>
   </select>
   <select id="publishFilter">
     <option value="unpublished">未公開</option>
@@ -108,6 +112,18 @@ let publishedRegionsCache = []; // 既にジオコーディング済みのカス
 let publishStatusEl = null;
 let lastFilteredItems = [];
 const normalizeName = (s) => (s || '').trim().toLowerCase();
+
+// AI調査(research-hometownsスキル)による出身地の提案。
+// 確度Aは既に自動公開・review_decisions登録済みなので、ここで意味を持つのは
+// 主に確度B(提案としてプリセットし、人間がチェック1つで承認する)と
+// 確度C(調査済みだが不明、の印)。
+let SUGGESTIONS = {}; // { artist: {region_id, custom_region, confidence, evidence, note} }
+async function loadSuggestions() {
+  try {
+    const res = await fetch(`${SB_URL}/research_suggestions?select=artist,region_id,custom_region,confidence,evidence,note`, { headers: SB_HEADERS });
+    if (res.ok) (await res.json()).forEach((r) => { SUGGESTIONS[r.artist] = r; });
+  } catch { /* テーブル未作成・オフラインでも他機能は動かす */ }
+}
 
 async function loadPublishedState() {
   try {
@@ -236,7 +252,7 @@ async function boot() {
   populateStyleFilter();
   buildRegionOptionsHtml();
   render();
-  await Promise.all([loadServerState(), loadPublishedState()]);
+  await Promise.all([loadServerState(), loadPublishedState(), loadSuggestions()]);
   render(); // サーバー側の最新状態(他の人の入力分・公開状態も含む)で再描画
 }
 
@@ -293,6 +309,10 @@ function render() {
   if (q) items = items.filter((a) => a.artist.toLowerCase().includes(q));
   if (mode === 'undone') items = items.filter((a) => !state[a.artist]);
   if (mode === 'checked') items = items.filter((a) => state[a.artist]?.include);
+  if (mode === 'suggested') items = items.filter((a) => {
+    const sug = SUGGESTIONS[a.artist];
+    return sug && (sug.region_id || sug.custom_region) && !state[a.artist];
+  });
   // Phonk等、ジャンルが派生して境界が曖昧になった後の年代を除外して、
   // まず古い(=ガンスタ色がはっきりしてる)年代だけレビューできるように。
   // どちらか1つのリリースでも範囲内ならそのアーティストごと表示する。
@@ -333,11 +353,22 @@ function render() {
     const releasesHtml = a.releases.map((r) =>
       `<a href="${r.url}" target="_blank" rel="noopener">${r.title}</a>${r.year ? ` (${r.year})` : ''}`
     ).join(' / ');
+    // AI調査の提案があれば、確度・特定地域・根拠リンクを表示する
+    const sug = SUGGESTIONS[a.artist];
+    const sugPlace = sug
+      ? (sug.region_id ? (REGIONS.find((r) => r.id === sug.region_id)?.name || sug.region_id) : sug.custom_region)
+      : null;
+    const sugHtml = sug ? `<div class="sug">🔎 AI調査[${sug.confidence}]: <b>${sugPlace || '特定できず'}</b>${
+      sug.note ? ` — ${sug.note}` : ''}${
+      (sug.evidence || []).map((e, i) =>
+        `<a href="${e.url}" target="_blank" rel="noopener" title="${(e.note || '').replace(/"/g, '&quot;')}">根拠${i + 1}↗</a>`
+      ).join('')}</div>` : '';
     row.innerHTML = `
       <input type="checkbox" ${s.include ? 'checked' : ''}>
       <div class="main">
         <div class="artist">${a.artist}</div>
         <p class="releases">${releasesHtml}</p>
+        ${sugHtml}
         <div class="region">
           <select>${REGION_OPTIONS_HTML}</select>
           <input type="text" class="custom" list="regionNames" placeholder="候補に無ければ地名を直接入力" value="${s.custom || ''}">
@@ -351,6 +382,12 @@ function render() {
     const select = row.querySelector('select');
     if (s.regionId) select.value = s.regionId;
     const custom = row.querySelector('.custom');
+    // 人間の判断がまだ無い行は、AI提案の地域をあらかじめ選んだ状態にしておく
+    // (承認はチェックを入れるだけで済む。commit()が通常の判断として保存する)
+    if (sug && !state[a.artist]) {
+      if (sug.region_id) select.value = sug.region_id;
+      if (sug.custom_region) custom.value = sug.custom_region;
+    }
     const pubstat = row.querySelector('.pubstat');
     const pubbtn = row.querySelector('.pubbtn');
     const refreshPubUi = () => {
