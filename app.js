@@ -473,15 +473,29 @@ async function pullFavSync(name) {
 // 既存の地図データと衝突しないよう、公開リリースのidには大きなオフセットを足す
 // (このオフセット未満は将来もdata.js側の採番として使い続ける想定)。
 const PUBLISHED_ID_OFFSET = 1000000;
+// PostgRESTは1回のリクエストにつき最大1000行しか返さない(応答を切り詰めて
+// 返すだけでエラーにはならないため気づきにくい)。件数がそれを超えたら
+// 静かに新しい分から欠落するので、Rangeヘッダーでページ送りして全件取得する。
+async function fetchAllRows(url) {
+  const rows = [];
+  const PAGE = 1000;
+  for (let offset = 0; ; offset += PAGE) {
+    const res = await fetch(url, {
+      headers: { ...SB_HEADERS, Range: `${offset}-${offset + PAGE - 1}` },
+    });
+    if (!res.ok && res.status !== 206) throw new Error(`fetchAllRows failed: ${res.status}`);
+    const page = await res.json();
+    rows.push(...page);
+    if (page.length < PAGE) break; // 最後のページ
+  }
+  return rows;
+}
 async function loadPublishedReleases() {
   try {
-    const [regionsRes, albumsRes] = await Promise.all([
-      fetch(`${SB_URL}/published_regions?select=id,name,area,lat,lng`, { headers: SB_HEADERS }),
-      fetch(`${SB_URL}/published_albums?select=id,title,artist,year,label,discogs_url,region_id`, { headers: SB_HEADERS }),
+    const [pubRegions, pubAlbums] = await Promise.all([
+      fetchAllRows(`${SB_URL}/published_regions?select=id,name,area,lat,lng`),
+      fetchAllRows(`${SB_URL}/published_albums?select=id,title,artist,year,label,discogs_url,region_id`),
     ]);
-    if (!regionsRes.ok || !albumsRes.ok) return;
-    const pubRegions = await regionsRes.json();
-    const pubAlbums = await albumsRes.json();
     pubRegions.forEach((r) => {
       if (REGIONS.some((rr) => rr.id === r.id)) return;
       const region = { id: r.id, name: r.name, area: r.area, lng: r.lng, lat: r.lat, albums: [] };

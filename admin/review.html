@@ -92,6 +92,22 @@ const SB_URL = 'https://xqtoyvhupioztljkejnw.supabase.co/rest/v1';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxdG95dmh1cGlvenRsamtlam53Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5Mjc2MDgsImV4cCI6MjEwMTUwMzYwOH0.gW4xkwC3GzdKcnTT-490-75Sssx49wIIBcVOEW-MKHw';
 const SB_HEADERS = { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' };
 
+// PostgRESTは1回のリクエストにつき最大1000行しか返さない(エラーにはならず
+// 静かに切り詰めるため気づきにくい)。件数がそれを超えると新しい分から
+// 欠落するので、Rangeヘッダーでページ送りして全件取得する。
+async function fetchAllRows(url) {
+  const rows = [];
+  const PAGE = 1000;
+  for (let offset = 0; ; offset += PAGE) {
+    const res = await fetch(url, { headers: { ...SB_HEADERS, Range: `${offset}-${offset + PAGE - 1}` } });
+    if (!res.ok && res.status !== 206) throw new Error(`fetchAllRows failed: ${res.status}`);
+    const page = await res.json();
+    rows.push(...page);
+    if (page.length < PAGE) break;
+  }
+  return rows;
+}
+
 const STORE_KEY = 'gra.admin.review.v1';
 // 起動直後~サーバーから取得できるまでの間だけローカルキャッシュを見せる
 // (体感の初期表示を速くするため。取得できたらサーバー側で上書きする)
@@ -120,22 +136,20 @@ const normalizeName = (s) => (s || '').trim().toLowerCase();
 let SUGGESTIONS = {}; // { artist: {region_id, custom_region, confidence, evidence, note} }
 async function loadSuggestions() {
   try {
-    const res = await fetch(`${SB_URL}/research_suggestions?select=artist,region_id,custom_region,confidence,evidence,note`, { headers: SB_HEADERS });
-    if (res.ok) (await res.json()).forEach((r) => { SUGGESTIONS[r.artist] = r; });
+    const rows = await fetchAllRows(`${SB_URL}/research_suggestions?select=artist,region_id,custom_region,confidence,evidence,note`);
+    rows.forEach((r) => { SUGGESTIONS[r.artist] = r; });
   } catch { /* テーブル未作成・オフラインでも他機能は動かす */ }
 }
 
 async function loadPublishedState() {
   try {
-    const [albumsRes, regionsRes] = await Promise.all([
-      fetch(`${SB_URL}/published_albums?select=source_artist,region_id`, { headers: SB_HEADERS }),
-      fetch(`${SB_URL}/published_regions?select=id,name,area,lat,lng`, { headers: SB_HEADERS }),
+    const [albums, regions] = await Promise.all([
+      fetchAllRows(`${SB_URL}/published_albums?select=source_artist,region_id`),
+      fetchAllRows(`${SB_URL}/published_regions?select=id,name,area,lat,lng`),
     ]);
-    if (albumsRes.ok) {
-      publishedMap = {};
-      (await albumsRes.json()).forEach((r) => { publishedMap[r.source_artist] = r.region_id; });
-    }
-    if (regionsRes.ok) publishedRegionsCache = await regionsRes.json();
+    publishedMap = {};
+    albums.forEach((r) => { publishedMap[r.source_artist] = r.region_id; });
+    publishedRegionsCache = regions;
   } catch { /* 公開状態が引けなくても閲覧自体は継続する */ }
 }
 
@@ -215,9 +229,8 @@ async function unpublishArtist(a) {
 
 async function loadServerState() {
   try {
-    const res = await fetch(`${SB_URL}/review_decisions?select=artist,include,region_id,custom_region`, { headers: SB_HEADERS });
-    if (!res.ok) return;
-    (await res.json()).forEach((r) => {
+    const rows = await fetchAllRows(`${SB_URL}/review_decisions?select=artist,include,region_id,custom_region`);
+    rows.forEach((r) => {
       state[r.artist] = { include: r.include, regionId: r.region_id, custom: r.custom_region };
     });
     save();
