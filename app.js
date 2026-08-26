@@ -2212,6 +2212,15 @@ function initYtPlayer() {
         // YouTubeが自動で次の動画へ進んだ分を、こちらの再生位置へ反映する
         // (曲送りをYouTube側に任せているので、cursorは後追いで合わせる)
         syncCursorToYtPlaylist();
+        // 再生中の動画の実タイトルをプレイヤーから直接取り、再生バーに出す
+        // (キュー構築時はまだタイトル不明でアルバム名を仮置きしているため、
+        // 判明したここで差し替える。oEmbedを引きに行く必要はない)。
+        const vd = ytPlayer.getVideoData && ytPlayer.getVideoData();
+        if (vd?.video_id && vd?.title) {
+          ytTitleCache[vd.video_id] = vd.title;
+          const q = queue[cursor];
+          if (q?.youtube === vd.video_id && q.title !== vd.title) q.title = vd.title;
+        }
         if (e.data === YT.PlayerState.ENDED) {
           // プレイリストの途中ならYouTubeが自動で次へ進むので何もしない。
           // 最後の1本を終えた時だけ、こちらで次のアルバムへ送る。
