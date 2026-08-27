@@ -429,6 +429,8 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .disc-side .apple { color: var(--ink-2); }
 .disc-actions { display: flex; gap: 8px; margin: 12px 0; }
 .disc-actions .tr-toggle { font-size: 12px; padding: 6px 12px; margin-top: 0; }
+/* ▶はテキストボタン3つと並ぶと60pxではこぢんまりするので長めにする */
+.disc-actions .disc-play { width: 120px; }
 .list-head .back { margin-right: 4px; }
 
 /* ---------- 投稿フォーム ---------- */
