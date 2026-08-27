@@ -1357,8 +1357,10 @@ function albumCard(album, mineOnly = false) {
     : `<div class="album-art"><span>${t('notOn')}</span></div>`;
 
   const hasPreview = !!(e?.tracks || []).some((tr) => tr.preview) || youtubeIdsFor(album).length > 0;
+  // 2行目は「今すぐ再生」と「キューに追加」の2カラムで幅いっぱいに使う
   const playBtnHtml = hasPreview
-    ? `<button class="play-btn" title="このディスクをキューに追加">▶</button>`
+    ? `<button class="play-btn" title="このディスクを今すぐ再生">▶</button>
+       <button class="enqueue-btn" title="このディスクをキューに追加">${t('queueAll')}</button>`
     : '';
 
   card.innerHTML = `
@@ -1417,6 +1419,7 @@ function albumCard(album, mineOnly = false) {
   });
 
   card.querySelector('.play-btn')?.addEventListener('click', () => playAlbum(album));
+  card.querySelector('.enqueue-btn')?.addEventListener('click', () => enqueueAlbum(album));
   card.querySelector('.have-btn').addEventListener('click', () => {
     toggleFav(favsHave, albumKey(album)); updateFavCount(); rerender();
   });
