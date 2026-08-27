@@ -2072,6 +2072,9 @@ function playAudioForCursor() {
   const q = queue[cursor];
   if (!q?.preview) return;
   if (audio.error || audio.src !== q.preview) audio.src = q.preview;
+  // 背面凍結明けなどでロードが空のまま止まっている(エラーでもロード中でも
+  // ない)要素はplay()しても無反応なので、読み込みを蹴り直してから鳴らす
+  else if (audio.readyState === 0 && audio.networkState !== HTMLMediaElement.NETWORK_LOADING) audio.load();
   lastAudioStartAt = Date.now();
   audio.play().catch((err) => {
     // 自動再生ブロックは「ユーザーの▶待ち」が正しい状態なので見張りも止める
@@ -2485,6 +2488,12 @@ function scheduleYtStartCheck() {
     const st = ytReady && ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : null;
     if (st === YT.PlayerState.BUFFERING) { scheduleYtStartCheck(); return; } // まだ読み込み中、待つ
     ytStartRetryDelay = Math.min(ytStartRetryDelay * 2, 60000);
+    // 2回目以降のリトライでも始まらないのは、背面でプレイヤー自体が
+    // 壊されていてplayVideo()が虚空に消えている状態が多い。その場合
+    // 「載っているから頭出しだけ」の高速パスを通り続けると永遠に無反応な
+    // ままなので(▶を押しても直らない報告の原因)、控えを捨てて
+    // フル再構築(loadPlaylist)へエスカレーションする。
+    if (ytStartRetryDelay >= 6000) resetYtPlaylist();
     playYtForCursor(); // 状態を見て再開/載せ直しを判断してくれる
   }, ytStartRetryDelay);
 }
@@ -2654,7 +2663,9 @@ if ('mediaSession' in navigator) {
     const q = queue[cursor];
     userPaused = false;
     if (q?.preview) playAudioForCursor(); // エラー状態でもsrc再設定から復帰できるように
-    else if (q?.youtube && ytReady) { ytPlaybackIntended = true; ytPlayer.playVideo(); }
+    // playVideo()直呼びだと壊れたプレイヤーには無反応のままなので、
+    // 見張りつきのplayYtForCursor経由にする(リトライ→フル再構築へ繋がる)
+    else if (q?.youtube && ytReady) playYtForCursor();
   });
   navigator.mediaSession.setActionHandler('pause', () => {
     // 曲の切り替わり直後(<1秒)に届くpauseは、OS/Chromeのセッション再構築
@@ -2848,7 +2859,8 @@ $play.addEventListener('click', () => {
     else { userPaused = true; audio.pause(); }
   } else if (q?.youtube && ytReady) {
     if (ytIsPlaying()) { userPaused = true; ytPlayer.pauseVideo(); }
-    else { userPaused = false; ytPlaybackIntended = true; ytPlayer.playVideo(); }
+    // 同上: playVideo()直呼びは壊れたプレイヤーに無反応。見張りつき経由で復帰させる
+    else { userPaused = false; playYtForCursor(); }
   }
 });
 // 再生バーから直接、今流れてる曲にスタンプを押せるように
