@@ -345,13 +345,13 @@ body.detail #list { opacity: 1; pointer-events: auto; transform: none; }
   background: var(--paper); color: var(--ink); font-size: 14px; font-weight: 900; cursor: pointer;
 }
 .list-head .close:hover { background: var(--red); border-color: var(--red); color: var(--paper); }
-.list-head .share {
+.list-head .share, .list-head .region-shuffle {
   align-self: center; flex: 0 0 auto;
   width: 34px; height: 34px; border: 2px solid var(--ink);
   background: var(--paper); color: var(--ink); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
 }
-.list-head .share:hover { background: var(--ink); color: var(--paper); }
+.list-head .share:hover, .list-head .region-shuffle:hover { background: var(--ink); color: var(--paper); }
 
 /* 共有リンクをコピーしたときの簡易トースト */
 .share-toast {
@@ -684,9 +684,10 @@ body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); 
   #list { top: calc(var(--topbar-h, 58px) + 6px); left: 8px; right: 8px; bottom: 84px; padding: 12px; }
   /* スマホ: 1行目=都市名(+右上の閉じる) / 2行目=州名+DISCS数 */
   .list-head { flex-wrap: wrap; gap: 2px 12px; }
-  .list-head h2 { font-size: 26px; flex: 0 0 100%; padding-right: 82px; }
+  .list-head h2 { font-size: 26px; flex: 0 0 100%; padding-right: 122px; }
   .list-head .close { position: absolute; right: 0; top: 6px; }
   .list-head .share { position: absolute; right: 40px; top: 6px; }
+  .list-head .region-shuffle { position: absolute; right: 80px; top: 6px; }
   .list-head .cnt { margin-left: 0; }
   .player-queue .credit { display: none; }
   /* 曲数とクリアを縦積みにして横幅を圧縮し、その分を曲名/アーティスト名に回す */

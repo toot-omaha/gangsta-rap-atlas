@@ -1197,11 +1197,12 @@ const shareBtnHtml = `<button class="share" title="このページのリンク�
     <line x1="8.7" y1="13.3" x2="15.3" y2="17.7" stroke="currentColor" stroke-width="2"/>
   </svg>
 </button>`;
-const listHead = (title, sub, cnt, share = false) => `
+const listHead = (title, sub, cnt, share = false, shuffle = false) => `
   <div class="list-head">
     <h2>${title}</h2>
     <span class="sub">${sub}</span>
     <span class="cnt">${cnt}</span>
+    ${shuffle ? `<button class="region-shuffle" title="この地域内でシャッフル再生">${SHUFFLE_ICON_SVG}</button>` : ''}
     ${share ? shareBtnHtml : ''}
     <button class="close" title="地図へ戻る">✕</button>
   </div>`;
@@ -1243,10 +1244,11 @@ function renderList(region) {
   currentDisc = null;
   const list = albumsOf(region).slice().sort((a, b) => a.year - b.year);
   listEl.innerHTML = `
-    ${listHead(region.name, region.area, `${list.length} ${t('discs')}`, true)}
+    ${listHead(region.name, region.area, `${list.length} ${t('discs')}`, true, true)}
     <div class="grid"></div>`;
   listEl.querySelector('.close').addEventListener('click', closeList);
   listEl.querySelector('.share').addEventListener('click', () => shareCurrentPage(region.name));
+  listEl.querySelector('.region-shuffle').addEventListener('click', () => startRegionShuffle(region));
   const grid = listEl.querySelector('.grid');
   if (!list.length) {
     grid.innerHTML = `<p style="font-size:12px">${t('noMatch')}</p>`;
@@ -1908,6 +1910,9 @@ let queue = [], cursor = -1;
 // next()がアルバムを使い切っても地域内の次のアルバムへ進まず、続けて別の
 // ランダムなアルバムへ飛ぶ。ユーザーが自分で何かを選んで再生した時点で解除する。
 let shuffleMode = false;
+// 地域一覧のシャッフルボタンから始めた場合はその地域。null なら全地域から
+// ランダムに選ぶ(キューが空の時の▶)。exitShuffle()/クリアで解除する。
+let shuffleRegion = null;
 // シャッフル中、今の盤の最後の曲まで来た時点で次に流す盤をあらかじめ決めて
 // おく(先読み用)。next()側で使い切ったらnullに戻す。
 let pendingShuffleAlbum = null;
@@ -1925,6 +1930,7 @@ audio.addEventListener('ended', () => next());
 // 延々と続いてしまう)。今流れている曲自体は消さない。
 function exitShuffle() {
   shuffleMode = false;
+  shuffleRegion = null;
   pendingShuffleAlbum = null;
   let removed = false;
   for (let i = queue.length - 1; i > cursor; i--) {
@@ -2553,10 +2559,26 @@ function prev() { if (cursor > 0) { cursor--; playCurrent(); } }
 
 // キューが空の状態で▶を押した時のランダム再生用。年代・スタンプの絞り込み
 // (albumsOf()と同じ条件)を尊重し、試聴/動画が1曲も無い盤は対象から外す。
+// 地域内シャッフル中(shuffleRegionあり)はその地域の盤に限定する。
 function randomPlayableAlbum() {
-  const pool = REGIONS.flatMap((r) => albumsOf(r)).filter((a) => trackItemsOf(a).length > 0);
+  const regions = shuffleRegion ? [shuffleRegion] : REGIONS;
+  const pool = regions.flatMap((r) => albumsOf(r)).filter((a) => trackItemsOf(a).length > 0);
   if (!pool.length) return null;
   return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// 地域一覧ヘッダーのシャッフルボタン: その地域の再生可能な盤から1枚選んで
+// 再生を始め、聴き終えたら同じ地域内の別のランダムな盤へ連結し続ける。
+function startRegionShuffle(region) {
+  const pool = albumsOf(region).filter((a) => trackItemsOf(a).length > 0);
+  if (!pool.length) return;
+  const album = pool[Math.floor(Math.random() * pool.length)];
+  playAlbum(album); // 中のexitShuffle()でshuffleRegionは一旦クリアされる
+  shuffleMode = true;
+  shuffleRegion = region;
+  // YouTube盤起点の場合、playAlbum時点ではshuffleModeがfalseでプレイリスト
+  // 連結が働いていないため、フラグを立ててからやり直す(キュー空の▶と同じ理由)
+  if (queue[cursor]?.youtube) playYtForCursor();
 }
 
 audio.addEventListener('play', paint);
@@ -2619,7 +2641,7 @@ document.querySelector('.player-now').addEventListener('click', () => {
   renderDisc(album);
 });
 document.getElementById('clearQueue').addEventListener('click', () => {
-  queue = []; cursor = -1; shuffleMode = false; pendingShuffleAlbum = null;
+  queue = []; cursor = -1; shuffleMode = false; shuffleRegion = null; pendingShuffleAlbum = null;
   audio.pause(); audio.removeAttribute('src');
   if (ytReady) ytPlayer.stopVideo();
   resetYtPlaylist();
