@@ -2610,6 +2610,10 @@ function ytIsPlaying() {
 }
 
 function playCurrent() {
+  // 先にランウェイを補充してからプレイリストを組む(YouTube盤の連結範囲に
+  // 先のアルバムまで含めるため。iTunes側もqueue[cursor+1]が常に居る状態になり
+  // 先読み・前倒し曲送りがアルバム境界でも機能する)
+  ensureShuffleRunway();
   const q = queue[cursor];
   if (q?.preview) {
     if (ytReady) ytPlayer.stopVideo();
@@ -2758,6 +2762,35 @@ function randomPlayableAlbum() {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+// シャッフル中、キューの残りが少なくなったら次のランダムなアルバムを
+// あらかじめ連結してスタンバイさせておく(残り10曲を切ったら補充)。
+// 境界の直前に選定・構築を始めると、音が途切れた一瞬にプロセスごと
+// 凍結されて次が始まらないことがあるため、まだ十分再生が残っている
+// 安全なうちに道を伸ばしておく。YouTube盤は1〜2曲のアルバムが多く
+// 境界が頻発するので特に効く(キュー上でYT盤が連続していれば、
+// playYtForCursorが最大60本まで1本のプレイリストにまとめて載せる)。
+// 連結分にはshuffleAuto印を付け、exitShuffle()で取り除けるようにする。
+const SHUFFLE_RUNWAY_TRACKS = 10;
+function ensureShuffleRunway() {
+  if (!shuffleMode) return;
+  const upcoming = new Set(queue.slice(Math.max(cursor, 0)).map((it) => it.album));
+  let guard = 0;
+  let appended = false;
+  while (queue.length - 1 - cursor < SHUFFLE_RUNWAY_TRACKS && guard++ < 12) {
+    const album = pendingShuffleAlbum || randomPlayableAlbum();
+    pendingShuffleAlbum = null;
+    if (!album) break;
+    if (upcoming.has(album)) continue; // 直近に並んでいる盤の連投は避ける
+    const items = trackItemsOf(album);
+    if (!items.length) continue;
+    items.forEach((it) => { it.shuffleAuto = true; });
+    queue.push(...items);
+    upcoming.add(album);
+    appended = true;
+  }
+  if (appended) saveQueue();
+}
+
 // 地域一覧ヘッダーのシャッフルボタン: その地域の再生可能な盤から1枚選んで
 // 再生を始め、聴き終えたら同じ地域内の別のランダムな盤へ連結し続ける。
 function startRegionShuffle(region) {
@@ -2767,6 +2800,7 @@ function startRegionShuffle(region) {
   playAlbum(album); // 中のexitShuffle()でshuffleRegionは一旦クリアされる
   shuffleMode = true;
   shuffleRegion = region;
+  ensureShuffleRunway(); // フラグを立てた後に道を敷き直す(playAlbum時点では無効だったため)
   // YouTube盤起点の場合、playAlbum時点ではshuffleModeがfalseでプレイリスト
   // 連結が働いていないため、フラグを立ててからやり直す(キュー空の▶と同じ理由)
   if (queue[cursor]?.youtube) playYtForCursor();
@@ -2798,6 +2832,7 @@ $play.addEventListener('click', () => {
     if (album) {
       playAlbum(album); // 1曲目から(playAlbum内でshuffleMode=falseされるので、その後で立て直す)
       shuffleMode = true; // このアルバムを聴き終えたら続けて別のランダムなアルバムへ
+      ensureShuffleRunway(); // フラグを立てた後に道を敷き直す(playAlbum時点では無効だったため)
       // YouTube盤起点の場合、上のplayAlbum時点ではshuffleModeがfalseで
       // プレイリスト連結が働いていないので、フラグを立ててからやり直す
       // (連結しないと最初のアルバム境界の載せ直しが背面で拒否されて止まる)。
