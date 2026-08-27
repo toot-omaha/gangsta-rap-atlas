@@ -2026,16 +2026,46 @@ function exitShuffle() {
 
 // キューの次の曲(シャッフル中で盤の末尾まで来ている場合は、先読み済み/
 // これから先読みする次の盤の1曲目)の試聴を先読みしておく。
-function preloadNextTrack() {
+// 先読みは<audio>のpreloadに任せず、fetch()で音声データをblobとして確実に
+// ダウンロードしてから持たせる。スマホのChromeは背面(画面OFF)だと隠れた
+// audio要素のpreloadフェッチを後回しにすることがあり、スワップしても中身が
+// 空→その場でネットワーク取得→凍結、が起きていた(PCでは起きない)。
+// 再生中のタブのfetch()は背面でも通常どおり動くため、こちらは確実に届く。
+// 各要素が「どの試聴URLを表しているか」は_previewUrlで持ち回る
+// (blob URLはsrc比較に使えないため)。
+let preloadFetchingFor = null; // 二重フェッチ防止(取得中のpreview URL)
+function assignTrack(el, previewUrl, srcUrl) {
+  if (el.src && el.src.startsWith('blob:')) URL.revokeObjectURL(el.src);
+  el.src = srcUrl || previewUrl;
+  el._previewUrl = previewUrl;
+}
+function clearTrack(el) {
+  if (el.src && el.src.startsWith('blob:')) URL.revokeObjectURL(el.src);
+  el.removeAttribute('src');
+  el._previewUrl = null;
+}
+async function preloadNextTrack() {
   let nextItem = queue[cursor + 1];
   if (!nextItem && shuffleMode && cursor === queue.length - 1) {
     if (!pendingShuffleAlbum) pendingShuffleAlbum = randomPlayableAlbum();
     nextItem = pendingShuffleAlbum ? trackItemsOf(pendingShuffleAlbum)[0] : null;
   }
   if (!nextItem?.preview) return;
-  if (preloadAudio.src !== nextItem.preview) {
-    preloadAudio.src = nextItem.preview;
+  const url = nextItem.preview;
+  if (preloadAudio._previewUrl === url || preloadFetchingFor === url) return;
+  preloadFetchingFor = url;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`preload fetch ${res.status}`);
+    const blob = await res.blob();
+    if (preloadFetchingFor !== url) return; // 取得中に別の曲へ移っていたら破棄
+    assignTrack(preloadAudio, url, URL.createObjectURL(blob));
     preloadAudio.load();
+  } catch {
+    // fetchが通らない環境では従来どおり要素のpreloadに任せる(無いよりまし)
+    if (preloadFetchingFor === url) { assignTrack(preloadAudio, url); preloadAudio.load(); }
+  } finally {
+    if (preloadFetchingFor === url) preloadFetchingFor = null;
   }
 }
 
@@ -2074,7 +2104,7 @@ function scheduleAudioStartCheck() {
 function playAudioForCursor() {
   const q = queue[cursor];
   if (!q?.preview) return;
-  if (audio.error || audio.src !== q.preview) audio.src = q.preview;
+  if (audio.error || audio._previewUrl !== q.preview) assignTrack(audio, q.preview);
   // 背面凍結明けなどでロードが空のまま止まっている(エラーでもロード中でも
   // ない)要素はplay()しても無反応なので、読み込みを蹴り直してから鳴らす
   else if (audio.readyState === 0 && audio.networkState !== HTMLMediaElement.NETWORK_LOADING) audio.load();
@@ -2104,11 +2134,14 @@ let preloadKickedFor = null; // 背面で先読みが後回しにされた時の
 [audioA, audioB].forEach((el) => el.addEventListener('timeupdate', () => {
   if (el !== audio || userPaused || earlyAdvancing) return;
   if (!isFinite(el.duration) || el.duration <= 0) return;
-  // 先読みのフェッチが始まってすらいなければ、曲の半ばで一度だけ蹴り直す
-  if (el.currentTime > el.duration / 2 && preloadAudio.src && preloadAudio.readyState === 0
-      && preloadKickedFor !== preloadAudio.src) {
-    preloadKickedFor = preloadAudio.src;
-    preloadAudio.load();
+  // 先読みがまだ次の曲を持てていなければ、曲の半ばで一度だけ取得を蹴り直す
+  if (el.currentTime > el.duration / 2) {
+    const expect = queue[cursor + 1]?.preview;
+    if (expect && preloadAudio._previewUrl !== expect && preloadFetchingFor !== expect
+        && preloadKickedFor !== expect) {
+      preloadKickedFor = expect;
+      preloadNextTrack();
+    }
   }
   if (el.duration - el.currentTime > EARLY_ADVANCE_SEC) return;
   // 次のiTunes曲(シャッフル連結の次盤1曲目を含む)が先読み済みの時だけ前倒す
@@ -2116,7 +2149,7 @@ let preloadKickedFor = null; // 背面で先読みが後回しにされた時の
   if (!nxt && shuffleMode && cursor === queue.length - 1 && pendingShuffleAlbum) {
     nxt = trackItemsOf(pendingShuffleAlbum)[0];
   }
-  if (!nxt?.preview || preloadAudio.src !== nxt.preview || preloadAudio.readyState < 3) return;
+  if (!nxt?.preview || preloadAudio._previewUrl !== nxt.preview || preloadAudio.readyState < 3) return;
   earlyAdvancing = true;
   try { next(); } finally { earlyAdvancing = false; }
 }));
@@ -2185,7 +2218,7 @@ function restoreQueue() {
   const q = queue[cursor];
   const wasPlaying = !!saved.playing;
   if (q?.preview) {
-    audio.src = q.preview;
+    assignTrack(audio, q.preview);
     if (wasPlaying) {
       // 直前が再生中だった場合のみ自動再生を試す。ブラウザに拒否されても
       // (その場合は▶待ちの一時停止状態になるだけで無害)、過去にこのサイトで
@@ -2652,21 +2685,21 @@ function playCurrent() {
     resetYtPlaylist();
     // 先読み役に同じ曲がバッファ済みなら要素ごと入れ替え、すき間なく鳴らす
     // (背面でもネットワーク待ちゼロで開始でき、メディア通知が破棄されない)
-    if (preloadAudio.src === q.preview && !preloadAudio.error) {
+    if (preloadAudio._previewUrl === q.preview && !preloadAudio.error) {
       audio.pause();
       [audio, preloadAudio] = [preloadAudio, audio];
-      preloadAudio.removeAttribute('src');
+      clearTrack(preloadAudio);
     } else {
-      audio.src = q.preview;
+      assignTrack(audio, q.preview);
     }
     audioErrorRetries = 0;
     playAudioForCursor(); // 再生開始は見張りつき(自動再生ブロック時はユーザーの▶待ち)
   } else if (q?.youtube) {
-    audio.pause(); audio.removeAttribute('src');
+    audio.pause(); clearTrack(audio);
     clearTimeout(audioStartCheckTimer);
     playYtForCursor();
   } else {
-    audio.pause(); audio.removeAttribute('src');
+    audio.pause(); clearTrack(audio);
     clearTimeout(audioStartCheckTimer);
     if (ytReady) ytPlayer.stopVideo();
     resetYtPlaylist();
@@ -2950,7 +2983,7 @@ document.querySelector('.player-now').addEventListener('click', () => {
 });
 document.getElementById('clearQueue').addEventListener('click', () => {
   queue = []; cursor = -1; shuffleMode = false; shuffleRegion = null; pendingShuffleAlbum = null;
-  audio.pause(); audio.removeAttribute('src');
+  audio.pause(); clearTrack(audio);
   clearTimeout(audioStartCheckTimer);
   if (ytReady) ytPlayer.stopVideo();
   resetYtPlaylist();
