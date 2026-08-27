@@ -2085,6 +2085,36 @@ function playAudioForCursor() {
   el.addEventListener('error', () => { if (el === audio) scheduleAudioStartCheck(); });
 });
 
+// 曲の自然終了(ended)を待ってから次を鳴らすと、音が途切れた一瞬に
+// Androidがメディア用フォアグラウンドサービスを畳み、そのままプロセスごと
+// 凍結されて次曲のplay()自体が走らないことがある(アプリを開くと即再開する
+// のは、前面昇格で凍結が解けて復帰処理が動くため)。まだ音が鳴っている
+// 終了0.45秒前に、次曲の先読みが再生可能な状態まで進んでいる場合だけ
+// 前倒しで曲送りし、「無音の瞬間」自体を作らない。
+// 先読みが間に合っていない時は何もせず、従来のended→next()に任せる。
+const EARLY_ADVANCE_SEC = 0.45;
+let earlyAdvancing = false;
+let preloadKickedFor = null; // 背面で先読みが後回しにされた時の読み直しを曲ごとに1回に制限
+[audioA, audioB].forEach((el) => el.addEventListener('timeupdate', () => {
+  if (el !== audio || userPaused || earlyAdvancing) return;
+  if (!isFinite(el.duration) || el.duration <= 0) return;
+  // 先読みのフェッチが始まってすらいなければ、曲の半ばで一度だけ蹴り直す
+  if (el.currentTime > el.duration / 2 && preloadAudio.src && preloadAudio.readyState === 0
+      && preloadKickedFor !== preloadAudio.src) {
+    preloadKickedFor = preloadAudio.src;
+    preloadAudio.load();
+  }
+  if (el.duration - el.currentTime > EARLY_ADVANCE_SEC) return;
+  // 次のiTunes曲(シャッフル連結の次盤1曲目を含む)が先読み済みの時だけ前倒す
+  let nxt = queue[cursor + 1];
+  if (!nxt && shuffleMode && cursor === queue.length - 1 && pendingShuffleAlbum) {
+    nxt = trackItemsOf(pendingShuffleAlbum)[0];
+  }
+  if (!nxt?.preview || preloadAudio.src !== nxt.preview || preloadAudio.readyState < 3) return;
+  earlyAdvancing = true;
+  try { next(); } finally { earlyAdvancing = false; }
+}));
+
 // バックグラウンドで再生が止まってしまっても、アプリに戻ってきたタイミングで
 // (ユーザー自身が一時停止していない限り)自動で再生を再開する。
 document.addEventListener('visibilitychange', () => {
@@ -2645,7 +2675,12 @@ function syncMediaSession(q) {
     title: q.title, artist: q.artist, album: 'GANGSTA RAP ATLAS',
     artwork: q.art ? [{ src: q.art, sizes: '100x100', type: 'image/jpeg' }] : [],
   });
-  navigator.mediaSession.playbackState = (q.youtube ? ytIsPlaying() : !audio.paused) ? 'playing' : 'paused';
+  // YouTubeは30秒クリップ送りのたびに次動画の読み込みで数秒「非再生」状態に
+  // なる。その間に'paused'を公表するとAndroidがメディア通知を畳む口実になる
+  // ので、再生を続ける意図がある間(ytPlaybackIntended)は'playing'を維持する。
+  navigator.mediaSession.playbackState = (q.youtube
+    ? (ytIsPlaying() || (ytPlaybackIntended && !userPaused))
+    : !audio.paused) ? 'playing' : 'paused';
 }
 
 function paint() {
