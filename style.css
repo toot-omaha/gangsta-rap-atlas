@@ -77,6 +77,16 @@ body.stamps-open .drawer { display: block; }
 .era-chk input { accent-color: var(--ink); margin: 0; cursor: pointer; }
 .era-chk.on { color: var(--ink); }
 .era-chk .count { font-variant-numeric: tabular-nums; opacity: .65; font-weight: 700; margin-left: 1px; }
+
+/* 自動再生(シャッフル・継ぎ足し)からの除外設定 */
+.autoplay-filter {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+  padding: 8px 10px; border-bottom: 2px solid var(--ink);
+}
+.autoplay-label { font-size: 11px; font-weight: 900; letter-spacing: .08em; color: var(--ink-2); }
+
+/* イラナイ(シャッフル除外)マーク中のディスクカード: 消さずに薄く見せる */
+.album.noped { opacity: .45; filter: grayscale(.7); }
 .stamp-filter {
   display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
   padding: 10px 10px 6px; overflow: visible;
@@ -470,9 +480,15 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .fav-btn:hover { background: var(--ink); color: var(--paper); }
 .fav-btn.have-btn.on { background: var(--gold); border-color: var(--ink); color: var(--ink); }
 .fav-btn.want-btn.on { background: var(--red); border-color: var(--red); color: var(--paper); }
+.fav-btn.nope-btn.on { background: #6b6b6b; border-color: #6b6b6b; color: var(--paper); }
+
+/* ▶はボタン列に収まらなくなったので次の行へ(横幅いっぱいに広げる) */
+.album-actions.play-row { margin-top: 6px; }
+.album-actions.play-row .play-btn { flex: 1; width: auto; padding: 5px 0; }
 
 .disc-actions .have-d.on { background: var(--gold); }
 .disc-actions .want-d.on { background: var(--red); color: var(--paper); border-color: var(--red); }
+.disc-actions .nope-d.on { background: #6b6b6b; color: var(--paper); border-color: #6b6b6b; }
 
 /* お気に入りページ: Street Name同期(アコーディオン) */
 .street-sync {

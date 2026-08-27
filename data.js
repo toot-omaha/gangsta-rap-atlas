@@ -19,7 +19,8 @@ const STAMPS = [
   { id: 'dark',    label: 'ダーク',     en: 'dark',     color: '#5a5f70' },
   { id: 'horror',  label: 'ホラー',     en: 'horror',   color: '#c2372f' },
   { id: 'surreal', label: 'シュール',   en: 'surreal',  color: '#8f9c3f' },
-  { id: 'through', label: 'スルーした', en: 'skipped',  color: '#6b6b6b' },
+  // 'through'(スルーした)は使い所が無く廃止(2026-08-27)。過去に押された
+  // 分のデータは残っているが、STAMPSに無いidは表示・集計から自然に外れる。
 ];
 
 // サウンド上の特徴タグ。曲単位でユーザーがスタンプと一緒にチェックを入れ、

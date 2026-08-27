@@ -8,7 +8,8 @@ const I18N = {
     intro: '撃チ込メ ─ 地図ヲ クリック',
     releases: 'RELEASES', discs: 'DISCS',
     favs: 'MY FAVS', favSub: 'お気に入りディスク',
-    have: '持ッテル', want: 'ホシイ',
+    have: '持ッテル', want: 'ホシイ', nope: 'イラナイ',
+    autoplayExclude: 'シャッフル・自動再生カラ除外:',
     haveSection: '持ッテルディスク', wantSection: 'ホシイディスク', stampedSection: '自分ガチェックした曲', stamp: 'スタンプ',
     exportCsv: '⬇ CSV保存', importCsv: '⬆ CSV読込',
     importOk: (n) => `${n}件反映シタ`, importNone: '一致スルディスクガナカッタ',
@@ -45,7 +46,8 @@ const I18N = {
     intro: 'SHOOT THE MAP — CLICK A CITY',
     releases: 'RELEASES', discs: 'DISCS',
     favs: 'MY FAVS', favSub: 'Favorite discs',
-    have: 'HAVE', want: 'WANT',
+    have: 'HAVE', want: 'WANT', nope: 'NOPE',
+    autoplayExclude: 'Exclude from shuffle/autoplay:',
     haveSection: 'Discs I have', wantSection: 'Discs I want', stampedSection: 'Tracks I stamped', stamp: 'Stamps',
     exportCsv: '⬇ Export CSV', importCsv: '⬆ Import CSV',
     importOk: (n) => `${n} matched and applied`, importNone: 'No matching discs found',
@@ -313,18 +315,24 @@ function rarity(album) {
   return { score, stars: '★'.repeat(n) + '☆'.repeat(5 - n), total: t };
 }
 
-// ---------- お気に入り(ディスク単位) — 持ってる/ほしい の2系統 ----------
+// ---------- お気に入り(ディスク単位) — 持ってる/ほしい/いらない の3系統 ----------
 const HAVE_KEY = 'gra.favs.have.v1';
 const WANT_KEY = 'gra.favs.want.v1';
+// いらない = このアルバムはもう流れてこなくていい、の意思表示。
+// 一覧からは消さず薄く表示し、シャッフル・自動継ぎ足しの対象から外す
+// (外すかどうか自体はドロワーの自動再生除外設定で切り替えられる)。
+const NOPE_KEY = 'gra.favs.nope.v1';
 // 旧・単一★お気に入り(gra.favs.v1)は「持ってる」として引き継ぐ
 const legacyFavs = JSON.parse(localStorage.getItem('gra.favs.v1') || 'null');
 const favsHave = new Set(legacyFavs || JSON.parse(localStorage.getItem(HAVE_KEY) || '[]'));
 const favsWant = new Set(JSON.parse(localStorage.getItem(WANT_KEY) || '[]'));
+const favsNope = new Set(JSON.parse(localStorage.getItem(NOPE_KEY) || '[]'));
 if (legacyFavs) { localStorage.setItem(HAVE_KEY, JSON.stringify([...favsHave])); localStorage.removeItem('gra.favs.v1'); }
 
 const saveFavs = () => {
   localStorage.setItem(HAVE_KEY, JSON.stringify([...favsHave]));
   localStorage.setItem(WANT_KEY, JSON.stringify([...favsWant]));
+  localStorage.setItem(NOPE_KEY, JSON.stringify([...favsNope]));
 };
 const toggleFav = (set, key) => { set.has(key) ? set.delete(key) : set.add(key); saveFavs(); pushFavSync(); };
 const updateFavCount = () => {
@@ -354,7 +362,7 @@ async function reserveStreetName(name) {
     let res = await fetch(`${SB_URL}/fav_sync`, {
       method: 'POST',
       headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant], eras: [...eraFilters], mystamps: myStamps }),
+      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant], nope: [...favsNope], eras: [...eraFilters], mystamps: myStamps }),
     });
     if (res.status === 400) {
       // mystamps列のマイグレーション未実施のDBへのフォールバック
@@ -432,10 +440,10 @@ async function pushFavSync() {
     const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
       method: 'PATCH',
       headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-      body: JSON.stringify({ have: [...favsHave], want: [...favsWant], eras: [...eraFilters], mystamps: myStamps, updated_at: new Date().toISOString() }),
+      body: JSON.stringify({ have: [...favsHave], want: [...favsWant], nope: [...favsNope], eras: [...eraFilters], mystamps: myStamps, updated_at: new Date().toISOString() }),
     });
     if (!res.ok) {
-      // mystamps/eras列のマイグレーション未実施のDBでもhave/want同期は壊さない
+      // nope/mystamps/eras列のマイグレーション未実施のDBでもhave/want同期は壊さない
       const res2 = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
         method: 'PATCH',
         headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
@@ -453,9 +461,9 @@ async function pushFavSync() {
 }
 
 async function pullFavSync(name) {
-  let res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want,eras,mystamps`, { headers: SB_HEADERS });
+  let res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want,nope,eras,mystamps`, { headers: SB_HEADERS });
   if (!res.ok) {
-    // mystamps列のマイグレーション未実施のDBへのフォールバック
+    // nope/mystamps列のマイグレーション未実施のDBへのフォールバック
     res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&select=have,want,eras`, { headers: SB_HEADERS });
   }
   if (!res.ok) {
@@ -537,11 +545,17 @@ async function autoPullFavSync() {
   applyMyStampsFromRow(row);
   const newHave = new Set(row.have || []);
   const newWant = new Set(row.want || []);
+  // nope列のマイグレーション未実施のDBではrow.nopeがundefinedになる。
+  // その場合はローカルのnopeを消さない(空配列と未対応を区別する)。
+  const newNope = row.nope != null ? new Set(row.nope) : new Set(favsNope);
   const changed = newHave.size !== favsHave.size || newWant.size !== favsWant.size
-    || [...newHave].some((k) => !favsHave.has(k)) || [...newWant].some((k) => !favsWant.has(k));
+    || newNope.size !== favsNope.size
+    || [...newHave].some((k) => !favsHave.has(k)) || [...newWant].some((k) => !favsWant.has(k))
+    || [...newNope].some((k) => !favsNope.has(k));
   if (!changed) return;
   favsHave.clear(); newHave.forEach((k) => favsHave.add(k));
   favsWant.clear(); newWant.forEach((k) => favsWant.add(k));
+  favsNope.clear(); newNope.forEach((k) => favsNope.add(k));
   saveFavs();
   updateFavCount();
   if (listView === 'favs') renderFavs(false);
@@ -631,9 +645,12 @@ async function linkStreetName(name, code) {
   if (!code) return false;
   const now = new Date().toISOString();
   const base = `${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(name)}&link_code=eq.${encodeURIComponent(code)}&link_code_expires_at=gt.${encodeURIComponent(now)}`;
-  let res = await fetch(`${base}&select=have,want,eras`, { headers: SB_HEADERS });
+  let res = await fetch(`${base}&select=have,want,nope,eras`, { headers: SB_HEADERS });
   if (!res.ok) {
-    // eras列のマイグレーション未実施のDBへのフォールバック
+    // nope/eras列のマイグレーション未実施のDBへのフォールバック
+    res = await fetch(`${base}&select=have,want,eras`, { headers: SB_HEADERS });
+  }
+  if (!res.ok) {
     res = await fetch(`${base}&select=have,want`, { headers: SB_HEADERS });
   }
   if (!res.ok) return false;
@@ -642,6 +659,7 @@ async function linkStreetName(name, code) {
   applyErasFromRow(row);
   favsHave.clear(); (row.have || []).forEach((k) => favsHave.add(k));
   favsWant.clear(); (row.want || []).forEach((k) => favsWant.add(k));
+  if (row.nope != null) { favsNope.clear(); row.nope.forEach((k) => favsNope.add(k)); }
   saveFavs();
   streetName = name;
   localStorage.setItem(STREET_KEY, streetName);
@@ -689,6 +707,22 @@ const eraFilters = new Set(JSON.parse(localStorage.getItem(ERA_KEY) || 'null') |
 if (eraFilters.has('y2010s') && !eraFilters.has('y2020s')) eraFilters.add('y2020s');
 const saveEras = () => localStorage.setItem(ERA_KEY, JSON.stringify([...eraFilters]));
 const eraOf = (a) => (a.year <= 1999 ? 'pre2000' : a.year <= 2009 ? 'y2000s' : a.year <= 2019 ? 'y2010s' : 'y2020s');
+
+// ---------- 自動再生(シャッフル・地域継ぎ足し)からの除外設定 ----------
+// 持ッテル/ホシイ/イラナイの各マークが付いた盤を自動再生の対象から外すか
+// どうかの端末ローカル設定。イラナイだけ既定ON(マークの主目的が除外のため)。
+// 一覧の表示や手動再生(自分で▶を押す)には一切影響しない。
+const AUTOPLAY_KEY = 'gra.autoplayExclude.v1';
+const autoplayExclude = { have: false, want: false, nope: true, ...JSON.parse(localStorage.getItem(AUTOPLAY_KEY) || '{}') };
+const saveAutoplayExclude = () => localStorage.setItem(AUTOPLAY_KEY, JSON.stringify(autoplayExclude));
+// この盤を自動再生(ランダム選盤・継ぎ足し)の対象にして良いか
+function autoplayEligible(album) {
+  const key = albumKey(album);
+  if (autoplayExclude.nope && favsNope.has(key)) return false;
+  if (autoplayExclude.have && favsHave.has(key)) return false;
+  if (autoplayExclude.want && favsWant.has(key)) return false;
+  return true;
+}
 
 // ---------- サウンドタグ絞り込み(トークボックス/ネタモノ) ----------
 // 年代とは違い「該当する曲だけ探したい」がユースケースなので、デフォルトは
@@ -856,6 +890,25 @@ function buildEraBar() {
   });
 }
 buildEraBar();
+
+// ---------- 自動再生除外の設定UI(ドロワー) ----------
+const autoplayBar = document.getElementById('autoplayFilter');
+function buildAutoplayBar() {
+  if (!autoplayBar) return; // 旧キャッシュのHTMLに要素が無くても落ちない
+  autoplayBar.innerHTML = `<span class="autoplay-label">${t('autoplayExclude')}</span>`;
+  [['have', t('have')], ['want', t('want')], ['nope', t('nope')]].forEach(([k, lab]) => {
+    const label = document.createElement('label');
+    label.className = 'era-chk' + (autoplayExclude[k] ? ' on' : '');
+    label.innerHTML = `<input type="checkbox"${autoplayExclude[k] ? ' checked' : ''}><span>${lab}</span>`;
+    label.querySelector('input').addEventListener('change', (ev) => {
+      autoplayExclude[k] = ev.target.checked;
+      label.classList.toggle('on', ev.target.checked);
+      saveAutoplayExclude();
+    });
+    autoplayBar.appendChild(label);
+  });
+}
+buildAutoplayBar();
 
 // ---------- サウンドタグ絞り込みUI ----------
 const tagBar = document.getElementById('tagFilter');
@@ -1292,7 +1345,8 @@ function myStampIdsForAlbum(album) {
 // 自分が押したスタンプだけを表示する
 function albumCard(album, mineOnly = false) {
   const card = document.createElement('div');
-  card.className = 'album';
+  // イラナイ盤は一覧から消さず、薄く表示して「除外中」と分かるようにする
+  card.className = 'album' + (favsNope.has(albumKey(album)) ? ' noped' : '');
   const r = rarity(album);
   const e = enrichOf(album);
   const art = artUrl(e, 300, album);
@@ -1316,9 +1370,10 @@ function albumCard(album, mineOnly = false) {
           <div class="fav-pair">
             <button class="fav-btn have-btn${favsHave.has(albumKey(album)) ? ' on' : ''}" title="${t('have')}">${t('have')}</button>
             <button class="fav-btn want-btn${favsWant.has(albumKey(album)) ? ' on' : ''}" title="${t('want')}">${t('want')}</button>
+            <button class="fav-btn nope-btn${favsNope.has(albumKey(album)) ? ' on' : ''}" title="この盤をシャッフルに流さない">${t('nope')}</button>
           </div>
-          ${playBtnHtml}
         </div>
+        ${playBtnHtml ? `<div class="album-actions play-row">${playBtnHtml}</div>` : ''}
       </div>
     </div>
     <div class="rarity">
@@ -1364,7 +1419,13 @@ function albumCard(album, mineOnly = false) {
     toggleFav(favsHave, albumKey(album)); updateFavCount(); rerender();
   });
   card.querySelector('.want-btn').addEventListener('click', () => {
+    // ホシイとイラナイは両立しない(詳細ページのwant-dと同じ規約)
+    if (!favsWant.has(albumKey(album))) favsNope.delete(albumKey(album));
     toggleFav(favsWant, albumKey(album)); updateFavCount(); rerender();
+  });
+  card.querySelector('.nope-btn').addEventListener('click', () => {
+    if (!favsNope.has(albumKey(album))) favsWant.delete(albumKey(album)); // 同上
+    toggleFav(favsNope, albumKey(album)); updateFavCount(); rerender();
   });
   return card;
 }
@@ -1383,9 +1444,10 @@ function renderDisc(album, push = true) {
   const rerender = () => renderDisc(album, false);
   const tracks = e?.tracks || [];
   const hasPlayable = tracks.some((tr) => tr.preview) || youtubeIdsFor(album).length > 0;
+  // 「＋ キューニ追加」はイラナイボタンを同じ行へ収めるため非表示にした
+  // (▶で今すぐ再生はでき、積みたい場合は曲ごとの▶で足せる。2026-08-27)
   const playActionsHtml = hasPlayable
-    ? `<button class="play-btn disc-play" title="このディスクを今すぐ再生">▶</button>
-       <button class="tr-toggle play-d">${t('queueAll')}</button>`
+    ? `<button class="play-btn disc-play" title="このディスクを今すぐ再生">▶</button>`
     : '';
 
   listEl.innerHTML = `
@@ -1408,6 +1470,7 @@ function renderDisc(album, push = true) {
         <div class="disc-actions">
           <button class="tr-toggle have-d${favsHave.has(key) ? ' on' : ''}">${t('have')}</button>
           <button class="tr-toggle want-d${favsWant.has(key) ? ' on' : ''}">${t('want')}</button>
+          <button class="tr-toggle nope-d${favsNope.has(key) ? ' on' : ''}" title="この盤をシャッフルに流さない">${t('nope')}</button>
           ${playActionsHtml}
         </div>
         <div class="rarity">
@@ -1467,7 +1530,13 @@ function renderDisc(album, push = true) {
     toggleFav(favsHave, key); updateFavCount(); rerender();
   });
   listEl.querySelector('.want-d').addEventListener('click', () => {
+    // ホシイとイラナイは両立しない(欲しいのに流れてこないのは矛盾するため)
+    if (!favsWant.has(key)) favsNope.delete(key);
     toggleFav(favsWant, key); updateFavCount(); rerender();
+  });
+  listEl.querySelector('.nope-d').addEventListener('click', () => {
+    if (!favsNope.has(key)) favsWant.delete(key); // 同上(イラナイを付けたらホシイは外す)
+    toggleFav(favsNope, key); updateFavCount(); rerender();
   });
 
   const tracksEl = listEl.querySelector('.tracks');
@@ -2606,6 +2675,7 @@ function next() {
     const albums = albumsOf(region).slice().sort((a, b) => a.year - b.year);
     const pos = albums.indexOf(lastAlbum);
     for (let i = pos + 1; i < albums.length; i++) {
+      if (!autoplayEligible(albums[i])) continue; // 除外設定(持ッテル/ホシイ/イラナイ)を尊重
       const items = trackItemsOf(albums[i]);
       if (items.length) {
         queue.push(...items);
@@ -2624,7 +2694,8 @@ function prev() { if (cursor > 0) { cursor--; playCurrent(); } }
 // 地域内シャッフル中(shuffleRegionあり)はその地域の盤に限定する。
 function randomPlayableAlbum() {
   const regions = shuffleRegion ? [shuffleRegion] : REGIONS;
-  const pool = regions.flatMap((r) => albumsOf(r)).filter((a) => trackItemsOf(a).length > 0);
+  const pool = regions.flatMap((r) => albumsOf(r))
+    .filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
   if (!pool.length) return null;
   return pool[Math.floor(Math.random() * pool.length)];
 }
@@ -2632,7 +2703,7 @@ function randomPlayableAlbum() {
 // 地域一覧ヘッダーのシャッフルボタン: その地域の再生可能な盤から1枚選んで
 // 再生を始め、聴き終えたら同じ地域内の別のランダムな盤へ連結し続ける。
 function startRegionShuffle(region) {
-  const pool = albumsOf(region).filter((a) => trackItemsOf(a).length > 0);
+  const pool = albumsOf(region).filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
   if (!pool.length) return;
   const album = pool[Math.floor(Math.random() * pool.length)];
   playAlbum(album); // 中のexitShuffle()でshuffleRegionは一旦クリアされる
@@ -2815,6 +2886,7 @@ function applyLang() {
   document.getElementById('filterHintText').innerHTML = t('filterHint');
   buildFilterBar();
   buildTagBar();
+  buildAutoplayBar();
   paint();
   // 開いている画面を同じ状態のまま描き直す
   if (document.body.classList.contains('detail')) {
