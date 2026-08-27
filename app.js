@@ -1958,13 +1958,59 @@ function preloadNextTrack() {
   }
 }
 
+// ---------- iTunes試聴の開始見張り(scheduleYtStartCheckのaudio版) ----------
+// 曲境界の「src差し替え+play()一発勝負」は、背面(画面OFF)では読み込みが
+// 停滞したり失敗したりする。失敗すると仕様上pausedがfalseのまま残るため、
+// 「audio.pausedを見る」復帰経路が全てすり抜けて恒久停止になっていた。
+// YouTube側と同じ規約(3秒→倍々→上限60秒、userPausedで抑止、再生開始で解除)で
+// リトライし、srcを張り直しても失敗が続く曲(失効URL等)はスキップして先へ進む。
+let audioStartCheckTimer = null;
+let audioStartRetryDelay = 3000;
+let audioErrorRetries = 0;
+// audioの再生を試み始めた時刻。曲の切り替わり直後はOS/Chromeがメディア
+// セッションを作り直すレースがあり、その最中に偽物のpauseが届いて
+// 「次の曲が一瞬鳴って消える」ことがある。この時刻から1秒以内のpauseは
+// ユーザー操作ではなくレース起因とみなして再生を続行する。
+let lastAudioStartAt = 0;
+function scheduleAudioStartCheck() {
+  clearTimeout(audioStartCheckTimer);
+  audioStartCheckTimer = setTimeout(() => {
+    if (userPaused) return;
+    const q = queue[cursor];
+    if (!q?.preview) return; // YouTube曲/空キューに移った後は何もしない
+    if (!audio.paused && !audio.ended && audio.readyState >= 3) { audioStartRetryDelay = 3000; return; } // 鳴っている
+    if (!audio.error && audio.networkState === HTMLMediaElement.NETWORK_LOADING) { scheduleAudioStartCheck(); return; } // まだ読み込み中
+    audioStartRetryDelay = Math.min(audioStartRetryDelay * 2, 60000);
+    if (audio.error && ++audioErrorRetries > 2) { next(); return; } // src再設定でも失敗が続く=失効URL等。スキップ
+    playAudioForCursor();
+  }, audioStartRetryDelay);
+}
+// エラー状態の要素はplay()がresource selectionを再実行しないため、
+// srcを張り直してから再生する。play()の再生開始は見張りに委ねる。
+function playAudioForCursor() {
+  const q = queue[cursor];
+  if (!q?.preview) return;
+  if (audio.error || audio.src !== q.preview) audio.src = q.preview;
+  lastAudioStartAt = Date.now();
+  audio.play().catch((err) => {
+    // 自動再生ブロックは「ユーザーの▶待ち」が正しい状態なので見張りも止める
+    if (err?.name === 'NotAllowedError') clearTimeout(audioStartCheckTimer);
+  });
+  scheduleAudioStartCheck();
+}
+audio.addEventListener('playing', () => { audioStartRetryDelay = 3000; audioErrorRetries = 0; clearTimeout(audioStartCheckTimer); });
+audio.addEventListener('error', () => scheduleAudioStartCheck()); // 再生途中の失敗(回線断等)も見張りに拾わせる
+
 // バックグラウンドで再生が止まってしまっても、アプリに戻ってきたタイミングで
 // (ユーザー自身が一時停止していない限り)自動で再生を再開する。
 document.addEventListener('visibilitychange', () => {
   if (document.hidden || userPaused) return;
   const q = queue[cursor];
   if (!q) return;
-  if (q.preview && audio.paused) audio.play().catch(() => {});
+  // 読み込み失敗時はpausedがfalseのまま残るので、pausedを条件にせず
+  // playAudioForCursorに任せる(エラー状態ならsrc再設定から復帰する。
+  // 正常再生中に呼ばれてもplay()は無害で、見張りは次の発火で自己解除)。
+  if (q.preview) playAudioForCursor();
   // YouTube側はプレイリストの読み込み自体が背面で拒否されていた可能性が
   // あるので、単にplayVideo()するのではなくプレイヤーの中身を確かめて
   // 必要なら載せ直しからやり直す(playYtForCursorが両方を判断する)。
@@ -2455,12 +2501,15 @@ function playCurrent() {
     if (ytReady) ytPlayer.stopVideo();
     resetYtPlaylist();
     audio.src = q.preview;
-    audio.play().catch(() => {}); // 自動再生ブロック時はユーザーの▶待ち
+    audioErrorRetries = 0;
+    playAudioForCursor(); // 再生開始は見張りつき(自動再生ブロック時はユーザーの▶待ち)
   } else if (q?.youtube) {
     audio.pause(); audio.removeAttribute('src');
+    clearTimeout(audioStartCheckTimer);
     playYtForCursor();
   } else {
     audio.pause(); audio.removeAttribute('src');
+    clearTimeout(audioStartCheckTimer);
     if (ytReady) ytPlayer.stopVideo();
     resetYtPlaylist();
   }
@@ -2478,10 +2527,18 @@ if ('mediaSession' in navigator) {
   navigator.mediaSession.setActionHandler('play', () => {
     const q = queue[cursor];
     userPaused = false;
-    if (q?.preview) audio.play().catch(() => {});
+    if (q?.preview) playAudioForCursor(); // エラー状態でもsrc再設定から復帰できるように
     else if (q?.youtube && ytReady) { ytPlaybackIntended = true; ytPlayer.playVideo(); }
   });
   navigator.mediaSession.setActionHandler('pause', () => {
+    // 曲の切り替わり直後(<1秒)に届くpauseは、OS/Chromeのセッション再構築
+    // レース起因の偽物のことがある(ユーザー操作ではない)。userPausedを
+    // 立てると復帰時の自動再開まで封じてしまうので、無視して再生を続行する。
+    // 本物のユーザー操作が開始後1秒以内に入る確率は実用上無視できる。
+    if (queue[cursor]?.preview && Date.now() - lastAudioStartAt < 1000) {
+      audio.play().catch(() => {});
+      return;
+    }
     userPaused = true;
     audio.pause();
     if (ytReady) ytPlayer.pauseVideo();
@@ -2526,7 +2583,12 @@ function paint() {
 // 曲のアルバムが属する地域から「次のアルバム」を並び順ベースで継ぎ足して
 // 続ける(試聴の無いアルバムは飛ばす)。地域の末尾まで来たら自然に停止する。
 function next() {
-  if (cursor < queue.length - 1) { cursor++; playCurrent(); return; }
+  // 音源なし盤のプレースホルダー(playAlbumが挿入する情報表示専用の項目)に
+  // 'ended'連鎖が到達すると再生が恒久停止するため、次へ進む時は飛ばす。
+  while (cursor < queue.length - 1) {
+    cursor++;
+    if (queue[cursor].preview || queue[cursor].youtube) { playCurrent(); return; }
+  }
   if (shuffleMode) {
     const album = pendingShuffleAlbum || randomPlayableAlbum();
     pendingShuffleAlbum = null;
@@ -2582,7 +2644,19 @@ function startRegionShuffle(region) {
 }
 
 audio.addEventListener('play', paint);
-audio.addEventListener('pause', paint);
+audio.addEventListener('pause', () => {
+  // 自然終了時は仕様上pause→endedの順で発火する。前者でpaintすると
+  // 30秒ごとに通知へ'paused'を公表するフラッピングになり、Android側の
+  // 通知再構築(=消える機会)を誘発するので、endedに任せて何もしない。
+  if (audio.ended) return;
+  paint();
+  // 曲の開始直後にシステム起因で直接止められた場合は即復帰する
+  // (ユーザー操作はuserPaused=trueが先に立つので対象外。通話等の
+  // フォーカス喪失は開始1秒の窓の外なので喧嘩しない)。
+  if (!userPaused && queue[cursor]?.preview && Date.now() - lastAudioStartAt < 1000) {
+    audio.play().catch(() => {});
+  }
+});
 document.getElementById('nextBtn').addEventListener('click', next);
 document.getElementById('prevBtn').addEventListener('click', prev);
 $play.addEventListener('click', () => {
@@ -2600,7 +2674,10 @@ $play.addEventListener('click', () => {
     return;
   }
   if (q?.preview) {
-    if (audio.paused) { userPaused = false; audio.play().catch(() => {}); }
+    // 読み込み失敗時はpaused=falseのまま音が出ていない(audio.errorが立つ)。
+    // その状態の1タップ目が「止まっている再生をさらにpauseする」逆動作に
+    // ならないよう、エラー時も再生側に倒す(src再設定から復帰する)。
+    if (audio.paused || audio.error) { userPaused = false; playAudioForCursor(); }
     else { userPaused = true; audio.pause(); }
   } else if (q?.youtube && ytReady) {
     if (ytIsPlaying()) { userPaused = true; ytPlayer.pauseVideo(); }
@@ -2643,6 +2720,7 @@ document.querySelector('.player-now').addEventListener('click', () => {
 document.getElementById('clearQueue').addEventListener('click', () => {
   queue = []; cursor = -1; shuffleMode = false; shuffleRegion = null; pendingShuffleAlbum = null;
   audio.pause(); audio.removeAttribute('src');
+  clearTimeout(audioStartCheckTimer);
   if (ytReady) ytPlayer.stopVideo();
   resetYtPlaylist();
   paint();
