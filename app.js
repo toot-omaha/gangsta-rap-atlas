@@ -1437,6 +1437,10 @@ function albumCard(album, mineOnly = false) {
 
 // ---------- ディスク専用ページ(大ジャケ+曲一覧+曲単位スタンプ) ----------
 function renderDisc(album, push = true) {
+  // スタンプを押した時のrerender()(push=false、同じ盤の中身だけ更新)では
+  // ページ上部への強制スクロールを避け、押した位置のまま留まれるようにする。
+  const keepScroll = !push;
+  const scrollBefore = keepScroll ? listEl.scrollTop : 0;
   currentDisc = album;
   const e = enrichOf(album);
   const r = rarity(album);
@@ -1585,7 +1589,9 @@ function renderDisc(album, push = true) {
       otherList.appendChild(row);
     });
   }
-  listEl.scrollTop = 0; // 地域一覧のスクロール位置を引き継がず、常に先頭からディスク詳細を見せる
+  // 地域一覧から新しく開いた時だけ、そのスクロール位置を引き継がず先頭から
+  // 見せる。スタンプ操作等での同じ盤の再描画(keepScroll)は位置を保つ。
+  listEl.scrollTop = keepScroll ? scrollBefore : 0;
 }
 
 // Full Album尺の動画は30秒プレビューにしても意味が無いので、再生ボタンは
