@@ -1990,13 +1990,22 @@ let shuffleRegion = null;
 // シャッフル中、今の盤の最後の曲まで来た時点で次に流す盤をあらかじめ決めて
 // おく(先読み用)。next()側で使い切ったらnullに戻す。
 let pendingShuffleAlbum = null;
-// 次の試聴だけあらかじめ取得しておく隠しAudio(切り替え時の読み込み待ちを短縮する)
-let preloadAudio = null;
 // ユーザー自身が▶/⏸で一時停止したかどうか。バックグラウンドで再生が
 // 落ちた場合と区別し、後者だけ復帰時に自動再開する。
 let userPaused = false;
-const audio = new Audio();
-audio.addEventListener('ended', () => next());
+// 再生役と先読み役の2つのAudio要素を交互に使う(要素スワップ方式)。
+// 同じ要素へのsrc差し替えは曲境界で新規フェッチの無音のすき間を生み、
+// 背面のAndroidではその間にメディア通知が破棄され再生も止まることがある。
+// 先読みでバッファ済みの要素へ丸ごと切り替えれば、すき間なく次曲が
+// 鳴り始めるため通知が生き残る。リスナーは両要素に付けるが、ハンドラは
+// 「今の再生役(audio)」のイベントだけに反応する。
+const audioA = new Audio();
+const audioB = new Audio();
+audioA.preload = 'auto';
+audioB.preload = 'auto';
+let audio = audioA;        // 再生役
+let preloadAudio = audioB; // 先読み役(playCurrentのスワップで入れ替わる)
+[audioA, audioB].forEach((el) => el.addEventListener('ended', () => { if (el === audio) next(); }));
 
 // シャッフルをやめてユーザー選択の再生に切り替える。プレイリスト連結の
 // 先読みでキューに実体化していた未再生のランダムアルバム(shuffleAuto印)は
@@ -2024,10 +2033,8 @@ function preloadNextTrack() {
     nextItem = pendingShuffleAlbum ? trackItemsOf(pendingShuffleAlbum)[0] : null;
   }
   if (!nextItem?.preview) return;
-  if (!preloadAudio) preloadAudio = new Audio();
   if (preloadAudio.src !== nextItem.preview) {
     preloadAudio.src = nextItem.preview;
-    preloadAudio.preload = 'auto';
     preloadAudio.load();
   }
 }
@@ -2072,8 +2079,11 @@ function playAudioForCursor() {
   });
   scheduleAudioStartCheck();
 }
-audio.addEventListener('playing', () => { audioStartRetryDelay = 3000; audioErrorRetries = 0; clearTimeout(audioStartCheckTimer); });
-audio.addEventListener('error', () => scheduleAudioStartCheck()); // 再生途中の失敗(回線断等)も見張りに拾わせる
+[audioA, audioB].forEach((el) => {
+  el.addEventListener('playing', () => { if (el !== audio) return; audioStartRetryDelay = 3000; audioErrorRetries = 0; clearTimeout(audioStartCheckTimer); });
+  // 再生途中の失敗(回線断等)も見張りに拾わせる(先読み役の失敗は対象外)
+  el.addEventListener('error', () => { if (el === audio) scheduleAudioStartCheck(); });
+});
 
 // バックグラウンドで再生が止まってしまっても、アプリに戻ってきたタイミングで
 // (ユーザー自身が一時停止していない限り)自動で再生を再開する。
@@ -2574,7 +2584,15 @@ function playCurrent() {
   if (q?.preview) {
     if (ytReady) ytPlayer.stopVideo();
     resetYtPlaylist();
-    audio.src = q.preview;
+    // 先読み役に同じ曲がバッファ済みなら要素ごと入れ替え、すき間なく鳴らす
+    // (背面でもネットワーク待ちゼロで開始でき、メディア通知が破棄されない)
+    if (preloadAudio.src === q.preview && !preloadAudio.error) {
+      audio.pause();
+      [audio, preloadAudio] = [preloadAudio, audio];
+      preloadAudio.removeAttribute('src');
+    } else {
+      audio.src = q.preview;
+    }
     audioErrorRetries = 0;
     playAudioForCursor(); // 再生開始は見張りつき(自動再生ブロック時はユーザーの▶待ち)
   } else if (q?.youtube) {
@@ -2719,19 +2737,22 @@ function startRegionShuffle(region) {
   if (queue[cursor]?.youtube) playYtForCursor();
 }
 
-audio.addEventListener('play', paint);
-audio.addEventListener('pause', () => {
-  // 自然終了時は仕様上pause→endedの順で発火する。前者でpaintすると
-  // 30秒ごとに通知へ'paused'を公表するフラッピングになり、Android側の
-  // 通知再構築(=消える機会)を誘発するので、endedに任せて何もしない。
-  if (audio.ended) return;
-  paint();
-  // 曲の開始直後にシステム起因で直接止められた場合は即復帰する
-  // (ユーザー操作はuserPaused=trueが先に立つので対象外。通話等の
-  // フォーカス喪失は開始1秒の窓の外なので喧嘩しない)。
-  if (!userPaused && queue[cursor]?.preview && Date.now() - lastAudioStartAt < 1000) {
-    audio.play().catch(() => {});
-  }
+[audioA, audioB].forEach((el) => {
+  el.addEventListener('play', () => { if (el === audio) paint(); });
+  el.addEventListener('pause', () => {
+    if (el !== audio) return; // スワップ時に旧再生役を止める分などは無視
+    // 自然終了時は仕様上pause→endedの順で発火する。前者でpaintすると
+    // 30秒ごとに通知へ'paused'を公表するフラッピングになり、Android側の
+    // 通知再構築(=消える機会)を誘発するので、endedに任せて何もしない。
+    if (audio.ended) return;
+    paint();
+    // 曲の開始直後にシステム起因で直接止められた場合は即復帰する
+    // (ユーザー操作はuserPaused=trueが先に立つので対象外。通話等の
+    // フォーカス喪失は開始1秒の窓の外なので喧嘩しない)。
+    if (!userPaused && queue[cursor]?.preview && Date.now() - lastAudioStartAt < 1000) {
+      audio.play().catch(() => {});
+    }
+  });
 });
 document.getElementById('nextBtn').addEventListener('click', next);
 document.getElementById('prevBtn').addEventListener('click', prev);
