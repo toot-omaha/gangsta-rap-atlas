@@ -494,7 +494,7 @@ async function loadPublishedReleases() {
   try {
     const [pubRegions, pubAlbums] = await Promise.all([
       fetchAllRows(`${SB_URL}/published_regions?select=id,name,area,lat,lng`),
-      fetchAllRows(`${SB_URL}/published_albums?select=id,title,artist,year,label,discogs_url,region_id`),
+      fetchAllRows(`${SB_URL}/published_albums?select=id,title,artist,year,label,discogs_url,region_id,youtube_ids,youtube_full_album_id,discogs_art`),
     ]);
     pubRegions.forEach((r) => {
       if (REGIONS.some((rr) => rr.id === r.id)) return;
@@ -509,7 +509,10 @@ async function loadPublishedReleases() {
       if (region.albums.some((al) => al.id === id)) return;
       region.albums.push({
         id, artist: a.artist, title: a.title, year: a.year, label: a.label,
-        youtubeId: null, discogsUrl: a.discogs_url, stampSeed: {},
+        youtubeId: null, youtubeIds: a.youtube_ids || undefined,
+        youtubeFullAlbumId: a.youtube_full_album_id || undefined,
+        discogsArt: a.discogs_art || undefined,
+        discogsUrl: a.discogs_url, stampSeed: {},
       });
     });
     refreshMarkers();
