@@ -2804,25 +2804,47 @@ function randomPlayableAlbum() {
 // 境界が頻発するので特に効く(キュー上でYT盤が連続していれば、
 // playYtForCursorが最大60本まで1本のプレイリストにまとめて載せる)。
 // 連結分にはshuffleAuto印を付け、exitShuffle()で取り除けるようにする。
+// 通常再生(非シャッフル)でアルバムを聴き終えた時の「地域内の次のアルバムへ
+// 継ぎ足す」動作(next()参照)も、同じ理由でボーダー直前ではなく早めに
+// 行う必要がある。両モードをまとめて面倒を見る。
 const SHUFFLE_RUNWAY_TRACKS = 10;
 function ensureShuffleRunway() {
-  if (!shuffleMode) return;
-  const upcoming = new Set(queue.slice(Math.max(cursor, 0)).map((it) => it.album));
-  let guard = 0;
-  let appended = false;
-  while (queue.length - 1 - cursor < SHUFFLE_RUNWAY_TRACKS && guard++ < 12) {
-    const album = pendingShuffleAlbum || randomPlayableAlbum();
-    pendingShuffleAlbum = null;
-    if (!album) break;
-    if (upcoming.has(album)) continue; // 直近に並んでいる盤の連投は避ける
-    const items = trackItemsOf(album);
-    if (!items.length) continue;
-    items.forEach((it) => { it.shuffleAuto = true; });
-    queue.push(...items);
-    upcoming.add(album);
-    appended = true;
+  if (queue.length - 1 - cursor >= SHUFFLE_RUNWAY_TRACKS) return;
+  if (shuffleMode) {
+    const upcoming = new Set(queue.slice(Math.max(cursor, 0)).map((it) => it.album));
+    let guard = 0;
+    let appended = false;
+    while (queue.length - 1 - cursor < SHUFFLE_RUNWAY_TRACKS && guard++ < 12) {
+      const album = pendingShuffleAlbum || randomPlayableAlbum();
+      pendingShuffleAlbum = null;
+      if (!album) break;
+      if (upcoming.has(album)) continue; // 直近に並んでいる盤の連投は避ける
+      const items = trackItemsOf(album);
+      if (!items.length) continue;
+      items.forEach((it) => { it.shuffleAuto = true; });
+      queue.push(...items);
+      upcoming.add(album);
+      appended = true;
+    }
+    if (appended) saveQueue();
+    return;
   }
-  if (appended) saveQueue();
+  // 非シャッフル: 地域内の次のアルバム(年代順)を1枚だけ先んじて継ぎ足す。
+  // next()側の同種ロジックと同じ探索条件(自動再生除外設定を尊重)。
+  const lastAlbum = queue[queue.length - 1]?.album;
+  const region = lastAlbum && REGIONS.find((r) => r.albums.includes(lastAlbum));
+  if (!region) return;
+  const albums = albumsOf(region).slice().sort((a, b) => a.year - b.year);
+  const pos = albums.indexOf(lastAlbum);
+  for (let i = pos + 1; i < albums.length; i++) {
+    if (!autoplayEligible(albums[i])) continue;
+    const items = trackItemsOf(albums[i]);
+    if (items.length) {
+      queue.push(...items);
+      saveQueue();
+      return;
+    }
+  }
 }
 
 // 地域一覧ヘッダーのシャッフルボタン: その地域の再生可能な盤から1枚選んで
