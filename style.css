@@ -78,12 +78,14 @@ body.stamps-open .drawer { display: block; }
 .era-chk.on { color: var(--ink); }
 .era-chk .count { font-variant-numeric: tabular-nums; opacity: .65; font-weight: 700; margin-left: 1px; }
 
-/* 自動再生(シャッフル・継ぎ足し)からの除外設定 */
-.autoplay-filter {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
-  padding: 8px 10px; border-bottom: 2px solid var(--ink);
+/* 自動再生(シャッフル・継ぎ足し)からの除外設定。
+   見出し行の下にチェック行を一段下げて並べる */
+.autoplay-filter { padding: 8px 10px 10px; border-bottom: 2px solid var(--ink); }
+.autoplay-label {
+  display: block; font-size: 11px; font-weight: 900; letter-spacing: .08em;
+  color: var(--ink-2); margin-bottom: 6px;
 }
-.autoplay-label { font-size: 11px; font-weight: 900; letter-spacing: .08em; color: var(--ink-2); }
+.autoplay-chks { display: flex; flex-wrap: wrap; gap: 6px 12px; padding-left: 14px; }
 
 /* イラナイ(シャッフル除外)マーク中のディスクカード: 消さずに薄く見せる */
 .album.noped { opacity: .45; filter: grayscale(.7); }
@@ -96,6 +98,9 @@ body.stamps-open .drawer { display: block; }
   margin: 0; padding: 10px; font-size: 11px; line-height: 1.6; color: var(--ink-2);
   border-bottom: 2px solid var(--ink);
 }
+/* スタンプ/タグ/説明文は「みんなのスタンプ検索」のひとまとまり。
+   グループ内の区切りは点線にして、説明文がタグまで掛かっていると分かるようにする */
+.stamp-filter, .tag-filter { border-bottom: 2px dotted var(--ink-2); }
 .filter-hint b { color: var(--ink); }
 .drawer-actions:empty { display: none; }
 .drawer-actions {
@@ -482,9 +487,9 @@ body.detail .intro { opacity: 0; pointer-events: none; }
 .fav-btn.want-btn.on { background: var(--red); border-color: var(--red); color: var(--paper); }
 .fav-btn.nope-btn.on { background: #6b6b6b; border-color: #6b6b6b; color: var(--paper); }
 
-/* ▶はボタン列に収まらなくなったので次の行へ(横幅いっぱいに広げる) */
+/* ▶はボタン列に収まらなくなったので次の行へ(全幅はダサいので控えめな幅で左寄せ) */
 .album-actions.play-row { margin-top: 6px; }
-.album-actions.play-row .play-btn { flex: 1; width: auto; padding: 5px 0; }
+.album-actions.play-row .play-btn { width: 110px; padding: 5px 0; }
 
 .disc-actions .have-d.on { background: var(--gold); }
 .disc-actions .want-d.on { background: var(--red); color: var(--paper); border-color: var(--red); }

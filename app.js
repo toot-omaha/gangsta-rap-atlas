@@ -895,7 +895,9 @@ buildEraBar();
 const autoplayBar = document.getElementById('autoplayFilter');
 function buildAutoplayBar() {
   if (!autoplayBar) return; // 旧キャッシュのHTMLに要素が無くても落ちない
-  autoplayBar.innerHTML = `<span class="autoplay-label">${t('autoplayExclude')}</span>`;
+  // 見出し行+一段下げたチェック行の2段構成
+  autoplayBar.innerHTML = `<span class="autoplay-label">${t('autoplayExclude')}</span><div class="autoplay-chks"></div>`;
+  const chkRow = autoplayBar.querySelector('.autoplay-chks');
   [['have', t('have')], ['want', t('want')], ['nope', t('nope')]].forEach(([k, lab]) => {
     const label = document.createElement('label');
     label.className = 'era-chk' + (autoplayExclude[k] ? ' on' : '');
@@ -905,7 +907,7 @@ function buildAutoplayBar() {
       label.classList.toggle('on', ev.target.checked);
       saveAutoplayExclude();
     });
-    autoplayBar.appendChild(label);
+    chkRow.appendChild(label);
   });
 }
 buildAutoplayBar();
