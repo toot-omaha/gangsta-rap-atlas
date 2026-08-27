@@ -2053,6 +2053,9 @@ let audioErrorRetries = 0;
 // 「次の曲が一瞬鳴って消える」ことがある。この時刻から1秒以内のpauseは
 // ユーザー操作ではなくレース起因とみなして再生を続行する。
 let lastAudioStartAt = 0;
+// システム起因pauseの自動復帰を「1回の再生開始につき1度だけ」にする印
+// (lastAudioStartAtと一致=この曲では復帰済み)。2回止められたら従う。
+let audioAutoResumeUsedAt = -1;
 function scheduleAudioStartCheck() {
   clearTimeout(audioStartCheckTimer);
   audioStartCheckTimer = setTimeout(() => {
@@ -2373,6 +2376,7 @@ let ytExpectedIndex = null;
 // エラーで勝手に鳴り出したりしないよう、onErrorの自動スキップを制御する。
 let ytPlaybackIntended = false;
 let ytErrorSkippedKey = null; // 同じ動画のonError連続発火で二重スキップしないための控え
+let ytAutoResumeUsedKey = null; // システム起因PAUSEDの自動復帰を動画ごとに1回に制限する印
 function resetYtPlaylist() {
   ytPlaylistIds = null;
   ytPlaylistBase = -1;
@@ -2409,6 +2413,18 @@ function initYtPlayer() {
         if (e.data === YT.PlayerState.PLAYING) {
           ytStartRetryDelay = 3000;
           clearTimeout(ytStartCheckTimer);
+        }
+        // システム起因で止められた場合の自動復帰(iTunes側と同じ規約)。
+        // ユーザー操作の一時停止はuserPaused=trueが先に立つので、falseのままの
+        // PAUSEDはシステム起因(プレイリスト切替後のフォーカス再交渉等)。
+        // 同じ動画では1回だけ試み、2回止められたら本物として従う。
+        if (e.data === YT.PlayerState.PAUSED && ytPlaybackIntended && !userPaused) {
+          const vd = ytPlayer.getVideoData && ytPlayer.getVideoData();
+          const key = vd?.video_id || 'unknown';
+          if (ytAutoResumeUsedKey !== key) {
+            ytAutoResumeUsedKey = key;
+            ytPlayer.playVideo();
+          }
         }
         // YouTubeが自動で次の動画へ進んだ分を、こちらの再生位置へ反映する
         // (曲送りをYouTube側に任せているので、cursorは後追いで合わせる)
@@ -2613,6 +2629,13 @@ function syncCursorToYtPlaylist() {
   if (queue[target]?.youtube !== ytPlaylistIds[i]) return; // キューが組み替わっていたら触らない
   cursor = target;
   saveQueue();
+  // YouTube再生中はcursorがここで進む(playCurrentを通らない)ため、ここでも
+  // ランウェイ補充と次曲の先読みを回す。特にYT区間の最後の動画を再生中に
+  // 次のiTunes曲をバッファしておかないと、区間終端→next()の瞬間にコールド
+  // ロードとなり、背面ではそのまま凍結して次が始まらない(2曲のYT盤終了時に
+  // 止まる報告の原因)。
+  ensureShuffleRunway();
+  preloadNextTrack();
 }
 function ytIsPlaying() {
   return !!(ytReady && ytPlayer.getPlayerState && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
@@ -2826,11 +2849,18 @@ function startRegionShuffle(region) {
     // 通知再構築(=消える機会)を誘発するので、endedに任せて何もしない。
     if (audio.ended) return;
     paint();
-    // 曲の開始直後にシステム起因で直接止められた場合は即復帰する
-    // (ユーザー操作はuserPaused=trueが先に立つので対象外。通話等の
-    // フォーカス喪失は開始1秒の窓の外なので喧嘩しない)。
-    if (!userPaused && queue[cursor]?.preview && Date.now() - lastAudioStartAt < 1000) {
-      audio.play().catch(() => {});
+    // システム起因で直接止められた場合の自動復帰。ユーザー操作の一時停止は
+    // 必ずuserPaused=trueが先に立つので、userPausedがfalseのままのpauseは
+    // すべてシステム起因(アルバム切替後のオーディオフォーカス再交渉、
+    // セッション再構築レース等)と判定できる。開始1秒以内は無条件で復帰し、
+    // それ以降も曲ごとに1回だけ復帰を試みる(「切り替え後5秒で止まる」対策。
+    // 電話着信など本物のフォーカス喪失は2回目のpauseが来るのでそこで従う)。
+    if (!userPaused && queue[cursor]?.preview) {
+      const withinStart = Date.now() - lastAudioStartAt < 1000;
+      if (withinStart || audioAutoResumeUsedAt !== lastAudioStartAt) {
+        if (!withinStart) audioAutoResumeUsedAt = lastAudioStartAt;
+        audio.play().catch(() => {});
+      }
     }
   });
 });
