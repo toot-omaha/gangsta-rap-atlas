@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://toot-omaha.github.io/gangsta-rap-atlas/sitemap.xml
