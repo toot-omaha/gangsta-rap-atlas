@@ -743,18 +743,9 @@ const albumsOf = (r) => {
 // ---------- 地図 ----------
 const map = new maplibregl.Map({
   container: 'map',
-  style: {
-    version: 8,
-    sources: {
-      base: {
-        type: 'raster',
-        tiles: ['https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png'],
-        tileSize: 256,
-        attribution: '© OpenStreetMap contributors © CARTO',
-      },
-    },
-    layers: [{ id: 'base', type: 'raster', source: 'base' }],
-  },
+  // CARTOの無料ラスタタイルがAPIキー必須化し「API KEY REQUIRED」の透かし入りタイルを
+  // 返すようになったため、キー不要のOpenFreeMap(同じPositron系スタイル)へ移行した
+  style: 'https://tiles.openfreemap.org/styles/positron',
   center: [-97, 38],
   zoom: 3.6,
   attributionControl: { compact: true },
