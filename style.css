@@ -248,13 +248,13 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
   transform: scale(calc(var(--s, 1) * var(--h, 1)));
 }
 .marker:hover { --h: 1.18; z-index: 9999 !important; }
-/* 墓石ピン(中に枚数)。ドット絵PNG(影・縁取り焼き込み済み)を全マーカーで共有。
- * SVG+drop-shadowフィルタ×645個は描画が重かったため、デコード済みビットマップ
- * 1枚をGPUに載せる方式に変更。image-rendering: pixelatedでローファイ感も出す。 */
+/* 墓石ピン(中に枚数)。影・縁取りを焼き込んだ低解像度PNG(28x30px)を全マーカーで
+ * 共有する。SVG+drop-shadowフィルタ×645個は描画が重かったための置き換えで、
+ * 小さいビットマップを通常補間で拡大させることで「低画質画像を引き伸ばした」
+ * ソフトな粗さ(ブート盤ジャケ的な質感)も同時に出す。 */
 .marker .grave {
   position: absolute; inset: 0;
   background: url('assets/px/grave.png') center / contain no-repeat;
-  image-rendering: pixelated;
   transform: rotate(var(--rot, 0deg));
 }
 .marker .n {
