@@ -254,7 +254,7 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
  * ソフトな粗さ(ブート盤ジャケ的な質感)も同時に出す。 */
 .marker .grave {
   position: absolute; inset: 0;
-  background: url('assets/px/grave.png') center / contain no-repeat;
+  background: url('assets/px/grave.png?v=2') center / contain no-repeat;
   transform: rotate(var(--rot, 0deg));
 }
 .marker .n {
@@ -264,7 +264,7 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
 }
 
 /* 未確認情報(漂流ブイ)ピン */
-.marker .buoy { background-image: url('assets/px/buoy.png'); }
+.marker .buoy { background-image: url('assets/px/buoy.png?v=2'); }
 .marker.unclassified .n { display: none; }
 .marker .q {
   position: absolute; left: 50%; top: 44%;
@@ -296,8 +296,8 @@ body.zoomed-in .marker .nm, .marker:hover .nm { display: block; }
 .marker.hit .mk { animation: hit .3s steps(3); }
 /* 直近で開いた地域は次に別の地域を選ぶまで赤いままにする
    (検索から来た時など、どこにピンが立っていたか一目でわかるように) */
-.marker.selected .grave { background-image: url('assets/px/grave-red.png'); }
-.marker.selected .buoy { background-image: url('assets/px/buoy-red.png'); }
+.marker.selected .grave { background-image: url('assets/px/grave-red.png?v=2'); }
+.marker.selected .buoy { background-image: url('assets/px/buoy-red.png?v=2'); }
 @keyframes hit {
   0% { transform: scale(calc(var(--s, 1) * 2.4)); }
   100% { transform: scale(calc(var(--s, 1) * var(--h, 1))); }
