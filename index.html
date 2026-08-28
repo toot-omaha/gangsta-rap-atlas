@@ -30,8 +30,10 @@
       var p = enc(collect());
       // フラグメント長の保険(通常は遠く及ばない)
       if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
       location.replace(NEW + '/#gra-import=' + p);
-      window.stop();
       return;
     }
     if (location.origin !== NEW) return;
@@ -54,7 +56,6 @@
     sessionStorage.setItem('gra.bounceTried', '1');
     if (location.hash) sessionStorage.setItem('gra.resumeHash', location.hash);
     location.replace(OLD + '/?gra-handoff');
-    window.stop();
   } catch (e) {}
 })();
 </script>
