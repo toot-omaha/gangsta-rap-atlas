@@ -3147,3 +3147,39 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
+
+// ---------- 旧オリジン(pages.dev)からのlocalStorage引き継ぎ ----------
+// 独自ドメイン移行でオリジンが変わるとStreet Name・スタンプ・お気に入り等の
+// localStorageが空になるため、新オリジンの初訪問時に旧オリジンを不可視iframeで
+// 開き、一度だけ全gra.*キーを受け取る(旧オリジン側の応答はindex.html冒頭の
+// インラインスクリプト。応答専用モードでアプリ本体は起動しない)。
+// 安全策: 受信は旧オリジン発のメッセージのみ、既存キーは上書きしない、
+// このオリジンで既にStreet Nameを持っている場合は何もしない。
+(function crossOriginHandoff() {
+  const OLD_ORIGIN = 'https://gangsta-rap-atlas.pages.dev';
+  const NEW_ORIGIN = 'https://g.rap-atlas.com';
+  const MIGRATE_FLAG = 'gra.migrated.v1';
+  if (location.origin !== NEW_ORIGIN) return;
+  if (localStorage.getItem(MIGRATE_FLAG)) return;
+  if (localStorage.getItem(STREET_KEY)) { localStorage.setItem(MIGRATE_FLAG, '1'); return; }
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = OLD_ORIGIN + '/?gra-export';
+  // 旧オリジンが応答しない環境(オフライン等)でもiframeを残さない
+  const timer = setTimeout(() => iframe.remove(), 15000);
+  window.addEventListener('message', function onMsg(e) {
+    if (e.origin !== OLD_ORIGIN || !e.data || e.data.type !== 'gra-export') return;
+    window.removeEventListener('message', onMsg);
+    clearTimeout(timer);
+    iframe.remove();
+    let imported = 0;
+    for (const [k, v] of Object.entries(e.data.data || {})) {
+      if (!k.startsWith('gra.') || k === MIGRATE_FLAG || typeof v !== 'string') continue;
+      if (localStorage.getItem(k) == null) { localStorage.setItem(k, v); imported++; }
+    }
+    localStorage.setItem(MIGRATE_FLAG, '1');
+    // 取り込んだ状態(Street Name等)でアプリを初期化し直す
+    if (imported) location.reload();
+  });
+  document.body.appendChild(iframe);
+})();
