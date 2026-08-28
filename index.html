@@ -3,23 +3,60 @@
 <head>
 <meta charset="utf-8">
 <script>
-// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ応答。
-// 新オリジン側(app.js末尾のcrossOriginHandoff)が旧オリジンを不可視iframeで
-// ?gra-export付きで開いたときだけ、gra.*キー一式を親へpostMessageして
-// 以降の読み込みを打ち切る(応答専用なのでアプリ本体は起動しない)。
-// 送り先オリジンは新ドメインに固定しているため、第三者サイトがこのページを
-// iframeに入れてもデータは渡らない。
-if (location.search.indexOf('gra-export') >= 0 && window.parent !== window) {
-  try {
-    var graData = {};
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
-      if (k && k.indexOf('gra.') === 0) graData[k] = localStorage.getItem(k);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
     }
-    window.parent.postMessage({ type: 'gra-export', data: graData }, 'https://g.rap-atlas.com');
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      location.replace(NEW + '/#gra-import=' + p);
+      window.stop();
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、共有リンクで来ていた場合はそのハッシュを復元
+      var resume = sessionStorage.getItem('gra.resumeHash') || '';
+      sessionStorage.removeItem('gra.resumeHash');
+      history.replaceState(null, '', location.pathname + location.search + resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    if (location.hash) sessionStorage.setItem('gra.resumeHash', location.hash);
+    location.replace(OLD + '/?gra-handoff');
+    window.stop();
   } catch (e) {}
-  window.stop();
-}
+})();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GANGSTA RAP ATLAS｜地図から掘るG-RAP・ギャングスタラップ地域別ディスコグラフィ</title>
@@ -169,6 +206,6 @@ if (location.search.indexOf('gra-export') >= 0 && window.parent !== window) {
 <script src="enrich.js?v=74"></script>
 <script src="rarity.js?v=65"></script>
 <script src="youtube.js?v=1"></script>
-<script src="app.js?v=149"></script>
+<script src="app.js?v=150"></script>
 </body>
 </html>
