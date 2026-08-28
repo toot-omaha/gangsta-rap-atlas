@@ -20,7 +20,7 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SITE = "https://gangsta-rap-atlas.pages.dev"
+SITE = "https://g.rap-atlas.com"
 SB_URL = "https://xqtoyvhupioztljkejnw.supabase.co/rest/v1"
 SB_KEY = (
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
