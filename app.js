@@ -769,15 +769,10 @@ function createMarkerForRegion(region) {
   const rot = (region.id.split('').reduce((n, c) => n + c.charCodeAt(0), 0) % 13) - 6;
   el.style.setProperty('--rot', `${rot}deg`);
   // 出身地未特定の置き場だけ、墓石でなく漂流ブイ(?)にする
+  // (形状はドット絵PNGの共有ビットマップ。CSSの.grave/.buoy参照)
   const icon = region.unclassified
-    ? `<svg class="grave buoy" viewBox="0 0 24 26" aria-hidden="true">
-         <circle cx="12" cy="12" r="9"/>
-       </svg>
-       <span class="q">?</span>`
-    : `<svg class="grave" viewBox="0 0 24 26" aria-hidden="true">
-         <path d="M5 24 V10 a7 7 0 0 1 14 0 V24 Z"/>
-         <rect x="2.5" y="23" width="19" height="2.6"/>
-       </svg>`;
+    ? `<div class="grave buoy" aria-hidden="true"></div><span class="q">?</span>`
+    : `<div class="grave" aria-hidden="true"></div>`;
   el.innerHTML = `
     <div class="mk">
       <div class="bh"></div>

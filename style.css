@@ -246,16 +246,16 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
   position: absolute; inset: 0;
   display: grid; place-items: center;
   transform: scale(calc(var(--s, 1) * var(--h, 1)));
-  will-change: transform;
 }
 .marker:hover { --h: 1.18; z-index: 9999 !important; }
-/* 墓石ピン(中に枚数) */
+/* 墓石ピン(中に枚数)。ドット絵PNG(影・縁取り焼き込み済み)を全マーカーで共有。
+ * SVG+drop-shadowフィルタ×645個は描画が重かったため、デコード済みビットマップ
+ * 1枚をGPUに載せる方式に変更。image-rendering: pixelatedでローファイ感も出す。 */
 .marker .grave {
   position: absolute; inset: 0;
-  fill: var(--ink);
-  stroke: var(--paper); stroke-width: .8;
+  background: url('assets/px/grave.png') center / contain no-repeat;
+  image-rendering: pixelated;
   transform: rotate(var(--rot, 0deg));
-  filter: drop-shadow(2px 2px 0 rgba(20,18,15,.3));
 }
 .marker .n {
   position: absolute; left: 50%; top: 52%;
@@ -264,7 +264,7 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
 }
 
 /* 未確認情報(漂流ブイ)ピン */
-.marker .buoy { fill: var(--ink); }
+.marker .buoy { background-image: url('assets/px/buoy.png'); }
 .marker.unclassified .n { display: none; }
 .marker .q {
   position: absolute; left: 50%; top: 44%;
@@ -278,9 +278,9 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
   font-size: 10px; font-weight: 900; letter-spacing: .1em;
   color: var(--ink);
   text-shadow: -1px -1px 0 var(--paper), 1px -1px 0 var(--paper), -1px 1px 0 var(--paper), 1px 1px 0 var(--paper);
-  opacity: 0; transition: opacity .2s; pointer-events: none;
+  display: none; pointer-events: none;
 }
-body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
+body.zoomed-in .marker .nm, .marker:hover .nm { display: block; }
 .marker.dimmed { opacity: .22; }
 .marker.hidden { display: none; }
 
@@ -296,8 +296,8 @@ body.zoomed-in .marker .nm, .marker:hover .nm { opacity: 1; }
 .marker.hit .mk { animation: hit .3s steps(3); }
 /* 直近で開いた地域は次に別の地域を選ぶまで赤いままにする
    (検索から来た時など、どこにピンが立っていたか一目でわかるように) */
-.marker.selected .grave { fill: var(--red); }
-.marker.selected .buoy { fill: var(--red); }
+.marker.selected .grave { background-image: url('assets/px/grave-red.png'); }
+.marker.selected .buoy { background-image: url('assets/px/buoy-red.png'); }
 @keyframes hit {
   0% { transform: scale(calc(var(--s, 1) * 2.4)); }
   100% { transform: scale(calc(var(--s, 1) * var(--h, 1))); }
