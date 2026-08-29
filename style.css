@@ -740,7 +740,11 @@ body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); 
   background: transparent; color: var(--ink); cursor: pointer;
 }
 .qv-tab.on { background: var(--ink); color: var(--paper); }
-.qv-note { padding: 8px 6px 0; }
+.qv-note {
+  margin: 10px 6px 4px; padding-left: 22px;
+  font-size: 11px; line-height: 1.9; color: var(--ink-2);
+}
+.qv-note li { margin: 2px 0; }
 .qv-auto {
   font-size: 9px; font-weight: 700; letter-spacing: .08em;
   border: 1px solid var(--ink-2); color: var(--ink-2);

@@ -46,9 +46,16 @@ const I18N = {
     histClearConfirm: 'クリアスルト再生済ミノ盤ガマタシャッフルニ登場スルヨウニナル。ヨロシイ？',
     clearQueueConfirm: '再生キューヲ空ニスル。ヨロシイ？(再生済ミノ記録ハ残ル)',
     qTabQueue: 'キューリスト', qTabHist: '再生履歴',
-    qNote: 'キューノ曲ガ少ナクナルト、同ジ地域・絞リ込ミ条件ノ盤ヲ自動デ継ギ足ス(「自動」印)。手動デ追加シタ盤ハ自動追加分ヨリ先ニ再生サレル。一度再生シタ盤ハ自動再生カラ除外サレル。',
+    qNoteItems: [
+      'キューの曲が少なくなると、同じ地域・絞り込み条件の盤をランダムに自動追加します(「自動」印)。',
+      '手動で追加した盤は、自動追加分より先に再生されます。',
+      '一度再生した盤は、自動追加されなくなります。',
+    ],
     qAutoTag: '自動',
-    histNote: '直近50曲。再生履歴ヲクリアスルト、コレマデニ再生シタDISCガ再ビ自動再生ニ登場スルヨウニナル。',
+    histNoteItems: [
+      '直近50曲の再生履歴です。',
+      '再生履歴をクリアすると、これまでに再生したDISCが再びランダムに自動追加されるようになります。',
+    ],
     qCount: (n) => `${n} 曲`,
     regionShuffleConfirm: 'イマノ再生キューヲ破棄シテ、コノ地域ノシャッフルヲ始メル。ヨロシイ？',
     dlgOk: 'ヨロシイ', dlgCancel: 'ヤメル',
@@ -96,9 +103,16 @@ const I18N = {
     histClearConfirm: 'Cleared discs will start showing up in shuffle again. Continue?',
     clearQueueConfirm: 'Empty the play queue? (Played discs stay recorded)',
     qTabQueue: 'QUEUE', qTabHist: 'PLAY HISTORY',
-    qNote: 'When the queue runs low, discs matching the same region and filters are added automatically ("AUTO" tag). Discs you add manually play before the auto-added ones. Discs you have already played are excluded from autoplay.',
+    qNoteItems: [
+      'When the queue runs low, random discs matching the same region and filters are added automatically ("AUTO" tag).',
+      'Discs you add manually play before the auto-added ones.',
+      'Discs you have already played are no longer auto-added.',
+    ],
     qAutoTag: 'AUTO',
-    histNote: 'Last 50 tracks. Clearing the history lets previously played discs show up in autoplay again.',
+    histNoteItems: [
+      'Your last 50 played tracks.',
+      'Clearing the history lets previously played discs be auto-added again.',
+    ],
     qCount: (n) => `${n} TRACKS`,
     regionShuffleConfirm: 'Discard the current queue and start shuffling this region. Continue?',
     dlgOk: 'OK', dlgCancel: 'CANCEL',
@@ -2977,22 +2991,34 @@ function next() {
   const lastAlbum = queue[queue.length - 1]?.album;
   const region = lastAlbum && REGIONS.find((r) => r.albums.includes(lastAlbum));
   if (region) {
-    const albums = albumsOf(region).slice().sort((a, b) => a.year - b.year);
-    const pos = albums.indexOf(lastAlbum);
-    for (let i = pos + 1; i < albums.length; i++) {
-      if (!autoplayEligible(albums[i])) continue; // 除外設定(持ッテル/ホシイ/イラナイ)を尊重
-      const items = trackItemsOf(albums[i]);
-      if (items.length) {
-        queue.push(...items);
-        cursor++;
-        playCurrent();
-        return;
-      }
+    const album = randomRegionFollowUp(region);
+    if (album) {
+      const items = trackItemsOf(album);
+      items.forEach((it) => { it.shuffleAuto = true; });
+      queue.push(...items);
+      cursor++;
+      playCurrent();
+      return;
     }
   }
   paint();
 }
 function prev() { if (cursor > 0) { cursor--; playCurrent(); } }
+
+// 非シャッフル時の自動継ぎ足し用: 同じ地域からランダムに1枚選ぶ。
+// 以前は年代順で「次のアルバム」を継ぎ足していたが、シャッフル時と挙動が
+// 割れて分かりにくいため「自動追加は全てランダム」に統一した(ユーザー指定)。
+// 除外条件はrandomPlayableAlbumと同じだが、候補を聴き尽くしたら繰り返さず
+// 自然に停止する(非シャッフルを無限ループさせない)。
+function randomRegionFollowUp(region) {
+  const base = albumsOf(region).filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
+  const seen = new Set(queue.map((it) => it.album));
+  const unseen = base.filter((a) => !seen.has(a));
+  const fresh = unseen.filter((a) => !playedAlbumIds.has(a.id));
+  const pool = fresh.length ? fresh : unseen;
+  if (!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 
 // 再生済みアルバムの永続セット。キューをクリアしても残り、履歴画面の
 // 「履歴と再生済みをクリア」で初めて空になる(ユーザー要望: よく見るアルバムが
@@ -3095,22 +3121,17 @@ function ensureShuffleRunway() {
     if (appended) saveQueue();
     return;
   }
-  // 非シャッフル: 地域内の次のアルバム(年代順)を1枚だけ先んじて継ぎ足す。
-  // next()側の同種ロジックと同じ探索条件(自動再生除外設定を尊重)。
+  // 非シャッフル: 同じ地域からランダムに1枚だけ先んじて継ぎ足す
+  // (next()側の同種ロジックと共通のrandomRegionFollowUpを使う)。
   const lastAlbum = queue[queue.length - 1]?.album;
   const region = lastAlbum && REGIONS.find((r) => r.albums.includes(lastAlbum));
   if (!region) return;
-  const albums = albumsOf(region).slice().sort((a, b) => a.year - b.year);
-  const pos = albums.indexOf(lastAlbum);
-  for (let i = pos + 1; i < albums.length; i++) {
-    if (!autoplayEligible(albums[i])) continue;
-    const items = trackItemsOf(albums[i]);
-    if (items.length) {
-      queue.push(...items);
-      saveQueue();
-      return;
-    }
-  }
+  const album = randomRegionFollowUp(region);
+  if (!album) return;
+  const items = trackItemsOf(album);
+  items.forEach((it) => { it.shuffleAuto = true; });
+  queue.push(...items);
+  saveQueue();
 }
 
 // 地域一覧ヘッダーのシャッフルボタン: その地域の再生可能な盤から1枚選んで
@@ -3313,7 +3334,7 @@ function renderQueueView(push = true, tab = queueViewTab) {
       <button type="button" class="qv-tab${tab === 'queue' ? ' on' : ''}" data-tab="queue">${t('qTabQueue')}</button>
       <button type="button" class="qv-tab${tab === 'history' ? ' on' : ''}" data-tab="history">${t('qTabHist')}</button>
     </div>
-    <p class="form-note qv-note">${tab === 'queue' ? t('qNote') : t('histNote')}</p>
+    <ul class="qv-note">${(tab === 'queue' ? t('qNoteItems') : t('histNoteItems')).map((n) => `<li>${n}</li>`).join('')}</ul>
     ${body}`;
   listEl.querySelector('.close').addEventListener('click', closeList);
   listEl.querySelectorAll('.qv-tab').forEach((b) => b.addEventListener('click', () => renderQueueView(false, b.dataset.tab)));
