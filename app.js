@@ -2973,12 +2973,17 @@ function prev() { if (cursor > 0) { cursor--; playCurrent(); } }
 // キュークリア後にすぐ戻ってくるのを防ぐ)。曲がひとつでも実再生されたら
 // そのアルバムを再生済みとする。
 const PLAYED_KEY = 'gra.playedAlbums.v1';
+// 「履歴と再生済みをクリア」した時刻。端末間同期でクリアを伝播させるために持つ
+// (新しいクリアが勝ち、クリア前の古いデータが後から届いても巻き戻さない)。
+const PLAYED_CLEARED_KEY = 'gra.playedCleared.v1';
+let playedClearedAt = Number(localStorage.getItem(PLAYED_CLEARED_KEY)) || 0;
 let playedAlbumIds = new Set();
 try { playedAlbumIds = new Set(JSON.parse(localStorage.getItem(PLAYED_KEY) || '[]')); } catch { /* 壊れていたら空から */ }
 function markAlbumPlayed(a) {
   if (!a || a.id == null || playedAlbumIds.has(a.id)) return;
   playedAlbumIds.add(a.id);
   localStorage.setItem(PLAYED_KEY, JSON.stringify([...playedAlbumIds]));
+  schedulePushPlayedSync(); // Street Name同期(fav_sync.played)へもデバウンス付きで反映
 }
 
 // キューが空の状態で▶を押した時のランダム再生用。年代・スタンプの絞り込み
@@ -3255,6 +3260,10 @@ function renderHistory(push = true) {
     localStorage.removeItem('gra.history.v1');
     playedAlbumIds = new Set();
     localStorage.removeItem(PLAYED_KEY);
+    // クリアは他端末にも伝播させる(cleared_atが新しい方が勝つルール)
+    playedClearedAt = Date.now();
+    localStorage.setItem(PLAYED_CLEARED_KEY, String(playedClearedAt));
+    pushPlayedSync();
     renderHistory(false);
   });
 }
@@ -3490,12 +3499,21 @@ async function pushQueueSync() {
 async function pullQueueSync() {
   if (!queueSyncEnabled || !streetName) return;
   try {
-    const res = await fetch(
-      `${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}&select=queue,queue_updated_at`,
+    // 再生済みセット(played)も同じリクエストに相乗りさせて取得する
+    let res = await fetch(
+      `${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}&select=queue,queue_updated_at${playedSyncEnabled ? ',played' : ''}`,
       { headers: SB_HEADERS });
+    if (res.status === 400 && playedSyncEnabled) {
+      // played列のマイグレーション未実施のDB: キュー同期だけは生かす
+      playedSyncEnabled = false;
+      res = await fetch(
+        `${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}&select=queue,queue_updated_at`,
+        { headers: SB_HEADERS });
+    }
     if (res.status === 400) { queueSyncEnabled = false; return; }
     if (!res.ok) return;
     const rows = await res.json();
+    mergePlayedFromRow(rows[0]);
     const normalized = normalizeQueuePayload(rows[0]?.queue);
     if (!normalized) return;
     if (normalized === lastQueueSnapshot) { lastQueuePushedSnapshot = normalized; return; }
@@ -3512,6 +3530,57 @@ async function pullQueueSync() {
     lastQueuePushedSnapshot = normalized; // 取り込んだ内容をそのまま押し返さない
     adoptExternalQueue();
   } catch { /* オフライン時は何もしない */ }
+}
+// ---------- 再生済みセットの端末間同期(fav_sync.played) ----------
+// { ids: [albumId...], cleared_at: ミリ秒 } を保存する。
+// 通常は「増えるだけの集合」なので和集合マージで両方向の追加が合流し、
+// クリアだけは cleared_at の新しい方が勝つ(クリア前の古いデータが
+// 後から届いてもクリアを巻き戻さない)。プルはpullQueueSyncに相乗り。
+var playedSyncEnabled = true; // varで宣言(TDZ対策、queueSyncEnabledと同じ理由)
+var playedSyncPushTimer = null;
+function schedulePushPlayedSync() {
+  if (!playedSyncEnabled || !streetName) return;
+  clearTimeout(playedSyncPushTimer);
+  playedSyncPushTimer = setTimeout(pushPlayedSync, 5000);
+}
+async function pushPlayedSync() {
+  if (!playedSyncEnabled || !streetName) return;
+  try {
+    const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+      body: JSON.stringify({ played: { ids: [...playedAlbumIds], cleared_at: playedClearedAt } }),
+    });
+    if (res.status === 400) playedSyncEnabled = false; // 列のマイグレーション未実施
+  } catch { /* オフライン時は次の再生時に再試行 */ }
+}
+function mergePlayedFromRow(row) {
+  if (!playedSyncEnabled || !row || !('played' in row)) return;
+  const remote = row.played;
+  if (!remote || !Array.isArray(remote.ids)) {
+    // サーバーがまだ空: こちらに中身があれば初回プッシュ
+    if (playedAlbumIds.size || playedClearedAt) schedulePushPlayedSync();
+    return;
+  }
+  const remoteCleared = Number(remote.cleared_at) || 0;
+  const before = playedAlbumIds.size;
+  if (remoteCleared > playedClearedAt) {
+    // 他端末でのクリアが自分の状態より新しい: そちらを正として置き換える
+    playedClearedAt = remoteCleared;
+    localStorage.setItem(PLAYED_CLEARED_KEY, String(playedClearedAt));
+    playedAlbumIds = new Set(remote.ids);
+  } else if (remoteCleared === playedClearedAt) {
+    remote.ids.forEach((id) => playedAlbumIds.add(id)); // 和集合マージ
+  } else {
+    // サーバー側は自分のクリアより古いデータ: 取り込まず、クリア済みの状態を押し返す
+    schedulePushPlayedSync();
+    return;
+  }
+  if (playedAlbumIds.size !== before || remoteCleared > 0) {
+    localStorage.setItem(PLAYED_KEY, JSON.stringify([...playedAlbumIds]));
+  }
+  // こちらにしか無い追加分があればサーバーへ返す
+  if (playedAlbumIds.size !== remote.ids.length) schedulePushPlayedSync();
 }
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') pullQueueSync();
