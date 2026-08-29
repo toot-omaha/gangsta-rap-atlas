@@ -40,6 +40,10 @@ const I18N = {
     issueCode: '連携コード発行', codeHint: '他端末デ連携スルニハ、元端末デ発行シタコードモ必要(10分有効・1回限リ)',
     codePlaceholder: '連携コード', codeIssued: (c) => `連携コード: ${c} (10分有効)`,
     filterHint: 'こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。',
+    histTitle: '再生履歴', histSub: '直近50曲。再生済ミノ盤ハ履歴ヲクリアスルマデ、シャッフルニ再登場シナイ',
+    histEmpty: 'まだ空。曲を再生するとここに並ぶ。',
+    histClear: '履歴ト再生済ミヲクリア',
+    histClearConfirm: 'クリアスルト再生済ミノ盤ガマタシャッフルニ登場スルヨウニナル。ヨロシイ？',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -78,6 +82,10 @@ const I18N = {
     issueCode: 'Issue link code', codeHint: 'Linking on another device also requires a code issued on this one (valid 10 min, single use)',
     codePlaceholder: 'Link code', codeIssued: (c) => `Link code: ${c} (valid 10 min)`,
     filterHint: 'Use these to search discs other users have stamped. It helps everyone dig up new tracks, so click the ＋ button to add your own.',
+    histTitle: 'PLAY HISTORY', histSub: 'Last 50 tracks. Played discs stay out of shuffle until you clear this.',
+    histEmpty: 'Empty. Play a track to see it here.',
+    histClear: 'Clear history & played discs',
+    histClearConfirm: 'Cleared discs will start showing up in shuffle again. Continue?',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -1229,6 +1237,7 @@ window.addEventListener('popstate', (e) => {
   else if (level === 1) {
     if (listView === 'favs') renderFavs(false);
     else if (listView === 'submit') renderSubmit(false);
+    else if (listView === 'history') renderHistory(false);
     else renderList(activeRegion || lastDiscRegion);
   }
 });
@@ -2805,8 +2814,8 @@ function playCurrent() {
   // おらず、リロード後に「最後に連結が起きた時点の曲」へ戻ってしまっていた
   saveQueue();
   const q = queue[cursor];
-  // 再生履歴(直近50曲)。キューが同期事故等で失われても「さっき聴いていた曲」を
-  // この端末上で辿れるようにする保険。UIは未提供、localStorageのみ。
+  // 再生履歴(直近50曲)。プレイヤーの「N曲」タップで一覧表示できる。
+  // キューが同期事故等で失われても「さっき聴いていた曲」を辿れる保険も兼ねる。
   if (q?.title) {
     try {
       const hist = JSON.parse(localStorage.getItem('gra.history.v1') || '[]');
@@ -2816,6 +2825,7 @@ function playCurrent() {
         localStorage.setItem('gra.history.v1', JSON.stringify(hist.slice(-50)));
       }
     } catch { /* 履歴は保険なので失敗しても再生は続ける */ }
+    markAlbumPlayed(q.album);
   }
   if (q?.preview) {
     if (ytReady) ytPlayer.stopVideo();
@@ -2958,6 +2968,19 @@ function next() {
 }
 function prev() { if (cursor > 0) { cursor--; playCurrent(); } }
 
+// 再生済みアルバムの永続セット。キューをクリアしても残り、履歴画面の
+// 「履歴と再生済みをクリア」で初めて空になる(ユーザー要望: よく見るアルバムが
+// キュークリア後にすぐ戻ってくるのを防ぐ)。曲がひとつでも実再生されたら
+// そのアルバムを再生済みとする。
+const PLAYED_KEY = 'gra.playedAlbums.v1';
+let playedAlbumIds = new Set();
+try { playedAlbumIds = new Set(JSON.parse(localStorage.getItem(PLAYED_KEY) || '[]')); } catch { /* 壊れていたら空から */ }
+function markAlbumPlayed(a) {
+  if (!a || a.id == null || playedAlbumIds.has(a.id)) return;
+  playedAlbumIds.add(a.id);
+  localStorage.setItem(PLAYED_KEY, JSON.stringify([...playedAlbumIds]));
+}
+
 // キューが空の状態で▶を押した時のランダム再生用。年代・スタンプの絞り込み
 // (albumsOf()と同じ条件)を尊重し、試聴/動画が1曲も無い盤は対象から外す。
 // 地域内シャッフル中(shuffleRegionあり)はその地域の盤に限定する。
@@ -2965,13 +2988,14 @@ function randomPlayableAlbum() {
   const regions = shuffleRegion ? [shuffleRegion] : REGIONS;
   const base = regions.flatMap((r) => albumsOf(r))
     .filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
-  // 手動クリアするまで、一度キューに載った盤(再生済み含む)は再登場させない
-  // (ユーザー要望: 同じアルバムがすぐ戻ってくるのを防ぐ)。キューはクリアまで
-  // 履歴を保持し続けるので、その全体を既出集合として使う。候補を聴き尽くした
-  // 場合だけ繰り返しを許す(地域内シャッフルの小さな地域で無音になるよりまし)。
+  // 除外の3段構え:
+  //  1. いまキューに載っている盤 + 再生済みセットの盤を除いた「本当に新鮮な盤」
+  //  2. それが尽きたら、キューに無い盤(再生済みは許す)
+  //  3. それも無ければ全候補(小さな地域内シャッフルで無音になるよりまし)
   const seen = new Set(queue.map((it) => it.album));
-  const fresh = base.filter((a) => !seen.has(a));
-  const pool = fresh.length ? fresh : base;
+  const unseen = base.filter((a) => !seen.has(a));
+  const fresh = unseen.filter((a) => !playedAlbumIds.has(a.id));
+  const pool = fresh.length ? fresh : (unseen.length ? unseen : base);
   if (!pool.length) return null;
   return pool[Math.floor(Math.random() * pool.length)];
 }
@@ -3062,10 +3086,11 @@ function ensureShuffleRunway() {
 // 再生を始め、聴き終えたら同じ地域内の別のランダムな盤へ連結し続ける。
 function startRegionShuffle(region) {
   const base = albumsOf(region).filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
-  // 初回の1枚も既出(クリア前に聴いた盤)を避ける。尽きていたら繰り返し許可
+  // 初回の1枚もキュー上の盤・再生済みの盤を避ける(randomPlayableAlbumと同じ3段構え)
   const seen = new Set(queue.map((it) => it.album));
-  const fresh = base.filter((a) => !seen.has(a));
-  const pool = fresh.length ? fresh : base;
+  const unseen = base.filter((a) => !seen.has(a));
+  const fresh = unseen.filter((a) => !playedAlbumIds.has(a.id));
+  const pool = fresh.length ? fresh : (unseen.length ? unseen : base);
   if (!pool.length) return;
   const album = pool[Math.floor(Math.random() * pool.length)];
   playAlbum(album); // 中のexitShuffle()でshuffleRegionは一旦クリアされる
@@ -3200,6 +3225,41 @@ function syncMarkerScale() {
 map.on('zoom', syncMarkerScale);
 syncMarkerScale();
 
+// ---------- 再生履歴 ----------
+// プレイヤーの「N曲」タップで開く。直近50曲の一覧と、
+// 「履歴と再生済みをクリア」(=シャッフル除外の解除)を提供する。
+function renderHistory(push = true) {
+  listView = 'history';
+  currentDisc = null;
+  if (push) navGoto(1);
+  document.body.classList.remove('stamps-open');
+  document.body.classList.add('detail');
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  let hist = [];
+  try { hist = JSON.parse(localStorage.getItem('gra.history.v1') || '[]'); } catch { hist = []; }
+  const rows = hist.slice().reverse().map((h) => {
+    const d = new Date(h.ts || 0);
+    const when = h.ts ? `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}` : '';
+    return `<li class="hist-row">
+      <span class="hist-time">${when}</span>
+      <span class="hist-main"><b>${esc(h.t)}</b><span class="hist-sub">${esc(h.a)}${h.al && h.al !== h.t ? ` ─ ${esc(h.al)}` : ''}</span></span>
+    </li>`;
+  }).join('');
+  listEl.innerHTML = `
+    ${listHead(t('histTitle'), t('histSub'), hist.length ? `${hist.length}` : '')}
+    ${rows ? `<ul class="hist-list">${rows}</ul>` : `<p class="form-note hist-empty">${t('histEmpty')}</p>`}
+    <button type="button" class="tr-toggle hist-clear">${t('histClear')}</button>`;
+  listEl.querySelector('.close').addEventListener('click', closeList);
+  listEl.querySelector('.hist-clear').addEventListener('click', () => {
+    if (!confirm(t('histClearConfirm'))) return;
+    localStorage.removeItem('gra.history.v1');
+    playedAlbumIds = new Set();
+    localStorage.removeItem(PLAYED_KEY);
+    renderHistory(false);
+  });
+}
+document.getElementById('queueCount').addEventListener('click', () => renderHistory());
+
 // ---------- 投稿フォーム(タレコミ) ----------
 function renderSubmit(push = true) {
   listView = 'submit';
@@ -3284,6 +3344,7 @@ function applyLang() {
     if (currentDisc) renderDisc(currentDisc, false);
     else if (listView === 'favs') renderFavs(false);
     else if (listView === 'submit') renderSubmit(false);
+    else if (listView === 'history') renderHistory(false);
     else if (activeRegion) renderList(activeRegion);
   }
 }

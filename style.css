@@ -731,3 +731,17 @@ body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); 
   .player-meta { flex: 1 1 auto; min-width: 0; }
   .player-controls { flex: 0 0 auto; gap: 6px; }
 }
+
+/* ---------- 再生履歴(プレイヤーの「N曲」タップで開く) ---------- */
+#queueCount { cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.hist-list { list-style: none; margin: 0; padding: 0 4px; }
+.hist-row {
+  display: flex; gap: 10px; align-items: baseline;
+  padding: 8px 6px; border-bottom: 1px dashed rgba(0, 0, 0, .25);
+}
+.hist-time { font-size: 11px; opacity: .6; white-space: nowrap; }
+.hist-main { display: flex; flex-direction: column; min-width: 0; }
+.hist-main b { font-size: 13px; }
+.hist-sub { font-size: 11px; opacity: .7; }
+.hist-clear { margin: 14px 6px 24px; }
+.hist-empty { padding: 12px 6px; }
