@@ -140,7 +140,34 @@ const CLIENT_ID = (() => {
 // 判明したものを{videoId: title}でキャッシュしておく。再生バーにアルバム名
 // ではなく実際の曲名を出すために、キューに積む時・オーバーレイなしで
 // 再生する時のどちらでも参照する。
-const ytTitleCache = {};
+// リロードしても曲名が消えないようlocalStorageに永続化する。以前はメモリ上
+// だけだったため、再読み込みするとYouTube盤の全曲が「アルバム名」表示に戻り、
+// キューリストに同じ名前がずらっと並ぶ見え方になっていた(実際に指摘された)。
+const YT_TITLE_KEY = 'gra.ytTitles.v1';
+const ytTitleCache = (() => {
+  try { return JSON.parse(localStorage.getItem(YT_TITLE_KEY) || '{}') || {}; } catch { return {}; }
+})();
+let ytTitleSaveTimer = null;
+function setYtTitle(vid, title) {
+  if (!vid || !title || ytTitleCache[vid] === title) return;
+  ytTitleCache[vid] = title;
+  clearTimeout(ytTitleSaveTimer);
+  ytTitleSaveTimer = setTimeout(() => {
+    try {
+      let entries = Object.entries(ytTitleCache);
+      if (entries.length > 800) entries = entries.slice(entries.length - 800); // 際限なく肥大させない
+      localStorage.setItem(YT_TITLE_KEY, JSON.stringify(Object.fromEntries(entries)));
+    } catch { /* 容量超過等は諦める(表示用キャッシュなので実害なし) */ }
+  }, 500);
+}
+// 未解決のYouTube曲名をoEmbedで引く(成功したらキャッシュにも保存)
+function fetchYtTitle(vid) {
+  const url = `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}&format=json`;
+  return fetch(url).then((r) => (r.ok ? r.json() : null)).then((d) => {
+    if (d?.title) { setYtTitle(vid, d.title); return d.title; }
+    return null;
+  }).catch(() => null);
+}
 
 // みんなのスタンプ集計 { targetKey: { stampId: n } }
 const SHARED = {};
@@ -1729,7 +1756,7 @@ function youtubeTrackRow(album, vid, rerender) {
   fetch(url).then((res) => (res.ok ? res.json() : Promise.reject())).then((data) => {
     if (data?.title) {
       row.querySelector('.name').textContent = data.title;
-      ytTitleCache[vid] = data.title;
+      setYtTitle(vid, data.title);
       // ちょうど今この曲を再生中(=タイトル未解決のままキューに積まれた)なら、
       // 再生バーの表示も後追いで曲名に更新する
       if (queue[cursor]?.youtube === vid) { queue[cursor].title = data.title; paint(); }
@@ -2637,7 +2664,7 @@ function initYtPlayer() {
         // 判明したここで差し替える。oEmbedを引きに行く必要はない)。
         const vd = ytPlayer.getVideoData && ytPlayer.getVideoData();
         if (vd?.video_id && vd?.title) {
-          ytTitleCache[vd.video_id] = vd.title;
+          setYtTitle(vd.video_id, vd.title);
           const q = queue[cursor];
           if (q?.youtube === vd.video_id && q.title !== vd.title) q.title = vd.title;
         }
@@ -3304,10 +3331,24 @@ function renderQueueView(push = true, tab = queueViewTab) {
   if (tab === 'queue') {
     // 再生済み(cursorより前)は表示しない。プレイヤーの「N曲」と数を一致させる
     const from = Math.max(cursor, 0);
-    const rows = queue.slice(from).map((it, i) => `<li class="hist-row${from + i === cursor ? ' now' : ''}">
+    const rows = queue.slice(from).map((it, i) => `<li class="hist-row${from + i === cursor ? ' now' : ''}" data-qi="${from + i}">
       <span class="hist-time">${from + i === cursor ? '▶' : i + 1}</span>
       <span class="hist-main"><b>${esc(it.title)}${it.shuffleAuto ? `<span class="qv-auto">${t('qAutoTag')}</span>` : ''}</b><span class="hist-sub">${esc(it.artist)}${it.album?.title && it.album.title !== it.title ? ` ─ ${esc(it.album.title)}` : ''}</span></span>
     </li>`).join('');
+    // タイトル未解決のYouTube曲(アルバム名の仮置き表示)は、開いたついでに
+    // oEmbedで曲名を引いてその場で差し替える(キャッシュされ次回以降は即表示)
+    setTimeout(() => {
+      if (listView !== 'queueview') return;
+      queue.slice(from, from + 20).forEach((it, i) => {
+        if (!it.youtube || it.title !== it.album?.title) return;
+        fetchYtTitle(it.youtube).then((title) => {
+          if (!title || listView !== 'queueview') return;
+          it.title = title;
+          const b = listEl.querySelector(`.hist-row[data-qi="${from + i}"] .hist-main b`);
+          if (b) b.firstChild.textContent = title;
+        });
+      });
+    }, 0);
     body = rows
       ? `<ul class="hist-list">${rows}</ul>`
       : `<p class="form-note hist-empty">${t('qEmptyT')} ─ ${t('qEmptyA')}</p>`;

@@ -743,6 +743,7 @@ body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); 
 .qv-note {
   margin: 10px 6px 4px; padding-left: 22px;
   font-size: 11px; line-height: 1.9; color: var(--ink-2);
+  font-weight: bold; /* 細字だと網点地に沈んで読みにくい(ユーザー指摘) */
 }
 .qv-note li { margin: 2px 0; }
 .qv-auto {
