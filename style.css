@@ -732,9 +732,21 @@ body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); 
   .player-controls { flex: 0 0 auto; gap: 6px; }
 }
 
-/* ---------- 再生履歴(プレイヤーの「履歴」ボタンで開く) ---------- */
-/* 履歴/クリアは指で押すボタンなのでタップ領域を広げる(見た目は小さな文字のまま) */
-.player-queue .text-btn { padding: 12px 8px; font-size: 11px; }
+/* ---------- キューリスト/再生履歴(プレイヤーの「N曲」タップで開く) ---------- */
+.qv-tabs { display: flex; gap: 8px; margin: 10px 6px 4px; }
+.qv-tab {
+  font: inherit; font-size: 12px; font-weight: 900; letter-spacing: .06em;
+  padding: 6px 14px; border: 2px solid var(--ink);
+  background: transparent; color: var(--ink); cursor: pointer;
+}
+.qv-tab.on { background: var(--ink); color: var(--paper); }
+.qv-note { padding: 8px 6px 0; }
+.qv-auto {
+  font-size: 9px; font-weight: 700; letter-spacing: .08em;
+  border: 1px solid var(--ink-2); color: var(--ink-2);
+  padding: 0 4px; margin-left: 6px; vertical-align: 1px;
+}
+.hist-row.now b { color: var(--red); }
 .hist-list { list-style: none; margin: 0; padding: 0 4px; }
 .hist-row {
   display: flex; gap: 10px; align-items: baseline;

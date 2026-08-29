@@ -40,12 +40,16 @@ const I18N = {
     issueCode: '連携コード発行', codeHint: '他端末デ連携スルニハ、元端末デ発行シタコードモ必要(10分有効・1回限リ)',
     codePlaceholder: '連携コード', codeIssued: (c) => `連携コード: ${c} (10分有効)`,
     filterHint: 'こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。',
-    histTitle: '再生履歴', histSub: '直近50曲。再生済ミノ盤ハ履歴ヲクリアスルマデ、シャッフルニ再登場シナイ',
+    histTitle: '再生履歴',
     histEmpty: 'まだ空。曲を再生するとここに並ぶ。',
     histClear: '履歴ト再生済ミヲクリア',
     histClearConfirm: 'クリアスルト再生済ミノ盤ガマタシャッフルニ登場スルヨウニナル。ヨロシイ？',
-    hist: '履歴',
     clearQueueConfirm: '再生キューヲ空ニスル。ヨロシイ？(再生済ミノ記録ハ残ル)',
+    qTabQueue: 'キューリスト', qTabHist: '再生履歴',
+    qNote: 'キューノ曲ガ少ナクナルト、同ジ地域・絞リ込ミ条件ノ盤ヲ自動デ継ギ足ス(「自動」印)。手動デ追加シタ盤ハ自動追加分ヨリ先ニ再生サレル。一度再生シタ盤ハ自動再生カラ除外サレル。',
+    qAutoTag: '自動',
+    histNote: '直近50曲。再生履歴ヲクリアスルト、コレマデニ再生シタDISCガ再ビ自動再生ニ登場スルヨウニナル。',
+    qCount: (n) => `${n} 曲`,
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -84,12 +88,16 @@ const I18N = {
     issueCode: 'Issue link code', codeHint: 'Linking on another device also requires a code issued on this one (valid 10 min, single use)',
     codePlaceholder: 'Link code', codeIssued: (c) => `Link code: ${c} (valid 10 min)`,
     filterHint: 'Use these to search discs other users have stamped. It helps everyone dig up new tracks, so click the ＋ button to add your own.',
-    histTitle: 'PLAY HISTORY', histSub: 'Last 50 tracks. Played discs stay out of shuffle until you clear this.',
+    histTitle: 'PLAY HISTORY',
     histEmpty: 'Empty. Play a track to see it here.',
     histClear: 'Clear history & played discs',
     histClearConfirm: 'Cleared discs will start showing up in shuffle again. Continue?',
-    hist: 'HISTORY',
     clearQueueConfirm: 'Empty the play queue? (Played discs stay recorded)',
+    qTabQueue: 'QUEUE', qTabHist: 'PLAY HISTORY',
+    qNote: 'When the queue runs low, discs matching the same region and filters are added automatically ("AUTO" tag). Discs you add manually play before the auto-added ones. Discs you have already played are excluded from autoplay.',
+    qAutoTag: 'AUTO',
+    histNote: 'Last 50 tracks. Clearing the history lets previously played discs show up in autoplay again.',
+    qCount: (n) => `${n} TRACKS`,
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -1241,7 +1249,7 @@ window.addEventListener('popstate', (e) => {
   else if (level === 1) {
     if (listView === 'favs') renderFavs(false);
     else if (listView === 'submit') renderSubmit(false);
-    else if (listView === 'history') renderHistory(false);
+    else if (listView === 'queueview') renderQueueView(false);
     else renderList(activeRegion || lastDiscRegion);
   }
 });
@@ -2504,14 +2512,24 @@ function playSingle(item) {
   playCurrent();
 }
 
-// 「▶ 全曲キューニ入レル」: 今の再生を止めず、キューの末尾に足すだけ。
+// 「＋ キューニ追加」: 今の再生を止めず、手動ブロックの末尾に足す。
+// キューは常に「手動追加 → 自動追加(shuffleAuto)」の順を保つ(ユーザー指定)。
+// 以前は単純に末尾へpushしていたため、シャッフル中は自動連結済みの
+// 最大10曲の後ろに積まれてしまい「追加したのに全然流れない」状態だった。
 // 何も再生していなければ即再生と同じ(先頭に差し込むのと変わらない)。
 function enqueueAlbum(album) {
   if (!queue.length) { playAlbum(album); return; }
   if (albumQueueIndex(album) !== -1) return; // 既にキュー済みなら何もしない(連打対策)
   const items = trackItemsOf(album);
   if (!items.length) return; // 試聴の無い盤は積んでも仕方ないので何もしない
-  queue.push(...items);
+  // cursorより後ろで最初に現れる自動追加分の直前 = 手動ブロックの末尾
+  let pos = queue.length;
+  for (let i = Math.max(cursor, 0) + 1; i < queue.length; i++) {
+    if (queue[i].shuffleAuto) { pos = i; break; }
+  }
+  queue.splice(pos, 0, ...items);
+  resetYtPlaylist(); // 途中挿入でYouTubeプレイリスト側とズレるので載せ直させる
+  saveQueue();
   paint();
 }
 
@@ -2907,8 +2925,8 @@ function syncMediaSession(q) {
 function paint() {
   const q = queue[cursor];
   saveQueue();
-  // 残り曲数は表示しない(キューはシャッフル/同地域継ぎ足しで自動補充されるため
-  // 数字に意味が薄い)。代わりに再生履歴を開くボタンにした(ユーザー要望)
+  // 残り曲数の表示 兼 キューリスト/再生履歴画面を開くボタン
+  document.getElementById('queueCount').textContent = t('qCount')(Math.max(0, queue.length - Math.max(cursor, 0)));
   // キューが空の間は、押すと年代・スタンプの絞り込み範囲内からランダム再生が
   // 始まることが見た目で分かるよう、シャッフルアイコンにする(配色は通常の
   // ▶と同じまま)。
@@ -3236,32 +3254,56 @@ function syncMarkerScale() {
 map.on('zoom', syncMarkerScale);
 syncMarkerScale();
 
-// ---------- 再生履歴 ----------
-// プレイヤーの「N曲」タップで開く。直近50曲の一覧と、
-// 「履歴と再生済みをクリア」(=シャッフル除外の解除)を提供する。
-function renderHistory(push = true) {
-  listView = 'history';
+// ---------- キューリスト / 再生履歴 ----------
+// プレイヤーの「N曲」タップで開くタブ切り替え画面。使い方ページが無いため、
+// 各タブに自動継ぎ足し・再生済み除外の説明文も載せる(ユーザー要望)。
+let queueViewTab = 'queue';
+function renderQueueView(push = true, tab = queueViewTab) {
+  queueViewTab = tab;
+  listView = 'queueview';
   currentDisc = null;
   if (push) navGoto(1);
   document.body.classList.remove('stamps-open');
   document.body.classList.add('detail');
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  let hist = [];
-  try { hist = JSON.parse(localStorage.getItem('gra.history.v1') || '[]'); } catch { hist = []; }
-  const rows = hist.slice().reverse().map((h) => {
-    const d = new Date(h.ts || 0);
-    const when = h.ts ? `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}` : '';
-    return `<li class="hist-row">
-      <span class="hist-time">${when}</span>
-      <span class="hist-main"><b>${esc(h.t)}</b><span class="hist-sub">${esc(h.a)}${h.al && h.al !== h.t ? ` ─ ${esc(h.al)}` : ''}</span></span>
-    </li>`;
-  }).join('');
+
+  let body = '';
+  if (tab === 'queue') {
+    const rows = queue.map((it, i) => `<li class="hist-row${i === cursor ? ' now' : ''}">
+      <span class="hist-time">${i === cursor ? '▶' : i + 1}</span>
+      <span class="hist-main"><b>${esc(it.title)}${it.shuffleAuto ? `<span class="qv-auto">${t('qAutoTag')}</span>` : ''}</b><span class="hist-sub">${esc(it.artist)}${it.album?.title && it.album.title !== it.title ? ` ─ ${esc(it.album.title)}` : ''}</span></span>
+    </li>`).join('');
+    body = rows
+      ? `<ul class="hist-list">${rows}</ul>`
+      : `<p class="form-note hist-empty">${t('qEmptyT')} ─ ${t('qEmptyA')}</p>`;
+  } else {
+    let hist = [];
+    try { hist = JSON.parse(localStorage.getItem('gra.history.v1') || '[]'); } catch { hist = []; }
+    const rows = hist.slice().reverse().map((h) => {
+      const d = new Date(h.ts || 0);
+      const when = h.ts ? `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}` : '';
+      return `<li class="hist-row">
+        <span class="hist-time">${when}</span>
+        <span class="hist-main"><b>${esc(h.t)}</b><span class="hist-sub">${esc(h.a)}${h.al && h.al !== h.t ? ` ─ ${esc(h.al)}` : ''}</span></span>
+      </li>`;
+    }).join('');
+    body = (rows
+      ? `<ul class="hist-list">${rows}</ul>`
+      : `<p class="form-note hist-empty">${t('histEmpty')}</p>`)
+      + `<button type="button" class="tr-toggle hist-clear">${t('histClear')}</button>`;
+  }
+
   listEl.innerHTML = `
-    ${listHead(t('histTitle'), t('histSub'), hist.length ? `${hist.length}` : '')}
-    ${rows ? `<ul class="hist-list">${rows}</ul>` : `<p class="form-note hist-empty">${t('histEmpty')}</p>`}
-    <button type="button" class="tr-toggle hist-clear">${t('histClear')}</button>`;
+    ${listHead(tab === 'queue' ? t('qTabQueue') : t('histTitle'), '', '')}
+    <div class="qv-tabs">
+      <button type="button" class="qv-tab${tab === 'queue' ? ' on' : ''}" data-tab="queue">${t('qTabQueue')}</button>
+      <button type="button" class="qv-tab${tab === 'history' ? ' on' : ''}" data-tab="history">${t('qTabHist')}</button>
+    </div>
+    <p class="form-note qv-note">${tab === 'queue' ? t('qNote') : t('histNote')}</p>
+    ${body}`;
   listEl.querySelector('.close').addEventListener('click', closeList);
-  listEl.querySelector('.hist-clear').addEventListener('click', () => {
+  listEl.querySelectorAll('.qv-tab').forEach((b) => b.addEventListener('click', () => renderQueueView(false, b.dataset.tab)));
+  listEl.querySelector('.hist-clear')?.addEventListener('click', () => {
     if (!confirm(t('histClearConfirm'))) return;
     localStorage.removeItem('gra.history.v1');
     playedAlbumIds = new Set();
@@ -3270,10 +3312,10 @@ function renderHistory(push = true) {
     playedClearedAt = Date.now();
     localStorage.setItem(PLAYED_CLEARED_KEY, String(playedClearedAt));
     pushPlayedSync();
-    renderHistory(false);
+    renderQueueView(false, 'history');
   });
 }
-document.getElementById('queueCount').addEventListener('click', () => renderHistory());
+document.getElementById('queueCount').addEventListener('click', () => renderQueueView(true, 'queue'));
 
 // ---------- 投稿フォーム(タレコミ) ----------
 function renderSubmit(push = true) {
@@ -3346,7 +3388,6 @@ function applyLang() {
   document.querySelector('.brand p').textContent = t('sub');
   document.querySelector('.intro p').textContent = t('intro');
   document.getElementById('clearQueue').textContent = t('clear');
-  document.getElementById('queueCount').textContent = t('hist');
   document.querySelector('.player-queue .credit').textContent = t('credit');
   document.getElementById('langBtn').textContent = lang === 'ja' ? 'EN' : 'JA';
   document.getElementById('submitBtn').textContent = t('submit');
@@ -3360,7 +3401,7 @@ function applyLang() {
     if (currentDisc) renderDisc(currentDisc, false);
     else if (listView === 'favs') renderFavs(false);
     else if (listView === 'submit') renderSubmit(false);
-    else if (listView === 'history') renderHistory(false);
+    else if (listView === 'queueview') renderQueueView(false);
     else if (activeRegion) renderList(activeRegion);
   }
 }
