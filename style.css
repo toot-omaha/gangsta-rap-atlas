@@ -758,3 +758,25 @@ body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); 
 .hist-sub { font-size: 11px; opacity: .7; }
 .hist-clear { margin: 14px 6px 24px; }
 .hist-empty { padding: 12px 6px; }
+
+/* ---------- カスタム確認ダイアログ(ネイティブconfirmの置き換え) ---------- */
+.confirm-overlay {
+  position: fixed; inset: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(20, 18, 15, .5);
+  opacity: 0; pointer-events: none; transition: opacity .15s;
+}
+.confirm-overlay.open { opacity: 1; pointer-events: auto; }
+.confirm-box {
+  width: min(400px, 88vw);
+  background: var(--paper);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 4px 4px;
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 rgba(20, 18, 15, .5);
+  padding: 18px;
+}
+.confirm-msg { margin: 0 0 16px; font-size: 13px; font-weight: 700; line-height: 1.8; }
+.confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
+.confirm-actions .tr-toggle { margin-top: 0; font-size: 12px; padding: 8px 18px; }
+.confirm-yes { background: var(--ink); color: var(--paper); }

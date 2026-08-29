@@ -51,6 +51,7 @@ const I18N = {
     histNote: '直近50曲。再生履歴ヲクリアスルト、コレマデニ再生シタDISCガ再ビ自動再生ニ登場スルヨウニナル。',
     qCount: (n) => `${n} 曲`,
     regionShuffleConfirm: 'イマノ再生キューヲ破棄シテ、コノ地域ノシャッフルヲ始メル。ヨロシイ？',
+    dlgOk: 'ヨロシイ', dlgCancel: 'ヤメル',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -100,6 +101,7 @@ const I18N = {
     histNote: 'Last 50 tracks. Clearing the history lets previously played discs show up in autoplay again.',
     qCount: (n) => `${n} TRACKS`,
     regionShuffleConfirm: 'Discard the current queue and start shuffling this region. Continue?',
+    dlgOk: 'OK', dlgCancel: 'CANCEL',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -1841,7 +1843,7 @@ function renderFavs(push = true) {
   const $syncMsg = listEl.querySelector('#streetSyncMsg');
   ensureStreetName().then((n) => { $sname.textContent = n || '—'; });
   listEl.querySelector('#streetReroll').addEventListener('click', async () => {
-    if (!confirm(t('rerollConfirm'))) return;
+    if (!(await confirmDialog(t('rerollConfirm')))) return;
     $syncMsg.textContent = t('linking');
     const n = await rerollStreetName();
     $syncMsg.textContent = n ? t('syncOk') : t('syncErr');
@@ -3113,7 +3115,7 @@ function ensureShuffleRunway() {
 
 // 地域一覧ヘッダーのシャッフルボタン: その地域の再生可能な盤から1枚選んで
 // 再生を始め、聴き終えたら同じ地域内の別のランダムな盤へ連結し続ける。
-function startRegionShuffle(region) {
+async function startRegionShuffle(region) {
   const base = albumsOf(region).filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
   // 初回の1枚もキュー上の盤・再生済みの盤を避ける(randomPlayableAlbumと同じ3段構え)
   const seen = new Set(queue.map((it) => it.album));
@@ -3125,7 +3127,7 @@ function startRegionShuffle(region) {
   // 戻ってしまい「地域シャッフルのはずが別の曲が流れる」挙動になる。
   // 確認を取って破棄し、まっさらな状態から地域シャッフルを始める(ユーザー指定)
   if (queue.length) {
-    if (!confirm(t('regionShuffleConfirm'))) return;
+    if (!(await confirmDialog(t('regionShuffleConfirm')))) return;
     queue = []; cursor = -1; pendingShuffleAlbum = null;
     resetYtPlaylist();
   }
@@ -3230,9 +3232,9 @@ document.querySelector('.player-now').addEventListener('click', () => {
   }
   renderDisc(album);
 });
-document.getElementById('clearQueue').addEventListener('click', () => {
+document.getElementById('clearQueue').addEventListener('click', async () => {
   // 隣の「履歴」ボタンと押し間違えてキューが飛ぶと面倒なので確認を挟む
-  if (queue.length && !confirm(t('clearQueueConfirm'))) return;
+  if (queue.length && !(await confirmDialog(t('clearQueueConfirm')))) return;
   queue = []; cursor = -1; shuffleMode = false; shuffleRegion = null; pendingShuffleAlbum = null;
   audio.pause(); clearTrack(audio);
   clearTimeout(audioStartCheckTimer);
@@ -3315,8 +3317,8 @@ function renderQueueView(push = true, tab = queueViewTab) {
     ${body}`;
   listEl.querySelector('.close').addEventListener('click', closeList);
   listEl.querySelectorAll('.qv-tab').forEach((b) => b.addEventListener('click', () => renderQueueView(false, b.dataset.tab)));
-  listEl.querySelector('.hist-clear')?.addEventListener('click', () => {
-    if (!confirm(t('histClearConfirm'))) return;
+  listEl.querySelector('.hist-clear')?.addEventListener('click', async () => {
+    if (!(await confirmDialog(t('histClearConfirm')))) return;
     localStorage.removeItem('gra.history.v1');
     playedAlbumIds = new Set();
     localStorage.removeItem(PLAYED_KEY);
@@ -3591,6 +3593,45 @@ async function pullQueueSync() {
     adoptExternalQueue();
   } catch { /* オフライン時は何もしない */ }
 }
+// ---------- カスタム確認ダイアログ ----------
+// ネイティブのconfirm()の置き換え。誌面デザイン(紙色+インク枠)に合わせる。
+// 戻り値はPromise<boolean>(OK=true / ヤメル・外側タップ・Esc=false)。
+let confirmDlgResolve = null;
+function confirmDialog(msg) {
+  return new Promise((resolve) => {
+    let ov = document.getElementById('confirmOverlay');
+    if (!ov) {
+      ov = document.createElement('div');
+      ov.id = 'confirmOverlay';
+      ov.className = 'confirm-overlay';
+      ov.innerHTML = `<div class="confirm-box" role="alertdialog" aria-modal="true">
+        <p class="confirm-msg"></p>
+        <div class="confirm-actions">
+          <button type="button" class="tr-toggle confirm-no"></button>
+          <button type="button" class="tr-toggle confirm-yes"></button>
+        </div></div>`;
+      document.body.appendChild(ov);
+      ov.querySelector('.confirm-yes').addEventListener('click', () => closeConfirmDialog(true));
+      ov.querySelector('.confirm-no').addEventListener('click', () => closeConfirmDialog(false));
+      ov.addEventListener('click', (e) => { if (e.target === ov) closeConfirmDialog(false); });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && ov.classList.contains('open')) closeConfirmDialog(false);
+      });
+    }
+    ov.querySelector('.confirm-msg').textContent = msg;
+    ov.querySelector('.confirm-yes').textContent = t('dlgOk');
+    ov.querySelector('.confirm-no').textContent = t('dlgCancel');
+    confirmDlgResolve = resolve;
+    ov.classList.add('open');
+  });
+}
+function closeConfirmDialog(answer) {
+  document.getElementById('confirmOverlay')?.classList.remove('open');
+  const r = confirmDlgResolve;
+  confirmDlgResolve = null;
+  if (r) r(answer);
+}
+
 // ---------- 再生済みセットの端末間同期(fav_sync.played) ----------
 // { ids: [albumId...], cleared_at: ミリ秒 } を保存する。
 // 通常は「増えるだけの集合」なので和集合マージで両方向の追加が合流し、
