@@ -826,8 +826,11 @@ function refreshMarkers() {
     const nEl = el.querySelector('.n');
     nEl.textContent = n || '';
     // 数字は墓石サイズに比例させる。固定11pxだと小さい墓石(1桁台)では
-    // 数字が相対的に大きすぎ、大きい墓石では小さすぎてバランスが崩れる
-    nEl.style.fontSize = `${Math.max(9, Math.round(size * 0.24))}px`;
+    // 数字が相対的に大きすぎ、大きい墓石では小さすぎてバランスが崩れる。
+    // ただし書体が横広(1文字≒1em)なので、3桁以上は縮めないと墓石からはみ出す
+    const digits = String(n || '').length;
+    const scale = digits <= 2 ? 0.24 : digits === 3 ? 0.19 : 0.16;
+    nEl.style.fontSize = `${Math.max(9, Math.round(size * scale))}px`;
     // 0件の墓標は非表示(フィルター中に該当なしの地域も消える)。
     // 未確認情報の置き場も同様に0件なら隠す。
     el.classList.toggle('hidden', n === 0);
@@ -2230,6 +2233,17 @@ let lastQueueSnapshot = null;
 // リロード後も自分の状態の新しさを主張できるようにする。
 const QUEUE_TS_KEY = 'gra.queue.ts.v1';
 let lastQueueLocalTs = Number(localStorage.getItem(QUEUE_TS_KEY)) || 0;
+function bumpQueueTs() {
+  lastQueueLocalTs = Date.now();
+  localStorage.setItem(QUEUE_TS_KEY, String(lastQueueLocalTs));
+}
+// スナップショットから「キューの中身」(曲構成+再生位置)だけを取り出す。
+// playingフラグはリロードで勝手にfalseへ変わるため勝敗判定に含めない。
+function queueCoreOf(snap) {
+  if (!snap) return null;
+  try { const s = JSON.parse(snap); return JSON.stringify({ cursor: s.cursor, items: s.items }); }
+  catch { return null; }
+}
 function saveQueue() {
   if (queueRestoreDeferred) return; // 復元待ちの保存データを上書き破壊しない
   const items = queue.map((q) => (q.album
@@ -2239,10 +2253,14 @@ function saveQueue() {
   // 直前が再生中だったか一時停止中だったかも記録する。リロード後、
   // 一時停止中だったのに問答無用で再生し始めてしまうのを防ぐため。
   const playing = q ? (q.youtube ? ytIsPlaying() : !audio.paused) : false;
+  const prevCore = queueCoreOf(lastQueueSnapshot);
   lastQueueSnapshot = JSON.stringify({ cursor, items, playing });
   localStorage.setItem(QUEUE_KEY, lastQueueSnapshot);
-  lastQueueLocalTs = Date.now();
-  localStorage.setItem(QUEUE_TS_KEY, String(lastQueueLocalTs));
+  // 「最近再生していた側が勝つ」用の時刻は、キューの中身が実際に動いたときだけ
+  // 更新する。以前は保存のたびに更新していたため、待機側の端末が開いた瞬間の
+  // paint()→saveQueue()で自分を「最新」と誤認し、再生中の端末のキューを
+  // 取り込まず逆に押し返して壊していた(スマホ⇄PC同期が効かない実バグ)。
+  if (JSON.stringify({ cursor, items }) !== prevCore) bumpQueueTs();
   // 端末間同期(fav_sync.queue)へもデバウンス付きでプッシュ(下部の同期節参照)
   if (typeof schedulePushQueueSync === 'function') schedulePushQueueSync();
 }
@@ -3080,6 +3098,11 @@ $play.addEventListener('click', () => {
     // 同上: playVideo()直呼びは壊れたプレイヤーに無反応。見張りつき経由で復帰させる
     else { userPaused = false; playYtForCursor(); }
   }
+  // 再生/一時停止はユーザーの再生操作なので端末間同期の「最終再生時刻」を主張する
+  // (キューの中身は変わらないためsaveQueue()内の自動更新には掛からない)。
+  // 保存はYouTube側のpause反映が非同期なので少し待ってから。
+  bumpQueueTs();
+  setTimeout(saveQueue, 400);
 });
 // 再生バーから直接、今流れてる曲にスタンプを押せるように
 // (曲一覧まで戻らなくてもその場で押せた方が使い勝手が良い)
@@ -3387,3 +3410,13 @@ async function pullQueueSync() {
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') pullQueueSync();
 });
+// 開きっぱなしの端末はvisibilitychangeが発火しないため、自分が再生していない
+// 間は定期的にサーバーを見に行く(別端末で再生中の曲を追従させる)。
+// 自分が再生中のときは取り込まない — 自分が最新のはずで、曲間の一瞬に
+// 相手のキューへ飛ばされるフラつきを防ぐ。
+setInterval(() => {
+  if (document.visibilityState !== 'visible') return;
+  const q = queue[cursor];
+  const active = q && (q.youtube ? ytIsPlaying() : !audio.paused);
+  if (!active) pullQueueSync();
+}, 20000);
