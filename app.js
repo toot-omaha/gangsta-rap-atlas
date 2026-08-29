@@ -532,6 +532,8 @@ async function loadPublishedReleases() {
     // 起動時に捕捉済みのinitialShareHashを使う。
     if (!activeRegion && initialShareHash.startsWith('#r/')) openFromHash(initialShareHash);
     finishDeferredQueueRestore(false);
+    // 端末間キュー同期の初回プル(公開盤が揃いalbumIdが全て解決できる状態で)
+    pullQueueSync();
   } catch {
     // オフラインでもローカルだけで動く。復元保留のままだと保存も止まった
     // ままになるので、解決できる分だけで復元して保留を解く
@@ -2219,6 +2221,11 @@ function albumById(id) {
 // TWAアプリ⇄ブラウザタブのように同じlocalStorageを共有する別コンテキストが
 // 書いた変更かどうかを、これとの差分で判定する(adoptExternalQueue参照)。
 let lastQueueSnapshot = null;
+// このキュー状態が最後に動いた時刻(端末間同期の勝敗判定用)。
+// 「最近再生していた側が勝つ」ルールのため、localStorageにも永続化して
+// リロード後も自分の状態の新しさを主張できるようにする。
+const QUEUE_TS_KEY = 'gra.queue.ts.v1';
+let lastQueueLocalTs = Number(localStorage.getItem(QUEUE_TS_KEY)) || 0;
 function saveQueue() {
   if (queueRestoreDeferred) return; // 復元待ちの保存データを上書き破壊しない
   const items = queue.map((q) => (q.album
@@ -2230,6 +2237,10 @@ function saveQueue() {
   const playing = q ? (q.youtube ? ytIsPlaying() : !audio.paused) : false;
   lastQueueSnapshot = JSON.stringify({ cursor, items, playing });
   localStorage.setItem(QUEUE_KEY, lastQueueSnapshot);
+  lastQueueLocalTs = Date.now();
+  localStorage.setItem(QUEUE_TS_KEY, String(lastQueueLocalTs));
+  // 端末間同期(fav_sync.queue)へもデバウンス付きでプッシュ(下部の同期節参照)
+  if (typeof schedulePushQueueSync === 'function') schedulePushQueueSync();
 }
 // リロード直後: キューの構成とカーソル位置だけ復元し曲情報を表示する。
 // 自動再生はブラウザの制約で通らないことが多く、鳴りっぱなしも望ましくないため、
@@ -3299,3 +3310,76 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') adoptExternalQueue();
 });
 window.addEventListener('pageshow', () => adoptExternalQueue());
+
+// ---------- 別端末(PC⇄スマホ)との再生キュー同期 ----------
+// Street Nameを持つユーザーのキューをfav_sync.queue(jsonb)に載せて端末間で
+// 引き継ぐ。同一端末のアプリ⇄ブラウザ同期(adoptExternalQueue)と同じ思想で、
+// 「再生中の側が常に正」。取り込みはlocalStorageへ書いてから
+// adoptExternalQueue()に任せる(自動再生しない・自分と同内容なら無視、の
+// 安全弁を共有するため)。列が無い(マイグレーション未実施)環境では
+// 最初の400応答で静かに無効化する。
+// 注意: Postgresのjsonbはキー順を保存しない(長さ→辞書順に並び替える)ため、
+// サーバーから返るJSONの文字列は自分の保存形式と一致しない。比較や保存の前に
+// saveQueue()と同じキー順へ正規化する。
+// varで宣言する: 関数宣言(schedulePushQueueSync等)は巻き上げで先に呼べるため、
+// 起動中のpaint()→saveQueue()経由でこの行の実行前に参照されることがある。
+// letだとTDZでスクリプト全体が落ちる(実際に起きた)。varならundefined=無効
+// として安全に素通りし、この行の実行後に有効化される。
+var queueSyncEnabled = true;
+var queueSyncPushTimer = null;
+var lastQueuePushedSnapshot = null;
+function normalizeQueuePayload(remote) {
+  if (!remote || !Array.isArray(remote.items)) return null;
+  const items = remote.items.map((it) => (it && it.albumId != null
+    ? { albumId: it.albumId, idx: it.idx ?? 0, ...(it.auto ? { auto: 1 } : {}) }
+    : null));
+  return JSON.stringify({ cursor: remote.cursor ?? 0, items, playing: !!remote.playing });
+}
+function schedulePushQueueSync() {
+  if (!queueSyncEnabled || !streetName) return;
+  clearTimeout(queueSyncPushTimer);
+  queueSyncPushTimer = setTimeout(pushQueueSync, 2000);
+}
+async function pushQueueSync() {
+  if (!queueSyncEnabled || !streetName || lastQueueSnapshot == null) return;
+  if (lastQueueSnapshot === lastQueuePushedSnapshot) return;
+  const snapshot = lastQueueSnapshot;
+  try {
+    const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+      body: JSON.stringify({
+        queue: JSON.parse(snapshot),
+        queue_updated_at: new Date(lastQueueLocalTs || Date.now()).toISOString(),
+      }),
+    });
+    if (res.status === 400) { queueSyncEnabled = false; return; }
+    if (res.ok) lastQueuePushedSnapshot = snapshot;
+  } catch { /* オフライン時は次の変更時に再試行 */ }
+}
+async function pullQueueSync() {
+  if (!queueSyncEnabled || !streetName) return;
+  try {
+    const res = await fetch(
+      `${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}&select=queue,queue_updated_at`,
+      { headers: SB_HEADERS });
+    if (res.status === 400) { queueSyncEnabled = false; return; }
+    if (!res.ok) return;
+    const rows = await res.json();
+    const normalized = normalizeQueuePayload(rows[0]?.queue);
+    if (!normalized) return;
+    if (normalized === lastQueueSnapshot) { lastQueuePushedSnapshot = normalized; return; }
+    // 「最近再生していた側が勝つ」: サーバー側の最終再生時刻が自分の最終操作
+    // より古ければ取り込まず、逆に自分の状態を押し返す(ユーザー指定ルール)
+    const remoteTs = Date.parse(rows[0]?.queue_updated_at || '') || 0;
+    if (remoteTs <= lastQueueLocalTs) { schedulePushQueueSync(); return; }
+    localStorage.setItem(QUEUE_KEY, normalized);
+    localStorage.setItem(QUEUE_TS_KEY, String(remoteTs));
+    lastQueueLocalTs = remoteTs;
+    lastQueuePushedSnapshot = normalized; // 取り込んだ内容をそのまま押し返さない
+    adoptExternalQueue();
+  } catch { /* オフライン時は何もしない */ }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') pullQueueSync();
+});
