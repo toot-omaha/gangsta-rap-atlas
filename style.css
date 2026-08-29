@@ -241,11 +241,15 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
  * 拡大縮小・ホバーは内側 .mk のスケールだけで行う(--s はズーム追従、--h はホバー)。 */
 /* position は指定しない(MapLibre の .maplibregl-marker { position:absolute } を
  * 上書きするとピンが流れて座標がずれる) */
-.marker { cursor: pointer; transition: opacity .3s; }
+/* will-change: ズーム中はMapLibreが全マーカーのtransformを毎フレーム書き換える。
+ * GPUレイヤーに載せないと毎フレーム再ラスタライズが走り、墓石が多い画面で
+ * ちらつく(レイヤー化すれば移動・拡縮は合成のみで済む)。 */
+.marker { cursor: pointer; transition: opacity .3s; will-change: transform; }
 .marker .mk {
   position: absolute; inset: 0;
   display: grid; place-items: center;
   transform: scale(calc(var(--s, 1) * var(--h, 1)));
+  will-change: transform;
 }
 .marker:hover { --h: 1.18; z-index: 9999 !important; }
 /* 墓石ピン(中に枚数)。影・縁取りを焼き込んだ低解像度PNG(28x30px)を全マーカーで
