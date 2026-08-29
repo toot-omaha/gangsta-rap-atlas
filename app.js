@@ -816,21 +816,31 @@ function createMarkerForRegion(region) {
 REGIONS.forEach(createMarkerForRegion);
 
 function refreshMarkers() {
+  // フォントサイズ主導のサイズ設計(ユーザー指定):
+  // 数字フォントを最小9px〜最大18pxとし、1〜最大Disc数の√スケールで可変にする。
+  // √なのは地域の大半が数枚〜数十枚に集中しているため — 線形だと低い側の差が
+  // つぶれ、対数だと100枚と900枚の差がつぶれる(以前の対数+上限40では
+  // 100枚も900枚も同じ最大サイズになっていた)。
+  // 墓石はフォントを縮めて収めるのではなく、桁数分の数字+余白が収まる大きさへ広げる。
+  const counts = {};
+  let maxN = 1;
+  REGIONS.forEach((r) => {
+    const c = albumsOf(r).length;
+    counts[r.id] = c;
+    if (c > maxN) maxN = c;
+  });
   REGIONS.forEach((r) => {
     const el = markers[r.id];
-    const n = albumsOf(r).length;
-    // 対数スケールで大きい地域(ヒューストン等30枚超)も差が出るようにする。
-    // 以前は Math.min(n, 6) で6枚以降が全部同じサイズになっていた。
-    const size = 22 + Math.min(Math.round(Math.log2(n + 1) * 8), 40);
+    const n = counts[r.id];
+    const f = 9 + 9 * Math.sqrt(Math.max(0, n - 1) / Math.max(1, maxN - 1));
+    const digits = String(n || '').length;
+    // 0.28=1桁時の数字/墓石比、0.95em=この書体の数字1文字ぶんの幅、
+    // 0.62=墓石画像のうち数字を置ける内側実効幅の割合
+    const size = Math.round(Math.max(f / 0.28, (digits * f * 0.95) / 0.62));
     el.style.width = el.style.height = `${size}px`;
     const nEl = el.querySelector('.n');
     nEl.textContent = n || '';
-    // 数字は墓石サイズに比例させる。固定11pxだと小さい墓石(1桁台)では
-    // 数字が相対的に大きすぎ、大きい墓石では小さすぎてバランスが崩れる。
-    // ただし書体が横広(1文字≒1em)なので、3桁以上は縮めないと墓石からはみ出す
-    const digits = String(n || '').length;
-    const scale = digits <= 2 ? 0.24 : digits === 3 ? 0.19 : 0.16;
-    nEl.style.fontSize = `${Math.max(9, Math.round(size * scale))}px`;
+    nEl.style.fontSize = `${Math.round(f)}px`;
     // 0件の墓標は非表示(フィルター中に該当なしの地域も消える)。
     // 未確認情報の置き場も同様に0件なら隠す。
     el.classList.toggle('hidden', n === 0);
@@ -2233,6 +2243,15 @@ let lastQueueSnapshot = null;
 // リロード後も自分の状態の新しさを主張できるようにする。
 const QUEUE_TS_KEY = 'gra.queue.ts.v1';
 let lastQueueLocalTs = Number(localStorage.getItem(QUEUE_TS_KEY)) || 0;
+// 一度だけの移行: v157以前のコードは保存のたびに時刻を更新していたため、
+// 残っている時刻は「実際に再生した時刻」として信用できない(端末を開いた
+// だけで最新を主張し、他端末の再生中キューを壊す事故が実際に起きた)。
+// リセットして、次の実再生から主張し直す。それまではサーバー側が必ず勝つ。
+if (!localStorage.getItem('gra.queue.ts.rebased')) {
+  lastQueueLocalTs = 0;
+  localStorage.removeItem(QUEUE_TS_KEY);
+  localStorage.setItem('gra.queue.ts.rebased', '1');
+}
 function bumpQueueTs() {
   lastQueueLocalTs = Date.now();
   localStorage.setItem(QUEUE_TS_KEY, String(lastQueueLocalTs));
@@ -2786,6 +2805,18 @@ function playCurrent() {
   // おらず、リロード後に「最後に連結が起きた時点の曲」へ戻ってしまっていた
   saveQueue();
   const q = queue[cursor];
+  // 再生履歴(直近50曲)。キューが同期事故等で失われても「さっき聴いていた曲」を
+  // この端末上で辿れるようにする保険。UIは未提供、localStorageのみ。
+  if (q?.title) {
+    try {
+      const hist = JSON.parse(localStorage.getItem('gra.history.v1') || '[]');
+      const last = hist[hist.length - 1];
+      if (!last || last.t !== q.title || last.a !== q.artist) {
+        hist.push({ a: q.artist, t: q.title, al: q.album?.title, ts: Date.now() });
+        localStorage.setItem('gra.history.v1', JSON.stringify(hist.slice(-50)));
+      }
+    } catch { /* 履歴は保険なので失敗しても再生は続ける */ }
+  }
   if (q?.preview) {
     if (ytReady) ytPlayer.stopVideo();
     resetYtPlaylist();
@@ -3400,6 +3431,9 @@ async function pullQueueSync() {
     // より古ければ取り込まず、逆に自分の状態を押し返す(ユーザー指定ルール)
     const remoteTs = Date.parse(rows[0]?.queue_updated_at || '') || 0;
     if (remoteTs <= lastQueueLocalTs) { schedulePushQueueSync(); return; }
+    // 上書きで消える直前のキューを1世代だけ退避しておく(誤同期時の救出用)。
+    const prev = localStorage.getItem(QUEUE_KEY);
+    if (prev && prev !== normalized) localStorage.setItem('gra.queue.prev.v1', prev);
     localStorage.setItem(QUEUE_KEY, normalized);
     localStorage.setItem(QUEUE_TS_KEY, String(remoteTs));
     lastQueueLocalTs = remoteTs;
