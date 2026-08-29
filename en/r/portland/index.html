@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(!localStorage.getItem('gra.lang'))localStorage.setItem('gra.lang','en')}catch(e){}</script>
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portland G-Rap Discography (31 Discs) | GANGSTA RAP ATLAS</title>
+<meta name="description" content="Complete G-Rap / gangsta rap discography from Portland, Oregon — 31 discs by devonwho, Cool Nutz, Maniac Lok and more. Listen &amp; dig on the interactive map.">
+<link rel="canonical" href="https://g.rap-atlas.com/en/r/portland/">
+<link rel="alternate" hreflang="ja" href="https://g.rap-atlas.com/r/portland/">
+<link rel="alternate" hreflang="en" href="https://g.rap-atlas.com/en/r/portland/">
+<link rel="alternate" hreflang="x-default" href="https://g.rap-atlas.com/r/portland/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GANGSTA RAP ATLAS">
+<meta property="og:title" content="Portland G-Rap Discography (31 Discs) | GANGSTA RAP ATLAS">
+<meta property="og:description" content="Complete G-Rap / gangsta rap discography from Portland, Oregon — 31 discs by devonwho, Cool Nutz, Maniac Lok and more. Listen &amp; dig on the interactive map.">
+<meta property="og:url" content="https://g.rap-atlas.com/en/r/portland/">
+<meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Portland G-Rap Discography (31 Discs) | GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Complete G-Rap / gangsta rap discography from Portland, Oregon — 31 discs by devonwho, Cool Nutz, Maniac Lok and more. Listen &amp; dig on the interactive map.">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/icon/icon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/icon/icon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Portland", "item": "https://g.rap-atlas.com/en/r/portland/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "Portland G-Rap Discography", "numberOfItems": 31, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Betaloops", "byArtist": {"@type": "MusicGroup", "name": "devonwho"}, "datePublished": "2017", "sameAs": "https://www.discogs.com/release/21360397-devonwho-Betaloops"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "King Cool Nutz", "byArtist": {"@type": "MusicGroup", "name": "Cool Nutz"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/1209552-Cool-Nutz-King-Cool-Nutz"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Turf Bread And Street Cred", "byArtist": {"@type": "MusicGroup", "name": "Maniac Lok"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/23131586-Maniac-Lok-Turf-Bread-And-Street-Cred"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "It Iz What It Iz", "byArtist": {"@type": "MusicGroup", "name": "Blu Crush"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/12529566-Blu-Crush-It-Iz-What-It-Iz"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Killas & Dillas", "byArtist": {"@type": "MusicGroup", "name": "Kenny Mack"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/9707423-Kenny-Mack-Killas-Dillas"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Together We Rize", "byArtist": {"@type": "MusicGroup", "name": "Thai Viet G"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/17718493-Thai-Viet-G-Together-We-Rize"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "The Beacon", "byArtist": {"@type": "MusicGroup", "name": "Zelly Rock"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/17544355-Zelly-Rock-Presents-Zelly-Machiavelli-The-Beacon"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "4 Seasons", "byArtist": {"@type": "MusicGroup", "name": "B.U.K.M."}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/13222756-BUKM-4-Seasons"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "The East Coast Volume 2", "byArtist": {"@type": "MusicGroup", "name": "Big Dubya"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/25734061-Big-Dubya-featuring-Old-Face-The-East-Coast-Volume-2"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Verbal Porn", "byArtist": {"@type": "MusicGroup", "name": "Cool Nutz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/4153602"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Vol. 4 The Mack Hand Side", "byArtist": {"@type": "MusicGroup", "name": "Dj Chill"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/24844973-Dj-Chill-4-Vol-4-The-Mack-Hand-Side"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "Northwest's Finest", "byArtist": {"@type": "MusicGroup", "name": "Ghetto Rise Records"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/12204406-Ghetto-Rise-Records-Northwests-Finest"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Caught Up", "byArtist": {"@type": "MusicGroup", "name": "Kant B Caught"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11386126"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "503 Ride (Freestyle Session)", "byArtist": {"@type": "MusicGroup", "name": "Spook G"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/25730176-Spook-G-503-Ride-Freestyle-Session"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Sykotherapy", "byArtist": {"@type": "MusicGroup", "name": "Syko"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/7093789"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Eyes To My Soul", "byArtist": {"@type": "MusicGroup", "name": "C-Dub"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/8033322-C-Dub-3-Eyes-To-My-Soul"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "The Awakening", "byArtist": {"@type": "MusicGroup", "name": "Partners In Rhyme"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/11579902"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "Last Days", "byArtist": {"@type": "MusicGroup", "name": "IBC"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/18885652"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "I'm Back", "byArtist": {"@type": "MusicGroup", "name": "Maniac Lok"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/10364843"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Speakin Upon a Million", "byArtist": {"@type": "MusicGroup", "name": "Cool Nutz"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/1552677"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "On A Mission", "byArtist": {"@type": "MusicGroup", "name": "G-Ism"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/14756074-G-Ism-Featuring-Cool-Nutz-On-A-Mission"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "G.O.T.M.", "byArtist": {"@type": "MusicGroup", "name": "Gangsters On The Move"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/4749236-GOTM-GOTM"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Coming 4 The Goods", "byArtist": {"@type": "MusicGroup", "name": "Gangsters On The Move"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/7420309-GOTM-Coming-4-The-Goods"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "The Whole Sh!t", "byArtist": {"@type": "MusicGroup", "name": "Al C"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/16149250-Al-See-The-Whole-Sht"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Micism", "byArtist": {"@type": "MusicGroup", "name": "Dee Arthur"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/9939050-Dee-Arthur-Micism"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "Time For A Come Up!", "byArtist": {"@type": "MusicGroup", "name": "Sporty"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/15617932-Sporty-10-Time-For-A-Come-Up"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "*chile 93-94", "byArtist": {"@type": "MusicGroup", "name": "Starchile"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/21976093-Starchile-chile-93-94"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "Ignorance Anonymous", "byArtist": {"@type": "MusicGroup", "name": "C-Dub"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/14817242-C-Dub-5-Ignorance-Anonymous"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "Dis Niggaz Nutz!", "byArtist": {"@type": "MusicGroup", "name": "Cool Nutz"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/15326391"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "Voice Of A Madman", "byArtist": {"@type": "MusicGroup", "name": "K-GEE"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/15462966-K-GEE-2-Voice-Of-A-Madman"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "Get Ready For Hell", "byArtist": {"@type": "MusicGroup", "name": "The Regulators"}, "datePublished": "1992", "sameAs": "https://www.discogs.com/release/14765047-The-Regulators-9-Get-Ready-For-Hell"}}]}]</script>
+</head>
+<body>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Portland G-Rap Discography</h1>
+    <p>Oregon — 31 discs. G-Rap / gangsta rap releases by artists from Portland.
+    JavaScript is required for the interactive map.</p>
+    <p><a href="/en/">GANGSTA RAP ATLAS Home</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>Artist</th><th>Title</th><th>Year</th><th>Label</th></tr></thead>
+      <tbody>
+<tr><td>devonwho</td><td><a href="https://www.discogs.com/release/21360397-devonwho-Betaloops" rel="noopener nofollow">Betaloops</a></td><td>2017</td><td>Leaving Records</td></tr>
+<tr><td>Cool Nutz</td><td><a href="https://www.discogs.com/release/1209552-Cool-Nutz-King-Cool-Nutz" rel="noopener nofollow">King Cool Nutz</a></td><td>2007</td><td>Jus Family Records</td></tr>
+<tr><td>Maniac Lok</td><td><a href="https://www.discogs.com/release/23131586-Maniac-Lok-Turf-Bread-And-Street-Cred" rel="noopener nofollow">Turf Bread And Street Cred</a></td><td>2007</td><td>Jus Family Records</td></tr>
+<tr><td>Blu Crush</td><td><a href="https://www.discogs.com/release/12529566-Blu-Crush-It-Iz-What-It-Iz" rel="noopener nofollow">It Iz What It Iz</a></td><td>2004</td><td>Crush Records (14)</td></tr>
+<tr><td>Kenny Mack</td><td><a href="https://www.discogs.com/release/9707423-Kenny-Mack-Killas-Dillas" rel="noopener nofollow">Killas &amp; Dillas</a></td><td>2004</td><td>MSH Records (2)</td></tr>
+<tr><td>Thai Viet G</td><td><a href="https://www.discogs.com/release/17718493-Thai-Viet-G-Together-We-Rize" rel="noopener nofollow">Together We Rize</a></td><td>2003</td><td>Self Made Records</td></tr>
+<tr><td>Zelly Rock</td><td><a href="https://www.discogs.com/release/17544355-Zelly-Rock-Presents-Zelly-Machiavelli-The-Beacon" rel="noopener nofollow">The Beacon</a></td><td>2003</td><td>Murder Creek Music</td></tr>
+<tr><td>B.U.K.M.</td><td><a href="https://www.discogs.com/release/13222756-BUKM-4-Seasons" rel="noopener nofollow">4 Seasons</a></td><td>2002</td><td>Ghetto Rise Records</td></tr>
+<tr><td>Big Dubya</td><td><a href="https://www.discogs.com/release/25734061-Big-Dubya-featuring-Old-Face-The-East-Coast-Volume-2" rel="noopener nofollow">The East Coast Volume 2</a></td><td>2002</td><td>$occ It 2 My Pockets Records</td></tr>
+<tr><td>Cool Nutz</td><td><a href="https://www.discogs.com/release/4153602" rel="noopener nofollow">Verbal Porn</a></td><td>2002</td><td>Jus Family Records</td></tr>
+<tr><td>Dj Chill</td><td><a href="https://www.discogs.com/release/24844973-Dj-Chill-4-Vol-4-The-Mack-Hand-Side" rel="noopener nofollow">Vol. 4 The Mack Hand Side</a></td><td>2002</td><td>Not On Label</td></tr>
+<tr><td>Ghetto Rise Records</td><td><a href="https://www.discogs.com/release/12204406-Ghetto-Rise-Records-Northwests-Finest" rel="noopener nofollow">Northwest&#x27;s Finest</a></td><td>2001</td><td>Ghetto Rise Records</td></tr>
+<tr><td>Kant B Caught</td><td><a href="https://www.discogs.com/release/11386126" rel="noopener nofollow">Caught Up</a></td><td>2001</td><td>Knok Out Records</td></tr>
+<tr><td>Spook G</td><td><a href="https://www.discogs.com/release/25730176-Spook-G-503-Ride-Freestyle-Session" rel="noopener nofollow">503 Ride (Freestyle Session)</a></td><td>2001</td><td>Hub Records (15)</td></tr>
+<tr><td>Syko</td><td><a href="https://www.discogs.com/release/7093789" rel="noopener nofollow">Sykotherapy</a></td><td>2001</td><td>Street Level Records</td></tr>
+<tr><td>C-Dub</td><td><a href="https://www.discogs.com/release/8033322-C-Dub-3-Eyes-To-My-Soul" rel="noopener nofollow">Eyes To My Soul</a></td><td>2000</td><td>Mob Life Records (2)</td></tr>
+<tr><td>Partners In Rhyme</td><td><a href="https://www.discogs.com/release/11579902" rel="noopener nofollow">The Awakening</a></td><td>2000</td><td>D-Low Records</td></tr>
+<tr><td>IBC</td><td><a href="https://www.discogs.com/release/18885652" rel="noopener nofollow">Last Days</a></td><td>1999</td><td>Street life Worldwide Outreach Center</td></tr>
+<tr><td>Maniac Lok</td><td><a href="https://www.discogs.com/release/10364843" rel="noopener nofollow">I&#x27;m Back</a></td><td>1999</td><td>Jus Family Records</td></tr>
+<tr><td>Cool Nutz</td><td><a href="https://www.discogs.com/release/1552677" rel="noopener nofollow">Speakin Upon a Million</a></td><td>1998</td><td>Jus Family Records</td></tr>
+<tr><td>G-Ism</td><td><a href="https://www.discogs.com/release/14756074-G-Ism-Featuring-Cool-Nutz-On-A-Mission" rel="noopener nofollow">On A Mission</a></td><td>1998</td><td>Jus Family Records</td></tr>
+<tr><td>Gangsters On The Move</td><td><a href="https://www.discogs.com/release/4749236-GOTM-GOTM" rel="noopener nofollow">G.O.T.M.</a></td><td>1998</td><td>2 Real Records</td></tr>
+<tr><td>Gangsters On The Move</td><td><a href="https://www.discogs.com/release/7420309-GOTM-Coming-4-The-Goods" rel="noopener nofollow">Coming 4 The Goods</a></td><td>1998</td><td>2 Real Records</td></tr>
+<tr><td>Al C</td><td><a href="https://www.discogs.com/release/16149250-Al-See-The-Whole-Sht" rel="noopener nofollow">The Whole Sh!t</a></td><td>1996</td><td>A Black Clan Records</td></tr>
+<tr><td>Dee Arthur</td><td><a href="https://www.discogs.com/release/9939050-Dee-Arthur-Micism" rel="noopener nofollow">Micism</a></td><td>1996</td><td>Str8 Game Records</td></tr>
+<tr><td>Sporty</td><td><a href="https://www.discogs.com/release/15617932-Sporty-10-Time-For-A-Come-Up" rel="noopener nofollow">Time For A Come Up!</a></td><td>1996</td><td>Keep It Tight Records</td></tr>
+<tr><td>Starchile</td><td><a href="https://www.discogs.com/release/21976093-Starchile-chile-93-94" rel="noopener nofollow">*chile 93-94</a></td><td>1994</td><td>Not On Label</td></tr>
+<tr><td>C-Dub</td><td><a href="https://www.discogs.com/release/14817242-C-Dub-5-Ignorance-Anonymous" rel="noopener nofollow">Ignorance Anonymous</a></td><td>1993</td><td>Nomad Records (13)</td></tr>
+<tr><td>Cool Nutz</td><td><a href="https://www.discogs.com/release/15326391" rel="noopener nofollow">Dis Niggaz Nutz!</a></td><td>1993</td><td>Nutty Block Records</td></tr>
+<tr><td>K-GEE</td><td><a href="https://www.discogs.com/release/15462966-K-GEE-2-Voice-Of-A-Madman" rel="noopener nofollow">Voice Of A Madman</a></td><td>1993</td><td>Gowell Records. INC</td></tr>
+<tr><td>The Regulators</td><td><a href="https://www.discogs.com/release/14765047-The-Regulators-9-Get-Ready-For-Hell" rel="noopener nofollow">Get Ready For Hell</a></td><td>1992</td><td>Not On Label</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
+</header>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
+</body>
+</html>

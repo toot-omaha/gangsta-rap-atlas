@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(!localStorage.getItem('gra.lang'))localStorage.setItem('gra.lang','en')}catch(e){}</script>
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dallas G-Rap Discography (252 Discs) | GANGSTA RAP ATLAS</title>
+<meta name="description" content="Complete G-Rap / gangsta rap discography from Dallas, Texas — 252 discs by Tha Realest, AJ Snow, Kottonmouth and more. Listen &amp; dig on the interactive map.">
+<link rel="canonical" href="https://g.rap-atlas.com/en/r/dallas/">
+<link rel="alternate" hreflang="ja" href="https://g.rap-atlas.com/r/dallas/">
+<link rel="alternate" hreflang="en" href="https://g.rap-atlas.com/en/r/dallas/">
+<link rel="alternate" hreflang="x-default" href="https://g.rap-atlas.com/r/dallas/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GANGSTA RAP ATLAS">
+<meta property="og:title" content="Dallas G-Rap Discography (252 Discs) | GANGSTA RAP ATLAS">
+<meta property="og:description" content="Complete G-Rap / gangsta rap discography from Dallas, Texas — 252 discs by Tha Realest, AJ Snow, Kottonmouth and more. Listen &amp; dig on the interactive map.">
+<meta property="og:url" content="https://g.rap-atlas.com/en/r/dallas/">
+<meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dallas G-Rap Discography (252 Discs) | GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Complete G-Rap / gangsta rap discography from Dallas, Texas — 252 discs by Tha Realest, AJ Snow, Kottonmouth and more. Listen &amp; dig on the interactive map.">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/icon/icon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/icon/icon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Dallas", "item": "https://g.rap-atlas.com/en/r/dallas/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "Dallas G-Rap Discography", "numberOfItems": 252, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Under Pressure Part 1", "byArtist": {"@type": "MusicGroup", "name": "Tha Realest"}, "datePublished": "2024", "sameAs": "https://www.discogs.com/release/31021744-Tha-Realest-Under-Pressure-Part-1"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Don't Pop Pills, Pop Champagne", "byArtist": {"@type": "MusicGroup", "name": "AJ Snow"}, "datePublished": "2022", "sameAs": "https://www.discogs.com/release/30948592-AJ-Snow-Dont-Pop-Pills-Pop-Champagne"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Mr. Fresh", "byArtist": {"@type": "MusicGroup", "name": "AJ Snow"}, "datePublished": "2021", "sameAs": "https://www.discogs.com/release/30950755-AJ-Snow-Mr-Fresh"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "40th Anniversary", "byArtist": {"@type": "MusicGroup", "name": "AJ Snow"}, "datePublished": "2020", "sameAs": "https://www.discogs.com/release/30875970-AJ-Snow-40th-Anniversary"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Ghetto Gold", "byArtist": {"@type": "MusicGroup", "name": "AJ Snow"}, "datePublished": "2019", "sameAs": "https://www.discogs.com/release/30878211-AJ-Snow-Ghetto-Gold"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Gumbo", "byArtist": {"@type": "MusicGroup", "name": "AJ Snow"}, "datePublished": "2019", "sameAs": "https://www.discogs.com/release/30878061-AJ-Snow-Gumbo"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "King Kong Kotton 2020", "byArtist": {"@type": "MusicGroup", "name": "Kottonmouth"}, "datePublished": "2018", "sameAs": "https://www.discogs.com/release/12349131-Kottonmouth-King-Kong-Kotton-2020"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "No Dom P For Free", "byArtist": {"@type": "MusicGroup", "name": "Aj Snow"}, "datePublished": "2017", "sameAs": "https://www.discogs.com/release/30876450-Aj-Snow-No-Dom-P-For-Free"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Made By OGs", "byArtist": {"@type": "MusicGroup", "name": "AJ Snow"}, "datePublished": "2015", "sameAs": "https://www.discogs.com/release/30876066-AJ-Snow-Made-By-OGs"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Tuffest Man Alive", "byArtist": {"@type": "MusicGroup", "name": "Fila Fresh Crew"}, "datePublished": "2014", "sameAs": "https://www.discogs.com/release/10209615-The-Fila-Fresh-Crew-Tuffest-Man-Alive"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "OG Don Diego Presents: Tha Linckolns - Gods Green Earth", "byArtist": {"@type": "MusicGroup", "name": "Don Diego"}, "datePublished": "2013", "sameAs": "https://www.discogs.com/release/4986086-Don-Diego-OG-Don-Diego-Presents-Tha-Linckolns-Gods-Green-Earth"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "Starships & Rockets : Cooly Fooly Space Age Funk The Album", "byArtist": {"@type": "MusicGroup", "name": "The Outfit, TX"}, "datePublished": "2012", "sameAs": "https://www.discogs.com/release/6056284-The-Outfit-TX-Starships-Rockets-Cooly-Fooly-Space-Age-Funk-The-Album"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Ventation Of A Crook", "byArtist": {"@type": "MusicGroup", "name": "Mr. Pookie"}, "datePublished": "2011", "sameAs": "https://www.discogs.com/release/31387823-Mr-Pookie-Ventation-Of-A-Crook"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Doughski By The Zone", "byArtist": {"@type": "MusicGroup", "name": "Doughski G"}, "datePublished": "2010", "sameAs": "https://www.discogs.com/release/5638830-Doughski-G-Doughski-By-The-Zone"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Witness Tha Realest", "byArtist": {"@type": "MusicGroup", "name": "Tha Realest"}, "datePublished": "2009", "sameAs": "https://www.discogs.com/release/1911066-Tha-Realest-Witness-Tha-Realest"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Hell On 'Em Screwed & Chopped", "byArtist": {"@type": "MusicGroup", "name": "Big Tuck"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/4964011-Big-Tuck-Hell-On-Em-Screwed-Chopped"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Mob Muzik", "byArtist": {"@type": "MusicGroup", "name": "Tha Realest"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/5743206-Tha-Realest-Mob-Muzik"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "Eat Or Get Ate", "byArtist": {"@type": "MusicGroup", "name": "Tum Tum"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/1374169-Tum-Tum-Eat-Or-Get-Ate"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Tha Absolute Truth", "byArtist": {"@type": "MusicGroup", "name": "Big Tuck"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/10314785"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Return Of The Bellyman", "byArtist": {"@type": "MusicGroup", "name": "Fat Bastard"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/15271591-Fat-Bastard-4-Return-Of-The-Bellyman"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "King Kong Kotton", "byArtist": {"@type": "MusicGroup", "name": "Kottonmouth"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/24347651"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Swalhaggin", "byArtist": {"@type": "MusicGroup", "name": "Money Waters"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/2126119"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Return Of Tha Rippla", "byArtist": {"@type": "MusicGroup", "name": "Mr. Pookie"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/12641409"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Greatest Hits Vol.1", "byArtist": {"@type": "MusicGroup", "name": "Pimpsta"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/7241405"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Street Intelligence Volume One", "byArtist": {"@type": "MusicGroup", "name": "Colby Savage"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/15672361"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "The Dynasty (Screwed & Chopped)", "byArtist": {"@type": "MusicGroup", "name": "Dirty South Rydaz"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/22703609"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "Damafiamu: Gangbangin Mix CD Vol. 1", "byArtist": {"@type": "MusicGroup", "name": "Don Diego"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/3278017"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "Dead Man Talking", "byArtist": {"@type": "MusicGroup", "name": "Don Diego"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/1734224"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "In Due Time", "byArtist": {"@type": "MusicGroup", "name": "Point Blank"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/15382296"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "N.W.A", "byArtist": {"@type": "MusicGroup", "name": "Tite"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/14596400"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "Gold-Teeth Rabbit", "byArtist": {"@type": "MusicGroup", "name": "Addiction"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/11366402"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "Talkin 'bout", "byArtist": {"@type": "MusicGroup", "name": "BROSIS"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/11342316-BROSIS-Talkin-bout"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "Streetside Round 1", "byArtist": {"@type": "MusicGroup", "name": "Big Al"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/9784518-Big-Al-presents-Streetside-Round-1"}}, {"@type": "ListItem", "position": 34, "item": {"@type": "MusicAlbum", "name": "Hustle 'Da Most", "byArtist": {"@type": "MusicGroup", "name": "Certified Hustlaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/35812171-Certified-Hustlaz-Hustle-Da-Most"}}, {"@type": "ListItem", "position": 35, "item": {"@type": "MusicAlbum", "name": "The Adventures Of A Poor King", "byArtist": {"@type": "MusicGroup", "name": "Colby Savage"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14082141"}}, {"@type": "ListItem", "position": 36, "item": {"@type": "MusicAlbum", "name": "New Money", "byArtist": {"@type": "MusicGroup", "name": "Diamond \"D\""}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/13397261-Diamond-D-New-Money"}}, {"@type": "ListItem", "position": 37, "item": {"@type": "MusicAlbum", "name": "Da Overthrow", "byArtist": {"@type": "MusicGroup", "name": "Dirty South Rydaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/13609073"}}, {"@type": "ListItem", "position": 38, "item": {"@type": "MusicAlbum", "name": "All Eyez On Us", "byArtist": {"@type": "MusicGroup", "name": "Dirty South Rydaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/15540953"}}, {"@type": "ListItem", "position": 39, "item": {"@type": "MusicAlbum", "name": "Purple Hulk", "byArtist": {"@type": "MusicGroup", "name": "Dirty South Rydaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/10986657-Dirty-South-Rydaz-Presents-Big-Tuck-Purple-Hulk"}}, {"@type": "ListItem", "position": 40, "item": {"@type": "MusicAlbum", "name": "Purple Hulk: Screwed & Chopped", "byArtist": {"@type": "MusicGroup", "name": "Dirty South Rydaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/13512220-Dirty-South-Rydaz-Presents-Big-Tuck-Purple-Hulk-Screwed-Chopped"}}, {"@type": "ListItem", "position": 41, "item": {"@type": "MusicAlbum", "name": "Da Underground Screwed & Chopped By: DJ Yella Boy", "byArtist": {"@type": "MusicGroup", "name": "Down South Playaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/15254664-DSP-Da-Underground-Screwed-Chopped-By-DJ-Yella-Boy"}}, {"@type": "ListItem", "position": 42, "item": {"@type": "MusicAlbum", "name": "Slab Muzic", "byArtist": {"@type": "MusicGroup", "name": "Iceberg"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/12499528-Iceberg-27-Froze-Ony-Slab-Muzic"}}, {"@type": "ListItem", "position": 43, "item": {"@type": "MusicAlbum", "name": "Too Young To Die,Too Old To Cry", "byArtist": {"@type": "MusicGroup", "name": "Kingsta"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/11353627-Kingsta-3-Too-Young-To-DieToo-Old-To-Cry"}}, {"@type": "ListItem", "position": 44, "item": {"@type": "MusicAlbum", "name": "Authentic", "byArtist": {"@type": "MusicGroup", "name": "Kottonmouth"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/6664712-Kottonmouth-Jesse-Authentic"}}, {"@type": "ListItem", "position": 45, "item": {"@type": "MusicAlbum", "name": "It's Been Broke", "byArtist": {"@type": "MusicGroup", "name": "LBP"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14594062-LBP-Its-Been-Broke"}}, {"@type": "ListItem", "position": 46, "item": {"@type": "MusicAlbum", "name": "Showin' Naked Azz", "byArtist": {"@type": "MusicGroup", "name": "LBP"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/15770632-LBP-Showin-Naked-Azz"}}, {"@type": "ListItem", "position": 47, "item": {"@type": "MusicAlbum", "name": "District Champ", "byArtist": {"@type": "MusicGroup", "name": "Lil' Rick"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/15385971-Lil-Rick-District-Champ"}}, {"@type": "ListItem", "position": 48, "item": {"@type": "MusicAlbum", "name": "Represintin Tha Finest", "byArtist": {"@type": "MusicGroup", "name": "Lingo"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/21934582-Lingo-16-Represintin-Tha-Finest"}}, {"@type": "ListItem", "position": 49, "item": {"@type": "MusicAlbum", "name": "What Goes Up Must Come Down", "byArtist": {"@type": "MusicGroup", "name": "Pimpsta"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/12985590"}}, {"@type": "ListItem", "position": 50, "item": {"@type": "MusicAlbum", "name": "The O/G Trendsetter", "byArtist": {"@type": "MusicGroup", "name": "Ron C"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/8840143-Ron-C-The-OG-Trendsetter"}}, {"@type": "ListItem", "position": 51, "item": {"@type": "MusicAlbum", "name": "Screwed & Chopped", "byArtist": {"@type": "MusicGroup", "name": "Stampede Records"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/6077956-Stampede-Records-Screwed-Chopped"}}, {"@type": "ListItem", "position": 52, "item": {"@type": "MusicAlbum", "name": "Da Aftermath", "byArtist": {"@type": "MusicGroup", "name": "Tite"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/12965942-Tite-Da-3-Nutt-Da-Aftermath"}}, {"@type": "ListItem", "position": 53, "item": {"@type": "MusicAlbum", "name": "Green Boy", "byArtist": {"@type": "MusicGroup", "name": "Young Muhammad"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14333126-Young-Muhammad-Green-Boy"}}, {"@type": "ListItem", "position": 54, "item": {"@type": "MusicAlbum", "name": "Back To Life", "byArtist": {"@type": "MusicGroup", "name": "Zayle'on"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/10781261-Zayleon-Back-To-Life"}}, {"@type": "ListItem", "position": 55, "item": {"@type": "MusicAlbum", "name": "Win, Lose Or Die", "byArtist": {"@type": "MusicGroup", "name": "Big Dank King"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/9059518-Big-Dank-King-Win-Lose-Or-Die"}}, {"@type": "ListItem", "position": 56, "item": {"@type": "MusicAlbum", "name": "The Product Of Pain", "byArtist": {"@type": "MusicGroup", "name": "Big Gemini"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/3633096-Gemini-The-Product-Of-Pain"}}, {"@type": "ListItem", "position": 57, "item": {"@type": "MusicAlbum", "name": "Straight From High St.", "byArtist": {"@type": "MusicGroup", "name": "Bo-Leg"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/5752818-Bo-Leg-Straight-From-High-St"}}, {"@type": "ListItem", "position": 58, "item": {"@type": "MusicAlbum", "name": "Stash Gorillaz", "byArtist": {"@type": "MusicGroup", "name": "C-Mo"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/5752992-C-Mo-2-Bushy-3-Stash-Gorillaz"}}, {"@type": "ListItem", "position": 59, "item": {"@type": "MusicAlbum", "name": "Dangalang", "byArtist": {"@type": "MusicGroup", "name": "Cat Daddy"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/32018051-Cat-Daddy-2-Dangalang"}}, {"@type": "ListItem", "position": 60, "item": {"@type": "MusicAlbum", "name": "Tha Drought", "byArtist": {"@type": "MusicGroup", "name": "Diamond \"D\""}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/12172352-Diamond-D-Tha-Drought"}}, {"@type": "ListItem", "position": 61, "item": {"@type": "MusicAlbum", "name": "DSR The Album (Screwed & Chopped)", "byArtist": {"@type": "MusicGroup", "name": "Dirty South Rydaz"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/13770338"}}, {"@type": "ListItem", "position": 62, "item": {"@type": "MusicAlbum", "name": "United We Stand", "byArtist": {"@type": "MusicGroup", "name": "Dirty South Rydaz"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/15743077"}}, {"@type": "ListItem", "position": 63, "item": {"@type": "MusicAlbum", "name": "A Walk In My Shoes", "byArtist": {"@type": "MusicGroup", "name": "Ese-Loc"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/12780106-Ese-Loc-A-Walk-In-My-Shoes"}}, {"@type": "ListItem", "position": 64, "item": {"@type": "MusicAlbum", "name": "Respect It Or Check It", "byArtist": {"@type": "MusicGroup", "name": "Fat Bastard"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/13149209-Fat-Bastard-4-Tum-Tum-Respect-It-Or-Check-It"}}, {"@type": "ListItem", "position": 65, "item": {"@type": "MusicAlbum", "name": "Get In My Belly", "byArtist": {"@type": "MusicGroup", "name": "Fat Bastard"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/13782163-Fat-Bastard-4-Get-In-My-Belly"}}, {"@type": "ListItem", "position": 66, "item": {"@type": "MusicAlbum", "name": "All In A Year's Work (Screwed & Chopped)", "byArtist": {"@type": "MusicGroup", "name": "I-35 Boyz"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/11201663-I-35-Boyz-All-In-A-Years-Work-Screwed-Chopped"}}, {"@type": "ListItem", "position": 67, "item": {"@type": "MusicAlbum", "name": "I Of The Storm", "byArtist": {"@type": "MusicGroup", "name": "Ira James"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/21932551-Ira-James-2-I-Of-The-Storm"}}, {"@type": "ListItem", "position": 68, "item": {"@type": "MusicAlbum", "name": "The Artifact", "byArtist": {"@type": "MusicGroup", "name": "King K"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/11342709-King-K-The-Artifact"}}, {"@type": "ListItem", "position": 69, "item": {"@type": "MusicAlbum", "name": "The Porch", "byArtist": {"@type": "MusicGroup", "name": "Money Waters"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/886745-Money-Waters-The-Porch"}}, {"@type": "ListItem", "position": 70, "item": {"@type": "MusicAlbum", "name": "My Life", "byArtist": {"@type": "MusicGroup", "name": "Mr. Pookie"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/3942361-Mr-Pookie-Mr-Lucci-My-Life"}}, {"@type": "ListItem", "position": 71, "item": {"@type": "MusicAlbum", "name": "The Burn", "byArtist": {"@type": "MusicGroup", "name": "S.E.J."}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/3102786-SEJ-The-Burn"}}, {"@type": "ListItem", "position": 72, "item": {"@type": "MusicAlbum", "name": "Deuce", "byArtist": {"@type": "MusicGroup", "name": "The D.O.C."}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/942497"}}, {"@type": "ListItem", "position": 73, "item": {"@type": "MusicAlbum", "name": "AKA O-Tumma-Tumladin", "byArtist": {"@type": "MusicGroup", "name": "Tum-Tum"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/15648131"}}, {"@type": "ListItem", "position": 74, "item": {"@type": "MusicAlbum", "name": "Tha Takeover", "byArtist": {"@type": "MusicGroup", "name": "Twistit"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/11746838-Twistit-2-Tha-Takeover"}}, {"@type": "ListItem", "position": 75, "item": {"@type": "MusicAlbum", "name": "G By Day P At Night... It's In Tha Game", "byArtist": {"@type": "MusicGroup", "name": "V.I.P. G'z"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/8245209-VIP-Gz-G-By-Day-P-At-Night-Its-In-Tha-Game"}}, {"@type": "ListItem", "position": 76, "item": {"@type": "MusicAlbum", "name": "Where's My Money?", "byArtist": {"@type": "MusicGroup", "name": "Young Hustlaz"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/11883982-Young-Hustlaz-Wheres-My-Money"}}, {"@type": "ListItem", "position": 77, "item": {"@type": "MusicAlbum", "name": "Da King Of Hooks", "byArtist": {"@type": "MusicGroup", "name": "C-Mo"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/11879474-C-Mo-2-Da-King-Of-Hooks"}}, {"@type": "ListItem", "position": 78, "item": {"@type": "MusicAlbum", "name": "Big Bizness", "byArtist": {"@type": "MusicGroup", "name": "D'Arrangement"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/9219000-DArrangement-Big-Bizness"}}, {"@type": "ListItem", "position": 79, "item": {"@type": "MusicAlbum", "name": "Timeless Entertainment Presents....", "byArtist": {"@type": "MusicGroup", "name": "D-Town Slim"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/11377011-D-Town-Timeless-Entertainment-Presents"}}, {"@type": "ListItem", "position": 80, "item": {"@type": "MusicAlbum", "name": "We Must Smash", "byArtist": {"@type": "MusicGroup", "name": "Desperadoz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/11647473-Desperado-Boyz-We-Must-Smash"}}, {"@type": "ListItem", "position": 81, "item": {"@type": "MusicAlbum", "name": "$50,000 Later", "byArtist": {"@type": "MusicGroup", "name": "Diamond \"D\""}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/12811634-Diamond-D-50000-Later"}}, {"@type": "ListItem", "position": 82, "item": {"@type": "MusicAlbum", "name": "DSR", "byArtist": {"@type": "MusicGroup", "name": "Dirty South Rydaz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/13090000"}}, {"@type": "ListItem", "position": 83, "item": {"@type": "MusicAlbum", "name": "Dipped & Drugg", "byArtist": {"@type": "MusicGroup", "name": "Dirtywater"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/10888063-Dirtywater-Dipped-Drugg"}}, {"@type": "ListItem", "position": 84, "item": {"@type": "MusicAlbum", "name": "The Game Don't Change", "byArtist": {"@type": "MusicGroup", "name": "Eno"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/5185428-Eno-8-The-Game-Dont-Change"}}, {"@type": "ListItem", "position": 85, "item": {"@type": "MusicAlbum", "name": "Tha Saga Begins", "byArtist": {"@type": "MusicGroup", "name": "Grill Masta Boyz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/27719397-Grill-Masta-Boyz-Tha-Saga-Begins"}}, {"@type": "ListItem", "position": 86, "item": {"@type": "MusicAlbum", "name": "Outcasted", "byArtist": {"@type": "MusicGroup", "name": "II Kold Syndicate"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/26029741-II-Kold-Syndicate-Outcasted"}}, {"@type": "ListItem", "position": 87, "item": {"@type": "MusicAlbum", "name": "Urban Legend:  Chopped And Screwed", "byArtist": {"@type": "MusicGroup", "name": "Kottonmouth"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/312049-Kottonmouth-Urban-Legend-Chopped-And-Screwed"}}, {"@type": "ListItem", "position": 88, "item": {"@type": "MusicAlbum", "name": "Urban Legend", "byArtist": {"@type": "MusicGroup", "name": "Kottonmouth"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/6131955-Kottonmouth-King-Of-Da-City-Urban-Legend"}}, {"@type": "ListItem", "position": 89, "item": {"@type": "MusicAlbum", "name": "Street Monopoly", "byArtist": {"@type": "MusicGroup", "name": "Lou Calhoun"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/10888165-Lou-Calhoun-Street-Monopoly"}}, {"@type": "ListItem", "position": 90, "item": {"@type": "MusicAlbum", "name": "Living Like A Dope Fiend", "byArtist": {"@type": "MusicGroup", "name": "M.C. Doe"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/10973778-MC-Doe-Living-Like-A-Dope-Fiend"}}, {"@type": "ListItem", "position": 91, "item": {"@type": "MusicAlbum", "name": "Southwest Cool-Aid", "byArtist": {"@type": "MusicGroup", "name": "Mr. Luv"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/10099007-Mr-Luv-Southwest-Cool-Aid"}}, {"@type": "ListItem", "position": 92, "item": {"@type": "MusicAlbum", "name": "The Big Picture", "byArtist": {"@type": "MusicGroup", "name": "One G"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/2956392-One-G-The-Big-Picture"}}, {"@type": "ListItem", "position": 93, "item": {"@type": "MusicAlbum", "name": "Country B4 Country Was Cool", "byArtist": {"@type": "MusicGroup", "name": "Pimpsta"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/2490439"}}, {"@type": "ListItem", "position": 94, "item": {"@type": "MusicAlbum", "name": "Kicking Real Shit", "byArtist": {"@type": "MusicGroup", "name": "Pimpsta"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/12730092"}}, {"@type": "ListItem", "position": 95, "item": {"@type": "MusicAlbum", "name": "I Wanna A Lac Like Dat", "byArtist": {"@type": "MusicGroup", "name": "Pimpsta"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/10818631-Pimpsta-I-Wanna-A-Lac-Like-Dat"}}, {"@type": "ListItem", "position": 96, "item": {"@type": "MusicAlbum", "name": "Up In Yo Yard", "byArtist": {"@type": "MusicGroup", "name": "Rally Boys"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/950330-Rally-Boys-Up-In-Yo-Yard"}}, {"@type": "ListItem", "position": 97, "item": {"@type": "MusicAlbum", "name": "Up In Yo Yard (Screwed Down)", "byArtist": {"@type": "MusicGroup", "name": "Rally Boys"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/13454061-Rally-Boys-Up-In-Yo-Yard-Screwed-Down"}}, {"@type": "ListItem", "position": 98, "item": {"@type": "MusicAlbum", "name": "In This World Of Mine", "byArtist": {"@type": "MusicGroup", "name": "Rylo A1 Yola"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/15855737-Rylo-A1-Yola-In-This-World-Of-Mine"}}, {"@type": "ListItem", "position": 99, "item": {"@type": "MusicAlbum", "name": "The Burn The Backdraft", "byArtist": {"@type": "MusicGroup", "name": "S.E.J."}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/6229187-SEJ-The-Burn-The-Backdraft"}}, {"@type": "ListItem", "position": 100, "item": {"@type": "MusicAlbum", "name": "My Way", "byArtist": {"@type": "MusicGroup", "name": "Short Dillan"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/5815247-Short-Dillan-My-Way"}}]}]</script>
+</head>
+<body>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Dallas G-Rap Discography</h1>
+    <p>Texas — 252 discs. G-Rap / gangsta rap releases by artists from Dallas.
+    JavaScript is required for the interactive map.</p>
+    <p><a href="/en/">GANGSTA RAP ATLAS Home</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>Artist</th><th>Title</th><th>Year</th><th>Label</th></tr></thead>
+      <tbody>
+<tr><td>Tha Realest</td><td><a href="https://www.discogs.com/release/31021744-Tha-Realest-Under-Pressure-Part-1" rel="noopener nofollow">Under Pressure Part 1</a></td><td>2024</td><td>Gangsta Zone Recordz</td></tr>
+<tr><td>AJ Snow</td><td><a href="https://www.discogs.com/release/30948592-AJ-Snow-Dont-Pop-Pills-Pop-Champagne" rel="noopener nofollow">Don&#x27;t Pop Pills, Pop Champagne</a></td><td>2022</td><td>Made By OGs</td></tr>
+<tr><td>AJ Snow</td><td><a href="https://www.discogs.com/release/30950755-AJ-Snow-Mr-Fresh" rel="noopener nofollow">Mr. Fresh</a></td><td>2021</td><td>Made By OGs</td></tr>
+<tr><td>AJ Snow</td><td><a href="https://www.discogs.com/release/30875970-AJ-Snow-40th-Anniversary" rel="noopener nofollow">40th Anniversary</a></td><td>2020</td><td>Made By OGs</td></tr>
+<tr><td>AJ Snow</td><td><a href="https://www.discogs.com/release/30878211-AJ-Snow-Ghetto-Gold" rel="noopener nofollow">Ghetto Gold</a></td><td>2019</td><td>Made By OGs</td></tr>
+<tr><td>AJ Snow</td><td><a href="https://www.discogs.com/release/30878061-AJ-Snow-Gumbo" rel="noopener nofollow">Gumbo</a></td><td>2019</td><td>Made By OGs</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/12349131-Kottonmouth-King-Kong-Kotton-2020" rel="noopener nofollow">King Kong Kotton 2020</a></td><td>2018</td><td>Fortune Funk Entertainment</td></tr>
+<tr><td>Aj Snow</td><td><a href="https://www.discogs.com/release/30876450-Aj-Snow-No-Dom-P-For-Free" rel="noopener nofollow">No Dom P For Free</a></td><td>2017</td><td>Made By OGs</td></tr>
+<tr><td>AJ Snow</td><td><a href="https://www.discogs.com/release/30876066-AJ-Snow-Made-By-OGs" rel="noopener nofollow">Made By OGs</a></td><td>2015</td><td>Made By OGs</td></tr>
+<tr><td>Fila Fresh Crew</td><td><a href="https://www.discogs.com/release/10209615-The-Fila-Fresh-Crew-Tuffest-Man-Alive" rel="noopener nofollow">Tuffest Man Alive</a></td><td>2014</td><td>Macola Record Co.</td></tr>
+<tr><td>Don Diego</td><td><a href="https://www.discogs.com/release/4986086-Don-Diego-OG-Don-Diego-Presents-Tha-Linckolns-Gods-Green-Earth" rel="noopener nofollow">OG Don Diego Presents: Tha Linckolns - Gods Green Earth</a></td><td>2013</td><td>Damafiamu Ent.</td></tr>
+<tr><td>The Outfit, TX</td><td><a href="https://www.discogs.com/release/6056284-The-Outfit-TX-Starships-Rockets-Cooly-Fooly-Space-Age-Funk-The-Album" rel="noopener nofollow">Starships &amp; Rockets : Cooly Fooly Space Age Funk The Album</a></td><td>2012</td><td>Back Of The Saloon Productions</td></tr>
+<tr><td>Mr. Pookie</td><td><a href="https://www.discogs.com/release/31387823-Mr-Pookie-Ventation-Of-A-Crook" rel="noopener nofollow">Ventation Of A Crook</a></td><td>2011</td><td>Stoney Crook Records</td></tr>
+<tr><td>Doughski G</td><td><a href="https://www.discogs.com/release/5638830-Doughski-G-Doughski-By-The-Zone" rel="noopener nofollow">Doughski By The Zone</a></td><td>2010</td><td>Music Access, Inc.</td></tr>
+<tr><td>Tha Realest</td><td><a href="https://www.discogs.com/release/1911066-Tha-Realest-Witness-Tha-Realest" rel="noopener nofollow">Witness Tha Realest</a></td><td>2009</td><td>RBC Records</td></tr>
+<tr><td>Big Tuck</td><td><a href="https://www.discogs.com/release/4964011-Big-Tuck-Hell-On-Em-Screwed-Chopped" rel="noopener nofollow">Hell On &#x27;Em Screwed &amp; Chopped</a></td><td>2008</td><td>J.I.N. Entertainment</td></tr>
+<tr><td>Tha Realest</td><td><a href="https://www.discogs.com/release/5743206-Tha-Realest-Mob-Muzik" rel="noopener nofollow">Mob Muzik</a></td><td>2008</td><td>Team Dime Entertainment</td></tr>
+<tr><td>Tum Tum</td><td><a href="https://www.discogs.com/release/1374169-Tum-Tum-Eat-Or-Get-Ate" rel="noopener nofollow">Eat Or Get Ate</a></td><td>2007</td><td>T-Town Music</td></tr>
+<tr><td>Big Tuck</td><td><a href="https://www.discogs.com/release/10314785" rel="noopener nofollow">Tha Absolute Truth</a></td><td>2006</td><td>Moon Records</td></tr>
+<tr><td>Fat Bastard</td><td><a href="https://www.discogs.com/release/15271591-Fat-Bastard-4-Return-Of-The-Bellyman" rel="noopener nofollow">Return Of The Bellyman</a></td><td>2006</td><td>T-Town Music</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/24347651" rel="noopener nofollow">King Kong Kotton</a></td><td>2006</td><td>Fortune Funk Entertainment</td></tr>
+<tr><td>Money Waters</td><td><a href="https://www.discogs.com/release/2126119" rel="noopener nofollow">Swalhaggin</a></td><td>2006</td><td>Noir Sound</td></tr>
+<tr><td>Mr. Pookie</td><td><a href="https://www.discogs.com/release/12641409" rel="noopener nofollow">Return Of Tha Rippla</a></td><td>2006</td><td>Crawl 2 Ball Records</td></tr>
+<tr><td>Pimpsta</td><td><a href="https://www.discogs.com/release/7241405" rel="noopener nofollow">Greatest Hits Vol.1</a></td><td>2006</td><td>Bird House Records</td></tr>
+<tr><td>Colby Savage</td><td><a href="https://www.discogs.com/release/15672361" rel="noopener nofollow">Street Intelligence Volume One</a></td><td>2005</td><td>Blacked Out Entertainment</td></tr>
+<tr><td>Dirty South Rydaz</td><td><a href="https://www.discogs.com/release/22703609" rel="noopener nofollow">The Dynasty (Screwed &amp; Chopped)</a></td><td>2005</td><td>DSR</td></tr>
+<tr><td>Don Diego</td><td><a href="https://www.discogs.com/release/3278017" rel="noopener nofollow">Damafiamu: Gangbangin Mix CD Vol. 1</a></td><td>2005</td><td>Tha Wrongkind Records</td></tr>
+<tr><td>Don Diego</td><td><a href="https://www.discogs.com/release/1734224" rel="noopener nofollow">Dead Man Talking</a></td><td>2005</td><td>Tha Wrongkind Records</td></tr>
+<tr><td>Point Blank</td><td><a href="https://www.discogs.com/release/15382296" rel="noopener nofollow">In Due Time</a></td><td>2005</td><td>New Era Inc.</td></tr>
+<tr><td>Tite</td><td><a href="https://www.discogs.com/release/14596400" rel="noopener nofollow">N.W.A</a></td><td>2005</td><td>T-Town Music</td></tr>
+<tr><td>Addiction</td><td><a href="https://www.discogs.com/release/11366402" rel="noopener nofollow">Gold-Teeth Rabbit</a></td><td>2004</td><td>DSR</td></tr>
+<tr><td>BROSIS</td><td><a href="https://www.discogs.com/release/11342316-BROSIS-Talkin-bout" rel="noopener nofollow">Talkin &#x27;bout</a></td><td>2004</td><td>KATANDAMACK RECORDS</td></tr>
+<tr><td>Big Al</td><td><a href="https://www.discogs.com/release/9784518-Big-Al-presents-Streetside-Round-1" rel="noopener nofollow">Streetside Round 1</a></td><td>2004</td><td>Money Murda Music</td></tr>
+<tr><td>Certified Hustlaz</td><td><a href="https://www.discogs.com/release/35812171-Certified-Hustlaz-Hustle-Da-Most" rel="noopener nofollow">Hustle &#x27;Da Most</a></td><td>2004</td><td>Certified Sound Music</td></tr>
+<tr><td>Colby Savage</td><td><a href="https://www.discogs.com/release/14082141" rel="noopener nofollow">The Adventures Of A Poor King</a></td><td>2004</td><td>Blacked Out Entertainment</td></tr>
+<tr><td>Diamond &quot;D&quot;</td><td><a href="https://www.discogs.com/release/13397261-Diamond-D-New-Money" rel="noopener nofollow">New Money</a></td><td>2004</td><td>Diamond Recordz (2)</td></tr>
+<tr><td>Dirty South Rydaz</td><td><a href="https://www.discogs.com/release/13609073" rel="noopener nofollow">Da Overthrow</a></td><td>2004</td><td>DSR</td></tr>
+<tr><td>Dirty South Rydaz</td><td><a href="https://www.discogs.com/release/15540953" rel="noopener nofollow">All Eyez On Us</a></td><td>2004</td><td>DSR</td></tr>
+<tr><td>Dirty South Rydaz</td><td><a href="https://www.discogs.com/release/10986657-Dirty-South-Rydaz-Presents-Big-Tuck-Purple-Hulk" rel="noopener nofollow">Purple Hulk</a></td><td>2004</td><td>T-Town Music</td></tr>
+<tr><td>Dirty South Rydaz</td><td><a href="https://www.discogs.com/release/13512220-Dirty-South-Rydaz-Presents-Big-Tuck-Purple-Hulk-Screwed-Chopped" rel="noopener nofollow">Purple Hulk: Screwed &amp; Chopped</a></td><td>2004</td><td>T-Town Music</td></tr>
+<tr><td>Down South Playaz</td><td><a href="https://www.discogs.com/release/15254664-DSP-Da-Underground-Screwed-Chopped-By-DJ-Yella-Boy" rel="noopener nofollow">Da Underground Screwed &amp; Chopped By: DJ Yella Boy</a></td><td>2004</td><td>DSP (7)</td></tr>
+<tr><td>Iceberg</td><td><a href="https://www.discogs.com/release/12499528-Iceberg-27-Froze-Ony-Slab-Muzic" rel="noopener nofollow">Slab Muzic</a></td><td>2004</td><td>Big Wheel Records (4)</td></tr>
+<tr><td>Kingsta</td><td><a href="https://www.discogs.com/release/11353627-Kingsta-3-Too-Young-To-DieToo-Old-To-Cry" rel="noopener nofollow">Too Young To Die,Too Old To Cry</a></td><td>2004</td><td>Knot Grippa Records</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/6664712-Kottonmouth-Jesse-Authentic" rel="noopener nofollow">Authentic</a></td><td>2004</td><td>Fortune Funk Entertainment</td></tr>
+<tr><td>LBP</td><td><a href="https://www.discogs.com/release/14594062-LBP-Its-Been-Broke" rel="noopener nofollow">It&#x27;s Been Broke</a></td><td>2004</td><td>T-Town Music</td></tr>
+<tr><td>LBP</td><td><a href="https://www.discogs.com/release/15770632-LBP-Showin-Naked-Azz" rel="noopener nofollow">Showin&#x27; Naked Azz</a></td><td>2004</td><td>DSR (5)</td></tr>
+<tr><td>Lil&#x27; Rick</td><td><a href="https://www.discogs.com/release/15385971-Lil-Rick-District-Champ" rel="noopener nofollow">District Champ</a></td><td>2004</td><td>Swat Team Records</td></tr>
+<tr><td>Lingo</td><td><a href="https://www.discogs.com/release/21934582-Lingo-16-Represintin-Tha-Finest" rel="noopener nofollow">Represintin Tha Finest</a></td><td>2004</td><td>Groovesound Records</td></tr>
+<tr><td>Pimpsta</td><td><a href="https://www.discogs.com/release/12985590" rel="noopener nofollow">What Goes Up Must Come Down</a></td><td>2004</td><td>Bird House Records</td></tr>
+<tr><td>Ron C</td><td><a href="https://www.discogs.com/release/8840143-Ron-C-The-OG-Trendsetter" rel="noopener nofollow">The O/G Trendsetter</a></td><td>2004</td><td>Mack Time Records</td></tr>
+<tr><td>Stampede Records</td><td><a href="https://www.discogs.com/release/6077956-Stampede-Records-Screwed-Chopped" rel="noopener nofollow">Screwed &amp; Chopped</a></td><td>2004</td><td>Stampede Records (3)</td></tr>
+<tr><td>Tite</td><td><a href="https://www.discogs.com/release/12965942-Tite-Da-3-Nutt-Da-Aftermath" rel="noopener nofollow">Da Aftermath</a></td><td>2004</td><td>T-Town Music</td></tr>
+<tr><td>Young Muhammad</td><td><a href="https://www.discogs.com/release/14333126-Young-Muhammad-Green-Boy" rel="noopener nofollow">Green Boy</a></td><td>2004</td><td>Not On Label</td></tr>
+<tr><td>Zayle&#x27;on</td><td><a href="https://www.discogs.com/release/10781261-Zayleon-Back-To-Life" rel="noopener nofollow">Back To Life</a></td><td>2004</td><td>Mafion Records</td></tr>
+<tr><td>Big Dank King</td><td><a href="https://www.discogs.com/release/9059518-Big-Dank-King-Win-Lose-Or-Die" rel="noopener nofollow">Win, Lose Or Die</a></td><td>2003</td><td>Highland Hills Records</td></tr>
+<tr><td>Big Gemini</td><td><a href="https://www.discogs.com/release/3633096-Gemini-The-Product-Of-Pain" rel="noopener nofollow">The Product Of Pain</a></td><td>2003</td><td>Catalyst Entertainment</td></tr>
+<tr><td>Bo-Leg</td><td><a href="https://www.discogs.com/release/5752818-Bo-Leg-Straight-From-High-St" rel="noopener nofollow">Straight From High St.</a></td><td>2003</td><td>Stampede Records (3)</td></tr>
+<tr><td>C-Mo</td><td><a href="https://www.discogs.com/release/5752992-C-Mo-2-Bushy-3-Stash-Gorillaz" rel="noopener nofollow">Stash Gorillaz</a></td><td>2003</td><td>One Way Entertainment (2)</td></tr>
+<tr><td>Cat Daddy</td><td><a href="https://www.discogs.com/release/32018051-Cat-Daddy-2-Dangalang" rel="noopener nofollow">Dangalang</a></td><td>2003</td><td>Cat Daddy</td></tr>
+<tr><td>Diamond &quot;D&quot;</td><td><a href="https://www.discogs.com/release/12172352-Diamond-D-Tha-Drought" rel="noopener nofollow">Tha Drought</a></td><td>2003</td><td>Diamond Recordz (2)</td></tr>
+<tr><td>Dirty South Rydaz</td><td><a href="https://www.discogs.com/release/13770338" rel="noopener nofollow">DSR The Album (Screwed &amp; Chopped)</a></td><td>2003</td><td>T-Town Music</td></tr>
+<tr><td>Dirty South Rydaz</td><td><a href="https://www.discogs.com/release/15743077" rel="noopener nofollow">United We Stand</a></td><td>2003</td><td>DSR</td></tr>
+<tr><td>Ese-Loc</td><td><a href="https://www.discogs.com/release/12780106-Ese-Loc-A-Walk-In-My-Shoes" rel="noopener nofollow">A Walk In My Shoes</a></td><td>2003</td><td>Candy Coated Records</td></tr>
+<tr><td>Fat Bastard</td><td><a href="https://www.discogs.com/release/13149209-Fat-Bastard-4-Tum-Tum-Respect-It-Or-Check-It" rel="noopener nofollow">Respect It Or Check It</a></td><td>2003</td><td>T-Town Music</td></tr>
+<tr><td>Fat Bastard</td><td><a href="https://www.discogs.com/release/13782163-Fat-Bastard-4-Get-In-My-Belly" rel="noopener nofollow">Get In My Belly</a></td><td>2003</td><td>DSR (5)</td></tr>
+<tr><td>I-35 Boyz</td><td><a href="https://www.discogs.com/release/11201663-I-35-Boyz-All-In-A-Years-Work-Screwed-Chopped" rel="noopener nofollow">All In A Year&#x27;s Work (Screwed &amp; Chopped)</a></td><td>2003</td><td>Hata Proof Records</td></tr>
+<tr><td>Ira James</td><td><a href="https://www.discogs.com/release/21932551-Ira-James-2-I-Of-The-Storm" rel="noopener nofollow">I Of The Storm</a></td><td>2003</td><td>Silent Storm Productions</td></tr>
+<tr><td>King K</td><td><a href="https://www.discogs.com/release/11342709-King-K-The-Artifact" rel="noopener nofollow">The Artifact</a></td><td>2003</td><td>Paper Chasin Records</td></tr>
+<tr><td>Money Waters</td><td><a href="https://www.discogs.com/release/886745-Money-Waters-The-Porch" rel="noopener nofollow">The Porch</a></td><td>2003</td><td>SoulIsys Music</td></tr>
+<tr><td>Mr. Pookie</td><td><a href="https://www.discogs.com/release/3942361-Mr-Pookie-Mr-Lucci-My-Life" rel="noopener nofollow">My Life</a></td><td>2003</td><td>Crawl 2 Ball Records</td></tr>
+<tr><td>S.E.J.</td><td><a href="https://www.discogs.com/release/3102786-SEJ-The-Burn" rel="noopener nofollow">The Burn</a></td><td>2003</td><td>Empire Thang Records</td></tr>
+<tr><td>The D.O.C.</td><td><a href="https://www.discogs.com/release/942497" rel="noopener nofollow">Deuce</a></td><td>2003</td><td>Silverback Records</td></tr>
+<tr><td>Tum-Tum</td><td><a href="https://www.discogs.com/release/15648131" rel="noopener nofollow">AKA O-Tumma-Tumladin</a></td><td>2003</td><td>DSR</td></tr>
+<tr><td>Twistit</td><td><a href="https://www.discogs.com/release/11746838-Twistit-2-Tha-Takeover" rel="noopener nofollow">Tha Takeover</a></td><td>2003</td><td>Big City (7)</td></tr>
+<tr><td>V.I.P. G&#x27;z</td><td><a href="https://www.discogs.com/release/8245209-VIP-Gz-G-By-Day-P-At-Night-Its-In-Tha-Game" rel="noopener nofollow">G By Day P At Night... It&#x27;s In Tha Game</a></td><td>2003</td><td>G-Related Records</td></tr>
+<tr><td>Young Hustlaz</td><td><a href="https://www.discogs.com/release/11883982-Young-Hustlaz-Wheres-My-Money" rel="noopener nofollow">Where&#x27;s My Money?</a></td><td>2003</td><td>Power Houze Records</td></tr>
+<tr><td>C-Mo</td><td><a href="https://www.discogs.com/release/11879474-C-Mo-2-Da-King-Of-Hooks" rel="noopener nofollow">Da King Of Hooks</a></td><td>2002</td><td>Diamond Recordz (2)</td></tr>
+<tr><td>D&#x27;Arrangement</td><td><a href="https://www.discogs.com/release/9219000-DArrangement-Big-Bizness" rel="noopener nofollow">Big Bizness</a></td><td>2002</td><td>Knockout Records (8)</td></tr>
+<tr><td>D-Town Slim</td><td><a href="https://www.discogs.com/release/11377011-D-Town-Timeless-Entertainment-Presents" rel="noopener nofollow">Timeless Entertainment Presents....</a></td><td>2002</td><td>Timeless Entertainment (3)</td></tr>
+<tr><td>Desperadoz</td><td><a href="https://www.discogs.com/release/11647473-Desperado-Boyz-We-Must-Smash" rel="noopener nofollow">We Must Smash</a></td><td>2002</td><td>Sky High Entertainment</td></tr>
+<tr><td>Diamond &quot;D&quot;</td><td><a href="https://www.discogs.com/release/12811634-Diamond-D-50000-Later" rel="noopener nofollow">$50,000 Later</a></td><td>2002</td><td>Diamond Recordz (2)</td></tr>
+<tr><td>Dirty South Rydaz</td><td><a href="https://www.discogs.com/release/13090000" rel="noopener nofollow">DSR</a></td><td>2002</td><td>T-Town Music</td></tr>
+<tr><td>Dirtywater</td><td><a href="https://www.discogs.com/release/10888063-Dirtywater-Dipped-Drugg" rel="noopener nofollow">Dipped &amp; Drugg</a></td><td>2002</td><td>FINN Entertainment</td></tr>
+<tr><td>Eno</td><td><a href="https://www.discogs.com/release/5185428-Eno-8-The-Game-Dont-Change" rel="noopener nofollow">The Game Don&#x27;t Change</a></td><td>2002</td><td>Bigga Than Life Entertainment</td></tr>
+<tr><td>Grill Masta Boyz</td><td><a href="https://www.discogs.com/release/27719397-Grill-Masta-Boyz-Tha-Saga-Begins" rel="noopener nofollow">Tha Saga Begins</a></td><td>2002</td><td>Not On Label</td></tr>
+<tr><td>II Kold Syndicate</td><td><a href="https://www.discogs.com/release/26029741-II-Kold-Syndicate-Outcasted" rel="noopener nofollow">Outcasted</a></td><td>2002</td><td>Halfway House Entertainment</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/312049-Kottonmouth-Urban-Legend-Chopped-And-Screwed" rel="noopener nofollow">Urban Legend:  Chopped And Screwed</a></td><td>2002</td><td>Fortune Funk Entertainment</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/6131955-Kottonmouth-King-Of-Da-City-Urban-Legend" rel="noopener nofollow">Urban Legend</a></td><td>2002</td><td>Fortune Funk Entertainment</td></tr>
+<tr><td>Lou Calhoun</td><td><a href="https://www.discogs.com/release/10888165-Lou-Calhoun-Street-Monopoly" rel="noopener nofollow">Street Monopoly</a></td><td>2002</td><td>On Tha Grind Records</td></tr>
+<tr><td>M.C. Doe</td><td><a href="https://www.discogs.com/release/10973778-MC-Doe-Living-Like-A-Dope-Fiend" rel="noopener nofollow">Living Like A Dope Fiend</a></td><td>2002</td><td>Zillionaire Records</td></tr>
+<tr><td>Mr. Luv</td><td><a href="https://www.discogs.com/release/10099007-Mr-Luv-Southwest-Cool-Aid" rel="noopener nofollow">Southwest Cool-Aid</a></td><td>2002</td><td>Dancin Outlaw Entertainment</td></tr>
+<tr><td>One G</td><td><a href="https://www.discogs.com/release/2956392-One-G-The-Big-Picture" rel="noopener nofollow">The Big Picture</a></td><td>2002</td><td>Mafion Records</td></tr>
+<tr><td>Pimpsta</td><td><a href="https://www.discogs.com/release/2490439" rel="noopener nofollow">Country B4 Country Was Cool</a></td><td>2002</td><td>Southside Connection Records</td></tr>
+<tr><td>Pimpsta</td><td><a href="https://www.discogs.com/release/12730092" rel="noopener nofollow">Kicking Real Shit</a></td><td>2002</td><td>Bird House Records</td></tr>
+<tr><td>Pimpsta</td><td><a href="https://www.discogs.com/release/10818631-Pimpsta-I-Wanna-A-Lac-Like-Dat" rel="noopener nofollow">I Wanna A Lac Like Dat</a></td><td>2002</td><td>Bird House Records</td></tr>
+<tr><td>Rally Boys</td><td><a href="https://www.discogs.com/release/950330-Rally-Boys-Up-In-Yo-Yard" rel="noopener nofollow">Up In Yo Yard</a></td><td>2002</td><td>Affiliated Music Group</td></tr>
+<tr><td>Rally Boys</td><td><a href="https://www.discogs.com/release/13454061-Rally-Boys-Up-In-Yo-Yard-Screwed-Down" rel="noopener nofollow">Up In Yo Yard (Screwed Down)</a></td><td>2002</td><td>Fortune Funk Entertainment</td></tr>
+<tr><td>Rylo A1 Yola</td><td><a href="https://www.discogs.com/release/15855737-Rylo-A1-Yola-In-This-World-Of-Mine" rel="noopener nofollow">In This World Of Mine</a></td><td>2002</td><td>Street Gorilla Records</td></tr>
+<tr><td>S.E.J.</td><td><a href="https://www.discogs.com/release/6229187-SEJ-The-Burn-The-Backdraft" rel="noopener nofollow">The Burn The Backdraft</a></td><td>2002</td><td>Empire Thang Records</td></tr>
+<tr><td>Short Dillan</td><td><a href="https://www.discogs.com/release/5815247-Short-Dillan-My-Way" rel="noopener nofollow">My Way</a></td><td>2002</td><td>Bomb City Records (3)</td></tr>
+<tr><td>Stampede Records</td><td><a href="https://www.discogs.com/release/6077916-Stampede-Records-Our-Time-2-Shine" rel="noopener nofollow">Our Time 2 Shine</a></td><td>2002</td><td>Stampede Records (3)</td></tr>
+<tr><td>Stash</td><td><a href="https://www.discogs.com/release/10848856-Stash-27-Mr-Roquemore-Boppaz" rel="noopener nofollow">Boppaz</a></td><td>2002</td><td>LOC Entertainment</td></tr>
+<tr><td>Syko</td><td><a href="https://www.discogs.com/release/34670275" rel="noopener nofollow">Amerikkkan Syko Volume Zero</a></td><td>2002</td><td>Not On Label</td></tr>
+<tr><td>The Coalition</td><td><a href="https://www.discogs.com/release/37759074-The-Coalition-Parking-Lot-Pimpin" rel="noopener nofollow">Parking Lot Pimpin</a></td><td>2002</td><td>Hamma Head Entertainment</td></tr>
+<tr><td>The Oak Cliff Assassin</td><td><a href="https://www.discogs.com/release/3218589-Oak-Cliff-Assassin-And-DJ-Dark-Fader-1992-Murder-Or-Muzik" rel="noopener nofollow">1992: Murder Or Muzik?</a></td><td>2002</td><td>Lock Down Records</td></tr>
+<tr><td>Top Dollar</td><td><a href="https://www.discogs.com/release/13209431-Top-Dolla-Straight-Drop-Volume-III" rel="noopener nofollow">Straight Drop Volume III</a></td><td>2002</td><td>Steppchild Records</td></tr>
+<tr><td>Twistit</td><td><a href="https://www.discogs.com/release/10859663-Twistit-2-Dont-Get-It-Twistit" rel="noopener nofollow">Don&#x27;t Get It Twistit</a></td><td>2002</td><td>Urban Street Entertainment</td></tr>
+<tr><td>Unlawful</td><td><a href="https://www.discogs.com/release/4373261-Unlawful-Click-Big-Game-Talkers" rel="noopener nofollow">Big Game Talkers</a></td><td>2002</td><td>Hood Hustler Records</td></tr>
+<tr><td>V.I.P. G&#x27;z</td><td><a href="https://www.discogs.com/release/9058002-VIP-Gz-Last-Ridaz" rel="noopener nofollow">Last Ridaz</a></td><td>2002</td><td>G-Related Records</td></tr>
+<tr><td>Yakonxious</td><td><a href="https://www.discogs.com/release/9697648-Yakonxious-Process-Of-Illumination-Radio-Edits" rel="noopener nofollow">Process Of Illumination - Radio Edits</a></td><td>2002</td><td>IKS Recordings</td></tr>
+<tr><td>Young Fantastic</td><td><a href="https://www.discogs.com/release/11391544-Young-Fantastic--Ching-Ching-" rel="noopener nofollow">$ Ching Ching $</a></td><td>2002</td><td>Bottom Beat Records (2)</td></tr>
+<tr><td>Big Gemini</td><td><a href="https://www.discogs.com/release/2126554-Gemini-616-The-Genesis" rel="noopener nofollow">6:16 The Genesis</a></td><td>2001</td><td>Latium Records</td></tr>
+<tr><td>Big Grip</td><td><a href="https://www.discogs.com/release/11797784-Big-Grip-My-Time" rel="noopener nofollow">My Time</a></td><td>2001</td><td>Point Blank Records (8)</td></tr>
+<tr><td>Blo-Fly</td><td><a href="https://www.discogs.com/release/4808564-Blofly-What-U-Need" rel="noopener nofollow">What U Need?</a></td><td>2001</td><td>Reel II Real Records</td></tr>
+<tr><td>Bo-Bo Luchiano</td><td><a href="https://www.discogs.com/release/2898219-Bo-Bo-Luchiano-Enemy-Of-Tha-MF-State" rel="noopener nofollow">Enemy Of Tha MF State</a></td><td>2001</td><td>Roggish Life Entertainment</td></tr>
+<tr><td>Breeze &amp; Thyra</td><td><a href="https://www.discogs.com/release/3875544-Breeze-Thyra-Woodgrain-Boys-It-Aint-Easy" rel="noopener nofollow">It Ain&#x27;t Easy</a></td><td>2001</td><td>G&#x27;s 4 G&#x27;s Records</td></tr>
+<tr><td>CuzNJed</td><td><a href="https://www.discogs.com/release/5178628-CuzNJed-Paying-Respect" rel="noopener nofollow">Paying Respect</a></td><td>2001</td><td>Spanky Entertainment</td></tr>
+<tr><td>D Minus</td><td><a href="https://www.discogs.com/release/6438045-D-Minus-My-Story" rel="noopener nofollow">My Story</a></td><td>2001</td><td>Gigilo Records</td></tr>
+<tr><td>Deadly Khannection</td><td><a href="https://www.discogs.com/release/6681109-Deadly-Khannection-Push-Em-Off" rel="noopener nofollow">Push &#x27;Em Off</a></td><td>2001</td><td>Up In Ya Records</td></tr>
+<tr><td>Diamond</td><td><a href="https://www.discogs.com/release/10854869" rel="noopener nofollow">Diamonoes</a></td><td>2001</td><td>Diamond Recordz</td></tr>
+<tr><td>Felon</td><td><a href="https://www.discogs.com/release/9303720" rel="noopener nofollow">Habitual Felon</a></td><td>2001</td><td>Diamond Life Entertainment</td></tr>
+<tr><td>Fev</td><td><a href="https://www.discogs.com/release/37822290-Fev-Earn-My-Rite" rel="noopener nofollow">Earn My Rite</a></td><td>2001</td><td>Hustlerface Records</td></tr>
+<tr><td>Flame Eternal</td><td><a href="https://www.discogs.com/release/5756279-Flame-Eternal-Dont-Come-Around-My-Town-Trippin" rel="noopener nofollow">Don&#x27;t Come Around My Town Trippin</a></td><td>2001</td><td>Insight Eternal Recording</td></tr>
+<tr><td>I-35 Boyz</td><td><a href="https://www.discogs.com/release/13234779" rel="noopener nofollow">100% Hata Proof</a></td><td>2001</td><td>Hata Proof Records</td></tr>
+<tr><td>Lou Calhoun</td><td><a href="https://www.discogs.com/release/10888272-Lou-Calhoun-Organyzd-Kryme-Stukk-N-Da-System" rel="noopener nofollow">Stukk N Da System</a></td><td>2001</td><td>On Tha Grind Records</td></tr>
+<tr><td>Lowdown Da Realest</td><td><a href="https://www.discogs.com/release/11134058-Lowdown-Da-Realest-Flossed-Out" rel="noopener nofollow">Flossed Out</a></td><td>2001</td><td>Lowdown Recordz</td></tr>
+<tr><td>Mando T</td><td><a href="https://www.discogs.com/release/10101554-Mando-T-Final-Hour" rel="noopener nofollow">Final Hour</a></td><td>2001</td><td>Mando Music (3)</td></tr>
+<tr><td>Millticket Rydaz</td><td><a href="https://www.discogs.com/release/3771606-Millticket-Rydaz-Gotta-Get-My-Millticket" rel="noopener nofollow">Gotta Get My Millticket</a></td><td>2001</td><td>Millticket Records</td></tr>
+<tr><td>Mr. Lucci</td><td><a href="https://www.discogs.com/release/12997184" rel="noopener nofollow">Diabolical</a></td><td>2001</td><td>Iconic Recordings</td></tr>
+<tr><td>Mr. Luv</td><td><a href="https://www.discogs.com/release/9892489-Mr-Luv-Dallas-Most-Dangerous" rel="noopener nofollow">Dallas&#x27; Most Dangerous</a></td><td>2001</td><td>Zillionaire Records</td></tr>
+<tr><td>S.E.J.</td><td><a href="https://www.discogs.com/release/11068561-SEJ-The-Backdraft" rel="noopener nofollow">The Backdraft</a></td><td>2001</td><td>Empire Thang Records</td></tr>
+<tr><td>The Oak Cliff Assassin</td><td><a href="https://www.discogs.com/release/3218489-Oak-Cliff-Assassin-Target-Practice" rel="noopener nofollow">Target Practice</a></td><td>2001</td><td>Lock Down Records</td></tr>
+<tr><td>Thugg Smitty</td><td><a href="https://www.discogs.com/release/22524023-Thugg-Smitty-Unda-Fyre" rel="noopener nofollow">Unda Fyre</a></td><td>2001</td><td>No Remorse Music (2)</td></tr>
+<tr><td>Yakonxious</td><td><a href="https://www.discogs.com/release/9524915-Yakonxious-Process-Of-Illumination" rel="noopener nofollow">Process Of Illumination</a></td><td>2001</td><td>IKS Recordings</td></tr>
+<tr><td>Young Lac</td><td><a href="https://www.discogs.com/release/12142683-Young-Lac-Million-Dollar-Mouthpiece" rel="noopener nofollow">Million Dollar Mouthpiece</a></td><td>2001</td><td>Double MM Records (2)</td></tr>
+<tr><td>Zeno González</td><td><a href="https://www.discogs.com/release/12924999-Zeno-González-Black-Spanish" rel="noopener nofollow">Black Spanish</a></td><td>2001</td><td>Hacienda Records (3)</td></tr>
+<tr><td>All Da Time</td><td><a href="https://www.discogs.com/release/10848636-All-Da-Time-Trapp-Music-Volume-One" rel="noopener nofollow">Trapp Music Volume One</a></td><td>2000</td><td>B.V.M. Entertainment</td></tr>
+<tr><td>B.A.C.</td><td><a href="https://www.discogs.com/release/11783088" rel="noopener nofollow">Millenium Ballaz</a></td><td>2000</td><td>Cla$$ified Records</td></tr>
+<tr><td>Big Al</td><td><a href="https://www.discogs.com/release/3534080" rel="noopener nofollow">Ghetto Stories</a></td><td>2000</td><td>Trilogy Records</td></tr>
+<tr><td>Big Dank King</td><td><a href="https://www.discogs.com/release/8590400-Big-Dank-King-Da-South" rel="noopener nofollow">Da South</a></td><td>2000</td><td>H.H.P. Records</td></tr>
+<tr><td>DSC</td><td><a href="https://www.discogs.com/release/11297808" rel="noopener nofollow">Who U Thank It Be?</a></td><td>2000</td><td>Grasshouse Muzic</td></tr>
+<tr><td>Deadly Khannection</td><td><a href="https://www.discogs.com/release/5753594-Deadly-Khannection-Third-World" rel="noopener nofollow">Third World</a></td><td>2000</td><td>Up In Ya Records</td></tr>
+<tr><td>Diamond &quot;D&quot;</td><td><a href="https://www.discogs.com/release/11134082-Diamond-Presents-D-Town-Badboyz-Deep-In-Tha-Heart-Of-Texas" rel="noopener nofollow">Deep In Tha Heart Of Texas</a></td><td>2000</td><td>Diamond Recordz (2)</td></tr>
+<tr><td>Gator Main</td><td><a href="https://www.discogs.com/release/10294237-Gator-Main-World-Wide" rel="noopener nofollow">World Wide</a></td><td>2000</td><td>Eternal Life Records (2)</td></tr>
+<tr><td>Geto Starz</td><td><a href="https://www.discogs.com/release/2886456-Geto-Starz-Ball-Till-You-Fall" rel="noopener nofollow">Ball Till You Fall</a></td><td>2000</td><td>Kode Red Records</td></tr>
+<tr><td>Gylo</td><td><a href="https://www.discogs.com/release/13677798-Gylo-Its-My-Time" rel="noopener nofollow">It’s My Time</a></td><td>2000</td><td>Street Pride Records</td></tr>
+<tr><td>J-Juce</td><td><a href="https://www.discogs.com/release/9812314" rel="noopener nofollow">Cadillac Swangen&#x27;</a></td><td>2000</td><td>Unda&#x27;ground Railroad Entertainment</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/1610930" rel="noopener nofollow">Kotton Candy Chopped &amp; Screwed</a></td><td>2000</td><td>Kottonmouth Productions</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/1379067-Kotton-Mouth-Of-The-Rally-Boys-Kotton-Candy-King-Of-Da-City" rel="noopener nofollow">Kotton Candy &quot;King Of Da City&quot;</a></td><td>2000</td><td>Kottonmouth Productions</td></tr>
+<tr><td>Lil Wil</td><td><a href="https://www.discogs.com/release/5302433" rel="noopener nofollow">Lime Life Vol. 1</a></td><td>2000</td><td>Def Click Records</td></tr>
+<tr><td>Lou Calhoun</td><td><a href="https://www.discogs.com/release/10273533-Lou-Calhoun-Ghetto-Politician" rel="noopener nofollow">Ghetto Politician</a></td><td>2000</td><td>On Tha Grind Records</td></tr>
+<tr><td>Mr. Lo Macc</td><td><a href="https://www.discogs.com/release/12494956-Mr-Lo-Macc-100-Degreez" rel="noopener nofollow">100 Degreez</a></td><td>2000</td><td>Highland Hills Records</td></tr>
+<tr><td>Mr. Pookie</td><td><a href="https://www.discogs.com/release/299139-Mr-Pookie-Tha-Rippla-Screwed-Chopped-By-Cap-At-Tha-Bomb" rel="noopener nofollow">Tha Rippla Screwed &amp; Chopped By: Cap At Tha Bomb</a></td><td>2000</td><td>Iconic Recordings</td></tr>
+<tr><td>Nemesis</td><td><a href="https://www.discogs.com/release/5569223-Nemesis-3-Munchies-For-Your-Bass-Da-Return" rel="noopener nofollow">Munchies For Your Bass - Da Return</a></td><td>2000</td><td>Out Tha Trunk</td></tr>
+<tr><td>South Coast Syndicate</td><td><a href="https://www.discogs.com/release/10602494-South-Coast-Syndicate-Tha-Second-Coming" rel="noopener nofollow">Tha Second Coming</a></td><td>2000</td><td>Dawg House Records</td></tr>
+<tr><td>Southern Cides</td><td><a href="https://www.discogs.com/release/3371061-Southern-Cides-Boy-Gal" rel="noopener nofollow">Boy-Gal</a></td><td>2000</td><td>Day One Records (4)</td></tr>
+<tr><td>Spliftight</td><td><a href="https://www.discogs.com/release/12968541-Spliftight-Committee-The-Return" rel="noopener nofollow">The Return</a></td><td>2000</td><td>Big Time Audio</td></tr>
+<tr><td>The Coalition</td><td><a href="https://www.discogs.com/release/4456512" rel="noopener nofollow">We&#x27;re Comming Down</a></td><td>2000</td><td>Up In Ya Records</td></tr>
+<tr><td>The Ghetto House</td><td><a href="https://www.discogs.com/release/15025535-The-Ghetto-House-Ghetto-House" rel="noopener nofollow">Ghetto House</a></td><td>2000</td><td>Ghetto House Muzik (2)</td></tr>
+<tr><td>The Outsyde Boyz</td><td><a href="https://www.discogs.com/release/7984800-The-Outsyde-Boyz-Stampede-Records-Presents-The-Outsyde-Boyz" rel="noopener nofollow">Stampede Records Presents - The Outsyde Boyz</a></td><td>2000</td><td>Stampede Records (3)</td></tr>
+<tr><td>Top Cat</td><td><a href="https://www.discogs.com/release/7941257" rel="noopener nofollow">Out 2 Git It</a></td><td>2000</td><td>Top Flight Records</td></tr>
+<tr><td>Top Dollar</td><td><a href="https://www.discogs.com/release/7101255--Top-Dollar-The-Millennium-Sold-Out" rel="noopener nofollow">The Millennium - Sold Out</a></td><td>2000</td><td>Irea Brothers Records</td></tr>
+<tr><td>Triple O.C.</td><td><a href="https://www.discogs.com/release/6475243-Triple-OC-Aggravated-Playas" rel="noopener nofollow">Aggravated Playas</a></td><td>2000</td><td>Caked Out Records</td></tr>
+<tr><td>Unlawful</td><td><a href="https://www.discogs.com/release/10459142-Unlawful-Back-Up-Against-Tha-Wall" rel="noopener nofollow">Back Up Against Tha Wall</a></td><td>2000</td><td>Up In Ya Records</td></tr>
+<tr><td>Willie Boy</td><td><a href="https://www.discogs.com/release/10320851-Willie-Boy-Obligated-2-Tha-Streets" rel="noopener nofollow">Obligated 2 Tha Streets</a></td><td>2000</td><td>Boy Next Door Productions</td></tr>
+<tr><td>Blo-Fly</td><td><a href="https://www.discogs.com/release/957118-Blo-Fly-Death-Before-Dishonor" rel="noopener nofollow">Death Before Dishonor</a></td><td>1999</td><td>Reel II Real Records</td></tr>
+<tr><td>Mr. Pookie</td><td><a href="https://www.discogs.com/release/3531585" rel="noopener nofollow">Tha Rippla</a></td><td>1999</td><td>Iconic Recordings</td></tr>
+<tr><td>Quint Black</td><td><a href="https://www.discogs.com/release/29209813-Quint-Black-Shake-Dem-Haters" rel="noopener nofollow">Shake Dem Haters</a></td><td>1999</td><td>$hort Records</td></tr>
+<tr><td>Round Table Music</td><td><a href="https://www.discogs.com/release/10848427-Round-Table-Music-La-Familia" rel="noopener nofollow">La Familia</a></td><td>1999</td><td>Round Table Music</td></tr>
+<tr><td>214 Thugz</td><td><a href="https://www.discogs.com/release/13402997-214-Thugz-Act-Ah-Fool" rel="noopener nofollow">Act Ah Fool</a></td><td>1998</td><td>Ginnis Records</td></tr>
+<tr><td>50 G&#x27;s</td><td><a href="https://www.discogs.com/release/15878679-50-Gs-Underground-Classic-vol-1" rel="noopener nofollow">Underground Classic vol 1</a></td><td>1998</td><td>Treal Southernology Series</td></tr>
+<tr><td>Calosis</td><td><a href="https://www.discogs.com/release/7757379-Calosis-A-Moment-Of-Silence" rel="noopener nofollow">A Moment Of Silence</a></td><td>1998</td><td>Dawg Team Entertainment</td></tr>
+<tr><td>Common Criminals</td><td><a href="https://www.discogs.com/release/14628256-Common-Criminals-Criminals-By-Choice" rel="noopener nofollow">Criminals By Choice</a></td><td>1998</td><td>Nino Records</td></tr>
+<tr><td>Countryboy Records</td><td><a href="https://www.discogs.com/release/11626513-Countryboy-Records-They-Open-The-Bawn" rel="noopener nofollow">They Open The Bawn</a></td><td>1998</td><td>Countryboy Records</td></tr>
+<tr><td>Da Flat Foot Hustlers</td><td><a href="https://www.discogs.com/release/14763306-Da-Flat-Foot-Hustlers-Mobbin-W-Da-Flat-Foot-Hustlers" rel="noopener nofollow">Mobb&#x27;in W/ Da Flat Foot Hustlers</a></td><td>1998</td><td>Low Life Productions</td></tr>
+<tr><td>Discuva</td><td><a href="https://www.discogs.com/release/6293856-Discuva-Dirty-Ballin" rel="noopener nofollow">Dirty Ballin</a></td><td>1998</td><td>Maja Playa Recordings</td></tr>
+<tr><td>Gotti Family</td><td><a href="https://www.discogs.com/release/10853622-Gotti-Family-Featuring-Pimpsta-Gotti-Family" rel="noopener nofollow">Gotti Family</a></td><td>1998</td><td>Skrilla Records</td></tr>
+<tr><td>Gugu</td><td><a href="https://www.discogs.com/release/10881635-Gugu-Gugu-Presents-Redrumms-Killa-Klique" rel="noopener nofollow">Gugu Presents Redrumm&#x27;s Killa Klique</a></td><td>1998</td><td>Street Pride Records</td></tr>
+<tr><td>Inner Circle</td><td><a href="https://www.discogs.com/release/6473623-Inner-Circle-4-Inner-Circle" rel="noopener nofollow">Inner Circle</a></td><td>1998</td><td>Sky High Entertainment</td></tr>
+<tr><td>J&#x27; Roll</td><td><a href="https://www.discogs.com/release/9358474-J-Roll-Vibin-On-The-Hood" rel="noopener nofollow">Vibin On The Hood</a></td><td>1998</td><td>Centerstage Records</td></tr>
+<tr><td>K-Roc</td><td><a href="https://www.discogs.com/release/11037973-K-Roc-Tha-Rockla" rel="noopener nofollow">Tha Rockla</a></td><td>1998</td><td>Iconic Recordings</td></tr>
+<tr><td>Lock Down Inmates</td><td><a href="https://www.discogs.com/release/27063558-Lock-Down-Inmates-Da-Drama-Continues" rel="noopener nofollow">Da&#x27; Drama Continues</a></td><td>1998</td><td>Lock Down Records</td></tr>
+<tr><td>Low-Key Family</td><td><a href="https://www.discogs.com/release/6965112-Low-Key-Family-Goin-2-War" rel="noopener nofollow">Goin&#x27; 2 War</a></td><td>1998</td><td>Low-Key Records</td></tr>
+<tr><td>M.C. E-Rock</td><td><a href="https://www.discogs.com/release/13913504-E-Rock-Southern-Eclipse-The-Ultimate-Chapter" rel="noopener nofollow">Southern Eclipse &quot;The Ultimate Chapter&quot;</a></td><td>1998</td><td>Midwest Records</td></tr>
+<tr><td>Mad Wisdom</td><td><a href="https://www.discogs.com/release/7342426-Mad-Wisdom-Mad-Wisdom" rel="noopener nofollow">Mad Wisdom</a></td><td>1998</td><td>Midwest Records</td></tr>
+<tr><td>PPC</td><td><a href="https://www.discogs.com/release/9923942-PPC-3-PPC-Clicked-Up" rel="noopener nofollow">P.P.C. - Clicked Up</a></td><td>1998</td><td>Pelican Records (22)</td></tr>
+<tr><td>Polar Bear</td><td><a href="https://www.discogs.com/release/4628823-Polar-Bear-7-Naked-Truth" rel="noopener nofollow">Naked Truth</a></td><td>1998</td><td>Platinum Faith Records</td></tr>
+<tr><td>Ron C</td><td><a href="https://www.discogs.com/release/14539912-Ron-C-South-Side-Rider" rel="noopener nofollow">South Side Rider</a></td><td>1998</td><td>Midwest Records</td></tr>
+<tr><td>Savelli Saosh</td><td><a href="https://www.discogs.com/release/3382501-Mr-Hard-Cappeela" rel="noopener nofollow">Cappeela</a></td><td>1998</td><td>G-Related Records</td></tr>
+<tr><td>Savelli Saosh</td><td><a href="https://www.discogs.com/release/8980358-Mr-Hard-Strap-4-Life" rel="noopener nofollow">Strap 4 Life</a></td><td>1998</td><td>G-Related Records</td></tr>
+<tr><td>Seal Team 1</td><td><a href="https://www.discogs.com/release/21941080-Seal-Team-1-From-Southern-Roots" rel="noopener nofollow">From Southern Roots</a></td><td>1998</td><td>Enigma Records (11)</td></tr>
+<tr><td>Souls Of Sin</td><td><a href="https://www.discogs.com/release/16014497-Souls-Of-Sin-Ghetto-Revelations" rel="noopener nofollow">Ghetto Revelations</a></td><td>1998</td><td>Kode Red Records</td></tr>
+<tr><td>Tha Murda Weapon</td><td><a href="https://www.discogs.com/release/8798374-Tha-Murda-Weapon-Thank-You" rel="noopener nofollow">Thank You</a></td><td>1998</td><td>Not On Label</td></tr>
+<tr><td>The Oak Cliff Assassin</td><td><a href="https://www.discogs.com/release/4373219-Oak-Cliff-Assassin-Presents-Lock-Down-Correctional-Facilities" rel="noopener nofollow">Presents - Lock Down Correctional Facilities</a></td><td>1998</td><td>Lock Down Records</td></tr>
+<tr><td>The Oak Cliff Assassin</td><td><a href="https://www.discogs.com/release/32684346-The-Oak-Cliff-Assassin-Presents-Lock-Down-Correctional-Facilities" rel="noopener nofollow">Presents - Lock Down Correctional Facilities</a></td><td>1998</td><td>Lock Down Records</td></tr>
+<tr><td>1 Gud Cide</td><td><a href="https://www.discogs.com/release/3758104" rel="noopener nofollow">Contradictions</a></td><td>1997</td><td>Scarred For Life Records</td></tr>
+<tr><td>Genacide</td><td><a href="https://www.discogs.com/release/962574" rel="noopener nofollow">Mixed Up Murder (81G)</a></td><td>1997</td><td>Funkytown Records</td></tr>
+<tr><td>GuGu</td><td><a href="https://www.discogs.com/release/5549375-GuGu-Repent" rel="noopener nofollow">Re&#x27;pent</a></td><td>1997</td><td>Redrumm Recordz</td></tr>
+<tr><td>Hood Heroes</td><td><a href="https://www.discogs.com/release/7507273-Hood-Heroes-Every-Neighborhood-Has-Them" rel="noopener nofollow">Every Neighborhood Has Them</a></td><td>1997</td><td>First Born Entertainment</td></tr>
+<tr><td>KPG</td><td><a href="https://www.discogs.com/release/3370667-KPG-Premeditated" rel="noopener nofollow">Premeditated</a></td><td>1997</td><td>Madd Muggin Records</td></tr>
+<tr><td>Kingsta</td><td><a href="https://www.discogs.com/release/3781808-Kingsta-Against-All-Odds" rel="noopener nofollow">Against All Odds</a></td><td>1997</td><td>Low Life Records (6)</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/954486-Kottonmouth-Introducing-Blo-Fly-Killa-Kottonfields" rel="noopener nofollow">Killa Kottonfields</a></td><td>1997</td><td>Jomani Park Entertainment</td></tr>
+<tr><td>Pimpsta</td><td><a href="https://www.discogs.com/release/23213471" rel="noopener nofollow">South Side Soldiers</a></td><td>1997</td><td>Skrilla Records</td></tr>
+<tr><td>South Coast Syndicate</td><td><a href="https://www.discogs.com/release/7650360-South-Coast-yndicate-South-Coast-yndicate" rel="noopener nofollow">South Coast $yndicate</a></td><td>1997</td><td>Dawg House Records</td></tr>
+<tr><td>The Coalition</td><td><a href="https://www.discogs.com/release/6291515-The-Coalition-9-Stra8-Up-Livin-Lamm" rel="noopener nofollow">Stra8 Up Livin Lamm</a></td><td>1997</td><td>SBM Music</td></tr>
+<tr><td>The Oak Cliff Assassin</td><td><a href="https://www.discogs.com/release/1637284-Oak-Cliff-Assassin-Hater-Free" rel="noopener nofollow">Hater Free</a></td><td>1997</td><td>Midwest Records</td></tr>
+<tr><td>The Oak Cliff Assassin</td><td><a href="https://www.discogs.com/release/14608865-The-Oak-Cliff-Assassin-Dirtytown-Dallas" rel="noopener nofollow">Dirtytown Dallas</a></td><td>1997</td><td>Midwest Records</td></tr>
+<tr><td>Young Gunz</td><td><a href="https://www.discogs.com/release/4716357-Young-Gunz-3-Possesion-With-Intent-To-Deliver" rel="noopener nofollow">Possesion With Intent To Deliver</a></td><td>1997</td><td>Top Flyte Records</td></tr>
+<tr><td>Big Al</td><td><a href="https://www.discogs.com/release/2493785-Big-Al-9-Presents-Da-Buddha-Klan-Da-Buddha-Klan" rel="noopener nofollow">Da Buddha Klan</a></td><td>1996</td><td>Profile Records</td></tr>
+<tr><td>Bo-Leg</td><td><a href="https://www.discogs.com/release/3957672-Bo-Something-In-The-Water" rel="noopener nofollow">Something In The Water</a></td><td>1996</td><td>Stampede Records (3)</td></tr>
+<tr><td>Lock Down Inmates</td><td><a href="https://www.discogs.com/release/1486685-Lock-Down-Inmates-Wussup-Wit-It" rel="noopener nofollow">Wussup Wit It?</a></td><td>1996</td><td>Lock Down Records</td></tr>
+<tr><td>M.C. E-Rock</td><td><a href="https://www.discogs.com/release/6037082-E-Rock-Kliffhanger" rel="noopener nofollow">Kliffhanger</a></td><td>1996</td><td>Stead-E-Rock Records</td></tr>
+<tr><td>Pimpsta</td><td><a href="https://www.discogs.com/release/5006798" rel="noopener nofollow">Texas Wada</a></td><td>1996</td><td>Rrush Records</td></tr>
+<tr><td>Ron C</td><td><a href="https://www.discogs.com/release/1953915-Ron-C-Raw-4-Life" rel="noopener nofollow">Raw 4 Life</a></td><td>1996</td><td>Midwest Records</td></tr>
+<tr><td>1 Gud Cide</td><td><a href="https://www.discogs.com/release/5975246" rel="noopener nofollow">Look What the Streets Made</a></td><td>1995</td><td>Scarred For Life Records</td></tr>
+<tr><td>Alex P. Body</td><td><a href="https://www.discogs.com/release/12079306-Alex-P-Body-Its-The-Weekend" rel="noopener nofollow">It&#x27;s The Weekend</a></td><td>1995</td><td>Fos-Glo Music</td></tr>
+<tr><td>Bo-Leg</td><td><a href="https://www.discogs.com/release/11049933-Bo-Its-On" rel="noopener nofollow">It&#x27;s On</a></td><td>1995</td><td>Peace Pipe Records (3)</td></tr>
+<tr><td>Ganksta C</td><td><a href="https://www.discogs.com/release/1472762-Ganksta-C-Stepchild" rel="noopener nofollow">Stepchild</a></td><td>1995</td><td>Profile Records</td></tr>
+<tr><td>Kottonmouth</td><td><a href="https://www.discogs.com/release/753057-Kottonmouth-100-Kottonmouth" rel="noopener nofollow">100% Kottonmouth</a></td><td>1995</td><td>Youngsta Records</td></tr>
+<tr><td>Mac Vo</td><td><a href="https://www.discogs.com/release/24209426-Mac-Vo-Player-IV-Life" rel="noopener nofollow">Player IV Life</a></td><td>1995</td><td>Relativity</td></tr>
+<tr><td>Nemesis</td><td><a href="https://www.discogs.com/release/797729-Nemesis-3-Tha-People-Want-Bass" rel="noopener nofollow">Tha People Want Bass</a></td><td>1995</td><td>Profile Records</td></tr>
+<tr><td>Pimpsta</td><td><a href="https://www.discogs.com/release/996906" rel="noopener nofollow">Dickies &amp; House-shoes</a></td><td>1995</td><td>Albatross Records</td></tr>
+<tr><td>Rodney D</td><td><a href="https://www.discogs.com/release/8567502-Rodney-D-A-Moment-Of-Silence" rel="noopener nofollow">A Moment Of Silence</a></td><td>1995</td><td>Black Jack Records (3)</td></tr>
+<tr><td>The D.O.C.</td><td><a href="https://www.discogs.com/release/15530625-The-DOC-Helter-Skelter" rel="noopener nofollow">Helter Skelter</a></td><td>1995</td><td>Giant Records</td></tr>
+<tr><td>The Oak Cliff Assassin</td><td><a href="https://www.discogs.com/release/3503875-The-Oak-Cliff-Assassin-A-Hit-On-Da-Hitman" rel="noopener nofollow">A Hit On Da&#x27; Hitman?</a></td><td>1995</td><td>Lock Down Records</td></tr>
+<tr><td>Choc-Lit-Sit-E</td><td><a href="https://www.discogs.com/release/9356037-Choc-Lit-Sit-E-The-Choc-Lit-Life" rel="noopener nofollow">The Choc-Lit-Life</a></td><td>1994</td><td>Rrush Records</td></tr>
+<tr><td>D.S.D</td><td><a href="https://www.discogs.com/release/9524959-DSD-From-Chains-To-Fame" rel="noopener nofollow">From Chains To Fame</a></td><td>1994</td><td>Scrooge Records</td></tr>
+<tr><td>Gena Cide</td><td><a href="https://www.discogs.com/release/1316781" rel="noopener nofollow">Waste Uva Cular</a></td><td>1994</td><td>Cliche Records</td></tr>
+<tr><td>Point Blank</td><td><a href="https://www.discogs.com/release/502585" rel="noopener nofollow">Mad at the World</a></td><td>1994</td><td>Bigtyme Recordz</td></tr>
+<tr><td>Ron C</td><td><a href="https://www.discogs.com/release/15255465-Ron-C-The-C-Theory-" rel="noopener nofollow">The &quot;C&quot; Theory </a></td><td>1994</td><td>Profile Records, Inc.</td></tr>
+<tr><td>U Know Who?</td><td><a href="https://www.discogs.com/release/2389184-U-Know-Who-Dark-Shadow" rel="noopener nofollow">Dark Shadow</a></td><td>1994</td><td>Wrap Records</td></tr>
+<tr><td>Vanilla Ice</td><td><a href="https://www.discogs.com/release/5000426-Vanilla-Ice-Mind-Blowin" rel="noopener nofollow">Mind Blowin</a></td><td>1994</td><td>SBK Records</td></tr>
+<tr><td>Azim Rashid</td><td><a href="https://www.discogs.com/release/2490507-Azim-10-Deep-On-A-Solo-Creep" rel="noopener nofollow">10 Deep On A Solo Creep</a></td><td>1993</td><td>C.O.S. Records</td></tr>
+<tr><td>Ganksta C</td><td><a href="https://www.discogs.com/release/4814368-Ganksta-C-Str8-Husla" rel="noopener nofollow">Str8 Husla</a></td><td>1993</td><td>Mack Time Records</td></tr>
+<tr><td>Kaoss</td><td><a href="https://www.discogs.com/release/6160872-Kaoss-2-Trapped-In-A-World" rel="noopener nofollow">Trapped In A World</a></td><td>1993</td><td>Midwest Street</td></tr>
+<tr><td>Lock Down Inmates</td><td><a href="https://www.discogs.com/release/10812185-Lock-Down-Inmates-Out-On-Parole" rel="noopener nofollow">Out On Parole</a></td><td>1993</td><td>Lock Down Productions</td></tr>
+<tr><td>Nemesis</td><td><a href="https://www.discogs.com/release/28412911-Nemesis-3-Temple-Of-Boom" rel="noopener nofollow">Temple Of Boom</a></td><td>1993</td><td>Profile Records</td></tr>
+<tr><td>S.W.I.F.F.</td><td><a href="https://www.discogs.com/release/6979671-SWIFF-Land-Of-Funk" rel="noopener nofollow">Land Of Funk</a></td><td>1993</td><td>Jazz Mind Records</td></tr>
+<tr><td>V-Flo</td><td><a href="https://www.discogs.com/release/2142060-V-Flo-Ya-Down-Or-Ya-Not" rel="noopener nofollow">Ya Down Or Ya Not</a></td><td>1993</td><td>Platinum Touch Records</td></tr>
+<tr><td>Point Blank</td><td><a href="https://www.discogs.com/release/474019" rel="noopener nofollow">Prone to Bad Dreams</a></td><td>1992</td><td>Bigtyme Recordz</td></tr>
+<tr><td>Ron C</td><td><a href="https://www.discogs.com/release/12250648-Ron-C-Back-On-The-Street" rel="noopener nofollow">Back On The Street</a></td><td>1992</td><td>Profile Records</td></tr>
+<tr><td>Ron C</td><td><a href="https://www.discogs.com/release/17341882-Ron-C-C-Ya" rel="noopener nofollow">&quot;C&quot; Ya</a></td><td>1992</td><td>Profile Records</td></tr>
+<tr><td>W.I.Z.</td><td><a href="https://www.discogs.com/release/15607911-WIZ-4-The-Psykho-Ward-Dangerous-Children-Emotionally" rel="noopener nofollow">Dangerous Children (Emotionally)</a></td><td>1992</td><td>K.M.M.A. Records</td></tr>
+<tr><td>Capital Punishment</td><td><a href="https://www.discogs.com/release/6319059-Capital-Punishment-2-Livin-On-The-Edge-Of-A-Razor" rel="noopener nofollow">Livin&#x27; On The Edge Of A Razor</a></td><td>1991</td><td>Wrap Records</td></tr>
+<tr><td>Devo-X</td><td><a href="https://www.discogs.com/release/2720299-Devo-X-Comin-Up" rel="noopener nofollow">Comin&#x27; Up</a></td><td>1991</td><td>Yo! Records</td></tr>
+<tr><td>Nemesis</td><td><a href="https://www.discogs.com/release/1677637-Nemesis-3-Munchies-For-Your-Bass" rel="noopener nofollow">Munchies For Your Bass</a></td><td>1991</td><td>Profile Records</td></tr>
+<tr><td>Vanilla Ice</td><td><a href="https://www.discogs.com/release/8024828-Vanilla-Ice-Extremely-Live" rel="noopener nofollow">Extremely Live</a></td><td>1991</td><td>SBK Records</td></tr>
+<tr><td>W.I.Z.</td><td><a href="https://www.discogs.com/release/15648795-WIZ-4-Welcome-To-My-Wizdom" rel="noopener nofollow">Welcome To My Wizdom</a></td><td>1991</td><td>K.M.M.A. Records</td></tr>
+<tr><td>Kizzy-K</td><td><a href="https://www.discogs.com/release/8798549-Kizzy-K-Word-On-The-Streets" rel="noopener nofollow">Word On The Streets</a></td><td>1990</td><td>Word Productions</td></tr>
+<tr><td>Ron C</td><td><a href="https://www.discogs.com/release/846449-Ron-C-C-Ya" rel="noopener nofollow">&quot;C&quot; Ya</a></td><td>1989</td><td>Profile Records</td></tr>
+<tr><td>Ron C</td><td><a href="https://www.discogs.com/release/4622566-Ron-C-C-Ya" rel="noopener nofollow">&quot;C&quot; Ya</a></td><td>1989</td><td>Profile Records</td></tr>
+<tr><td>The D.O.C.</td><td><a href="https://www.discogs.com/release/3729520" rel="noopener nofollow">No One Can Do It Better</a></td><td>1989</td><td>Ruthless/Atlantic</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
+</header>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
+</body>
+</html>

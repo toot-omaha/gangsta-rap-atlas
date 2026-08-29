@@ -158,12 +158,28 @@ def build_desc(name, area, n, artists, limit=160):
     return (head + "試聴・ジャケ写は地図から。")[:limit]
 
 
+def build_desc_en(name, area, n, artists, limit=160):
+    """英語版metaディスクリプション。build_descと同じ方針で長さに収まる分だけ列挙。"""
+    head = f"Complete G-Rap / gangsta rap discography from {name}, {area} — {n} discs by "
+    tail = " and more. Listen & dig on the interactive map."
+    listed = []
+    for a in artists:
+        cand = listed + [a]
+        if len(head) + len(", ".join(cand)) + len(tail) > limit:
+            break
+        listed.append(a)
+    if listed:
+        return head + ", ".join(listed) + tail
+    return (f"Complete G-Rap discography from {name}, {area} — {n} discs. "
+            "Listen & dig on the interactive map.")[:limit]
+
+
 # 相対URLの属性をルート絶対に変える(生成ページは/r/<id>/配下で配信されるため)。
 # https:等の絶対URL・ルート絶対・フラグメント・data:はそのまま。
 ABS_RE = re.compile(r'((?:href|src)=")(?!https?:|/|#|data:)')
 
 
-def region_page(region, template):
+def region_page(region, template, lang="ja"):
     rid = region["id"]
     name = region["name"]
     area = region["area"]
@@ -173,9 +189,16 @@ def region_page(region, template):
     for a in albums:
         if a["artist"] not in artists:
             artists.append(a["artist"])
-    title = f"{name}のG-RAPディスコグラフィ {n}枚｜GANGSTA RAP ATLAS"
-    desc = build_desc(name, area, n, artists)
-    url = f"{SITE}/r/{rid}/"
+    url_ja = f"{SITE}/r/{rid}/"
+    url_en = f"{SITE}/en/r/{rid}/"
+    if lang == "en":
+        title = f"{name} G-Rap Discography ({n} Discs) | GANGSTA RAP ATLAS"
+        desc = build_desc_en(name, area, n, artists)
+        url = url_en
+    else:
+        title = f"{name}のG-RAPディスコグラフィ {n}枚｜GANGSTA RAP ATLAS"
+        desc = build_desc(name, area, n, artists)
+        url = url_ja
 
     items = []
     for i, a in enumerate(albums[:100], 1):
@@ -205,7 +228,7 @@ def region_page(region, template):
         {
             "@context": "https://schema.org",
             "@type": "ItemList",
-            "name": f"{name}のG-RAPディスコグラフィ",
+            "name": (f"{name} G-Rap Discography" if lang == "en" else f"{name}のG-RAPディスコグラフィ"),
             "numberOfItems": n,
             "itemListElement": items,
         },
@@ -219,7 +242,23 @@ def region_page(region, template):
         rows.append(
             f"<tr><td>{esc(a['artist'])}</td><td>{t}</td><td>{a['year'] or ''}</td><td>{esc(a['label'])}</td></tr>"
         )
-    noscript = f"""<noscript>
+    if lang == "en":
+        noscript = f"""<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>{esc(name)} G-Rap Discography</h1>
+    <p>{esc(area)} — {n} discs. G-Rap / gangsta rap releases by artists from {esc(name)}.
+    JavaScript is required for the interactive map.</p>
+    <p><a href="/en/">GANGSTA RAP ATLAS Home</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>Artist</th><th>Title</th><th>Year</th><th>Label</th></tr></thead>
+      <tbody>
+{chr(10).join(rows)}
+      </tbody>
+    </table>
+  </div>
+</noscript>"""
+    else:
+        noscript = f"""<noscript>
   <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
     <h1>{esc(name)} のG-RAPディスコグラフィ</h1>
     <p>{esc(area)} — 全{n}枚収録。{esc(name)}出身・拠点のアーティストによる
@@ -257,11 +296,77 @@ def region_page(region, template):
     s = re.sub(
         r'<meta name="twitter:description" content="[^"]*">',
         f'<meta name="twitter:description" content="{esc(desc)}">', s, count=1)
+    # hreflang(テンプレートのルート用3行をこの地域のペアに差し替え)
+    s = re.sub(r'<link rel="alternate" hreflang="[^"]*" href="[^"]*">\n?', "", s)
+    s = s.replace(
+        f'<link rel="canonical" href="{url}">',
+        f'<link rel="canonical" href="{url}">\n'
+        f'<link rel="alternate" hreflang="ja" href="{url_ja}">\n'
+        f'<link rel="alternate" hreflang="en" href="{url_en}">\n'
+        f'<link rel="alternate" hreflang="x-default" href="{url_ja}">', 1)
+    if lang == "en":
+        s = s.replace('<html lang="ja">', '<html lang="en">', 1)
+        s = s.replace('<meta property="og:locale" content="ja_JP">\n<meta property="og:locale:alternate" content="en_US">',
+                      '<meta property="og:locale" content="en_US">\n<meta property="og:locale:alternate" content="ja_JP">', 1)
+        # /en/配下では未設定ユーザーの初期UI言語を英語にする(既存の選択は尊重)
+        s = s.replace('<meta charset="utf-8">',
+            "<meta charset=\"utf-8\">\n<script>try{if(!localStorage.getItem('gra.lang'))localStorage.setItem('gra.lang','en')}catch(e){}</script>", 1)
     # 地域固有のJSON-LDを</head>直前に追加(WebSiteのJSON-LDはそのまま残す)
     s = s.replace("</head>", f'<script type="application/ld+json">{ld_dumps(ld)}</script>\n</head>', 1)
     # 既存の汎用noscriptを地域版に差し替え
     s = re.sub(r"<noscript>.*?</noscript>", noscript, s, count=1, flags=re.S)
-    # 相対アセットをルート絶対へ(このページは/r/<id>/配下で配信されるため)
+    # 相対アセットをルート絶対へ(このページは/r/<id>/や/en/配下で配信されるため)
+    s = ABS_RE.sub(r"\1/", s)
+    return s
+
+
+def en_root_page(template):
+    """英語版トップ(/en/)。ルートのメタを英語に差し替えたアプリシェル。"""
+    title = "GANGSTA RAP ATLAS — Dig G-Rap From The Map"
+    desc = ("Regional G-Rap / gangsta rap discography you can dig from a US map. "
+            "10,000+ discs from 600+ cities — Compton, Houston, Memphis and beyond. "
+            "Previews, cover art and collector stamps.")
+    url = f"{SITE}/en/"
+    s = template
+    s = re.sub(r"<title>.*?</title>", f"<title>{esc(title)}</title>", s, count=1, flags=re.S)
+    s = re.sub(r'<meta name="description" content="[^"]*">',
+               f'<meta name="description" content="{esc(desc)}">', s, count=1)
+    s = re.sub(r'<link rel="canonical" href="[^"]*">',
+               f'<link rel="canonical" href="{url}">', s, count=1)
+    s = re.sub(r'<meta property="og:title" content="[^"]*">',
+               f'<meta property="og:title" content="{esc(title)}">', s, count=1)
+    s = re.sub(r'<meta property="og:description" content="[^"]*">',
+               f'<meta property="og:description" content="{esc(desc)}">', s, count=1)
+    s = re.sub(r'<meta property="og:url" content="[^"]*">',
+               f'<meta property="og:url" content="{url}">', s, count=1)
+    s = re.sub(r'<meta name="twitter:title" content="[^"]*">',
+               f'<meta name="twitter:title" content="{esc(title)}">', s, count=1)
+    s = re.sub(r'<meta name="twitter:description" content="[^"]*">',
+               f'<meta name="twitter:description" content="{esc(desc)}">', s, count=1)
+    s = re.sub(r'<link rel="alternate" hreflang="[^"]*" href="[^"]*">\n?', "", s)
+    s = s.replace(
+        f'<link rel="canonical" href="{url}">',
+        f'<link rel="canonical" href="{url}">\n'
+        f'<link rel="alternate" hreflang="ja" href="{SITE}/">\n'
+        f'<link rel="alternate" hreflang="en" href="{url}">\n'
+        f'<link rel="alternate" hreflang="x-default" href="{SITE}/">', 1)
+    s = s.replace('<html lang="ja">', '<html lang="en">', 1)
+    s = s.replace('<meta property="og:locale" content="ja_JP">\n<meta property="og:locale:alternate" content="en_US">',
+                  '<meta property="og:locale" content="en_US">\n<meta property="og:locale:alternate" content="ja_JP">', 1)
+    s = s.replace('<meta charset="utf-8">',
+        "<meta charset=\"utf-8\">\n<script>try{if(!localStorage.getItem('gra.lang'))localStorage.setItem('gra.lang','en')}catch(e){}</script>", 1)
+    noscript = """<noscript>
+  <div style="padding:24px;max-width:640px;margin:0 auto;font-family:sans-serif">
+    <h1>GANGSTA RAP ATLAS</h1>
+    <p>A regional G-Rap / gangsta rap discography you can dig from a US map.
+    JavaScript is required for the interactive map.</p>
+    <p>Major regions: <a href="/en/r/houston/">Houston</a> / <a href="/en/r/memphis/">Memphis</a> /
+    <a href="/en/r/oakland/">Oakland</a> / <a href="/en/r/neworleans/">New Orleans</a> /
+    <a href="/en/r/sacramento/">Sacramento</a> / <a href="/en/r/sf/">San Francisco</a> /
+    <a href="/en/r/detroit/">Detroit</a> / <a href="/en/r/compton/">Compton</a></p>
+  </div>
+</noscript>"""
+    s = re.sub(r"<noscript>.*?</noscript>", noscript, s, count=1, flags=re.S)
     s = ABS_RE.sub(r"\1/", s)
     return s
 
@@ -281,13 +386,23 @@ def main():
     if out.exists():
         shutil.rmtree(out)
     out.mkdir()
+    out_en = ROOT / "en"
+    if out_en.exists():
+        shutil.rmtree(out_en)
+    (out_en / "r").mkdir(parents=True)
+    (out_en / "index.html").write_text(en_root_page(template), encoding="utf-8")
     for r in targets:
         d = out / r["id"]
         d.mkdir()
         (d / "index.html").write_text(region_page(r, template), encoding="utf-8")
+        de = out_en / "r" / r["id"]
+        de.mkdir()
+        (de / "index.html").write_text(region_page(r, template, lang="en"), encoding="utf-8")
 
     today = date.today().isoformat()
-    urls = [f"{SITE}/"] + [f"{SITE}/r/{r['id']}/" for r in targets]
+    urls = ([f"{SITE}/", f"{SITE}/en/"]
+            + [f"{SITE}/r/{r['id']}/" for r in targets]
+            + [f"{SITE}/en/r/{r['id']}/" for r in targets])
     entries = "\n".join(
         f"  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>" for u in urls
     )

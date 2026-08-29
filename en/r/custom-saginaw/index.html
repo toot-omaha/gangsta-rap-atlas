@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(!localStorage.getItem('gra.lang'))localStorage.setItem('gra.lang','en')}catch(e){}</script>
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saginaw G-Rap Discography (22 Discs) | GANGSTA RAP ATLAS</title>
+<meta name="description" content="Complete G-Rap / gangsta rap discography from Saginaw, Michigan — 22 discs by Corleone&#x27; Family, Da Franchise and more. Listen &amp; dig on the interactive map.">
+<link rel="canonical" href="https://g.rap-atlas.com/en/r/custom-saginaw/">
+<link rel="alternate" hreflang="ja" href="https://g.rap-atlas.com/r/custom-saginaw/">
+<link rel="alternate" hreflang="en" href="https://g.rap-atlas.com/en/r/custom-saginaw/">
+<link rel="alternate" hreflang="x-default" href="https://g.rap-atlas.com/r/custom-saginaw/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GANGSTA RAP ATLAS">
+<meta property="og:title" content="Saginaw G-Rap Discography (22 Discs) | GANGSTA RAP ATLAS">
+<meta property="og:description" content="Complete G-Rap / gangsta rap discography from Saginaw, Michigan — 22 discs by Corleone&#x27; Family, Da Franchise and more. Listen &amp; dig on the interactive map.">
+<meta property="og:url" content="https://g.rap-atlas.com/en/r/custom-saginaw/">
+<meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Saginaw G-Rap Discography (22 Discs) | GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Complete G-Rap / gangsta rap discography from Saginaw, Michigan — 22 discs by Corleone&#x27; Family, Da Franchise and more. Listen &amp; dig on the interactive map.">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/icon/icon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/icon/icon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Saginaw", "item": "https://g.rap-atlas.com/en/r/custom-saginaw/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "Saginaw G-Rap Discography", "numberOfItems": 22, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "No-Gutz No-Glory", "byArtist": {"@type": "MusicGroup", "name": "Corleone' Family"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/5177208-Corleone-Family-No-Gutz-No-Glory"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Big Business", "byArtist": {"@type": "MusicGroup", "name": "Da Franchise"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/17665186-Da-Franchise-2-Big-Business"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Potnaz & Rhyme", "byArtist": {"@type": "MusicGroup", "name": "Hard Hittaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/24655385-Hard-Hittaz-3-Potnaz-Rhyme"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "Wealth Or Death", "byArtist": {"@type": "MusicGroup", "name": "Laid Diamond"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/11050354-Laid-Diamond-Wealth-Or-Death"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Independent", "byArtist": {"@type": "MusicGroup", "name": "Da Nasty Boyz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/9171643-Da-Nasty-Boyz-Independent"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Jack In The Box", "byArtist": {"@type": "MusicGroup", "name": "Mack The Jack'a"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/10574538-Mack-The-Jacka-Jack-In-The-Box"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "Something From My World", "byArtist": {"@type": "MusicGroup", "name": "AK"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/37986177-AK-88-Something-From-My-World"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Dirty Wayz", "byArtist": {"@type": "MusicGroup", "name": "Dirty Jerk"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/1455993-Dirty-Jerk-Dirty-Wayz"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Luv Me Or Hate Me", "byArtist": {"@type": "MusicGroup", "name": "Dirty Jerk"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/10139431-Dirty-Jerk-Luv-Me-Or-Hate-Me"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Murder Men Die", "byArtist": {"@type": "MusicGroup", "name": "Hard Hittaz"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/9483956-Hard-Hittaz-2-Murder-Men-Die"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Ready 4 Combat", "byArtist": {"@type": "MusicGroup", "name": "1.8.7. Mortals"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/5067529-187-Mortals-Ready-4-Combat"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "Born To Ball", "byArtist": {"@type": "MusicGroup", "name": "AK"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/8074422-AK-41-Born-To-Ball"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Don't Let The Same Thing Happen To You", "byArtist": {"@type": "MusicGroup", "name": "Knockout Squad"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9808553-Knockout-Squad-Dont-Let-The-Same-Thing-Happen-To-You"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "The True Story", "byArtist": {"@type": "MusicGroup", "name": "Mack The Jack'a"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/17939029-Mack-The-Jacka-The-True-Story"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "2 Triple 0", "byArtist": {"@type": "MusicGroup", "name": "Sag Nasty"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/11448746-Sag-Nasty-2-Triple-0"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Too Illicit", "byArtist": {"@type": "MusicGroup", "name": "Illicit Outlook"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/10041841-Illicit-Outlook-Too-Illicit"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Trials Of Life", "byArtist": {"@type": "MusicGroup", "name": "Laid Diamond"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/11125844-Laid-Diamond-Trials-Of-Life"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "Indestructible", "byArtist": {"@type": "MusicGroup", "name": "Dangerous D"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/13469389-Dangerous-D-6-Indestructible"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Dead Skully", "byArtist": {"@type": "MusicGroup", "name": "Y.B.I."}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/8131983-YBI-2-Dead-Skully"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Shootin' \"Da\" Breeze ", "byArtist": {"@type": "MusicGroup", "name": "N.O.T.P."}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/6809287-NOTP-Shootin-Da-Breeze-"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Troublesome Maniac", "byArtist": {"@type": "MusicGroup", "name": "N.O.T.P."}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/9700823-NOTP-Troublesome-Maniac"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Flip Side Hustla's", "byArtist": {"@type": "MusicGroup", "name": "J-Bone"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/9442624-J-Bone-9-Flip-Side-Hustlas"}}]}]</script>
+</head>
+<body>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Saginaw G-Rap Discography</h1>
+    <p>Michigan — 22 discs. G-Rap / gangsta rap releases by artists from Saginaw.
+    JavaScript is required for the interactive map.</p>
+    <p><a href="/en/">GANGSTA RAP ATLAS Home</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>Artist</th><th>Title</th><th>Year</th><th>Label</th></tr></thead>
+      <tbody>
+<tr><td>Corleone&#x27; Family</td><td><a href="https://www.discogs.com/release/5177208-Corleone-Family-No-Gutz-No-Glory" rel="noopener nofollow">No-Gutz No-Glory</a></td><td>2004</td><td>Corleone Entertainment</td></tr>
+<tr><td>Da Franchise</td><td><a href="https://www.discogs.com/release/17665186-Da-Franchise-2-Big-Business" rel="noopener nofollow">Big Business</a></td><td>2004</td><td>Ghetto Records (6)</td></tr>
+<tr><td>Hard Hittaz</td><td><a href="https://www.discogs.com/release/24655385-Hard-Hittaz-3-Potnaz-Rhyme" rel="noopener nofollow">Potnaz &amp; Rhyme</a></td><td>2004</td><td>Not On Label</td></tr>
+<tr><td>Laid Diamond</td><td><a href="https://www.discogs.com/release/11050354-Laid-Diamond-Wealth-Or-Death" rel="noopener nofollow">Wealth Or Death</a></td><td>2004</td><td>Bad Luck Records (3)</td></tr>
+<tr><td>Da Nasty Boyz</td><td><a href="https://www.discogs.com/release/9171643-Da-Nasty-Boyz-Independent" rel="noopener nofollow">Independent</a></td><td>2002</td><td>Sag Nasty Records</td></tr>
+<tr><td>Mack The Jack&#x27;a</td><td><a href="https://www.discogs.com/release/10574538-Mack-The-Jacka-Jack-In-The-Box" rel="noopener nofollow">Jack In The Box</a></td><td>2002</td><td>UBEU Records</td></tr>
+<tr><td>AK</td><td><a href="https://www.discogs.com/release/37986177-AK-88-Something-From-My-World" rel="noopener nofollow">Something From My World</a></td><td>2001</td><td>On Ya Knees Records</td></tr>
+<tr><td>Dirty Jerk</td><td><a href="https://www.discogs.com/release/1455993-Dirty-Jerk-Dirty-Wayz" rel="noopener nofollow">Dirty Wayz</a></td><td>2001</td><td>Homicidal Records</td></tr>
+<tr><td>Dirty Jerk</td><td><a href="https://www.discogs.com/release/10139431-Dirty-Jerk-Luv-Me-Or-Hate-Me" rel="noopener nofollow">Luv Me Or Hate Me</a></td><td>2001</td><td>Corleone Entertainment</td></tr>
+<tr><td>Hard Hittaz</td><td><a href="https://www.discogs.com/release/9483956-Hard-Hittaz-2-Murder-Men-Die" rel="noopener nofollow">Murder Men Die</a></td><td>2001</td><td>Lil Chill Records &amp; Production</td></tr>
+<tr><td>1.8.7. Mortals</td><td><a href="https://www.discogs.com/release/5067529-187-Mortals-Ready-4-Combat" rel="noopener nofollow">Ready 4 Combat</a></td><td>2000</td><td>Webslinging Records</td></tr>
+<tr><td>AK</td><td><a href="https://www.discogs.com/release/8074422-AK-41-Born-To-Ball" rel="noopener nofollow">Born To Ball</a></td><td>2000</td><td>Evil Empire (2)</td></tr>
+<tr><td>Knockout Squad</td><td><a href="https://www.discogs.com/release/9808553-Knockout-Squad-Dont-Let-The-Same-Thing-Happen-To-You" rel="noopener nofollow">Don&#x27;t Let The Same Thing Happen To You</a></td><td>2000</td><td>Knockout Squad</td></tr>
+<tr><td>Mack The Jack&#x27;a</td><td><a href="https://www.discogs.com/release/17939029-Mack-The-Jacka-The-True-Story" rel="noopener nofollow">The True Story</a></td><td>2000</td><td>Power Records (2)</td></tr>
+<tr><td>Sag Nasty</td><td><a href="https://www.discogs.com/release/11448746-Sag-Nasty-2-Triple-0" rel="noopener nofollow">2 Triple 0</a></td><td>2000</td><td>Ghetto Records (6)</td></tr>
+<tr><td>Illicit Outlook</td><td><a href="https://www.discogs.com/release/10041841-Illicit-Outlook-Too-Illicit" rel="noopener nofollow">Too Illicit</a></td><td>1999</td><td>Full Contact Records (3)</td></tr>
+<tr><td>Laid Diamond</td><td><a href="https://www.discogs.com/release/11125844-Laid-Diamond-Trials-Of-Life" rel="noopener nofollow">Trials Of Life</a></td><td>1999</td><td>Bad Luck Records (3)</td></tr>
+<tr><td>Dangerous D</td><td><a href="https://www.discogs.com/release/13469389-Dangerous-D-6-Indestructible" rel="noopener nofollow">Indestructible</a></td><td>1997</td><td>Rukus Records (3)</td></tr>
+<tr><td>Y.B.I.</td><td><a href="https://www.discogs.com/release/8131983-YBI-2-Dead-Skully" rel="noopener nofollow">Dead Skully</a></td><td>1995</td><td>Drive-By Records</td></tr>
+<tr><td>N.O.T.P.</td><td><a href="https://www.discogs.com/release/6809287-NOTP-Shootin-Da-Breeze-" rel="noopener nofollow">Shootin&#x27; &quot;Da&quot; Breeze </a></td><td>1994</td><td>Waldoxy Records</td></tr>
+<tr><td>N.O.T.P.</td><td><a href="https://www.discogs.com/release/9700823-NOTP-Troublesome-Maniac" rel="noopener nofollow">Troublesome Maniac</a></td><td>1994</td><td>Sinban Records</td></tr>
+<tr><td>J-Bone</td><td><a href="https://www.discogs.com/release/9442624-J-Bone-9-Flip-Side-Hustlas" rel="noopener nofollow">Flip Side Hustla&#x27;s</a></td><td>1993</td><td>U Be U &amp; 2 Men Production</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
+</header>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
+</body>
+</html>

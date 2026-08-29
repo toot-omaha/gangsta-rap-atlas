@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>try{if(!localStorage.getItem('gra.lang'))localStorage.setItem('gra.lang','en')}catch(e){}</script>
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Bronx G-Rap Discography (59 Discs) | GANGSTA RAP ATLAS</title>
+<meta name="description" content="Complete G-Rap / gangsta rap discography from The Bronx, New York, NY — 59 discs by Jim Jones, DJ Kay Slay and more. Listen &amp; dig on the interactive map.">
+<link rel="canonical" href="https://g.rap-atlas.com/en/r/bronx/">
+<link rel="alternate" hreflang="ja" href="https://g.rap-atlas.com/r/bronx/">
+<link rel="alternate" hreflang="en" href="https://g.rap-atlas.com/en/r/bronx/">
+<link rel="alternate" hreflang="x-default" href="https://g.rap-atlas.com/r/bronx/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GANGSTA RAP ATLAS">
+<meta property="og:title" content="The Bronx G-Rap Discography (59 Discs) | GANGSTA RAP ATLAS">
+<meta property="og:description" content="Complete G-Rap / gangsta rap discography from The Bronx, New York, NY — 59 discs by Jim Jones, DJ Kay Slay and more. Listen &amp; dig on the interactive map.">
+<meta property="og:url" content="https://g.rap-atlas.com/en/r/bronx/">
+<meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Bronx G-Rap Discography (59 Discs) | GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Complete G-Rap / gangsta rap discography from The Bronx, New York, NY — 59 discs by Jim Jones, DJ Kay Slay and more. Listen &amp; dig on the interactive map.">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/icon/icon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/icon/icon-96.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "The Bronx", "item": "https://g.rap-atlas.com/en/r/bronx/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "The Bronx G-Rap Discography", "numberOfItems": 59, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "At The Church Steps", "byArtist": {"@type": "MusicGroup", "name": "Jim Jones"}, "datePublished": "2025", "sameAs": "https://www.discogs.com/release/33265674-Jim-Jones-At-The-Church-Steps"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Rolling 200 Deep", "byArtist": {"@type": "MusicGroup", "name": "DJ Kay Slay"}, "datePublished": "2023", "sameAs": "https://www.discogs.com/release/28873396-DJ-Kay-Slay-Rolling-200-Deep"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "12 Days Of Xmas", "byArtist": {"@type": "MusicGroup", "name": "Jim Jones"}, "datePublished": "2022", "sameAs": "https://www.discogs.com/release/25486117-Jim-Jones-12-Days-Of-Xmas"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "The Final Chapter", "byArtist": {"@type": "MusicGroup", "name": "Children Of The Corn"}, "datePublished": "2020", "sameAs": "https://www.discogs.com/release/15865042-Children-Of-The-Corn-The-Final-Chapter"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Purple Haze 2", "byArtist": {"@type": "MusicGroup", "name": "Cam'ron"}, "datePublished": "2019", "sameAs": "https://www.discogs.com/release/24740138-Camron-Purple-Haze-2"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "God Level", "byArtist": {"@type": "MusicGroup", "name": "Fred The Godson"}, "datePublished": "2019", "sameAs": "https://www.discogs.com/release/14846944-Fred-The-Godson-God-Level"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "Wasted Talent", "byArtist": {"@type": "MusicGroup", "name": "Jim Jones"}, "datePublished": "2018", "sameAs": "https://www.discogs.com/release/11880377-Jim-Jones-Wasted-Talent"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Genuine Article", "byArtist": {"@type": "MusicGroup", "name": "Black Rob"}, "datePublished": "2015", "sameAs": "https://www.discogs.com/release/6952895-Black-Rob-Genuine-Article"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Never Left", "byArtist": {"@type": "MusicGroup", "name": "Sadat X"}, "datePublished": "2015", "sameAs": "https://www.discogs.com/release/6609890-Sadat-X-Never-Left"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Capo", "byArtist": {"@type": "MusicGroup", "name": "Jim Jones"}, "datePublished": "2011", "sameAs": "https://www.discogs.com/release/11635242-Jim-Jones-Capo"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "The Elephant In The Room", "byArtist": {"@type": "MusicGroup", "name": "Fat Joe"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/17096580-Fat-Joe-The-Elephant-In-The-Room"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "Harlem's American Gangster", "byArtist": {"@type": "MusicGroup", "name": "Jim Jones"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/1403333-Jim-Jones-Harlems-American-Gangster"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Hood Environment", "byArtist": {"@type": "MusicGroup", "name": "Drag-On"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/2367817-Drag-On-Hood-Environment"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Killa Season (Limited Edition)", "byArtist": {"@type": "MusicGroup", "name": "Cam'ron"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/1752965"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Press Play", "byArtist": {"@type": "MusicGroup", "name": "Diddy"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/2484741"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Me, Myself & I", "byArtist": {"@type": "MusicGroup", "name": "Fat Joe"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/32832513-Fat-Joe-Me-Myself-I"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "A Dipset Xmas", "byArtist": {"@type": "MusicGroup", "name": "Jim Jones"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/6359701"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "Hustler's P.O.M.E. (Product Of My Environment)", "byArtist": {"@type": "MusicGroup", "name": "Jim Jones"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/5517002"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "The Purple Album", "byArtist": {"@type": "MusicGroup", "name": "Purple City"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/1480195"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "All Or Nothing", "byArtist": {"@type": "MusicGroup", "name": "Fat Joe"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/4580803"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Harlem: Diary Of A Summer", "byArtist": {"@type": "MusicGroup", "name": "Jim Jones"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/535446"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Purple Haze", "byArtist": {"@type": "MusicGroup", "name": "Cam'ron"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/374564"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Hell And Back", "byArtist": {"@type": "MusicGroup", "name": "Drag-On"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/582367-Drag-On-Hell-And-Back"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Different By Design", "byArtist": {"@type": "MusicGroup", "name": "Team Black Out"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/33888045-Team-Black-Out-Different-By-Design"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Kristyles", "byArtist": {"@type": "MusicGroup", "name": "KRS-One"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/1106499-KRS-One-Kristyles"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "Certified Krazy", "byArtist": {"@type": "MusicGroup", "name": "Kuntre"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/12911588-Kuntre-Certified-Krazy"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "Loyalty", "byArtist": {"@type": "MusicGroup", "name": "Fat Joe"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/1632115"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "G.H.E.T.T.O. Stories", "byArtist": {"@type": "MusicGroup", "name": "Swizz Beatz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/637525-Swizz-Beatz-GHETTO-Stories"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "Jealous Ones Still Envy (J.O.S.E.)", "byArtist": {"@type": "MusicGroup", "name": "Fat Joe"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/15265769"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "Down Bad", "byArtist": {"@type": "MusicGroup", "name": "Kane & Abel"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/28701697-Kane-And-Abel-Presents-Most-Wanted-Boys-Down-Bad"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "Opposite Of H2O", "byArtist": {"@type": "MusicGroup", "name": "Drag-On"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/19519096-Drag-On-Opposite-Of-H2O"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "Most Wanted", "byArtist": {"@type": "MusicGroup", "name": "Kane & Abel"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/16232089-Kane-Abel-Most-Wanted"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "Capital Punishment", "byArtist": {"@type": "MusicGroup", "name": "Big Pun"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/704954"}}, {"@type": "ListItem", "position": 34, "item": {"@type": "MusicAlbum", "name": "Don Cartagena", "byArtist": {"@type": "MusicGroup", "name": "Fat Joe"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/15627572"}}, {"@type": "ListItem", "position": 35, "item": {"@type": "MusicAlbum", "name": "Soundtrack To The Streets", "byArtist": {"@type": "MusicGroup", "name": "Kid Capri"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/18957715-Kid-Capri-Soundtrack-To-The-Streets"}}, {"@type": "ListItem", "position": 36, "item": {"@type": "MusicAlbum", "name": "Da Dirty 30", "byArtist": {"@type": "MusicGroup", "name": "CRU"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/15482868-CRU-Da-Dirty-30"}}, {"@type": "ListItem", "position": 37, "item": {"@type": "MusicAlbum", "name": "Right Now", "byArtist": {"@type": "MusicGroup", "name": "Grandmaster Melle Mel"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/12107563-Grandmaster-Mele-Mel-Scorpio-3-Right-Now"}}, {"@type": "ListItem", "position": 38, "item": {"@type": "MusicAlbum", "name": "Warlocks And Witches, Computer Chips, Microchips And You", "byArtist": {"@type": "MusicGroup", "name": "Afrika Bambaataa"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/7257967-Afrika-Bambaataa-Presents-Time-Zone-Warlocks-And-Witches-Computer-Chips-Microchips-And-You"}}, {"@type": "ListItem", "position": 39, "item": {"@type": "MusicAlbum", "name": "Warlocks And Witches, Computer Chips, Microchips And You", "byArtist": {"@type": "MusicGroup", "name": "Afrika Bambaataa"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/8923830-Afrika-Bambaataa-Presents-Time-Zone-Warlocks-And-Witches-Computer-Chips-Microchips-And-You"}}, {"@type": "ListItem", "position": 40, "item": {"@type": "MusicAlbum", "name": "The Last Chapter", "byArtist": {"@type": "MusicGroup", "name": "Children of the Corn"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/9140562"}}, {"@type": "ListItem", "position": 41, "item": {"@type": "MusicAlbum", "name": "Scissorhands", "byArtist": {"@type": "MusicGroup", "name": "Foe"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/6132411-Foe-3-Scissorhands"}}, {"@type": "ListItem", "position": 42, "item": {"@type": "MusicAlbum", "name": "The Single", "byArtist": {"@type": "MusicGroup", "name": "Children of the Corn"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/8317450"}}, {"@type": "ListItem", "position": 43, "item": {"@type": "MusicAlbum", "name": "Keep Your Eyes Open", "byArtist": {"@type": "MusicGroup", "name": "Double Vision"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/1458447-Double-Vision-9-Keep-Your-Eyes-Open"}}, {"@type": "ListItem", "position": 44, "item": {"@type": "MusicAlbum", "name": "Jealous One's Envy", "byArtist": {"@type": "MusicGroup", "name": "Fat Joe"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/322703-Fat-Joe-Jealous-Ones-Envy"}}, {"@type": "ListItem", "position": 45, "item": {"@type": "MusicAlbum", "name": "Birth Of The Ghetto Child", "byArtist": {"@type": "MusicGroup", "name": "Main One"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/1176009-Main-One-Birth-Of-The-Ghetto-Child"}}, {"@type": "ListItem", "position": 46, "item": {"@type": "MusicAlbum", "name": "Ghetto Flava", "byArtist": {"@type": "MusicGroup", "name": "Champ MC"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/1534401-Champ-MC-Ghetto-Flava"}}, {"@type": "ListItem", "position": 47, "item": {"@type": "MusicAlbum", "name": "Hard & Mello", "byArtist": {"@type": "MusicGroup", "name": "Mello K"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/1905143-Mello-K-Hard-Mello"}}, {"@type": "ListItem", "position": 48, "item": {"@type": "MusicAlbum", "name": "Ghetto Flava (Explicit)", "byArtist": {"@type": "MusicGroup", "name": "Champ MC"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/10469832-Champ-MC-Ghetto-Flava-Explicit"}}, {"@type": "ListItem", "position": 49, "item": {"@type": "MusicAlbum", "name": "Represent", "byArtist": {"@type": "MusicGroup", "name": "Fat Joe"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/741875-Fat-Joe-Da-Gangsta-Represent"}}, {"@type": "ListItem", "position": 50, "item": {"@type": "MusicAlbum", "name": "Gun Talk", "byArtist": {"@type": "MusicGroup", "name": "Just-Ice"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/21918118"}}, {"@type": "ListItem", "position": 51, "item": {"@type": "MusicAlbum", "name": "Return Of The Boom Bap", "byArtist": {"@type": "MusicGroup", "name": "KRS-One"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/12259445-KRS-One-Return-Of-The-Boom-Bap"}}, {"@type": "ListItem", "position": 52, "item": {"@type": "MusicAlbum", "name": "Do or Die", "byArtist": {"@type": "MusicGroup", "name": "Tim Dog"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/416448"}}, {"@type": "ListItem", "position": 53, "item": {"@type": "MusicAlbum", "name": "Ain't Takin No S@#t", "byArtist": {"@type": "MusicGroup", "name": "Ghetto Girlz"}, "datePublished": "1992", "sameAs": "https://www.discogs.com/release/5833529-Ghetto-Girlz-Aint-Takin-No-St"}}, {"@type": "ListItem", "position": 54, "item": {"@type": "MusicAlbum", "name": "Penicillin on Wax", "byArtist": {"@type": "MusicGroup", "name": "Tim Dog"}, "datePublished": "1991", "sameAs": "https://www.discogs.com/release/1126548"}}, {"@type": "ListItem", "position": 55, "item": {"@type": "MusicAlbum", "name": "Notorious", "byArtist": {"@type": "MusicGroup", "name": "Donald-D"}, "datePublished": "1989", "sameAs": "https://www.discogs.com/release/247560"}}, {"@type": "ListItem", "position": 56, "item": {"@type": "MusicAlbum", "name": "The Desolate One", "byArtist": {"@type": "MusicGroup", "name": "Just-Ice"}, "datePublished": "1989", "sameAs": "https://www.discogs.com/release/1685185"}}, {"@type": "ListItem", "position": 57, "item": {"@type": "MusicAlbum", "name": "Criminal Minded", "byArtist": {"@type": "MusicGroup", "name": "Boogie Down Productions"}, "datePublished": "1987", "sameAs": "https://www.discogs.com/release/11179166"}}, {"@type": "ListItem", "position": 58, "item": {"@type": "MusicAlbum", "name": "Kool & Deadly (Justicizms)", "byArtist": {"@type": "MusicGroup", "name": "Just-Ice"}, "datePublished": "1987", "sameAs": "https://www.discogs.com/release/795640"}}, {"@type": "ListItem", "position": 59, "item": {"@type": "MusicAlbum", "name": "Back to the Old School", "byArtist": {"@type": "MusicGroup", "name": "Just-Ice"}, "datePublished": "1986", "sameAs": "https://www.discogs.com/release/56036"}}]}]</script>
+</head>
+<body>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>The Bronx G-Rap Discography</h1>
+    <p>New York, NY — 59 discs. G-Rap / gangsta rap releases by artists from The Bronx.
+    JavaScript is required for the interactive map.</p>
+    <p><a href="/en/">GANGSTA RAP ATLAS Home</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>Artist</th><th>Title</th><th>Year</th><th>Label</th></tr></thead>
+      <tbody>
+<tr><td>Jim Jones</td><td><a href="https://www.discogs.com/release/33265674-Jim-Jones-At-The-Church-Steps" rel="noopener nofollow">At The Church Steps</a></td><td>2025</td><td>Vamplife</td></tr>
+<tr><td>DJ Kay Slay</td><td><a href="https://www.discogs.com/release/28873396-DJ-Kay-Slay-Rolling-200-Deep" rel="noopener nofollow">Rolling 200 Deep</a></td><td>2023</td><td>Not On Label (DJ Kay Slay Self-released)</td></tr>
+<tr><td>Jim Jones</td><td><a href="https://www.discogs.com/release/25486117-Jim-Jones-12-Days-Of-Xmas" rel="noopener nofollow">12 Days Of Xmas</a></td><td>2022</td><td>Vamplife</td></tr>
+<tr><td>Children Of The Corn</td><td><a href="https://www.discogs.com/release/15865042-Children-Of-The-Corn-The-Final-Chapter" rel="noopener nofollow">The Final Chapter</a></td><td>2020</td><td>SIC Records</td></tr>
+<tr><td>Cam&#x27;ron</td><td><a href="https://www.discogs.com/release/24740138-Camron-Purple-Haze-2" rel="noopener nofollow">Purple Haze 2</a></td><td>2019</td><td>Killa Entertainment</td></tr>
+<tr><td>Fred The Godson</td><td><a href="https://www.discogs.com/release/14846944-Fred-The-Godson-God-Level" rel="noopener nofollow">God Level</a></td><td>2019</td><td>Air Vinyl Records</td></tr>
+<tr><td>Jim Jones</td><td><a href="https://www.discogs.com/release/11880377-Jim-Jones-Wasted-Talent" rel="noopener nofollow">Wasted Talent</a></td><td>2018</td><td>Vamplife</td></tr>
+<tr><td>Black Rob</td><td><a href="https://www.discogs.com/release/6952895-Black-Rob-Genuine-Article" rel="noopener nofollow">Genuine Article</a></td><td>2015</td><td>Slimstyle Records</td></tr>
+<tr><td>Sadat X</td><td><a href="https://www.discogs.com/release/6609890-Sadat-X-Never-Left" rel="noopener nofollow">Never Left</a></td><td>2015</td><td>Loyalty Digital Corp.</td></tr>
+<tr><td>Jim Jones</td><td><a href="https://www.discogs.com/release/11635242-Jim-Jones-Capo" rel="noopener nofollow">Capo</a></td><td>2011</td><td>eOne</td></tr>
+<tr><td>Fat Joe</td><td><a href="https://www.discogs.com/release/17096580-Fat-Joe-The-Elephant-In-The-Room" rel="noopener nofollow">The Elephant In The Room</a></td><td>2008</td><td>Terror Squad Entertainment</td></tr>
+<tr><td>Jim Jones</td><td><a href="https://www.discogs.com/release/1403333-Jim-Jones-Harlems-American-Gangster" rel="noopener nofollow">Harlem&#x27;s American Gangster</a></td><td>2008</td><td>Koch Records</td></tr>
+<tr><td>Drag-On</td><td><a href="https://www.discogs.com/release/2367817-Drag-On-Hood-Environment" rel="noopener nofollow">Hood Environment</a></td><td>2007</td><td>T.R.U.S.T.</td></tr>
+<tr><td>Cam&#x27;ron</td><td><a href="https://www.discogs.com/release/1752965" rel="noopener nofollow">Killa Season (Limited Edition)</a></td><td>2006</td><td>Diplomats</td></tr>
+<tr><td>Diddy</td><td><a href="https://www.discogs.com/release/2484741" rel="noopener nofollow">Press Play</a></td><td>2006</td><td>Bad Boy Entertainment</td></tr>
+<tr><td>Fat Joe</td><td><a href="https://www.discogs.com/release/32832513-Fat-Joe-Me-Myself-I" rel="noopener nofollow">Me, Myself &amp; I</a></td><td>2006</td><td>Terror Squad Entertainment</td></tr>
+<tr><td>Jim Jones</td><td><a href="https://www.discogs.com/release/6359701" rel="noopener nofollow">A Dipset Xmas</a></td><td>2006</td><td>Diplomats</td></tr>
+<tr><td>Jim Jones</td><td><a href="https://www.discogs.com/release/5517002" rel="noopener nofollow">Hustler&#x27;s P.O.M.E. (Product Of My Environment)</a></td><td>2006</td><td>Diplomats</td></tr>
+<tr><td>Purple City</td><td><a href="https://www.discogs.com/release/1480195" rel="noopener nofollow">The Purple Album</a></td><td>2006</td><td>Purple City Productions</td></tr>
+<tr><td>Fat Joe</td><td><a href="https://www.discogs.com/release/4580803" rel="noopener nofollow">All Or Nothing</a></td><td>2005</td><td>Atlantic</td></tr>
+<tr><td>Jim Jones</td><td><a href="https://www.discogs.com/release/535446" rel="noopener nofollow">Harlem: Diary Of A Summer</a></td><td>2005</td><td>Diplomats</td></tr>
+<tr><td>Cam&#x27;ron</td><td><a href="https://www.discogs.com/release/374564" rel="noopener nofollow">Purple Haze</a></td><td>2004</td><td>Roc-A-Fella Records</td></tr>
+<tr><td>Drag-On</td><td><a href="https://www.discogs.com/release/582367-Drag-On-Hell-And-Back" rel="noopener nofollow">Hell And Back</a></td><td>2004</td><td>Virgin</td></tr>
+<tr><td>Team Black Out</td><td><a href="https://www.discogs.com/release/33888045-Team-Black-Out-Different-By-Design" rel="noopener nofollow">Different By Design</a></td><td>2004</td><td>Not On Label</td></tr>
+<tr><td>KRS-One</td><td><a href="https://www.discogs.com/release/1106499-KRS-One-Kristyles" rel="noopener nofollow">Kristyles</a></td><td>2003</td><td>Koch Records</td></tr>
+<tr><td>Kuntre</td><td><a href="https://www.discogs.com/release/12911588-Kuntre-Certified-Krazy" rel="noopener nofollow">Certified Krazy</a></td><td>2003</td><td>Booom Boxx Records</td></tr>
+<tr><td>Fat Joe</td><td><a href="https://www.discogs.com/release/1632115" rel="noopener nofollow">Loyalty</a></td><td>2002</td><td>Atlantic</td></tr>
+<tr><td>Swizz Beatz</td><td><a href="https://www.discogs.com/release/637525-Swizz-Beatz-GHETTO-Stories" rel="noopener nofollow">G.H.E.T.T.O. Stories</a></td><td>2002</td><td>DreamWorks Records</td></tr>
+<tr><td>Fat Joe</td><td><a href="https://www.discogs.com/release/15265769" rel="noopener nofollow">Jealous Ones Still Envy (J.O.S.E.)</a></td><td>2001</td><td>Atlantic</td></tr>
+<tr><td>Kane &amp; Abel</td><td><a href="https://www.discogs.com/release/28701697-Kane-And-Abel-Presents-Most-Wanted-Boys-Down-Bad" rel="noopener nofollow">Down Bad</a></td><td>2001</td><td>Most Wanted Empire</td></tr>
+<tr><td>Drag-On</td><td><a href="https://www.discogs.com/release/19519096-Drag-On-Opposite-Of-H2O" rel="noopener nofollow">Opposite Of H2O</a></td><td>2000</td><td>Ruff Ryders</td></tr>
+<tr><td>Kane &amp; Abel</td><td><a href="https://www.discogs.com/release/16232089-Kane-Abel-Most-Wanted" rel="noopener nofollow">Most Wanted</a></td><td>2000</td><td>Most Wanted Empire</td></tr>
+<tr><td>Big Pun</td><td><a href="https://www.discogs.com/release/704954" rel="noopener nofollow">Capital Punishment</a></td><td>1998</td><td>Loud Records</td></tr>
+<tr><td>Fat Joe</td><td><a href="https://www.discogs.com/release/15627572" rel="noopener nofollow">Don Cartagena</a></td><td>1998</td><td>Atlantic</td></tr>
+<tr><td>Kid Capri</td><td><a href="https://www.discogs.com/release/18957715-Kid-Capri-Soundtrack-To-The-Streets" rel="noopener nofollow">Soundtrack To The Streets</a></td><td>1998</td><td>Track Masters</td></tr>
+<tr><td>CRU</td><td><a href="https://www.discogs.com/release/15482868-CRU-Da-Dirty-30" rel="noopener nofollow">Da Dirty 30</a></td><td>1997</td><td>Violator Records</td></tr>
+<tr><td>Grandmaster Melle Mel</td><td><a href="https://www.discogs.com/release/12107563-Grandmaster-Mele-Mel-Scorpio-3-Right-Now" rel="noopener nofollow">Right Now</a></td><td>1997</td><td>Str8 Game Records</td></tr>
+<tr><td>Afrika Bambaataa</td><td><a href="https://www.discogs.com/release/7257967-Afrika-Bambaataa-Presents-Time-Zone-Warlocks-And-Witches-Computer-Chips-Microchips-And-You" rel="noopener nofollow">Warlocks And Witches, Computer Chips, Microchips And You</a></td><td>1996</td><td>Music World (2)</td></tr>
+<tr><td>Afrika Bambaataa</td><td><a href="https://www.discogs.com/release/8923830-Afrika-Bambaataa-Presents-Time-Zone-Warlocks-And-Witches-Computer-Chips-Microchips-And-You" rel="noopener nofollow">Warlocks And Witches, Computer Chips, Microchips And You</a></td><td>1996</td><td>Profile Records</td></tr>
+<tr><td>Children of the Corn</td><td><a href="https://www.discogs.com/release/9140562" rel="noopener nofollow">The Last Chapter</a></td><td>1996</td><td>Not On Label (Children Of The Corn (4) Self-released)</td></tr>
+<tr><td>Foe</td><td><a href="https://www.discogs.com/release/6132411-Foe-3-Scissorhands" rel="noopener nofollow">Scissorhands</a></td><td>1996</td><td>Black Market Records (2)</td></tr>
+<tr><td>Children of the Corn</td><td><a href="https://www.discogs.com/release/8317450" rel="noopener nofollow">The Single</a></td><td>1995</td><td>Graveyard Productions</td></tr>
+<tr><td>Double Vision</td><td><a href="https://www.discogs.com/release/1458447-Double-Vision-9-Keep-Your-Eyes-Open" rel="noopener nofollow">Keep Your Eyes Open</a></td><td>1995</td><td>Doral Records</td></tr>
+<tr><td>Fat Joe</td><td><a href="https://www.discogs.com/release/322703-Fat-Joe-Jealous-Ones-Envy" rel="noopener nofollow">Jealous One&#x27;s Envy</a></td><td>1995</td><td>Relativity</td></tr>
+<tr><td>Main One</td><td><a href="https://www.discogs.com/release/1176009-Main-One-Birth-Of-The-Ghetto-Child" rel="noopener nofollow">Birth Of The Ghetto Child</a></td><td>1995</td><td>Select Records</td></tr>
+<tr><td>Champ MC</td><td><a href="https://www.discogs.com/release/1534401-Champ-MC-Ghetto-Flava" rel="noopener nofollow">Ghetto Flava</a></td><td>1994</td><td>Eastwest Records America</td></tr>
+<tr><td>Mello K</td><td><a href="https://www.discogs.com/release/1905143-Mello-K-Hard-Mello" rel="noopener nofollow">Hard &amp; Mello</a></td><td>1994</td><td>L.A. Boy Records</td></tr>
+<tr><td>Champ MC</td><td><a href="https://www.discogs.com/release/10469832-Champ-MC-Ghetto-Flava-Explicit" rel="noopener nofollow">Ghetto Flava (Explicit)</a></td><td>1993</td><td>Eastwest Records America</td></tr>
+<tr><td>Fat Joe</td><td><a href="https://www.discogs.com/release/741875-Fat-Joe-Da-Gangsta-Represent" rel="noopener nofollow">Represent</a></td><td>1993</td><td>Relativity</td></tr>
+<tr><td>Just-Ice</td><td><a href="https://www.discogs.com/release/21918118" rel="noopener nofollow">Gun Talk</a></td><td>1993</td><td>Savage Records</td></tr>
+<tr><td>KRS-One</td><td><a href="https://www.discogs.com/release/12259445-KRS-One-Return-Of-The-Boom-Bap" rel="noopener nofollow">Return Of The Boom Bap</a></td><td>1993</td><td>BMG Victor Inc.</td></tr>
+<tr><td>Tim Dog</td><td><a href="https://www.discogs.com/release/416448" rel="noopener nofollow">Do or Die</a></td><td>1993</td><td>Columbia</td></tr>
+<tr><td>Ghetto Girlz</td><td><a href="https://www.discogs.com/release/5833529-Ghetto-Girlz-Aint-Takin-No-St" rel="noopener nofollow">Ain&#x27;t Takin No S@#t</a></td><td>1992</td><td>Avenue Distribution</td></tr>
+<tr><td>Tim Dog</td><td><a href="https://www.discogs.com/release/1126548" rel="noopener nofollow">Penicillin on Wax</a></td><td>1991</td><td>Ruffhouse Records</td></tr>
+<tr><td>Donald-D</td><td><a href="https://www.discogs.com/release/247560" rel="noopener nofollow">Notorious</a></td><td>1989</td><td>Rhyme Syndicate/Rick Rubin</td></tr>
+<tr><td>Just-Ice</td><td><a href="https://www.discogs.com/release/1685185" rel="noopener nofollow">The Desolate One</a></td><td>1989</td><td>Fresh</td></tr>
+<tr><td>Boogie Down Productions</td><td><a href="https://www.discogs.com/release/11179166" rel="noopener nofollow">Criminal Minded</a></td><td>1987</td><td>B-Boy</td></tr>
+<tr><td>Just-Ice</td><td><a href="https://www.discogs.com/release/795640" rel="noopener nofollow">Kool &amp; Deadly (Justicizms)</a></td><td>1987</td><td>Fresh</td></tr>
+<tr><td>Just-Ice</td><td><a href="https://www.discogs.com/release/56036" rel="noopener nofollow">Back to the Old School</a></td><td>1986</td><td>Fresh</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
+</header>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
+</body>
+</html>
