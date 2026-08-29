@@ -2,6 +2,65 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Little RockのG-RAPディスコグラフィ 47枚｜GANGSTA RAP ATLAS</title>
 <meta name="description" content="Little Rock(Arkansas)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全47枚。1504、Aleon、Dameon 1、Ca$h、Down Low、Flawless、Giovanni、Official、Arkansas Boyz、Breedzほか。試聴・ジャケ写は地図から。">
@@ -13,92 +72,196 @@
 <meta property="og:url" content="https://g.rap-atlas.com/r/littlerock/">
 <meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary">
-<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon/icon-32.png">
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "地域一覧", "item": "https://g.rap-atlas.com/r/"}, {"@type": "ListItem", "position": 3, "name": "Little Rock", "item": "https://g.rap-atlas.com/r/littlerock/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "Little RockのG-RAPディスコグラフィ", "numberOfItems": 47, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Convicted IV Thought", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2015", "sameAs": "https://www.discogs.com/release/7781891-1504-Convicted-IV-Thought"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Paranoid: The Mixed Joint", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2012", "sameAs": "https://www.discogs.com/release/7331408-1504-Paranoid-The-Mixed-Joint"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "The DifferenceMaka III The Final Chapter", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2009", "sameAs": "https://www.discogs.com/release/7334279-1504-The-DifferenceMaka-III-The-Final-Chapter"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "The DifferenceMaka Pt 2", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/7333893"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "What They Talkin Bout????", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/7333838"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "The DifferenceMaka", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/7334233"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "MistaDrSwishaKilla", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/7774508"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "P.A.I.N. Powerfully Aggravated Irritated Niggaz", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/7331335"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Out On Bail", "byArtist": {"@type": "MusicGroup", "name": "Aleon"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/12736016-Aleon-3-Out-On-Bail"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Dameon 1 Presents Bangin II Ballin", "byArtist": {"@type": "MusicGroup", "name": "Dameon 1"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/15944431-Dameon1-Dameon-1-Presents-Bangin-II-Ballin"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Big Doggz Gotta Eat", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/7771172"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "Money Makes The World Go Round ", "byArtist": {"@type": "MusicGroup", "name": "Ca$h"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/26735171-Cah-Money-Makes-The-World-Go-Round-"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Visions Best Of", "byArtist": {"@type": "MusicGroup", "name": "Down Low"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/14145563-Down-Low-Visions-Best-Of"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Above The Mic", "byArtist": {"@type": "MusicGroup", "name": "Flawless"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/32855541-Flawless-Above-The-Mic"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "This Game", "byArtist": {"@type": "MusicGroup", "name": "Giovanni"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/13264483-Giovanni-85-This-Game"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Welcome To Little Rock", "byArtist": {"@type": "MusicGroup", "name": "Official"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/17876113-Official-8-Welcome-To-Little-Rock"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Dommies, Spades & Dice", "byArtist": {"@type": "MusicGroup", "name": "Arkansas Boyz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/12445608-Arkansas-Boyz-Dommies-Spades-Dice"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "Same Thang Different Day", "byArtist": {"@type": "MusicGroup", "name": "Breedz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/19611364-Breedz-Same-Thang-Different-Day"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Da Great Dane", "byArtist": {"@type": "MusicGroup", "name": "Lucky Rudy Poo"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/13844043-Lucky-Rudy-Poo-Da-Great-Dane"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Born On The Battlefield", "byArtist": {"@type": "MusicGroup", "name": "Project Dawgs"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/15327051-Project-Dawgs-Born-On-The-Battlefield"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Black Tuesday... The Day The Game Stood Still", "byArtist": {"@type": "MusicGroup", "name": "Ridah"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/35589478-Ridah-2-Black-Tuesday-The-Day-The-Game-Stood-Still"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Comin' Thru", "byArtist": {"@type": "MusicGroup", "name": "Durdy Jack Lex Ball"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/4631570-Durdy-Jack-Lex-Ball-Comin-Thru"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Be About Your Paper", "byArtist": {"@type": "MusicGroup", "name": "Luxury Rydaz"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/3798428-Luxury-Rydaz-Be-About-Your-Paper"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Worldwide", "byArtist": {"@type": "MusicGroup", "name": "Major League"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11032474"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Sky Ballin", "byArtist": {"@type": "MusicGroup", "name": "O.G. Status"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/22194406-OG-Status-Sky-Ballin"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "Official 2000", "byArtist": {"@type": "MusicGroup", "name": "Dameon 1"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9207185-Dameon-1-2-Mr-Jones-12-Official-2000"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "Welcome To Joker Entertainment", "byArtist": {"@type": "MusicGroup", "name": "JE"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/10850588"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "Out Tha Park", "byArtist": {"@type": "MusicGroup", "name": "Major League"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/3790750"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "MoneyMakinMuzic", "byArtist": {"@type": "MusicGroup", "name": "MoneyMakerz"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/11801151-MoneyMakerz-MoneyMakinMuzic"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "Mob Hits", "byArtist": {"@type": "MusicGroup", "name": "Playboy Shane"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/7245797"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "When Game Unfoldz", "byArtist": {"@type": "MusicGroup", "name": "Project Dawgs"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/2008397-Project-Dawgs-When-Game-Unfoldz"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "Something 2 Ride To", "byArtist": {"@type": "MusicGroup", "name": "Samm-1"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/7815329-Samm-1-Something-2-Ride-To"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "It's All Under Control", "byArtist": {"@type": "MusicGroup", "name": "Swan M.A.G."}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/12062711-Swan-MAG-Its-All-Under-Control"}}, {"@type": "ListItem", "position": 34, "item": {"@type": "MusicAlbum", "name": "Under Surveillance", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/7330413"}}, {"@type": "ListItem", "position": 35, "item": {"@type": "MusicAlbum", "name": "Welcome To The Flatlands", "byArtist": {"@type": "MusicGroup", "name": "Flawless"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/7188993-Flawless-29-Welcome-To-The-Flatlands"}}, {"@type": "ListItem", "position": 36, "item": {"@type": "MusicAlbum", "name": "Bo$$ Hoggin", "byArtist": {"@type": "MusicGroup", "name": "J-Mac"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/3765954-J-Mac-3-Bo-Hoggin"}}, {"@type": "ListItem", "position": 37, "item": {"@type": "MusicAlbum", "name": "Rocktown's Finest", "byArtist": {"@type": "MusicGroup", "name": "Backyard Brothers"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/11792097-Backyard-Brothers-Rocktowns-Finest"}}, {"@type": "ListItem", "position": 38, "item": {"@type": "MusicAlbum", "name": "The Storm", "byArtist": {"@type": "MusicGroup", "name": "Flawless"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/11244760-Flawless-The-Storm"}}, {"@type": "ListItem", "position": 39, "item": {"@type": "MusicAlbum", "name": "Eastside Of The Mac", "byArtist": {"@type": "MusicGroup", "name": "8506 Related"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/12504711-8506-Related-Eastside-Of-The-Mac"}}, {"@type": "ListItem", "position": 40, "item": {"@type": "MusicAlbum", "name": "The Hood Has Raised Me", "byArtist": {"@type": "MusicGroup", "name": "Big Dank"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/3768208-Big-Dank-The-Hood-Has-Raised-Me"}}, {"@type": "ListItem", "position": 41, "item": {"@type": "MusicAlbum", "name": "Colorblind", "byArtist": {"@type": "MusicGroup", "name": "Down Low"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/8948274-Down-Low-4-Colorblind"}}, {"@type": "ListItem", "position": 42, "item": {"@type": "MusicAlbum", "name": "Ashes II Ashes, Dus 2 Dus", "byArtist": {"@type": "MusicGroup", "name": "Mossberg"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/23893289-Mossberg-Ashes-II-Ashes-Dus-2-Dus"}}, {"@type": "ListItem", "position": 43, "item": {"@type": "MusicAlbum", "name": "An Interview With Tha Playa", "byArtist": {"@type": "MusicGroup", "name": "Tenta B. And The R.P.T."}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/7419523-Tenta-B-And-Tha-RPT-An-Interview-With-Tha-Playa"}}, {"@type": "ListItem", "position": 44, "item": {"@type": "MusicAlbum", "name": "On The Run", "byArtist": {"@type": "MusicGroup", "name": "Victims Of Society"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/3768219-Victims-Of-Society-3-On-The-Run"}}, {"@type": "ListItem", "position": 45, "item": {"@type": "MusicAlbum", "name": "Let It Ride", "byArtist": {"@type": "MusicGroup", "name": "Melo-D"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/29120923-Melo-D-4-Let-It-Ride"}}, {"@type": "ListItem", "position": 46, "item": {"@type": "MusicAlbum", "name": "Product Of The Ghetto", "byArtist": {"@type": "MusicGroup", "name": "Rock The Benevolent MC"}, "datePublished": "1992", "sameAs": "https://www.discogs.com/release/24383060-Rock-The-Benevolent-MC-Product-Of-The-Ghetto"}}, {"@type": "ListItem", "position": 47, "item": {"@type": "MusicAlbum", "name": "#1", "byArtist": {"@type": "MusicGroup", "name": "Ron MC"}, "datePublished": "1992", "sameAs": "https://www.discogs.com/release/26908136-Ron-MC-1"}}]}]</script>
-<style>body{margin:0;background:#e8e4d9;color:#14120f;font-family:'Helvetica Neue',Helvetica,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;line-height:1.6}
-header{background:#14120f;color:#e8e4d9;padding:18px 20px;border-bottom:3px solid #c1272d}
-header a{color:#e8e4d9;text-decoration:none}
-header .brand{font-weight:800;letter-spacing:.14em;font-size:15px}
-main{max-width:860px;margin:0 auto;padding:20px 16px 56px}
-h1{font-size:22px;margin:14px 0 4px}
-.area{color:#4a453c;margin:0 0 14px;font-size:14px}
-.cta{display:inline-block;background:#c1272d;color:#fff;padding:9px 16px;border-radius:3px;text-decoration:none;font-weight:700;margin:8px 0 20px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border-bottom:1px solid #cfc9ba;padding:7px 8px;text-align:left;vertical-align:top}
-th{background:#dcd6c6;font-size:12px;letter-spacing:.08em}
-td a{color:#8a1f24}
-.regions li{margin:3px 0}
-.regions a{color:#8a1f24}
-.grp{margin:18px 0 6px;font-size:15px;border-left:4px solid #c1272d;padding-left:8px}
-footer{max-width:860px;margin:0 auto;padding:18px 16px;color:#4a453c;font-size:12px;border-top:1px solid #cfc9ba}
-nav.bc{font-size:12px;color:#4a453c;margin-top:6px}
-nav.bc a{color:#8a1f24}</style>
+<meta name="twitter:title" content="Little RockのG-RAPディスコグラフィ 47枚｜GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Little Rock(Arkansas)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全47枚。1504、Aleon、Dameon 1、Ca$h、Down Low、Flawless、Giovanni、Official、Arkansas Boyz、Breedzほか。試聴・ジャケ写は地図から。">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Little Rock", "item": "https://g.rap-atlas.com/r/littlerock/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "Little RockのG-RAPディスコグラフィ", "numberOfItems": 47, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Convicted IV Thought", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2015", "sameAs": "https://www.discogs.com/release/7781891-1504-Convicted-IV-Thought"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Paranoid: The Mixed Joint", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2012", "sameAs": "https://www.discogs.com/release/7331408-1504-Paranoid-The-Mixed-Joint"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "The DifferenceMaka III The Final Chapter", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2009", "sameAs": "https://www.discogs.com/release/7334279-1504-The-DifferenceMaka-III-The-Final-Chapter"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "The DifferenceMaka Pt 2", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/7333893"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "What They Talkin Bout????", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/7333838"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "The DifferenceMaka", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/7334233"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "MistaDrSwishaKilla", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/7774508"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "P.A.I.N. Powerfully Aggravated Irritated Niggaz", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/7331335"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Out On Bail", "byArtist": {"@type": "MusicGroup", "name": "Aleon"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/12736016-Aleon-3-Out-On-Bail"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Dameon 1 Presents Bangin II Ballin", "byArtist": {"@type": "MusicGroup", "name": "Dameon 1"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/15944431-Dameon1-Dameon-1-Presents-Bangin-II-Ballin"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Big Doggz Gotta Eat", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/7771172"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "Money Makes The World Go Round ", "byArtist": {"@type": "MusicGroup", "name": "Ca$h"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/26735171-Cah-Money-Makes-The-World-Go-Round-"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Visions Best Of", "byArtist": {"@type": "MusicGroup", "name": "Down Low"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/14145563-Down-Low-Visions-Best-Of"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Above The Mic", "byArtist": {"@type": "MusicGroup", "name": "Flawless"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/32855541-Flawless-Above-The-Mic"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "This Game", "byArtist": {"@type": "MusicGroup", "name": "Giovanni"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/13264483-Giovanni-85-This-Game"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Welcome To Little Rock", "byArtist": {"@type": "MusicGroup", "name": "Official"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/17876113-Official-8-Welcome-To-Little-Rock"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Dommies, Spades & Dice", "byArtist": {"@type": "MusicGroup", "name": "Arkansas Boyz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/12445608-Arkansas-Boyz-Dommies-Spades-Dice"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "Same Thang Different Day", "byArtist": {"@type": "MusicGroup", "name": "Breedz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/19611364-Breedz-Same-Thang-Different-Day"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Da Great Dane", "byArtist": {"@type": "MusicGroup", "name": "Lucky Rudy Poo"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/13844043-Lucky-Rudy-Poo-Da-Great-Dane"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Born On The Battlefield", "byArtist": {"@type": "MusicGroup", "name": "Project Dawgs"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/15327051-Project-Dawgs-Born-On-The-Battlefield"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Black Tuesday... The Day The Game Stood Still", "byArtist": {"@type": "MusicGroup", "name": "Ridah"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/35589478-Ridah-2-Black-Tuesday-The-Day-The-Game-Stood-Still"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Comin' Thru", "byArtist": {"@type": "MusicGroup", "name": "Durdy Jack Lex Ball"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/4631570-Durdy-Jack-Lex-Ball-Comin-Thru"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Be About Your Paper", "byArtist": {"@type": "MusicGroup", "name": "Luxury Rydaz"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/3798428-Luxury-Rydaz-Be-About-Your-Paper"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Worldwide", "byArtist": {"@type": "MusicGroup", "name": "Major League"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11032474"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Sky Ballin", "byArtist": {"@type": "MusicGroup", "name": "O.G. Status"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/22194406-OG-Status-Sky-Ballin"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "Official 2000", "byArtist": {"@type": "MusicGroup", "name": "Dameon 1"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9207185-Dameon-1-2-Mr-Jones-12-Official-2000"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "Welcome To Joker Entertainment", "byArtist": {"@type": "MusicGroup", "name": "JE"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/10850588"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "Out Tha Park", "byArtist": {"@type": "MusicGroup", "name": "Major League"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/3790750"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "MoneyMakinMuzic", "byArtist": {"@type": "MusicGroup", "name": "MoneyMakerz"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/11801151-MoneyMakerz-MoneyMakinMuzic"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "Mob Hits", "byArtist": {"@type": "MusicGroup", "name": "Playboy Shane"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/7245797"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "When Game Unfoldz", "byArtist": {"@type": "MusicGroup", "name": "Project Dawgs"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/2008397-Project-Dawgs-When-Game-Unfoldz"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "Something 2 Ride To", "byArtist": {"@type": "MusicGroup", "name": "Samm-1"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/7815329-Samm-1-Something-2-Ride-To"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "It's All Under Control", "byArtist": {"@type": "MusicGroup", "name": "Swan M.A.G."}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/12062711-Swan-MAG-Its-All-Under-Control"}}, {"@type": "ListItem", "position": 34, "item": {"@type": "MusicAlbum", "name": "Under Surveillance", "byArtist": {"@type": "MusicGroup", "name": "1504"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/7330413"}}, {"@type": "ListItem", "position": 35, "item": {"@type": "MusicAlbum", "name": "Welcome To The Flatlands", "byArtist": {"@type": "MusicGroup", "name": "Flawless"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/7188993-Flawless-29-Welcome-To-The-Flatlands"}}, {"@type": "ListItem", "position": 36, "item": {"@type": "MusicAlbum", "name": "Bo$$ Hoggin", "byArtist": {"@type": "MusicGroup", "name": "J-Mac"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/3765954-J-Mac-3-Bo-Hoggin"}}, {"@type": "ListItem", "position": 37, "item": {"@type": "MusicAlbum", "name": "Rocktown's Finest", "byArtist": {"@type": "MusicGroup", "name": "Backyard Brothers"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/11792097-Backyard-Brothers-Rocktowns-Finest"}}, {"@type": "ListItem", "position": 38, "item": {"@type": "MusicAlbum", "name": "The Storm", "byArtist": {"@type": "MusicGroup", "name": "Flawless"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/11244760-Flawless-The-Storm"}}, {"@type": "ListItem", "position": 39, "item": {"@type": "MusicAlbum", "name": "Eastside Of The Mac", "byArtist": {"@type": "MusicGroup", "name": "8506 Related"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/12504711-8506-Related-Eastside-Of-The-Mac"}}, {"@type": "ListItem", "position": 40, "item": {"@type": "MusicAlbum", "name": "The Hood Has Raised Me", "byArtist": {"@type": "MusicGroup", "name": "Big Dank"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/3768208-Big-Dank-The-Hood-Has-Raised-Me"}}, {"@type": "ListItem", "position": 41, "item": {"@type": "MusicAlbum", "name": "Colorblind", "byArtist": {"@type": "MusicGroup", "name": "Down Low"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/8948274-Down-Low-4-Colorblind"}}, {"@type": "ListItem", "position": 42, "item": {"@type": "MusicAlbum", "name": "Ashes II Ashes, Dus 2 Dus", "byArtist": {"@type": "MusicGroup", "name": "Mossberg"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/23893289-Mossberg-Ashes-II-Ashes-Dus-2-Dus"}}, {"@type": "ListItem", "position": 43, "item": {"@type": "MusicAlbum", "name": "An Interview With Tha Playa", "byArtist": {"@type": "MusicGroup", "name": "Tenta B. And The R.P.T."}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/7419523-Tenta-B-And-Tha-RPT-An-Interview-With-Tha-Playa"}}, {"@type": "ListItem", "position": 44, "item": {"@type": "MusicAlbum", "name": "On The Run", "byArtist": {"@type": "MusicGroup", "name": "Victims Of Society"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/3768219-Victims-Of-Society-3-On-The-Run"}}, {"@type": "ListItem", "position": 45, "item": {"@type": "MusicAlbum", "name": "Let It Ride", "byArtist": {"@type": "MusicGroup", "name": "Melo-D"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/29120923-Melo-D-4-Let-It-Ride"}}, {"@type": "ListItem", "position": 46, "item": {"@type": "MusicAlbum", "name": "Product Of The Ghetto", "byArtist": {"@type": "MusicGroup", "name": "Rock The Benevolent MC"}, "datePublished": "1992", "sameAs": "https://www.discogs.com/release/24383060-Rock-The-Benevolent-MC-Product-Of-The-Ghetto"}}, {"@type": "ListItem", "position": 47, "item": {"@type": "MusicAlbum", "name": "#1", "byArtist": {"@type": "MusicGroup", "name": "Ron MC"}, "datePublished": "1992", "sameAs": "https://www.discogs.com/release/26908136-Ron-MC-1"}}]}]</script>
 </head>
 <body>
-<header>
-  <a class="brand" href="../../">◉ GANGSTA RAP ATLAS</a>
-  <nav class="bc"><a href="../../">ホーム</a> › <a href="../">地域一覧</a> › Little Rock</nav>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Little Rock のG-RAPディスコグラフィ</h1>
+    <p>Arkansas — 全47枚収録。Little Rock出身・拠点のアーティストによる
+    G-RAP/ギャングスタラップのディスコグラフィです。地図アプリの表示にはJavaScriptが必要です。</p>
+    <p><a href="/">GANGSTA RAP ATLAS ホーム</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th></tr></thead>
+      <tbody>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7781891-1504-Convicted-IV-Thought" rel="noopener nofollow">Convicted IV Thought</a></td><td>2015</td><td>1551 Entertainment</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7331408-1504-Paranoid-The-Mixed-Joint" rel="noopener nofollow">Paranoid: The Mixed Joint</a></td><td>2012</td><td>Blac Mafia Productions</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7334279-1504-The-DifferenceMaka-III-The-Final-Chapter" rel="noopener nofollow">The DifferenceMaka III The Final Chapter</a></td><td>2009</td><td>Blac Mafia Productions</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7333893" rel="noopener nofollow">The DifferenceMaka Pt 2</a></td><td>2008</td><td>Blac Mafia Productions</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7333838" rel="noopener nofollow">What They Talkin Bout????</a></td><td>2008</td><td>Blac Mafia Productions</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7334233" rel="noopener nofollow">The DifferenceMaka</a></td><td>2007</td><td>Blac Mafia Productions</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7774508" rel="noopener nofollow">MistaDrSwishaKilla</a></td><td>2005</td><td>Blac Mafia Productions</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7331335" rel="noopener nofollow">P.A.I.N. Powerfully Aggravated Irritated Niggaz</a></td><td>2005</td><td>Blac Mafia Productions</td></tr>
+<tr><td>Aleon</td><td><a href="https://www.discogs.com/release/12736016-Aleon-3-Out-On-Bail" rel="noopener nofollow">Out On Bail</a></td><td>2004</td><td>Twist-N-Blaze Inc.</td></tr>
+<tr><td>Dameon 1</td><td><a href="https://www.discogs.com/release/15944431-Dameon1-Dameon-1-Presents-Bangin-II-Ballin" rel="noopener nofollow">Dameon 1 Presents Bangin II Ballin</a></td><td>2004</td><td>Official 1 Records</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7771172" rel="noopener nofollow">Big Doggz Gotta Eat</a></td><td>2003</td><td>Blac Mafia Productions</td></tr>
+<tr><td>Ca$h</td><td><a href="https://www.discogs.com/release/26735171-Cah-Money-Makes-The-World-Go-Round-" rel="noopener nofollow">Money Makes The World Go Round </a></td><td>2003</td><td>On Tha Go Records</td></tr>
+<tr><td>Down Low</td><td><a href="https://www.discogs.com/release/14145563-Down-Low-Visions-Best-Of" rel="noopener nofollow">Visions Best Of</a></td><td>2003</td><td>Spectre Media</td></tr>
+<tr><td>Flawless</td><td><a href="https://www.discogs.com/release/32855541-Flawless-Above-The-Mic" rel="noopener nofollow">Above The Mic</a></td><td>2003</td><td>Off The Chain Productions</td></tr>
+<tr><td>Giovanni</td><td><a href="https://www.discogs.com/release/13264483-Giovanni-85-This-Game" rel="noopener nofollow">This Game</a></td><td>2003</td><td>Janglin&#x27; DisChords</td></tr>
+<tr><td>Official</td><td><a href="https://www.discogs.com/release/17876113-Official-8-Welcome-To-Little-Rock" rel="noopener nofollow">Welcome To Little Rock</a></td><td>2003</td><td>Official 1 Records</td></tr>
+<tr><td>Arkansas Boyz</td><td><a href="https://www.discogs.com/release/12445608-Arkansas-Boyz-Dommies-Spades-Dice" rel="noopener nofollow">Dommies, Spades &amp; Dice</a></td><td>2002</td><td>Arkansas Boyz Productions</td></tr>
+<tr><td>Breedz</td><td><a href="https://www.discogs.com/release/19611364-Breedz-Same-Thang-Different-Day" rel="noopener nofollow">Same Thang Different Day</a></td><td>2002</td><td>Breedz Productionz</td></tr>
+<tr><td>Lucky Rudy Poo</td><td><a href="https://www.discogs.com/release/13844043-Lucky-Rudy-Poo-Da-Great-Dane" rel="noopener nofollow">Da Great Dane</a></td><td>2002</td><td>Fi Records (3)</td></tr>
+<tr><td>Project Dawgs</td><td><a href="https://www.discogs.com/release/15327051-Project-Dawgs-Born-On-The-Battlefield" rel="noopener nofollow">Born On The Battlefield</a></td><td>2002</td><td>Dark Hollow Entertainment</td></tr>
+<tr><td>Ridah</td><td><a href="https://www.discogs.com/release/35589478-Ridah-2-Black-Tuesday-The-Day-The-Game-Stood-Still" rel="noopener nofollow">Black Tuesday... The Day The Game Stood Still</a></td><td>2002</td><td>Ridah Entertainment</td></tr>
+<tr><td>Durdy Jack Lex Ball</td><td><a href="https://www.discogs.com/release/4631570-Durdy-Jack-Lex-Ball-Comin-Thru" rel="noopener nofollow">Comin&#x27; Thru</a></td><td>2001</td><td>Pullin&#x27; It Entertainment</td></tr>
+<tr><td>Luxury Rydaz</td><td><a href="https://www.discogs.com/release/3798428-Luxury-Rydaz-Be-About-Your-Paper" rel="noopener nofollow">Be About Your Paper</a></td><td>2001</td><td>Dead Lock Records</td></tr>
+<tr><td>Major League</td><td><a href="https://www.discogs.com/release/11032474" rel="noopener nofollow">Worldwide</a></td><td>2001</td><td>Major League Entertainment</td></tr>
+<tr><td>O.G. Status</td><td><a href="https://www.discogs.com/release/22194406-OG-Status-Sky-Ballin" rel="noopener nofollow">Sky Ballin</a></td><td>2001</td><td>Takeyla&#x27;s Records</td></tr>
+<tr><td>Dameon 1</td><td><a href="https://www.discogs.com/release/9207185-Dameon-1-2-Mr-Jones-12-Official-2000" rel="noopener nofollow">Official 2000</a></td><td>2000</td><td>Official 1 Records</td></tr>
+<tr><td>JE</td><td><a href="https://www.discogs.com/release/10850588" rel="noopener nofollow">Welcome To Joker Entertainment</a></td><td>2000</td><td>Joker Entertainment</td></tr>
+<tr><td>Major League</td><td><a href="https://www.discogs.com/release/3790750" rel="noopener nofollow">Out Tha Park</a></td><td>2000</td><td>Major League Entertainment</td></tr>
+<tr><td>MoneyMakerz</td><td><a href="https://www.discogs.com/release/11801151-MoneyMakerz-MoneyMakinMuzic" rel="noopener nofollow">MoneyMakinMuzic</a></td><td>2000</td><td>Dinastee Records, Inc.</td></tr>
+<tr><td>Playboy Shane</td><td><a href="https://www.discogs.com/release/7245797" rel="noopener nofollow">Mob Hits</a></td><td>2000</td><td>Ball Hawg Records</td></tr>
+<tr><td>Project Dawgs</td><td><a href="https://www.discogs.com/release/2008397-Project-Dawgs-When-Game-Unfoldz" rel="noopener nofollow">When Game Unfoldz</a></td><td>2000</td><td>Dark Hollow Entertainment</td></tr>
+<tr><td>Samm-1</td><td><a href="https://www.discogs.com/release/7815329-Samm-1-Something-2-Ride-To" rel="noopener nofollow">Something 2 Ride To</a></td><td>2000</td><td>Mac City Records</td></tr>
+<tr><td>Swan M.A.G.</td><td><a href="https://www.discogs.com/release/12062711-Swan-MAG-Its-All-Under-Control" rel="noopener nofollow">It&#x27;s All Under Control</a></td><td>2000</td><td>SWAN</td></tr>
+<tr><td>1504</td><td><a href="https://www.discogs.com/release/7330413" rel="noopener nofollow">Under Surveillance</a></td><td>1999</td><td>D.T.O. Records</td></tr>
+<tr><td>Flawless</td><td><a href="https://www.discogs.com/release/7188993-Flawless-29-Welcome-To-The-Flatlands" rel="noopener nofollow">Welcome To The Flatlands</a></td><td>1998</td><td>Baugh Entertainment</td></tr>
+<tr><td>J-Mac</td><td><a href="https://www.discogs.com/release/3765954-J-Mac-3-Bo-Hoggin" rel="noopener nofollow">Bo$$ Hoggin</a></td><td>1998</td><td>Pup Dog Records</td></tr>
+<tr><td>Backyard Brothers</td><td><a href="https://www.discogs.com/release/11792097-Backyard-Brothers-Rocktowns-Finest" rel="noopener nofollow">Rocktown&#x27;s Finest</a></td><td>1997</td><td>Backyard Productions (2)</td></tr>
+<tr><td>Flawless</td><td><a href="https://www.discogs.com/release/11244760-Flawless-The-Storm" rel="noopener nofollow">The Storm</a></td><td>1997</td><td>Not On Label</td></tr>
+<tr><td>8506 Related</td><td><a href="https://www.discogs.com/release/12504711-8506-Related-Eastside-Of-The-Mac" rel="noopener nofollow">Eastside Of The Mac</a></td><td>1996</td><td>8506 Related</td></tr>
+<tr><td>Big Dank</td><td><a href="https://www.discogs.com/release/3768208-Big-Dank-The-Hood-Has-Raised-Me" rel="noopener nofollow">The Hood Has Raised Me</a></td><td>1996</td><td>Pup Dog Records</td></tr>
+<tr><td>Down Low</td><td><a href="https://www.discogs.com/release/8948274-Down-Low-4-Colorblind" rel="noopener nofollow">Colorblind</a></td><td>1996</td><td>2 Tha Max Music</td></tr>
+<tr><td>Mossberg</td><td><a href="https://www.discogs.com/release/23893289-Mossberg-Ashes-II-Ashes-Dus-2-Dus" rel="noopener nofollow">Ashes II Ashes, Dus 2 Dus</a></td><td>1995</td><td>Scoop Records (2)</td></tr>
+<tr><td>Tenta B. And The R.P.T.</td><td><a href="https://www.discogs.com/release/7419523-Tenta-B-And-Tha-RPT-An-Interview-With-Tha-Playa" rel="noopener nofollow">An Interview With Tha Playa</a></td><td>1995</td><td>Quzic Entertainment</td></tr>
+<tr><td>Victims Of Society</td><td><a href="https://www.discogs.com/release/3768219-Victims-Of-Society-3-On-The-Run" rel="noopener nofollow">On The Run</a></td><td>1995</td><td>Pup Dog Records</td></tr>
+<tr><td>Melo-D</td><td><a href="https://www.discogs.com/release/29120923-Melo-D-4-Let-It-Ride" rel="noopener nofollow">Let It Ride</a></td><td>1993</td><td>Not On Label (Melo-D (4) Self-released)</td></tr>
+<tr><td>Rock The Benevolent MC</td><td><a href="https://www.discogs.com/release/24383060-Rock-The-Benevolent-MC-Product-Of-The-Ghetto" rel="noopener nofollow">Product Of The Ghetto</a></td><td>1992</td><td>Not On Label</td></tr>
+<tr><td>Ron MC</td><td><a href="https://www.discogs.com/release/26908136-Ron-MC-1" rel="noopener nofollow">#1</a></td><td>1992</td><td>Not On Label</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
 </header>
-<main>
-  <h1>Little Rock のG-RAPディスコグラフィ</h1>
-  <p class="area">Arkansas — 全47枚収録</p>
-  <p>Little Rock(Arkansas)出身・拠点のアーティストによるG-RAP/ギャングスタラップのディスコグラフィ。
-  インタラクティブ地図では試聴・ジャケ写・スタンプ検索が使えます。</p>
-  <a class="cta" href="../../#r/littlerock">🗺 地図でこの地域を開く</a>
-  <table>
-    <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th><th></th></tr></thead>
-    <tbody>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7781891-1504-Convicted-IV-Thought" rel="noopener nofollow" target="_blank">Convicted IV Thought</a></td><td>2015</td><td>1551 Entertainment</td><td><a href="../../#r/littlerock/3782">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7331408-1504-Paranoid-The-Mixed-Joint" rel="noopener nofollow" target="_blank">Paranoid: The Mixed Joint</a></td><td>2012</td><td>Blac Mafia Productions</td><td><a href="../../#r/littlerock/3660">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7334279-1504-The-DifferenceMaka-III-The-Final-Chapter" rel="noopener nofollow" target="_blank">The DifferenceMaka III The Final Chapter</a></td><td>2009</td><td>Blac Mafia Productions</td><td><a href="../../#r/littlerock/3374">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7333893" rel="noopener nofollow" target="_blank">The DifferenceMaka Pt 2</a></td><td>2008</td><td>Blac Mafia Productions</td><td><a href="../../#r/littlerock/2859">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7333838" rel="noopener nofollow" target="_blank">What They Talkin Bout????</a></td><td>2008</td><td>Blac Mafia Productions</td><td><a href="../../#r/littlerock/2854">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7334233" rel="noopener nofollow" target="_blank">The DifferenceMaka</a></td><td>2007</td><td>Blac Mafia Productions</td><td><a href="../../#r/littlerock/2835">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7774508" rel="noopener nofollow" target="_blank">MistaDrSwishaKilla</a></td><td>2005</td><td>Blac Mafia Productions</td><td><a href="../../#r/littlerock/2582">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7331335" rel="noopener nofollow" target="_blank">P.A.I.N. Powerfully Aggravated Irritated Niggaz</a></td><td>2005</td><td>Blac Mafia Productions</td><td><a href="../../#r/littlerock/2571">地図で開く</a></td></tr>
-<tr><td>Aleon</td><td><a href="https://www.discogs.com/release/12736016-Aleon-3-Out-On-Bail" rel="noopener nofollow" target="_blank">Out On Bail</a></td><td>2004</td><td>Twist-N-Blaze Inc.</td><td><a href="../../#r/littlerock/1005550">地図で開く</a></td></tr>
-<tr><td>Dameon 1</td><td><a href="https://www.discogs.com/release/15944431-Dameon1-Dameon-1-Presents-Bangin-II-Ballin" rel="noopener nofollow" target="_blank">Dameon 1 Presents Bangin II Ballin</a></td><td>2004</td><td>Official 1 Records</td><td><a href="../../#r/littlerock/1003063">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7771172" rel="noopener nofollow" target="_blank">Big Doggz Gotta Eat</a></td><td>2003</td><td>Blac Mafia Productions</td><td><a href="../../#r/littlerock/2009">地図で開く</a></td></tr>
-<tr><td>Ca$h</td><td><a href="https://www.discogs.com/release/26735171-Cah-Money-Makes-The-World-Go-Round-" rel="noopener nofollow" target="_blank">Money Makes The World Go Round </a></td><td>2003</td><td>On Tha Go Records</td><td><a href="../../#r/littlerock/1005087">地図で開く</a></td></tr>
-<tr><td>Down Low</td><td><a href="https://www.discogs.com/release/14145563-Down-Low-Visions-Best-Of" rel="noopener nofollow" target="_blank">Visions Best Of</a></td><td>2003</td><td>Spectre Media</td><td><a href="../../#r/littlerock/1001441">地図で開く</a></td></tr>
-<tr><td>Flawless</td><td><a href="https://www.discogs.com/release/32855541-Flawless-Above-The-Mic" rel="noopener nofollow" target="_blank">Above The Mic</a></td><td>2003</td><td>Off The Chain Productions</td><td><a href="../../#r/littlerock/1001820">地図で開く</a></td></tr>
-<tr><td>Giovanni</td><td><a href="https://www.discogs.com/release/13264483-Giovanni-85-This-Game" rel="noopener nofollow" target="_blank">This Game</a></td><td>2003</td><td>Janglin&#x27; DisChords</td><td><a href="../../#r/littlerock/1005207">地図で開く</a></td></tr>
-<tr><td>Official</td><td><a href="https://www.discogs.com/release/17876113-Official-8-Welcome-To-Little-Rock" rel="noopener nofollow" target="_blank">Welcome To Little Rock</a></td><td>2003</td><td>Official 1 Records</td><td><a href="../../#r/littlerock/1005332">地図で開く</a></td></tr>
-<tr><td>Arkansas Boyz</td><td><a href="https://www.discogs.com/release/12445608-Arkansas-Boyz-Dommies-Spades-Dice" rel="noopener nofollow" target="_blank">Dommies, Spades &amp; Dice</a></td><td>2002</td><td>Arkansas Boyz Productions</td><td><a href="../../#r/littlerock/1004434">地図で開く</a></td></tr>
-<tr><td>Breedz</td><td><a href="https://www.discogs.com/release/19611364-Breedz-Same-Thang-Different-Day" rel="noopener nofollow" target="_blank">Same Thang Different Day</a></td><td>2002</td><td>Breedz Productionz</td><td><a href="../../#r/littlerock/1004472">地図で開く</a></td></tr>
-<tr><td>Lucky Rudy Poo</td><td><a href="https://www.discogs.com/release/13844043-Lucky-Rudy-Poo-Da-Great-Dane" rel="noopener nofollow" target="_blank">Da Great Dane</a></td><td>2002</td><td>Fi Records (3)</td><td><a href="../../#r/littlerock/1004691">地図で開く</a></td></tr>
-<tr><td>Project Dawgs</td><td><a href="https://www.discogs.com/release/15327051-Project-Dawgs-Born-On-The-Battlefield" rel="noopener nofollow" target="_blank">Born On The Battlefield</a></td><td>2002</td><td>Dark Hollow Entertainment</td><td><a href="../../#r/littlerock/1003129">地図で開く</a></td></tr>
-<tr><td>Ridah</td><td><a href="https://www.discogs.com/release/35589478-Ridah-2-Black-Tuesday-The-Day-The-Game-Stood-Still" rel="noopener nofollow" target="_blank">Black Tuesday... The Day The Game Stood Still</a></td><td>2002</td><td>Ridah Entertainment</td><td><a href="../../#r/littlerock/1004797">地図で開く</a></td></tr>
-<tr><td>Durdy Jack Lex Ball</td><td><a href="https://www.discogs.com/release/4631570-Durdy-Jack-Lex-Ball-Comin-Thru" rel="noopener nofollow" target="_blank">Comin&#x27; Thru</a></td><td>2001</td><td>Pullin&#x27; It Entertainment</td><td><a href="../../#r/littlerock/1003921">地図で開く</a></td></tr>
-<tr><td>Luxury Rydaz</td><td><a href="https://www.discogs.com/release/3798428-Luxury-Rydaz-Be-About-Your-Paper" rel="noopener nofollow" target="_blank">Be About Your Paper</a></td><td>2001</td><td>Dead Lock Records</td><td><a href="../../#r/littlerock/1004024">地図で開く</a></td></tr>
-<tr><td>Major League</td><td><a href="https://www.discogs.com/release/11032474" rel="noopener nofollow" target="_blank">Worldwide</a></td><td>2001</td><td>Major League Entertainment</td><td><a href="../../#r/littlerock/1448">地図で開く</a></td></tr>
-<tr><td>O.G. Status</td><td><a href="https://www.discogs.com/release/22194406-OG-Status-Sky-Ballin" rel="noopener nofollow" target="_blank">Sky Ballin</a></td><td>2001</td><td>Takeyla&#x27;s Records</td><td><a href="../../#r/littlerock/1004077">地図で開く</a></td></tr>
-<tr><td>Dameon 1</td><td><a href="https://www.discogs.com/release/9207185-Dameon-1-2-Mr-Jones-12-Official-2000" rel="noopener nofollow" target="_blank">Official 2000</a></td><td>2000</td><td>Official 1 Records</td><td><a href="../../#r/littlerock/1003062">地図で開く</a></td></tr>
-<tr><td>JE</td><td><a href="https://www.discogs.com/release/10850588" rel="noopener nofollow" target="_blank">Welcome To Joker Entertainment</a></td><td>2000</td><td>Joker Entertainment</td><td><a href="../../#r/littlerock/1451">地図で開く</a></td></tr>
-<tr><td>Major League</td><td><a href="https://www.discogs.com/release/3790750" rel="noopener nofollow" target="_blank">Out Tha Park</a></td><td>2000</td><td>Major League Entertainment</td><td><a href="../../#r/littlerock/1449">地図で開く</a></td></tr>
-<tr><td>MoneyMakerz</td><td><a href="https://www.discogs.com/release/11801151-MoneyMakerz-MoneyMakinMuzic" rel="noopener nofollow" target="_blank">MoneyMakinMuzic</a></td><td>2000</td><td>Dinastee Records, Inc.</td><td><a href="../../#r/littlerock/1003433">地図で開く</a></td></tr>
-<tr><td>Playboy Shane</td><td><a href="https://www.discogs.com/release/7245797" rel="noopener nofollow" target="_blank">Mob Hits</a></td><td>2000</td><td>Ball Hawg Records</td><td><a href="../../#r/littlerock/1450">地図で開く</a></td></tr>
-<tr><td>Project Dawgs</td><td><a href="https://www.discogs.com/release/2008397-Project-Dawgs-When-Game-Unfoldz" rel="noopener nofollow" target="_blank">When Game Unfoldz</a></td><td>2000</td><td>Dark Hollow Entertainment</td><td><a href="../../#r/littlerock/1003128">地図で開く</a></td></tr>
-<tr><td>Samm-1</td><td><a href="https://www.discogs.com/release/7815329-Samm-1-Something-2-Ride-To" rel="noopener nofollow" target="_blank">Something 2 Ride To</a></td><td>2000</td><td>Mac City Records</td><td><a href="../../#r/littlerock/1003493">地図で開く</a></td></tr>
-<tr><td>Swan M.A.G.</td><td><a href="https://www.discogs.com/release/12062711-Swan-MAG-Its-All-Under-Control" rel="noopener nofollow" target="_blank">It&#x27;s All Under Control</a></td><td>2000</td><td>SWAN</td><td><a href="../../#r/littlerock/1003535">地図で開く</a></td></tr>
-<tr><td>1504</td><td><a href="https://www.discogs.com/release/7330413" rel="noopener nofollow" target="_blank">Under Surveillance</a></td><td>1999</td><td>D.T.O. Records</td><td><a href="../../#r/littlerock/2323">地図で開く</a></td></tr>
-<tr><td>Flawless</td><td><a href="https://www.discogs.com/release/7188993-Flawless-29-Welcome-To-The-Flatlands" rel="noopener nofollow" target="_blank">Welcome To The Flatlands</a></td><td>1998</td><td>Baugh Entertainment</td><td><a href="../../#r/littlerock/1001819">地図で開く</a></td></tr>
-<tr><td>J-Mac</td><td><a href="https://www.discogs.com/release/3765954-J-Mac-3-Bo-Hoggin" rel="noopener nofollow" target="_blank">Bo$$ Hoggin</a></td><td>1998</td><td>Pup Dog Records</td><td><a href="../../#r/littlerock/1002587">地図で開く</a></td></tr>
-<tr><td>Backyard Brothers</td><td><a href="https://www.discogs.com/release/11792097-Backyard-Brothers-Rocktowns-Finest" rel="noopener nofollow" target="_blank">Rocktown&#x27;s Finest</a></td><td>1997</td><td>Backyard Productions (2)</td><td><a href="../../#r/littlerock/1002016">地図で開く</a></td></tr>
-<tr><td>Flawless</td><td><a href="https://www.discogs.com/release/11244760-Flawless-The-Storm" rel="noopener nofollow" target="_blank">The Storm</a></td><td>1997</td><td>Not On Label</td><td><a href="../../#r/littlerock/1001818">地図で開く</a></td></tr>
-<tr><td>8506 Related</td><td><a href="https://www.discogs.com/release/12504711-8506-Related-Eastside-Of-The-Mac" rel="noopener nofollow" target="_blank">Eastside Of The Mac</a></td><td>1996</td><td>8506 Related</td><td><a href="../../#r/littlerock/1001515">地図で開く</a></td></tr>
-<tr><td>Big Dank</td><td><a href="https://www.discogs.com/release/3768208-Big-Dank-The-Hood-Has-Raised-Me" rel="noopener nofollow" target="_blank">The Hood Has Raised Me</a></td><td>1996</td><td>Pup Dog Records</td><td><a href="../../#r/littlerock/1001525">地図で開く</a></td></tr>
-<tr><td>Down Low</td><td><a href="https://www.discogs.com/release/8948274-Down-Low-4-Colorblind" rel="noopener nofollow" target="_blank">Colorblind</a></td><td>1996</td><td>2 Tha Max Music</td><td><a href="../../#r/littlerock/1001440">地図で開く</a></td></tr>
-<tr><td>Mossberg</td><td><a href="https://www.discogs.com/release/23893289-Mossberg-Ashes-II-Ashes-Dus-2-Dus" rel="noopener nofollow" target="_blank">Ashes II Ashes, Dus 2 Dus</a></td><td>1995</td><td>Scoop Records (2)</td><td><a href="../../#r/littlerock/1001205">地図で開く</a></td></tr>
-<tr><td>Tenta B. And The R.P.T.</td><td><a href="https://www.discogs.com/release/7419523-Tenta-B-And-Tha-RPT-An-Interview-With-Tha-Playa" rel="noopener nofollow" target="_blank">An Interview With Tha Playa</a></td><td>1995</td><td>Quzic Entertainment</td><td><a href="../../#r/littlerock/1001243">地図で開く</a></td></tr>
-<tr><td>Victims Of Society</td><td><a href="https://www.discogs.com/release/3768219-Victims-Of-Society-3-On-The-Run" rel="noopener nofollow" target="_blank">On The Run</a></td><td>1995</td><td>Pup Dog Records</td><td><a href="../../#r/littlerock/1001260">地図で開く</a></td></tr>
-<tr><td>Melo-D</td><td><a href="https://www.discogs.com/release/29120923-Melo-D-4-Let-It-Ride" rel="noopener nofollow" target="_blank">Let It Ride</a></td><td>1993</td><td>Not On Label (Melo-D (4) Self-released)</td><td><a href="../../#r/littlerock/1000486">地図で開く</a></td></tr>
-<tr><td>Rock The Benevolent MC</td><td><a href="https://www.discogs.com/release/24383060-Rock-The-Benevolent-MC-Product-Of-The-Ghetto" rel="noopener nofollow" target="_blank">Product Of The Ghetto</a></td><td>1992</td><td>Not On Label</td><td><a href="../../#r/littlerock/1000296">地図で開く</a></td></tr>
-<tr><td>Ron MC</td><td><a href="https://www.discogs.com/release/26908136-Ron-MC-1" rel="noopener nofollow" target="_blank">#1</a></td><td>1992</td><td>Not On Label</td><td><a href="../../#r/littlerock/1000297">地図で開く</a></td></tr>
-    </tbody>
-  </table>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
 </main>
-<footer>© GANGSTA RAP ATLAS — <a href="../../">地図から掘る、地域別G-RAPディスコグラフィ</a> ／ <a href="../">全地域一覧</a></footer>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
 </body>
 </html>

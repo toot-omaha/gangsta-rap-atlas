@@ -2,6 +2,65 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BostonのG-RAPディスコグラフィ 25枚｜GANGSTA RAP ATLAS</title>
 <meta name="description" content="Boston(Massachusetts)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全25枚。Michaelangelo、Temporary Insanity、Benzino、Psycho、Big Bear、Kevlar Omega、Pistolaほか。試聴・ジャケ写は地図から。">
@@ -13,70 +72,174 @@
 <meta property="og:url" content="https://g.rap-atlas.com/r/boston/">
 <meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary">
-<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon/icon-32.png">
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "地域一覧", "item": "https://g.rap-atlas.com/r/"}, {"@type": "ListItem", "position": 3, "name": "Boston", "item": "https://g.rap-atlas.com/r/boston/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "BostonのG-RAPディスコグラフィ", "numberOfItems": 25, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "No Face, No Case ", "byArtist": {"@type": "MusicGroup", "name": "Michaelangelo"}, "datePublished": "2024", "sameAs": "https://www.discogs.com/release/30774309-Michaelangelo-12-No-Face-No-Case-"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Bitchez Never Learn", "byArtist": {"@type": "MusicGroup", "name": "Temporary Insanity"}, "datePublished": "2010", "sameAs": "https://www.discogs.com/release/3613638-Temporary-Insanity-Bitchez-Never-Learn"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "The Antidote", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/1315452-Benzino-The-Antidote"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "The End Of Time", "byArtist": {"@type": "MusicGroup", "name": "Psycho"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/10899525-Psycho-The-End-Of-Time"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Arch Nemesis", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/1407328"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Travel Infinity", "byArtist": {"@type": "MusicGroup", "name": "Big Bear"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14515516"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "Streetz-R-Talking", "byArtist": {"@type": "MusicGroup", "name": "Kevlar Omega"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/10937461-Kevlar-Omega-Streetz-R-Talking"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Pistolplay", "byArtist": {"@type": "MusicGroup", "name": "Pistola"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/15769322"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Redemption", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/24435323"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "What's Money If Ur Mind's Empty", "byArtist": {"@type": "MusicGroup", "name": "Loose Notes"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/3909020-Loose-Notes-Whats-Money-If-Ur-Minds-Empty"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Galinha", "byArtist": {"@type": "MusicGroup", "name": "Sandro G"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/8483420-Sandro-G-Galinha"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "The Benzino Remix Project", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/1460082-Benzino-The-Benzino-Remix-Project"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "The Audio Biography 1st Edition", "byArtist": {"@type": "MusicGroup", "name": "Big Smo"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/11367925-Big-Smo-2-The-Audio-Biography-1st-Edition"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Street Watch", "byArtist": {"@type": "MusicGroup", "name": "Etelligent"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/35554642-Etelligent-and-Loose-Notes-Street-Watch"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Sandro G ", "byArtist": {"@type": "MusicGroup", "name": "Sandro G"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/16121981-Sandro-G-Sandro-G-"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "The Benzino Project", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/1639184-Benzino-The-Benzino-Project"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Declaration Of Independence", "byArtist": {"@type": "MusicGroup", "name": "Havok House"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/14424918-Havok-House-Declaration-Of-Independence"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "The Compilation Album Vol. 1", "byArtist": {"@type": "MusicGroup", "name": "Rushya"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/15747082-Rushya-2-Phastlife-Dynasty-The-Compilation-Album-Vol-1"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Boston, Massacre", "byArtist": {"@type": "MusicGroup", "name": "The Bringa"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/12388569-The-Bringa-Boston-Massacre"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Corrections", "byArtist": {"@type": "MusicGroup", "name": "Diller"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/14853931"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Doomsday: Forever RSO", "byArtist": {"@type": "MusicGroup", "name": "The Almighty RSO"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/787643-The-Almighty-RSO-Doomsday-Forever-RSO"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "In Tha Company Of Killaz", "byArtist": {"@type": "MusicGroup", "name": "Wiseguys"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/1650728-Wiseguys-In-Tha-Company-Of-Killaz"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Sick Of Da Bullshit!", "byArtist": {"@type": "MusicGroup", "name": "Natives In Black"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/5305011-Natives-In-Black-Sick-Of-Da-Bullshit"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Reckless", "byArtist": {"@type": "MusicGroup", "name": "Reckless Abanden"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/4792283-Reckless-Abanden-Reckless"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Scientifik-LP", "byArtist": {"@type": "MusicGroup", "name": "Scientifik"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/11980524-Scientifik-Scientifik-LP"}}]}]</script>
-<style>body{margin:0;background:#e8e4d9;color:#14120f;font-family:'Helvetica Neue',Helvetica,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;line-height:1.6}
-header{background:#14120f;color:#e8e4d9;padding:18px 20px;border-bottom:3px solid #c1272d}
-header a{color:#e8e4d9;text-decoration:none}
-header .brand{font-weight:800;letter-spacing:.14em;font-size:15px}
-main{max-width:860px;margin:0 auto;padding:20px 16px 56px}
-h1{font-size:22px;margin:14px 0 4px}
-.area{color:#4a453c;margin:0 0 14px;font-size:14px}
-.cta{display:inline-block;background:#c1272d;color:#fff;padding:9px 16px;border-radius:3px;text-decoration:none;font-weight:700;margin:8px 0 20px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border-bottom:1px solid #cfc9ba;padding:7px 8px;text-align:left;vertical-align:top}
-th{background:#dcd6c6;font-size:12px;letter-spacing:.08em}
-td a{color:#8a1f24}
-.regions li{margin:3px 0}
-.regions a{color:#8a1f24}
-.grp{margin:18px 0 6px;font-size:15px;border-left:4px solid #c1272d;padding-left:8px}
-footer{max-width:860px;margin:0 auto;padding:18px 16px;color:#4a453c;font-size:12px;border-top:1px solid #cfc9ba}
-nav.bc{font-size:12px;color:#4a453c;margin-top:6px}
-nav.bc a{color:#8a1f24}</style>
+<meta name="twitter:title" content="BostonのG-RAPディスコグラフィ 25枚｜GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Boston(Massachusetts)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全25枚。Michaelangelo、Temporary Insanity、Benzino、Psycho、Big Bear、Kevlar Omega、Pistolaほか。試聴・ジャケ写は地図から。">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Boston", "item": "https://g.rap-atlas.com/r/boston/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "BostonのG-RAPディスコグラフィ", "numberOfItems": 25, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "No Face, No Case ", "byArtist": {"@type": "MusicGroup", "name": "Michaelangelo"}, "datePublished": "2024", "sameAs": "https://www.discogs.com/release/30774309-Michaelangelo-12-No-Face-No-Case-"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Bitchez Never Learn", "byArtist": {"@type": "MusicGroup", "name": "Temporary Insanity"}, "datePublished": "2010", "sameAs": "https://www.discogs.com/release/3613638-Temporary-Insanity-Bitchez-Never-Learn"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "The Antidote", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/1315452-Benzino-The-Antidote"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "The End Of Time", "byArtist": {"@type": "MusicGroup", "name": "Psycho"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/10899525-Psycho-The-End-Of-Time"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Arch Nemesis", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/1407328"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Travel Infinity", "byArtist": {"@type": "MusicGroup", "name": "Big Bear"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14515516"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "Streetz-R-Talking", "byArtist": {"@type": "MusicGroup", "name": "Kevlar Omega"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/10937461-Kevlar-Omega-Streetz-R-Talking"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Pistolplay", "byArtist": {"@type": "MusicGroup", "name": "Pistola"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/15769322"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Redemption", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/24435323"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "What's Money If Ur Mind's Empty", "byArtist": {"@type": "MusicGroup", "name": "Loose Notes"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/3909020-Loose-Notes-Whats-Money-If-Ur-Minds-Empty"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Galinha", "byArtist": {"@type": "MusicGroup", "name": "Sandro G"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/8483420-Sandro-G-Galinha"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "The Benzino Remix Project", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/1460082-Benzino-The-Benzino-Remix-Project"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "The Audio Biography 1st Edition", "byArtist": {"@type": "MusicGroup", "name": "Big Smo"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/11367925-Big-Smo-2-The-Audio-Biography-1st-Edition"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Street Watch", "byArtist": {"@type": "MusicGroup", "name": "Etelligent"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/35554642-Etelligent-and-Loose-Notes-Street-Watch"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Sandro G ", "byArtist": {"@type": "MusicGroup", "name": "Sandro G"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/16121981-Sandro-G-Sandro-G-"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "The Benzino Project", "byArtist": {"@type": "MusicGroup", "name": "Benzino"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/1639184-Benzino-The-Benzino-Project"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Declaration Of Independence", "byArtist": {"@type": "MusicGroup", "name": "Havok House"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/14424918-Havok-House-Declaration-Of-Independence"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "The Compilation Album Vol. 1", "byArtist": {"@type": "MusicGroup", "name": "Rushya"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/15747082-Rushya-2-Phastlife-Dynasty-The-Compilation-Album-Vol-1"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Boston, Massacre", "byArtist": {"@type": "MusicGroup", "name": "The Bringa"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/12388569-The-Bringa-Boston-Massacre"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Corrections", "byArtist": {"@type": "MusicGroup", "name": "Diller"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/14853931"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Doomsday: Forever RSO", "byArtist": {"@type": "MusicGroup", "name": "The Almighty RSO"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/787643-The-Almighty-RSO-Doomsday-Forever-RSO"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "In Tha Company Of Killaz", "byArtist": {"@type": "MusicGroup", "name": "Wiseguys"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/1650728-Wiseguys-In-Tha-Company-Of-Killaz"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Sick Of Da Bullshit!", "byArtist": {"@type": "MusicGroup", "name": "Natives In Black"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/5305011-Natives-In-Black-Sick-Of-Da-Bullshit"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Reckless", "byArtist": {"@type": "MusicGroup", "name": "Reckless Abanden"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/4792283-Reckless-Abanden-Reckless"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Scientifik-LP", "byArtist": {"@type": "MusicGroup", "name": "Scientifik"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/11980524-Scientifik-Scientifik-LP"}}]}]</script>
 </head>
 <body>
-<header>
-  <a class="brand" href="../../">◉ GANGSTA RAP ATLAS</a>
-  <nav class="bc"><a href="../../">ホーム</a> › <a href="../">地域一覧</a> › Boston</nav>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Boston のG-RAPディスコグラフィ</h1>
+    <p>Massachusetts — 全25枚収録。Boston出身・拠点のアーティストによる
+    G-RAP/ギャングスタラップのディスコグラフィです。地図アプリの表示にはJavaScriptが必要です。</p>
+    <p><a href="/">GANGSTA RAP ATLAS ホーム</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th></tr></thead>
+      <tbody>
+<tr><td>Michaelangelo</td><td><a href="https://www.discogs.com/release/30774309-Michaelangelo-12-No-Face-No-Case-" rel="noopener nofollow">No Face, No Case </a></td><td>2024</td><td>RRC Music Co.</td></tr>
+<tr><td>Temporary Insanity</td><td><a href="https://www.discogs.com/release/3613638-Temporary-Insanity-Bitchez-Never-Learn" rel="noopener nofollow">Bitchez Never Learn</a></td><td>2010</td><td>Darkroom Studios</td></tr>
+<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/1315452-Benzino-The-Antidote" rel="noopener nofollow">The Antidote</a></td><td>2007</td><td>7th Floor Music</td></tr>
+<tr><td>Psycho</td><td><a href="https://www.discogs.com/release/10899525-Psycho-The-End-Of-Time" rel="noopener nofollow">The End Of Time</a></td><td>2007</td><td>Hustlhard Records</td></tr>
+<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/1407328" rel="noopener nofollow">Arch Nemesis</a></td><td>2004</td><td>ZNO Records</td></tr>
+<tr><td>Big Bear</td><td><a href="https://www.discogs.com/release/14515516" rel="noopener nofollow">Travel Infinity</a></td><td>2004</td><td>Hi-Life Productions</td></tr>
+<tr><td>Kevlar Omega</td><td><a href="https://www.discogs.com/release/10937461-Kevlar-Omega-Streetz-R-Talking" rel="noopener nofollow">Streetz-R-Talking</a></td><td>2004</td><td>Piratez Records</td></tr>
+<tr><td>Pistola</td><td><a href="https://www.discogs.com/release/15769322" rel="noopener nofollow">Pistolplay</a></td><td>2004</td><td>Outlandish Records</td></tr>
+<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/24435323" rel="noopener nofollow">Redemption</a></td><td>2003</td><td>Elektra</td></tr>
+<tr><td>Loose Notes</td><td><a href="https://www.discogs.com/release/3909020-Loose-Notes-Whats-Money-If-Ur-Minds-Empty" rel="noopener nofollow">What&#x27;s Money If Ur Mind&#x27;s Empty</a></td><td>2003</td><td>It Bees Like That Entertainment, Inc.</td></tr>
+<tr><td>Sandro G</td><td><a href="https://www.discogs.com/release/8483420-Sandro-G-Galinha" rel="noopener nofollow">Galinha</a></td><td>2003</td><td>NZ Produções</td></tr>
+<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/1460082-Benzino-The-Benzino-Remix-Project" rel="noopener nofollow">The Benzino Remix Project</a></td><td>2002</td><td>Surrender Records (4)</td></tr>
+<tr><td>Big Smo</td><td><a href="https://www.discogs.com/release/11367925-Big-Smo-2-The-Audio-Biography-1st-Edition" rel="noopener nofollow">The Audio Biography 1st Edition</a></td><td>2002</td><td>Smomoney Records</td></tr>
+<tr><td>Etelligent</td><td><a href="https://www.discogs.com/release/35554642-Etelligent-and-Loose-Notes-Street-Watch" rel="noopener nofollow">Street Watch</a></td><td>2002</td><td>It Bees Like That Entertainment, Inc.</td></tr>
+<tr><td>Sandro G</td><td><a href="https://www.discogs.com/release/16121981-Sandro-G-Sandro-G-" rel="noopener nofollow">Sandro G </a></td><td>2002</td><td>Indecent Music</td></tr>
+<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/1639184-Benzino-The-Benzino-Project" rel="noopener nofollow">The Benzino Project</a></td><td>2001</td><td>Motown</td></tr>
+<tr><td>Havok House</td><td><a href="https://www.discogs.com/release/14424918-Havok-House-Declaration-Of-Independence" rel="noopener nofollow">Declaration Of Independence</a></td><td>2001</td><td>GetALife Entertainment Inc.</td></tr>
+<tr><td>Rushya</td><td><a href="https://www.discogs.com/release/15747082-Rushya-2-Phastlife-Dynasty-The-Compilation-Album-Vol-1" rel="noopener nofollow">The Compilation Album Vol. 1</a></td><td>2001</td><td>XVIII Entertainment</td></tr>
+<tr><td>The Bringa</td><td><a href="https://www.discogs.com/release/12388569-The-Bringa-Boston-Massacre" rel="noopener nofollow">Boston, Massacre</a></td><td>1998</td><td>Not On Label</td></tr>
+<tr><td>Diller</td><td><a href="https://www.discogs.com/release/14853931" rel="noopener nofollow">Corrections</a></td><td>1997</td><td>On Side Enterprizes</td></tr>
+<tr><td>The Almighty RSO</td><td><a href="https://www.discogs.com/release/787643-The-Almighty-RSO-Doomsday-Forever-RSO" rel="noopener nofollow">Doomsday: Forever RSO</a></td><td>1996</td><td>Rap-A-Lot Records</td></tr>
+<tr><td>Wiseguys</td><td><a href="https://www.discogs.com/release/1650728-Wiseguys-In-Tha-Company-Of-Killaz" rel="noopener nofollow">In Tha Company Of Killaz</a></td><td>1996</td><td>Surrender Records (4)</td></tr>
+<tr><td>Natives In Black</td><td><a href="https://www.discogs.com/release/5305011-Natives-In-Black-Sick-Of-Da-Bullshit" rel="noopener nofollow">Sick Of Da Bullshit!</a></td><td>1994</td><td>Funky Fresh Records (3)</td></tr>
+<tr><td>Reckless Abanden</td><td><a href="https://www.discogs.com/release/4792283-Reckless-Abanden-Reckless" rel="noopener nofollow">Reckless</a></td><td>1993</td><td>CUSH Records</td></tr>
+<tr><td>Scientifik</td><td><a href="https://www.discogs.com/release/11980524-Scientifik-Scientifik-LP" rel="noopener nofollow">Scientifik-LP</a></td><td>1993</td><td>Chemistry Records LTD</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
 </header>
-<main>
-  <h1>Boston のG-RAPディスコグラフィ</h1>
-  <p class="area">Massachusetts — 全25枚収録</p>
-  <p>Boston(Massachusetts)出身・拠点のアーティストによるG-RAP/ギャングスタラップのディスコグラフィ。
-  インタラクティブ地図では試聴・ジャケ写・スタンプ検索が使えます。</p>
-  <a class="cta" href="../../#r/boston">🗺 地図でこの地域を開く</a>
-  <table>
-    <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th><th></th></tr></thead>
-    <tbody>
-<tr><td>Michaelangelo</td><td><a href="https://www.discogs.com/release/30774309-Michaelangelo-12-No-Face-No-Case-" rel="noopener nofollow" target="_blank">No Face, No Case </a></td><td>2024</td><td>RRC Music Co.</td><td><a href="../../#r/boston/1006030">地図で開く</a></td></tr>
-<tr><td>Temporary Insanity</td><td><a href="https://www.discogs.com/release/3613638-Temporary-Insanity-Bitchez-Never-Learn" rel="noopener nofollow" target="_blank">Bitchez Never Learn</a></td><td>2010</td><td>Darkroom Studios</td><td><a href="../../#r/boston/3556">地図で開く</a></td></tr>
-<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/1315452-Benzino-The-Antidote" rel="noopener nofollow" target="_blank">The Antidote</a></td><td>2007</td><td>7th Floor Music</td><td><a href="../../#r/boston/3159">地図で開く</a></td></tr>
-<tr><td>Psycho</td><td><a href="https://www.discogs.com/release/10899525-Psycho-The-End-Of-Time" rel="noopener nofollow" target="_blank">The End Of Time</a></td><td>2007</td><td>Hustlhard Records</td><td><a href="../../#r/boston/2996">地図で開く</a></td></tr>
-<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/1407328" rel="noopener nofollow" target="_blank">Arch Nemesis</a></td><td>2004</td><td>ZNO Records</td><td><a href="../../#r/boston/2088">地図で開く</a></td></tr>
-<tr><td>Big Bear</td><td><a href="https://www.discogs.com/release/14515516" rel="noopener nofollow" target="_blank">Travel Infinity</a></td><td>2004</td><td>Hi-Life Productions</td><td><a href="../../#r/boston/2192">地図で開く</a></td></tr>
-<tr><td>Kevlar Omega</td><td><a href="https://www.discogs.com/release/10937461-Kevlar-Omega-Streetz-R-Talking" rel="noopener nofollow" target="_blank">Streetz-R-Talking</a></td><td>2004</td><td>Piratez Records</td><td><a href="../../#r/boston/1005695">地図で開く</a></td></tr>
-<tr><td>Pistola</td><td><a href="https://www.discogs.com/release/15769322" rel="noopener nofollow" target="_blank">Pistolplay</a></td><td>2004</td><td>Outlandish Records</td><td><a href="../../#r/boston/2123">地図で開く</a></td></tr>
-<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/24435323" rel="noopener nofollow" target="_blank">Redemption</a></td><td>2003</td><td>Elektra</td><td><a href="../../#r/boston/1987">地図で開く</a></td></tr>
-<tr><td>Loose Notes</td><td><a href="https://www.discogs.com/release/3909020-Loose-Notes-Whats-Money-If-Ur-Minds-Empty" rel="noopener nofollow" target="_blank">What&#x27;s Money If Ur Mind&#x27;s Empty</a></td><td>2003</td><td>It Bees Like That Entertainment, Inc.</td><td><a href="../../#r/boston/1005279">地図で開く</a></td></tr>
-<tr><td>Sandro G</td><td><a href="https://www.discogs.com/release/8483420-Sandro-G-Galinha" rel="noopener nofollow" target="_blank">Galinha</a></td><td>2003</td><td>NZ Produções</td><td><a href="../../#r/boston/1004359">地図で開く</a></td></tr>
-<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/1460082-Benzino-The-Benzino-Remix-Project" rel="noopener nofollow" target="_blank">The Benzino Remix Project</a></td><td>2002</td><td>Surrender Records (4)</td><td><a href="../../#r/boston/1003682">地図で開く</a></td></tr>
-<tr><td>Big Smo</td><td><a href="https://www.discogs.com/release/11367925-Big-Smo-2-The-Audio-Biography-1st-Edition" rel="noopener nofollow" target="_blank">The Audio Biography 1st Edition</a></td><td>2002</td><td>Smomoney Records</td><td><a href="../../#r/boston/1004461">地図で開く</a></td></tr>
-<tr><td>Etelligent</td><td><a href="https://www.discogs.com/release/35554642-Etelligent-and-Loose-Notes-Street-Watch" rel="noopener nofollow" target="_blank">Street Watch</a></td><td>2002</td><td>It Bees Like That Entertainment, Inc.</td><td><a href="../../#r/boston/1004562">地図で開く</a></td></tr>
-<tr><td>Sandro G</td><td><a href="https://www.discogs.com/release/16121981-Sandro-G-Sandro-G-" rel="noopener nofollow" target="_blank">Sandro G </a></td><td>2002</td><td>Indecent Music</td><td><a href="../../#r/boston/1004358">地図で開く</a></td></tr>
-<tr><td>Benzino</td><td><a href="https://www.discogs.com/release/1639184-Benzino-The-Benzino-Project" rel="noopener nofollow" target="_blank">The Benzino Project</a></td><td>2001</td><td>Motown</td><td><a href="../../#r/boston/1003681">地図で開く</a></td></tr>
-<tr><td>Havok House</td><td><a href="https://www.discogs.com/release/14424918-Havok-House-Declaration-Of-Independence" rel="noopener nofollow" target="_blank">Declaration Of Independence</a></td><td>2001</td><td>GetALife Entertainment Inc.</td><td><a href="../../#r/boston/1003958">地図で開く</a></td></tr>
-<tr><td>Rushya</td><td><a href="https://www.discogs.com/release/15747082-Rushya-2-Phastlife-Dynasty-The-Compilation-Album-Vol-1" rel="noopener nofollow" target="_blank">The Compilation Album Vol. 1</a></td><td>2001</td><td>XVIII Entertainment</td><td><a href="../../#r/boston/1004119">地図で開く</a></td></tr>
-<tr><td>The Bringa</td><td><a href="https://www.discogs.com/release/12388569-The-Bringa-Boston-Massacre" rel="noopener nofollow" target="_blank">Boston, Massacre</a></td><td>1998</td><td>Not On Label</td><td><a href="../../#r/boston/1002717">地図で開く</a></td></tr>
-<tr><td>Diller</td><td><a href="https://www.discogs.com/release/14853931" rel="noopener nofollow" target="_blank">Corrections</a></td><td>1997</td><td>On Side Enterprizes</td><td><a href="../../#r/boston/2153">地図で開く</a></td></tr>
-<tr><td>The Almighty RSO</td><td><a href="https://www.discogs.com/release/787643-The-Almighty-RSO-Doomsday-Forever-RSO" rel="noopener nofollow" target="_blank">Doomsday: Forever RSO</a></td><td>1996</td><td>Rap-A-Lot Records</td><td><a href="../../#r/boston/1001689">地図で開く</a></td></tr>
-<tr><td>Wiseguys</td><td><a href="https://www.discogs.com/release/1650728-Wiseguys-In-Tha-Company-Of-Killaz" rel="noopener nofollow" target="_blank">In Tha Company Of Killaz</a></td><td>1996</td><td>Surrender Records (4)</td><td><a href="../../#r/boston/1001716">地図で開く</a></td></tr>
-<tr><td>Natives In Black</td><td><a href="https://www.discogs.com/release/5305011-Natives-In-Black-Sick-Of-Da-Bullshit" rel="noopener nofollow" target="_blank">Sick Of Da Bullshit!</a></td><td>1994</td><td>Funky Fresh Records (3)</td><td><a href="../../#r/boston/1000836">地図で開く</a></td></tr>
-<tr><td>Reckless Abanden</td><td><a href="https://www.discogs.com/release/4792283-Reckless-Abanden-Reckless" rel="noopener nofollow" target="_blank">Reckless</a></td><td>1993</td><td>CUSH Records</td><td><a href="../../#r/boston/1000509">地図で開く</a></td></tr>
-<tr><td>Scientifik</td><td><a href="https://www.discogs.com/release/11980524-Scientifik-Scientifik-LP" rel="noopener nofollow" target="_blank">Scientifik-LP</a></td><td>1993</td><td>Chemistry Records LTD</td><td><a href="../../#r/boston/1000512">地図で開く</a></td></tr>
-    </tbody>
-  </table>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
 </main>
-<footer>© GANGSTA RAP ATLAS — <a href="../../">地図から掘る、地域別G-RAPディスコグラフィ</a> ／ <a href="../">全地域一覧</a></footer>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
 </body>
 </html>

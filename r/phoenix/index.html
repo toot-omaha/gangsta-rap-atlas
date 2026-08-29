@@ -2,6 +2,65 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PhoenixのG-RAPディスコグラフィ 44枚｜GANGSTA RAP ATLAS</title>
 <meta name="description" content="Phoenix(Arizona)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全44枚。Dub Taylor、Most Wanted、MC Magic、NB Ridaz、The Squad、Lucky、The Professor、Insane Click、Pharroほか。試聴・ジャケ写は地図から。">
@@ -13,89 +72,193 @@
 <meta property="og:url" content="https://g.rap-atlas.com/r/phoenix/">
 <meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary">
-<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon/icon-32.png">
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "地域一覧", "item": "https://g.rap-atlas.com/r/"}, {"@type": "ListItem", "position": 3, "name": "Phoenix", "item": "https://g.rap-atlas.com/r/phoenix/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "PhoenixのG-RAPディスコグラフィ", "numberOfItems": 44, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Dub Taylor", "byArtist": {"@type": "MusicGroup", "name": "Dub Taylor"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/4974466-Dub-Taylor-4-Dub-Taylor"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Nothings Changed", "byArtist": {"@type": "MusicGroup", "name": "Most Wanted"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/2131467-Most-Wanted-Nothings-Changed"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Magic City", "byArtist": {"@type": "MusicGroup", "name": "MC Magic"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/3923764"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "NB Ridaz & Friendz", "byArtist": {"@type": "MusicGroup", "name": "NB Ridaz"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/14151612"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Blue Chips", "byArtist": {"@type": "MusicGroup", "name": "The Squad"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/13221296-The-Squad-10-Blue-Chips"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Who Shot Me?", "byArtist": {"@type": "MusicGroup", "name": "Lucky"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/9172431"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "The Story Of My Life", "byArtist": {"@type": "MusicGroup", "name": "The Professor"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/12745236"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Fuck Hip-Hop Volume 1", "byArtist": {"@type": "MusicGroup", "name": "Insane Click"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/21260236-Insane-Click-Fuck-Hip-Hop-Volume-1"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "The Freak In Me", "byArtist": {"@type": "MusicGroup", "name": "Lucky"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/7700601"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Feared Or Respected - The Hit Tracks.... Lucky & When You Are Down", "byArtist": {"@type": "MusicGroup", "name": "Lucky"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14663024"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Enemy's Target", "byArtist": {"@type": "MusicGroup", "name": "Most Wanted"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/3603799"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "NbRidaz.com", "byArtist": {"@type": "MusicGroup", "name": "NB Ridaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/4141715"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Inhale-Exhale", "byArtist": {"@type": "MusicGroup", "name": "Pharro"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/10686034-Pharro-Inhale-Exhale"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Southwest Outlaws", "byArtist": {"@type": "MusicGroup", "name": "Sicflow Productions"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14312648-Sicflow-Productions-Southwest-Outlaws"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Southwest Outlaws 2", "byArtist": {"@type": "MusicGroup", "name": "Sicflow Productions"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/16899162-Sicflow-Productions-Southwest-Outlaws-2"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Six Figure Dropout", "byArtist": {"@type": "MusicGroup", "name": "Denial Tha Danksta"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/13178953-Denial-Tha-Danksta-Six-Figure-Dropout"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "69 Nasty Ways", "byArtist": {"@type": "MusicGroup", "name": "Lucky"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/10994588"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "The Dubnation ", "byArtist": {"@type": "MusicGroup", "name": "ATdub"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/10877262-ATdub-The-Dubnation-"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "What Up Doe", "byArtist": {"@type": "MusicGroup", "name": "Az Mike Mill"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/8447808-Az-Mike-Mill-What-Up-Doe"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Tru'd Up From The Shoes Up", "byArtist": {"@type": "MusicGroup", "name": "Cue Dogg"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/5178618-Cue-Dogg-Trud-Up-From-The-Shoes-Up"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Listen 2 My Demo", "byArtist": {"@type": "MusicGroup", "name": "Lil Gator & Da Papago Playahz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/13223206-Lil-Gator-Da-Papago-Playahz-Listen-2-My-Demo"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Have You Ever Felt The Pain?", "byArtist": {"@type": "MusicGroup", "name": "Denial Tha Danksta"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/13179065-Denial-Tha-Danksta-Have-You-Ever-Felt-The-Pain"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Invasion", "byArtist": {"@type": "MusicGroup", "name": "NB Ridaz"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11679134"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Enter The Realist Vol.1", "byArtist": {"@type": "MusicGroup", "name": "The Realist Family"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11653934-The-Realist-Family-Enter-The-Realist-Vol1"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Akmonic", "byArtist": {"@type": "MusicGroup", "name": "AKO Mack"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/6674588-Ako-Mack-Akmonic"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "A Long Time Comin", "byArtist": {"@type": "MusicGroup", "name": "MasterMind Productions"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/10501633-MasterMind-Productions-5-A-Long-Time-Comin"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "Coming Soon", "byArtist": {"@type": "MusicGroup", "name": "Mavis"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9485272"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "The Release", "byArtist": {"@type": "MusicGroup", "name": "Mr. Iroc"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/12489661-Mr-Iroc-The-Product-Click-The-Release"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "True Hard Chicanos ", "byArtist": {"@type": "MusicGroup", "name": "THC"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/8855194-True-Hard-Chicanos-True-Hard-Chicanos-"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "Point Of No Return", "byArtist": {"@type": "MusicGroup", "name": "Creeper Loco"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/8323272-Creeper-Loco-Point-Of-No-Return"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "Chapter One", "byArtist": {"@type": "MusicGroup", "name": "Beautiful Black Soldiers"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/24943288-Beautiful-Black-Soldiers-Chapter-One"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "Desert Funk Soundtrack", "byArtist": {"@type": "MusicGroup", "name": "MC Magic"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/6733323-MC-Magic-Presents-Various-Desert-Funk-Soundtrack"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "  Southwest Assasin", "byArtist": {"@type": "MusicGroup", "name": "Mon$ter"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/15616446-Monter-Southwest-Assasin"}}, {"@type": "ListItem", "position": 34, "item": {"@type": "MusicAlbum", "name": "Doomsday", "byArtist": {"@type": "MusicGroup", "name": "Mushock & The Family"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/8812291-Mushock-The-Family-Doomsday"}}, {"@type": "ListItem", "position": 35, "item": {"@type": "MusicAlbum", "name": "Espionage", "byArtist": {"@type": "MusicGroup", "name": "Surround Sound Assylum"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/10501616-Surround-Sound-Assylum-Espionage"}}, {"@type": "ListItem", "position": 36, "item": {"@type": "MusicAlbum", "name": "Vision Of A Dream", "byArtist": {"@type": "MusicGroup", "name": "Vontel"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/8051605-Vontel-Vision-Of-A-Dream"}}, {"@type": "ListItem", "position": 37, "item": {"@type": "MusicAlbum", "name": "Gangstaz-N-Da Playin' Phield", "byArtist": {"@type": "MusicGroup", "name": "Major League Phalayaz"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/9952530-Major-League-Phalayaz-Gangstaz-N-Da-Playin-Phield"}}, {"@type": "ListItem", "position": 38, "item": {"@type": "MusicAlbum", "name": "Global Mayhemm", "byArtist": {"@type": "MusicGroup", "name": "Mayhemm"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/1928993-Mayhemm-Global-Mayhemm"}}, {"@type": "ListItem", "position": 39, "item": {"@type": "MusicAlbum", "name": "Finally On The Map", "byArtist": {"@type": "MusicGroup", "name": "Mr. Iroc"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/4427198-Mr-Iroc-Finally-On-The-Map"}}, {"@type": "ListItem", "position": 40, "item": {"@type": "MusicAlbum", "name": "Time Has Come", "byArtist": {"@type": "MusicGroup", "name": "THC"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/11862349-THC-15-Time-Has-Come"}}, {"@type": "ListItem", "position": 41, "item": {"@type": "MusicAlbum", "name": "Straight From Nowhere", "byArtist": {"@type": "MusicGroup", "name": "Boondocks"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/2479268-Boondocks-2-Straight-From-Nowhere"}}, {"@type": "ListItem", "position": 42, "item": {"@type": "MusicAlbum", "name": "Comin' Real Wit It", "byArtist": {"@type": "MusicGroup", "name": "L$P"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/10577284-LP-Comin-Real-Wit-It"}}, {"@type": "ListItem", "position": 43, "item": {"@type": "MusicAlbum", "name": "Don't Worry", "byArtist": {"@type": "MusicGroup", "name": "M.C. Magic"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/23824379"}}, {"@type": "ListItem", "position": 44, "item": {"@type": "MusicAlbum", "name": "Ghetto's Child", "byArtist": {"@type": "MusicGroup", "name": "Nutmeg"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/17777572-Nutmeg-5-Ghettos-Child"}}]}]</script>
-<style>body{margin:0;background:#e8e4d9;color:#14120f;font-family:'Helvetica Neue',Helvetica,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;line-height:1.6}
-header{background:#14120f;color:#e8e4d9;padding:18px 20px;border-bottom:3px solid #c1272d}
-header a{color:#e8e4d9;text-decoration:none}
-header .brand{font-weight:800;letter-spacing:.14em;font-size:15px}
-main{max-width:860px;margin:0 auto;padding:20px 16px 56px}
-h1{font-size:22px;margin:14px 0 4px}
-.area{color:#4a453c;margin:0 0 14px;font-size:14px}
-.cta{display:inline-block;background:#c1272d;color:#fff;padding:9px 16px;border-radius:3px;text-decoration:none;font-weight:700;margin:8px 0 20px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border-bottom:1px solid #cfc9ba;padding:7px 8px;text-align:left;vertical-align:top}
-th{background:#dcd6c6;font-size:12px;letter-spacing:.08em}
-td a{color:#8a1f24}
-.regions li{margin:3px 0}
-.regions a{color:#8a1f24}
-.grp{margin:18px 0 6px;font-size:15px;border-left:4px solid #c1272d;padding-left:8px}
-footer{max-width:860px;margin:0 auto;padding:18px 16px;color:#4a453c;font-size:12px;border-top:1px solid #cfc9ba}
-nav.bc{font-size:12px;color:#4a453c;margin-top:6px}
-nav.bc a{color:#8a1f24}</style>
+<meta name="twitter:title" content="PhoenixのG-RAPディスコグラフィ 44枚｜GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Phoenix(Arizona)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全44枚。Dub Taylor、Most Wanted、MC Magic、NB Ridaz、The Squad、Lucky、The Professor、Insane Click、Pharroほか。試聴・ジャケ写は地図から。">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Phoenix", "item": "https://g.rap-atlas.com/r/phoenix/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "PhoenixのG-RAPディスコグラフィ", "numberOfItems": 44, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Dub Taylor", "byArtist": {"@type": "MusicGroup", "name": "Dub Taylor"}, "datePublished": "2008", "sameAs": "https://www.discogs.com/release/4974466-Dub-Taylor-4-Dub-Taylor"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "Nothings Changed", "byArtist": {"@type": "MusicGroup", "name": "Most Wanted"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/2131467-Most-Wanted-Nothings-Changed"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Magic City", "byArtist": {"@type": "MusicGroup", "name": "MC Magic"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/3923764"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "NB Ridaz & Friendz", "byArtist": {"@type": "MusicGroup", "name": "NB Ridaz"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/14151612"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Blue Chips", "byArtist": {"@type": "MusicGroup", "name": "The Squad"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/13221296-The-Squad-10-Blue-Chips"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Who Shot Me?", "byArtist": {"@type": "MusicGroup", "name": "Lucky"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/9172431"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "The Story Of My Life", "byArtist": {"@type": "MusicGroup", "name": "The Professor"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/12745236"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Fuck Hip-Hop Volume 1", "byArtist": {"@type": "MusicGroup", "name": "Insane Click"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/21260236-Insane-Click-Fuck-Hip-Hop-Volume-1"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "The Freak In Me", "byArtist": {"@type": "MusicGroup", "name": "Lucky"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/7700601"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Feared Or Respected - The Hit Tracks.... Lucky & When You Are Down", "byArtist": {"@type": "MusicGroup", "name": "Lucky"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14663024"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Enemy's Target", "byArtist": {"@type": "MusicGroup", "name": "Most Wanted"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/3603799"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "NbRidaz.com", "byArtist": {"@type": "MusicGroup", "name": "NB Ridaz"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/4141715"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Inhale-Exhale", "byArtist": {"@type": "MusicGroup", "name": "Pharro"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/10686034-Pharro-Inhale-Exhale"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Southwest Outlaws", "byArtist": {"@type": "MusicGroup", "name": "Sicflow Productions"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/14312648-Sicflow-Productions-Southwest-Outlaws"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Southwest Outlaws 2", "byArtist": {"@type": "MusicGroup", "name": "Sicflow Productions"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/16899162-Sicflow-Productions-Southwest-Outlaws-2"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Six Figure Dropout", "byArtist": {"@type": "MusicGroup", "name": "Denial Tha Danksta"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/13178953-Denial-Tha-Danksta-Six-Figure-Dropout"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "69 Nasty Ways", "byArtist": {"@type": "MusicGroup", "name": "Lucky"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/10994588"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "The Dubnation ", "byArtist": {"@type": "MusicGroup", "name": "ATdub"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/10877262-ATdub-The-Dubnation-"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "What Up Doe", "byArtist": {"@type": "MusicGroup", "name": "Az Mike Mill"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/8447808-Az-Mike-Mill-What-Up-Doe"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Tru'd Up From The Shoes Up", "byArtist": {"@type": "MusicGroup", "name": "Cue Dogg"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/5178618-Cue-Dogg-Trud-Up-From-The-Shoes-Up"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Listen 2 My Demo", "byArtist": {"@type": "MusicGroup", "name": "Lil Gator & Da Papago Playahz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/13223206-Lil-Gator-Da-Papago-Playahz-Listen-2-My-Demo"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Have You Ever Felt The Pain?", "byArtist": {"@type": "MusicGroup", "name": "Denial Tha Danksta"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/13179065-Denial-Tha-Danksta-Have-You-Ever-Felt-The-Pain"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Invasion", "byArtist": {"@type": "MusicGroup", "name": "NB Ridaz"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11679134"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Enter The Realist Vol.1", "byArtist": {"@type": "MusicGroup", "name": "The Realist Family"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11653934-The-Realist-Family-Enter-The-Realist-Vol1"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Akmonic", "byArtist": {"@type": "MusicGroup", "name": "AKO Mack"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/6674588-Ako-Mack-Akmonic"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "A Long Time Comin", "byArtist": {"@type": "MusicGroup", "name": "MasterMind Productions"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/10501633-MasterMind-Productions-5-A-Long-Time-Comin"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "Coming Soon", "byArtist": {"@type": "MusicGroup", "name": "Mavis"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9485272"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "The Release", "byArtist": {"@type": "MusicGroup", "name": "Mr. Iroc"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/12489661-Mr-Iroc-The-Product-Click-The-Release"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "True Hard Chicanos ", "byArtist": {"@type": "MusicGroup", "name": "THC"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/8855194-True-Hard-Chicanos-True-Hard-Chicanos-"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "Point Of No Return", "byArtist": {"@type": "MusicGroup", "name": "Creeper Loco"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/8323272-Creeper-Loco-Point-Of-No-Return"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "Chapter One", "byArtist": {"@type": "MusicGroup", "name": "Beautiful Black Soldiers"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/24943288-Beautiful-Black-Soldiers-Chapter-One"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "Desert Funk Soundtrack", "byArtist": {"@type": "MusicGroup", "name": "MC Magic"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/6733323-MC-Magic-Presents-Various-Desert-Funk-Soundtrack"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "  Southwest Assasin", "byArtist": {"@type": "MusicGroup", "name": "Mon$ter"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/15616446-Monter-Southwest-Assasin"}}, {"@type": "ListItem", "position": 34, "item": {"@type": "MusicAlbum", "name": "Doomsday", "byArtist": {"@type": "MusicGroup", "name": "Mushock & The Family"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/8812291-Mushock-The-Family-Doomsday"}}, {"@type": "ListItem", "position": 35, "item": {"@type": "MusicAlbum", "name": "Espionage", "byArtist": {"@type": "MusicGroup", "name": "Surround Sound Assylum"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/10501616-Surround-Sound-Assylum-Espionage"}}, {"@type": "ListItem", "position": 36, "item": {"@type": "MusicAlbum", "name": "Vision Of A Dream", "byArtist": {"@type": "MusicGroup", "name": "Vontel"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/8051605-Vontel-Vision-Of-A-Dream"}}, {"@type": "ListItem", "position": 37, "item": {"@type": "MusicAlbum", "name": "Gangstaz-N-Da Playin' Phield", "byArtist": {"@type": "MusicGroup", "name": "Major League Phalayaz"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/9952530-Major-League-Phalayaz-Gangstaz-N-Da-Playin-Phield"}}, {"@type": "ListItem", "position": 38, "item": {"@type": "MusicAlbum", "name": "Global Mayhemm", "byArtist": {"@type": "MusicGroup", "name": "Mayhemm"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/1928993-Mayhemm-Global-Mayhemm"}}, {"@type": "ListItem", "position": 39, "item": {"@type": "MusicAlbum", "name": "Finally On The Map", "byArtist": {"@type": "MusicGroup", "name": "Mr. Iroc"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/4427198-Mr-Iroc-Finally-On-The-Map"}}, {"@type": "ListItem", "position": 40, "item": {"@type": "MusicAlbum", "name": "Time Has Come", "byArtist": {"@type": "MusicGroup", "name": "THC"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/11862349-THC-15-Time-Has-Come"}}, {"@type": "ListItem", "position": 41, "item": {"@type": "MusicAlbum", "name": "Straight From Nowhere", "byArtist": {"@type": "MusicGroup", "name": "Boondocks"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/2479268-Boondocks-2-Straight-From-Nowhere"}}, {"@type": "ListItem", "position": 42, "item": {"@type": "MusicAlbum", "name": "Comin' Real Wit It", "byArtist": {"@type": "MusicGroup", "name": "L$P"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/10577284-LP-Comin-Real-Wit-It"}}, {"@type": "ListItem", "position": 43, "item": {"@type": "MusicAlbum", "name": "Don't Worry", "byArtist": {"@type": "MusicGroup", "name": "M.C. Magic"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/23824379"}}, {"@type": "ListItem", "position": 44, "item": {"@type": "MusicAlbum", "name": "Ghetto's Child", "byArtist": {"@type": "MusicGroup", "name": "Nutmeg"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/17777572-Nutmeg-5-Ghettos-Child"}}]}]</script>
 </head>
 <body>
-<header>
-  <a class="brand" href="../../">◉ GANGSTA RAP ATLAS</a>
-  <nav class="bc"><a href="../../">ホーム</a> › <a href="../">地域一覧</a> › Phoenix</nav>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Phoenix のG-RAPディスコグラフィ</h1>
+    <p>Arizona — 全44枚収録。Phoenix出身・拠点のアーティストによる
+    G-RAP/ギャングスタラップのディスコグラフィです。地図アプリの表示にはJavaScriptが必要です。</p>
+    <p><a href="/">GANGSTA RAP ATLAS ホーム</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th></tr></thead>
+      <tbody>
+<tr><td>Dub Taylor</td><td><a href="https://www.discogs.com/release/4974466-Dub-Taylor-4-Dub-Taylor" rel="noopener nofollow">Dub Taylor</a></td><td>2008</td><td>Sicco Deuce Records</td></tr>
+<tr><td>Most Wanted</td><td><a href="https://www.discogs.com/release/2131467-Most-Wanted-Nothings-Changed" rel="noopener nofollow">Nothings Changed</a></td><td>2007</td><td>Most Wanted Music</td></tr>
+<tr><td>MC Magic</td><td><a href="https://www.discogs.com/release/3923764" rel="noopener nofollow">Magic City</a></td><td>2006</td><td>Nastyboy Records</td></tr>
+<tr><td>NB Ridaz</td><td><a href="https://www.discogs.com/release/14151612" rel="noopener nofollow">NB Ridaz &amp; Friendz</a></td><td>2006</td><td>Hitz Records</td></tr>
+<tr><td>The Squad</td><td><a href="https://www.discogs.com/release/13221296-The-Squad-10-Blue-Chips" rel="noopener nofollow">Blue Chips</a></td><td>2006</td><td>Hokis Pokis Records</td></tr>
+<tr><td>Lucky</td><td><a href="https://www.discogs.com/release/9172431" rel="noopener nofollow">Who Shot Me?</a></td><td>2005</td><td>B-Dub Records</td></tr>
+<tr><td>The Professor</td><td><a href="https://www.discogs.com/release/12745236" rel="noopener nofollow">The Story Of My Life</a></td><td>2005</td><td>FTP</td></tr>
+<tr><td>Insane Click</td><td><a href="https://www.discogs.com/release/21260236-Insane-Click-Fuck-Hip-Hop-Volume-1" rel="noopener nofollow">Fuck Hip-Hop Volume 1</a></td><td>2004</td><td>Insane Click Entertainment</td></tr>
+<tr><td>Lucky</td><td><a href="https://www.discogs.com/release/7700601" rel="noopener nofollow">The Freak In Me</a></td><td>2004</td><td>Teen Angels Records</td></tr>
+<tr><td>Lucky</td><td><a href="https://www.discogs.com/release/14663024" rel="noopener nofollow">Feared Or Respected - The Hit Tracks.... Lucky &amp; When You Are Down</a></td><td>2004</td><td>I.B.M. Records</td></tr>
+<tr><td>Most Wanted</td><td><a href="https://www.discogs.com/release/3603799" rel="noopener nofollow">Enemy&#x27;s Target</a></td><td>2004</td><td>Kilo Gram Music Group</td></tr>
+<tr><td>NB Ridaz</td><td><a href="https://www.discogs.com/release/4141715" rel="noopener nofollow">NbRidaz.com</a></td><td>2004</td><td>Upstairs Records</td></tr>
+<tr><td>Pharro</td><td><a href="https://www.discogs.com/release/10686034-Pharro-Inhale-Exhale" rel="noopener nofollow">Inhale-Exhale</a></td><td>2004</td><td>Wise Guy Records (6)</td></tr>
+<tr><td>Sicflow Productions</td><td><a href="https://www.discogs.com/release/14312648-Sicflow-Productions-Southwest-Outlaws" rel="noopener nofollow">Southwest Outlaws</a></td><td>2004</td><td>Sicflow Productions</td></tr>
+<tr><td>Sicflow Productions</td><td><a href="https://www.discogs.com/release/16899162-Sicflow-Productions-Southwest-Outlaws-2" rel="noopener nofollow">Southwest Outlaws 2</a></td><td>2004</td><td>Sicflow Productions</td></tr>
+<tr><td>Denial Tha Danksta</td><td><a href="https://www.discogs.com/release/13178953-Denial-Tha-Danksta-Six-Figure-Dropout" rel="noopener nofollow">Six Figure Dropout</a></td><td>2003</td><td>Elephant Size Productions</td></tr>
+<tr><td>Lucky</td><td><a href="https://www.discogs.com/release/10994588" rel="noopener nofollow">69 Nasty Ways</a></td><td>2003</td><td>Teen Angels Records</td></tr>
+<tr><td>ATdub</td><td><a href="https://www.discogs.com/release/10877262-ATdub-The-Dubnation-" rel="noopener nofollow">The Dubnation </a></td><td>2002</td><td>Wildin&#x27; Records</td></tr>
+<tr><td>Az Mike Mill</td><td><a href="https://www.discogs.com/release/8447808-Az-Mike-Mill-What-Up-Doe" rel="noopener nofollow">What Up Doe</a></td><td>2002</td><td>Big Feve Entertainment</td></tr>
+<tr><td>Cue Dogg</td><td><a href="https://www.discogs.com/release/5178618-Cue-Dogg-Trud-Up-From-The-Shoes-Up" rel="noopener nofollow">Tru&#x27;d Up From The Shoes Up</a></td><td>2002</td><td>Powdahland Records</td></tr>
+<tr><td>Lil Gator &amp; Da Papago Playahz</td><td><a href="https://www.discogs.com/release/13223206-Lil-Gator-Da-Papago-Playahz-Listen-2-My-Demo" rel="noopener nofollow">Listen 2 My Demo</a></td><td>2002</td><td>Sick Set Records</td></tr>
+<tr><td>Denial Tha Danksta</td><td><a href="https://www.discogs.com/release/13179065-Denial-Tha-Danksta-Have-You-Ever-Felt-The-Pain" rel="noopener nofollow">Have You Ever Felt The Pain?</a></td><td>2001</td><td>Elephant Size Productions</td></tr>
+<tr><td>NB Ridaz</td><td><a href="https://www.discogs.com/release/11679134" rel="noopener nofollow">Invasion</a></td><td>2001</td><td>Upstairs Records</td></tr>
+<tr><td>The Realist Family</td><td><a href="https://www.discogs.com/release/11653934-The-Realist-Family-Enter-The-Realist-Vol1" rel="noopener nofollow">Enter The Realist Vol.1</a></td><td>2001</td><td>The Realist Entertainment</td></tr>
+<tr><td>AKO Mack</td><td><a href="https://www.discogs.com/release/6674588-Ako-Mack-Akmonic" rel="noopener nofollow">Akmonic</a></td><td>2000</td><td>Baytown Records</td></tr>
+<tr><td>MasterMind Productions</td><td><a href="https://www.discogs.com/release/10501633-MasterMind-Productions-5-A-Long-Time-Comin" rel="noopener nofollow">A Long Time Comin</a></td><td>2000</td><td>Jah Records</td></tr>
+<tr><td>Mavis</td><td><a href="https://www.discogs.com/release/9485272" rel="noopener nofollow">Coming Soon</a></td><td>2000</td><td>Players Only Records Inc.</td></tr>
+<tr><td>Mr. Iroc</td><td><a href="https://www.discogs.com/release/12489661-Mr-Iroc-The-Product-Click-The-Release" rel="noopener nofollow">The Release</a></td><td>2000</td><td>Iroc Records</td></tr>
+<tr><td>THC</td><td><a href="https://www.discogs.com/release/8855194-True-Hard-Chicanos-True-Hard-Chicanos-" rel="noopener nofollow">True Hard Chicanos </a></td><td>2000</td><td>THC Entertainment</td></tr>
+<tr><td>Creeper Loco</td><td><a href="https://www.discogs.com/release/8323272-Creeper-Loco-Point-Of-No-Return" rel="noopener nofollow">Point Of No Return</a></td><td>1999</td><td>Devious Music, Inc.</td></tr>
+<tr><td>Beautiful Black Soldiers</td><td><a href="https://www.discogs.com/release/24943288-Beautiful-Black-Soldiers-Chapter-One" rel="noopener nofollow">Chapter One</a></td><td>1998</td><td>BBS Productions (3)</td></tr>
+<tr><td>MC Magic</td><td><a href="https://www.discogs.com/release/6733323-MC-Magic-Presents-Various-Desert-Funk-Soundtrack" rel="noopener nofollow">Desert Funk Soundtrack</a></td><td>1998</td><td>Nastyboy Records</td></tr>
+<tr><td>Mon$ter</td><td><a href="https://www.discogs.com/release/15616446-Monter-Southwest-Assasin" rel="noopener nofollow">  Southwest Assasin</a></td><td>1998</td><td>Playalistic Records</td></tr>
+<tr><td>Mushock &amp; The Family</td><td><a href="https://www.discogs.com/release/8812291-Mushock-The-Family-Doomsday" rel="noopener nofollow">Doomsday</a></td><td>1998</td><td>Nastyboy Records</td></tr>
+<tr><td>Surround Sound Assylum</td><td><a href="https://www.discogs.com/release/10501616-Surround-Sound-Assylum-Espionage" rel="noopener nofollow">Espionage</a></td><td>1998</td><td>Sonic Boom Productions</td></tr>
+<tr><td>Vontel</td><td><a href="https://www.discogs.com/release/8051605-Vontel-Vision-Of-A-Dream" rel="noopener nofollow">Vision Of A Dream</a></td><td>1998</td><td>Fo Life Records</td></tr>
+<tr><td>Major League Phalayaz</td><td><a href="https://www.discogs.com/release/9952530-Major-League-Phalayaz-Gangstaz-N-Da-Playin-Phield" rel="noopener nofollow">Gangstaz-N-Da Playin&#x27; Phield</a></td><td>1997</td><td>Time Is Money Entertainment</td></tr>
+<tr><td>Mayhemm</td><td><a href="https://www.discogs.com/release/1928993-Mayhemm-Global-Mayhemm" rel="noopener nofollow">Global Mayhemm</a></td><td>1997</td><td>Native Records (2)</td></tr>
+<tr><td>Mr. Iroc</td><td><a href="https://www.discogs.com/release/4427198-Mr-Iroc-Finally-On-The-Map" rel="noopener nofollow">Finally On The Map</a></td><td>1996</td><td>Iroc Records</td></tr>
+<tr><td>THC</td><td><a href="https://www.discogs.com/release/11862349-THC-15-Time-Has-Come" rel="noopener nofollow">Time Has Come</a></td><td>1996</td><td>Hush Entertainment</td></tr>
+<tr><td>Boondocks</td><td><a href="https://www.discogs.com/release/2479268-Boondocks-2-Straight-From-Nowhere" rel="noopener nofollow">Straight From Nowhere</a></td><td>1995</td><td>Raging Bull Records</td></tr>
+<tr><td>L$P</td><td><a href="https://www.discogs.com/release/10577284-LP-Comin-Real-Wit-It" rel="noopener nofollow">Comin&#x27; Real Wit It</a></td><td>1995</td><td>Sick Set Records</td></tr>
+<tr><td>M.C. Magic</td><td><a href="https://www.discogs.com/release/23824379" rel="noopener nofollow">Don&#x27;t Worry</a></td><td>1995</td><td>Nastyboy Records</td></tr>
+<tr><td>Nutmeg</td><td><a href="https://www.discogs.com/release/17777572-Nutmeg-5-Ghettos-Child" rel="noopener nofollow">Ghetto&#x27;s Child</a></td><td>1995</td><td>Soul Sauce Recordings (2)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
 </header>
-<main>
-  <h1>Phoenix のG-RAPディスコグラフィ</h1>
-  <p class="area">Arizona — 全44枚収録</p>
-  <p>Phoenix(Arizona)出身・拠点のアーティストによるG-RAP/ギャングスタラップのディスコグラフィ。
-  インタラクティブ地図では試聴・ジャケ写・スタンプ検索が使えます。</p>
-  <a class="cta" href="../../#r/phoenix">🗺 地図でこの地域を開く</a>
-  <table>
-    <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th><th></th></tr></thead>
-    <tbody>
-<tr><td>Dub Taylor</td><td><a href="https://www.discogs.com/release/4974466-Dub-Taylor-4-Dub-Taylor" rel="noopener nofollow" target="_blank">Dub Taylor</a></td><td>2008</td><td>Sicco Deuce Records</td><td><a href="../../#r/phoenix/1005929">地図で開く</a></td></tr>
-<tr><td>Most Wanted</td><td><a href="https://www.discogs.com/release/2131467-Most-Wanted-Nothings-Changed" rel="noopener nofollow" target="_blank">Nothings Changed</a></td><td>2007</td><td>Most Wanted Music</td><td><a href="../../#r/phoenix/3102">地図で開く</a></td></tr>
-<tr><td>MC Magic</td><td><a href="https://www.discogs.com/release/3923764" rel="noopener nofollow" target="_blank">Magic City</a></td><td>2006</td><td>Nastyboy Records</td><td><a href="../../#r/phoenix/2765">地図で開く</a></td></tr>
-<tr><td>NB Ridaz</td><td><a href="https://www.discogs.com/release/14151612" rel="noopener nofollow" target="_blank">NB Ridaz &amp; Friendz</a></td><td>2006</td><td>Hitz Records</td><td><a href="../../#r/phoenix/2723">地図で開く</a></td></tr>
-<tr><td>The Squad</td><td><a href="https://www.discogs.com/release/13221296-The-Squad-10-Blue-Chips" rel="noopener nofollow" target="_blank">Blue Chips</a></td><td>2006</td><td>Hokis Pokis Records</td><td><a href="../../#r/phoenix/1005911">地図で開く</a></td></tr>
-<tr><td>Lucky</td><td><a href="https://www.discogs.com/release/9172431" rel="noopener nofollow" target="_blank">Who Shot Me?</a></td><td>2005</td><td>B-Dub Records</td><td><a href="../../#r/phoenix/2758">地図で開く</a></td></tr>
-<tr><td>The Professor</td><td><a href="https://www.discogs.com/release/12745236" rel="noopener nofollow" target="_blank">The Story Of My Life</a></td><td>2005</td><td>FTP</td><td><a href="../../#r/phoenix/2686">地図で開く</a></td></tr>
-<tr><td>Insane Click</td><td><a href="https://www.discogs.com/release/21260236-Insane-Click-Fuck-Hip-Hop-Volume-1" rel="noopener nofollow" target="_blank">Fuck Hip-Hop Volume 1</a></td><td>2004</td><td>Insane Click Entertainment</td><td><a href="../../#r/phoenix/1005671">地図で開く</a></td></tr>
-<tr><td>Lucky</td><td><a href="https://www.discogs.com/release/7700601" rel="noopener nofollow" target="_blank">The Freak In Me</a></td><td>2004</td><td>Teen Angels Records</td><td><a href="../../#r/phoenix/2682">地図で開く</a></td></tr>
-<tr><td>Lucky</td><td><a href="https://www.discogs.com/release/14663024" rel="noopener nofollow" target="_blank">Feared Or Respected - The Hit Tracks.... Lucky &amp; When You Are Down</a></td><td>2004</td><td>I.B.M. Records</td><td><a href="../../#r/phoenix/2144">地図で開く</a></td></tr>
-<tr><td>Most Wanted</td><td><a href="https://www.discogs.com/release/3603799" rel="noopener nofollow" target="_blank">Enemy&#x27;s Target</a></td><td>2004</td><td>Kilo Gram Music Group</td><td><a href="../../#r/phoenix/2306">地図で開く</a></td></tr>
-<tr><td>NB Ridaz</td><td><a href="https://www.discogs.com/release/4141715" rel="noopener nofollow" target="_blank">NbRidaz.com</a></td><td>2004</td><td>Upstairs Records</td><td><a href="../../#r/phoenix/2302">地図で開く</a></td></tr>
-<tr><td>Pharro</td><td><a href="https://www.discogs.com/release/10686034-Pharro-Inhale-Exhale" rel="noopener nofollow" target="_blank">Inhale-Exhale</a></td><td>2004</td><td>Wise Guy Records (6)</td><td><a href="../../#r/phoenix/1005771">地図で開く</a></td></tr>
-<tr><td>Sicflow Productions</td><td><a href="https://www.discogs.com/release/14312648-Sicflow-Productions-Southwest-Outlaws" rel="noopener nofollow" target="_blank">Southwest Outlaws</a></td><td>2004</td><td>Sicflow Productions</td><td><a href="../../#r/phoenix/1005537">地図で開く</a></td></tr>
-<tr><td>Sicflow Productions</td><td><a href="https://www.discogs.com/release/16899162-Sicflow-Productions-Southwest-Outlaws-2" rel="noopener nofollow" target="_blank">Southwest Outlaws 2</a></td><td>2004</td><td>Sicflow Productions</td><td><a href="../../#r/phoenix/1005538">地図で開く</a></td></tr>
-<tr><td>Denial Tha Danksta</td><td><a href="https://www.discogs.com/release/13178953-Denial-Tha-Danksta-Six-Figure-Dropout" rel="noopener nofollow" target="_blank">Six Figure Dropout</a></td><td>2003</td><td>Elephant Size Productions</td><td><a href="../../#r/phoenix/1003701">地図で開く</a></td></tr>
-<tr><td>Lucky</td><td><a href="https://www.discogs.com/release/10994588" rel="noopener nofollow" target="_blank">69 Nasty Ways</a></td><td>2003</td><td>Teen Angels Records</td><td><a href="../../#r/phoenix/2037">地図で開く</a></td></tr>
-<tr><td>ATdub</td><td><a href="https://www.discogs.com/release/10877262-ATdub-The-Dubnation-" rel="noopener nofollow" target="_blank">The Dubnation </a></td><td>2002</td><td>Wildin&#x27; Records</td><td><a href="../../#r/phoenix/1004435">地図で開く</a></td></tr>
-<tr><td>Az Mike Mill</td><td><a href="https://www.discogs.com/release/8447808-Az-Mike-Mill-What-Up-Doe" rel="noopener nofollow" target="_blank">What Up Doe</a></td><td>2002</td><td>Big Feve Entertainment</td><td><a href="../../#r/phoenix/1004437">地図で開く</a></td></tr>
-<tr><td>Cue Dogg</td><td><a href="https://www.discogs.com/release/5178618-Cue-Dogg-Trud-Up-From-The-Shoes-Up" rel="noopener nofollow" target="_blank">Tru&#x27;d Up From The Shoes Up</a></td><td>2002</td><td>Powdahland Records</td><td><a href="../../#r/phoenix/1004501">地図で開く</a></td></tr>
-<tr><td>Lil Gator &amp; Da Papago Playahz</td><td><a href="https://www.discogs.com/release/13223206-Lil-Gator-Da-Papago-Playahz-Listen-2-My-Demo" rel="noopener nofollow" target="_blank">Listen 2 My Demo</a></td><td>2002</td><td>Sick Set Records</td><td><a href="../../#r/phoenix/1004673">地図で開く</a></td></tr>
-<tr><td>Denial Tha Danksta</td><td><a href="https://www.discogs.com/release/13179065-Denial-Tha-Danksta-Have-You-Ever-Felt-The-Pain" rel="noopener nofollow" target="_blank">Have You Ever Felt The Pain?</a></td><td>2001</td><td>Elephant Size Productions</td><td><a href="../../#r/phoenix/1003700">地図で開く</a></td></tr>
-<tr><td>NB Ridaz</td><td><a href="https://www.discogs.com/release/11679134" rel="noopener nofollow" target="_blank">Invasion</a></td><td>2001</td><td>Upstairs Records</td><td><a href="../../#r/phoenix/1428">地図で開く</a></td></tr>
-<tr><td>The Realist Family</td><td><a href="https://www.discogs.com/release/11653934-The-Realist-Family-Enter-The-Realist-Vol1" rel="noopener nofollow" target="_blank">Enter The Realist Vol.1</a></td><td>2001</td><td>The Realist Entertainment</td><td><a href="../../#r/phoenix/1004201">地図で開く</a></td></tr>
-<tr><td>AKO Mack</td><td><a href="https://www.discogs.com/release/6674588-Ako-Mack-Akmonic" rel="noopener nofollow" target="_blank">Akmonic</a></td><td>2000</td><td>Baytown Records</td><td><a href="../../#r/phoenix/1003203">地図で開く</a></td></tr>
-<tr><td>MasterMind Productions</td><td><a href="https://www.discogs.com/release/10501633-MasterMind-Productions-5-A-Long-Time-Comin" rel="noopener nofollow" target="_blank">A Long Time Comin</a></td><td>2000</td><td>Jah Records</td><td><a href="../../#r/phoenix/1003417">地図で開く</a></td></tr>
-<tr><td>Mavis</td><td><a href="https://www.discogs.com/release/9485272" rel="noopener nofollow" target="_blank">Coming Soon</a></td><td>2000</td><td>Players Only Records Inc.</td><td><a href="../../#r/phoenix/1429">地図で開く</a></td></tr>
-<tr><td>Mr. Iroc</td><td><a href="https://www.discogs.com/release/12489661-Mr-Iroc-The-Product-Click-The-Release" rel="noopener nofollow" target="_blank">The Release</a></td><td>2000</td><td>Iroc Records</td><td><a href="../../#r/phoenix/1001482">地図で開く</a></td></tr>
-<tr><td>THC</td><td><a href="https://www.discogs.com/release/8855194-True-Hard-Chicanos-True-Hard-Chicanos-" rel="noopener nofollow" target="_blank">True Hard Chicanos </a></td><td>2000</td><td>THC Entertainment</td><td><a href="../../#r/phoenix/1001500">地図で開く</a></td></tr>
-<tr><td>Creeper Loco</td><td><a href="https://www.discogs.com/release/8323272-Creeper-Loco-Point-Of-No-Return" rel="noopener nofollow" target="_blank">Point Of No Return</a></td><td>1999</td><td>Devious Music, Inc.</td><td><a href="../../#r/phoenix/1002868">地図で開く</a></td></tr>
-<tr><td>Beautiful Black Soldiers</td><td><a href="https://www.discogs.com/release/24943288-Beautiful-Black-Soldiers-Chapter-One" rel="noopener nofollow" target="_blank">Chapter One</a></td><td>1998</td><td>BBS Productions (3)</td><td><a href="../../#r/phoenix/1002459">地図で開く</a></td></tr>
-<tr><td>MC Magic</td><td><a href="https://www.discogs.com/release/6733323-MC-Magic-Presents-Various-Desert-Funk-Soundtrack" rel="noopener nofollow" target="_blank">Desert Funk Soundtrack</a></td><td>1998</td><td>Nastyboy Records</td><td><a href="../../#r/phoenix/1002629">地図で開く</a></td></tr>
-<tr><td>Mon$ter</td><td><a href="https://www.discogs.com/release/15616446-Monter-Southwest-Assasin" rel="noopener nofollow" target="_blank">  Southwest Assasin</a></td><td>1998</td><td>Playalistic Records</td><td><a href="../../#r/phoenix/1002651">地図で開く</a></td></tr>
-<tr><td>Mushock &amp; The Family</td><td><a href="https://www.discogs.com/release/8812291-Mushock-The-Family-Doomsday" rel="noopener nofollow" target="_blank">Doomsday</a></td><td>1998</td><td>Nastyboy Records</td><td><a href="../../#r/phoenix/1002653">地図で開く</a></td></tr>
-<tr><td>Surround Sound Assylum</td><td><a href="https://www.discogs.com/release/10501616-Surround-Sound-Assylum-Espionage" rel="noopener nofollow" target="_blank">Espionage</a></td><td>1998</td><td>Sonic Boom Productions</td><td><a href="../../#r/phoenix/1002706">地図で開く</a></td></tr>
-<tr><td>Vontel</td><td><a href="https://www.discogs.com/release/8051605-Vontel-Vision-Of-A-Dream" rel="noopener nofollow" target="_blank">Vision Of A Dream</a></td><td>1998</td><td>Fo Life Records</td><td><a href="../../#r/phoenix/1002741">地図で開く</a></td></tr>
-<tr><td>Major League Phalayaz</td><td><a href="https://www.discogs.com/release/9952530-Major-League-Phalayaz-Gangstaz-N-Da-Playin-Phield" rel="noopener nofollow" target="_blank">Gangstaz-N-Da Playin&#x27; Phield</a></td><td>1997</td><td>Time Is Money Entertainment</td><td><a href="../../#r/phoenix/1002125">地図で開く</a></td></tr>
-<tr><td>Mayhemm</td><td><a href="https://www.discogs.com/release/1928993-Mayhemm-Global-Mayhemm" rel="noopener nofollow" target="_blank">Global Mayhemm</a></td><td>1997</td><td>Native Records (2)</td><td><a href="../../#r/phoenix/1002127">地図で開く</a></td></tr>
-<tr><td>Mr. Iroc</td><td><a href="https://www.discogs.com/release/4427198-Mr-Iroc-Finally-On-The-Map" rel="noopener nofollow" target="_blank">Finally On The Map</a></td><td>1996</td><td>Iroc Records</td><td><a href="../../#r/phoenix/1001481">地図で開く</a></td></tr>
-<tr><td>THC</td><td><a href="https://www.discogs.com/release/11862349-THC-15-Time-Has-Come" rel="noopener nofollow" target="_blank">Time Has Come</a></td><td>1996</td><td>Hush Entertainment</td><td><a href="../../#r/phoenix/1001499">地図で開く</a></td></tr>
-<tr><td>Boondocks</td><td><a href="https://www.discogs.com/release/2479268-Boondocks-2-Straight-From-Nowhere" rel="noopener nofollow" target="_blank">Straight From Nowhere</a></td><td>1995</td><td>Raging Bull Records</td><td><a href="../../#r/phoenix/1001126">地図で開く</a></td></tr>
-<tr><td>L$P</td><td><a href="https://www.discogs.com/release/10577284-LP-Comin-Real-Wit-It" rel="noopener nofollow" target="_blank">Comin&#x27; Real Wit It</a></td><td>1995</td><td>Sick Set Records</td><td><a href="../../#r/phoenix/1001176">地図で開く</a></td></tr>
-<tr><td>M.C. Magic</td><td><a href="https://www.discogs.com/release/23824379" rel="noopener nofollow" target="_blank">Don&#x27;t Worry</a></td><td>1995</td><td>Nastyboy Records</td><td><a href="../../#r/phoenix/2022">地図で開く</a></td></tr>
-<tr><td>Nutmeg</td><td><a href="https://www.discogs.com/release/17777572-Nutmeg-5-Ghettos-Child" rel="noopener nofollow" target="_blank">Ghetto&#x27;s Child</a></td><td>1995</td><td>Soul Sauce Recordings (2)</td><td><a href="../../#r/phoenix/1001214">地図で開く</a></td></tr>
-    </tbody>
-  </table>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
 </main>
-<footer>© GANGSTA RAP ATLAS — <a href="../../">地図から掘る、地域別G-RAPディスコグラフィ</a> ／ <a href="../">全地域一覧</a></footer>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
 </body>
 </html>

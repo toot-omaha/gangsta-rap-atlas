@@ -43,10 +43,12 @@
         if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
       }
       localStorage.setItem(FLAG, '1');
-      // 引き継ぎ用フラグメントを消し、共有リンクで来ていた場合はそのハッシュを復元
-      var resume = sessionStorage.getItem('gra.resumeHash') || '';
-      sessionStorage.removeItem('gra.resumeHash');
-      history.replaceState(null, '', location.pathname + location.search + resume);
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
       return;
     }
     if (localStorage.getItem(FLAG)) return;
@@ -54,7 +56,7 @@
     if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
     if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
     sessionStorage.setItem('gra.bounceTried', '1');
-    if (location.hash) sessionStorage.setItem('gra.resumeHash', location.hash);
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
     location.replace(OLD + '/?gra-handoff');
   } catch (e) {}
 })();
@@ -105,7 +107,10 @@
     <h1>GANGSTA RAP ATLAS</h1>
     <p>90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィです。
     地図の表示にはJavaScriptが必要です。</p>
-    <p><a href="r/">地域別ディスコグラフィ一覧(テキスト版)はこちら</a></p>
+    <p>主要地域: <a href="r/houston/">Houston</a> / <a href="r/memphis/">Memphis</a> /
+    <a href="r/oakland/">Oakland</a> / <a href="r/neworleans/">New Orleans</a> /
+    <a href="r/sacramento/">Sacramento</a> / <a href="r/sf/">San Francisco</a> /
+    <a href="r/detroit/">Detroit</a> / <a href="r/compton/">Compton</a></p>
   </div>
 </noscript>
 
@@ -207,6 +212,6 @@
 <script src="enrich.js?v=74"></script>
 <script src="rarity.js?v=65"></script>
 <script src="youtube.js?v=1"></script>
-<script src="app.js?v=150"></script>
+<script src="app.js?v=151"></script>
 </body>
 </html>

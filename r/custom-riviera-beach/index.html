@@ -2,6 +2,65 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Riviera BeachのG-RAPディスコグラフィ 1枚｜GANGSTA RAP ATLAS</title>
 <meta name="description" content="Riviera Beach(Florida, USA)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全1枚。Tarious - N - Flexxほか。試聴・ジャケ写は地図から。">
@@ -13,46 +72,150 @@
 <meta property="og:url" content="https://g.rap-atlas.com/r/custom-riviera-beach/">
 <meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary">
-<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon/icon-32.png">
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "地域一覧", "item": "https://g.rap-atlas.com/r/"}, {"@type": "ListItem", "position": 3, "name": "Riviera Beach", "item": "https://g.rap-atlas.com/r/custom-riviera-beach/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "Riviera BeachのG-RAPディスコグラフィ", "numberOfItems": 1, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Off Da Chain", "byArtist": {"@type": "MusicGroup", "name": "Tarious - N - Flexx"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/14425461-Tarious-N-Flexx-Off-Da-Chain"}}]}]</script>
-<style>body{margin:0;background:#e8e4d9;color:#14120f;font-family:'Helvetica Neue',Helvetica,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;line-height:1.6}
-header{background:#14120f;color:#e8e4d9;padding:18px 20px;border-bottom:3px solid #c1272d}
-header a{color:#e8e4d9;text-decoration:none}
-header .brand{font-weight:800;letter-spacing:.14em;font-size:15px}
-main{max-width:860px;margin:0 auto;padding:20px 16px 56px}
-h1{font-size:22px;margin:14px 0 4px}
-.area{color:#4a453c;margin:0 0 14px;font-size:14px}
-.cta{display:inline-block;background:#c1272d;color:#fff;padding:9px 16px;border-radius:3px;text-decoration:none;font-weight:700;margin:8px 0 20px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border-bottom:1px solid #cfc9ba;padding:7px 8px;text-align:left;vertical-align:top}
-th{background:#dcd6c6;font-size:12px;letter-spacing:.08em}
-td a{color:#8a1f24}
-.regions li{margin:3px 0}
-.regions a{color:#8a1f24}
-.grp{margin:18px 0 6px;font-size:15px;border-left:4px solid #c1272d;padding-left:8px}
-footer{max-width:860px;margin:0 auto;padding:18px 16px;color:#4a453c;font-size:12px;border-top:1px solid #cfc9ba}
-nav.bc{font-size:12px;color:#4a453c;margin-top:6px}
-nav.bc a{color:#8a1f24}</style>
+<meta name="twitter:title" content="Riviera BeachのG-RAPディスコグラフィ 1枚｜GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Riviera Beach(Florida, USA)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全1枚。Tarious - N - Flexxほか。試聴・ジャケ写は地図から。">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Riviera Beach", "item": "https://g.rap-atlas.com/r/custom-riviera-beach/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "Riviera BeachのG-RAPディスコグラフィ", "numberOfItems": 1, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Off Da Chain", "byArtist": {"@type": "MusicGroup", "name": "Tarious - N - Flexx"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/14425461-Tarious-N-Flexx-Off-Da-Chain"}}]}]</script>
 </head>
 <body>
-<header>
-  <a class="brand" href="../../">◉ GANGSTA RAP ATLAS</a>
-  <nav class="bc"><a href="../../">ホーム</a> › <a href="../">地域一覧</a> › Riviera Beach</nav>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Riviera Beach のG-RAPディスコグラフィ</h1>
+    <p>Florida, USA — 全1枚収録。Riviera Beach出身・拠点のアーティストによる
+    G-RAP/ギャングスタラップのディスコグラフィです。地図アプリの表示にはJavaScriptが必要です。</p>
+    <p><a href="/">GANGSTA RAP ATLAS ホーム</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th></tr></thead>
+      <tbody>
+<tr><td>Tarious - N - Flexx</td><td><a href="https://www.discogs.com/release/14425461-Tarious-N-Flexx-Off-Da-Chain" rel="noopener nofollow">Off Da Chain</a></td><td>2000</td><td>Maxisound Music Hall Records</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
 </header>
-<main>
-  <h1>Riviera Beach のG-RAPディスコグラフィ</h1>
-  <p class="area">Florida, USA — 全1枚収録</p>
-  <p>Riviera Beach(Florida, USA)出身・拠点のアーティストによるG-RAP/ギャングスタラップのディスコグラフィ。
-  インタラクティブ地図では試聴・ジャケ写・スタンプ検索が使えます。</p>
-  <a class="cta" href="../../#r/custom-riviera-beach">🗺 地図でこの地域を開く</a>
-  <table>
-    <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th><th></th></tr></thead>
-    <tbody>
-<tr><td>Tarious - N - Flexx</td><td><a href="https://www.discogs.com/release/14425461-Tarious-N-Flexx-Off-Da-Chain" rel="noopener nofollow" target="_blank">Off Da Chain</a></td><td>2000</td><td>Maxisound Music Hall Records</td><td><a href="../../#r/custom-riviera-beach/1003541">地図で開く</a></td></tr>
-    </tbody>
-  </table>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
 </main>
-<footer>© GANGSTA RAP ATLAS — <a href="../../">地図から掘る、地域別G-RAPディスコグラフィ</a> ／ <a href="../">全地域一覧</a></footer>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
 </body>
 </html>

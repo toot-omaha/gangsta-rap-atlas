@@ -2,6 +2,65 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CincinnatiのG-RAPディスコグラフィ 44枚｜GANGSTA RAP ATLAS</title>
 <meta name="description" content="Cincinnati(Ohio)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全44枚。Bootsy Collins、Tocka、Bottom Line、Insanity、Ant D.O.G.、Double O、Natural Born Hustlaz、UFLほか。試聴・ジャケ写は地図から。">
@@ -13,89 +72,193 @@
 <meta property="og:url" content="https://g.rap-atlas.com/r/cincinnati/">
 <meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary">
-<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon/icon-32.png">
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "地域一覧", "item": "https://g.rap-atlas.com/r/"}, {"@type": "ListItem", "position": 3, "name": "Cincinnati", "item": "https://g.rap-atlas.com/r/cincinnati/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "CincinnatiのG-RAPディスコグラフィ", "numberOfItems": 44, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Album Of The Year #1 Funkateer", "byArtist": {"@type": "MusicGroup", "name": "Bootsy Collins"}, "datePublished": "2025", "sameAs": "https://www.discogs.com/release/33749415-Bootsy-Collins-Album-Of-The-Year-1-Funkateer"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "As Is.", "byArtist": {"@type": "MusicGroup", "name": "Tocka"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/28755850-Tocka-As-Is"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Cognition", "byArtist": {"@type": "MusicGroup", "name": "Bottom Line"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/24875498"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "The Introduction", "byArtist": {"@type": "MusicGroup", "name": "Insanity"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/11965379-Insanity-7-The-Introduction"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Life On Wax Vol. 1", "byArtist": {"@type": "MusicGroup", "name": "Ant D.O.G."}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/8059909"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Project Nigga", "byArtist": {"@type": "MusicGroup", "name": "Double O"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/11486994-Double-O-12-Project-Nigga"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "Platinum Hustle", "byArtist": {"@type": "MusicGroup", "name": "Natural Born Hustlaz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/7553380-Natural-Born-Hustlaz-Platinum-Hustle"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Familia", "byArtist": {"@type": "MusicGroup", "name": "UFL"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/7873087-UFL-Familia"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Tonight The Ghetto, Tomorrow The World", "byArtist": {"@type": "MusicGroup", "name": "Convicted Felons"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/13889899"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "The Religion Is Crime...The Belief Is Crime Pay's", "byArtist": {"@type": "MusicGroup", "name": "Criminyles"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/9934254-Criminyles-The-Religion-Is-CrimeThe-Belief-Is-Crime-Pays"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Off Track", "byArtist": {"@type": "MusicGroup", "name": "F.E.V.A."}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/22067905-FEVA-Off-Track"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "The Tot Lot Family Vol. 1", "byArtist": {"@type": "MusicGroup", "name": "Fat Eye Records"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/13944279-Fat-Eye-Records-The-Tot-Lot-Family-Vol-1"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Gettin Paid", "byArtist": {"@type": "MusicGroup", "name": "Kenny P"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11294420-Kenny-P-Gettin-Paid"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Hillside Bound City Of All Seasons", "byArtist": {"@type": "MusicGroup", "name": "Notorious Solja'z & Gangsta'z"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/13931456-Notorious-Soljaz-Gangstaz-Hillside-Bound-City-Of-All-Seasons"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "South Side", "byArtist": {"@type": "MusicGroup", "name": "GP Soldiers"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9953570-GP-Soldiers-South-Side"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Fallen Angels", "byArtist": {"@type": "MusicGroup", "name": "Hoodlum Klub"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/6411673-Hoodlum-Klub-Fallen-Angels"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Setbacks", "byArtist": {"@type": "MusicGroup", "name": "Jay Money"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/23227160-Jay-Money-3-Setbacks"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "The Legacy", "byArtist": {"@type": "MusicGroup", "name": "LES-DOC"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/11758550-LES-DOC-The-Legacy"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Dead Presidents", "byArtist": {"@type": "MusicGroup", "name": "Money Playa$"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9229448-Money-Playa-Dead-Presidents"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Bangin Str8 Melt", "byArtist": {"@type": "MusicGroup", "name": "Natural Born Hustlers"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/15921933-Natural-Born-Hustlers-2-Bangin-Str8-Melt"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Uptown International", "byArtist": {"@type": "MusicGroup", "name": "Terrell"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/23372777"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Hell Town", "byArtist": {"@type": "MusicGroup", "name": "Tone Capone"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/8178533-Capone-Da-Don-Figga-Hell-Town"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Tricky Situation", "byArtist": {"@type": "MusicGroup", "name": "B.C.O."}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/11111028"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Destructive Communication", "byArtist": {"@type": "MusicGroup", "name": "Bombthreat"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/8069463-Bombthreat-4-Destructive-Communication"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Cpt. Black", "byArtist": {"@type": "MusicGroup", "name": "Cpt. Black"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/37568883-CB-Cpt-Black"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "Death Becomes All Of 'Em", "byArtist": {"@type": "MusicGroup", "name": "Cutty B. Spooky"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/11310134-Cutty-B-Spooky-Death-Becomes-All-Of-Em"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "Livin' That Ghetto Life", "byArtist": {"@type": "MusicGroup", "name": "Fifteen"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/5830019-15-Livin-That-Ghetto-Life"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "Plead Insanity", "byArtist": {"@type": "MusicGroup", "name": "Insanity"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/10816729-Insanity-23-Plead-Insanity"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "The Allmighty K-Riley", "byArtist": {"@type": "MusicGroup", "name": "K-Riley"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/14690394-K-Riley-2-The-Allmighty-K-Riley"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "Maintain", "byArtist": {"@type": "MusicGroup", "name": "KompoZur"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/13164281-KompoZur-Maintain"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "As The World Turns", "byArtist": {"@type": "MusicGroup", "name": "OTR Clique"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/18910129-OTR-Clique-As-The-World-Turns"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "B.S. Factor", "byArtist": {"@type": "MusicGroup", "name": "The Nati"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/3290429-The-Nati-BS-Factor"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "Uncle Sam's Comin'", "byArtist": {"@type": "MusicGroup", "name": "Convicted Felons"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/7344476-Convicted-Felons-2-Uncle-Sams-Comin"}}, {"@type": "ListItem", "position": 34, "item": {"@type": "MusicAlbum", "name": "Playin 4 Real", "byArtist": {"@type": "MusicGroup", "name": "Players For Life"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/17456359-Players-For-Life-Playin-4-Real"}}, {"@type": "ListItem", "position": 35, "item": {"@type": "MusicAlbum", "name": "R-Turn", "byArtist": {"@type": "MusicGroup", "name": "Gangstas & Pimps"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/4701728-Gangstas-Pimps-R-Turn"}}, {"@type": "ListItem", "position": 36, "item": {"@type": "MusicAlbum", "name": "Unfadeable", "byArtist": {"@type": "MusicGroup", "name": "Kenny P"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/3766885-Kenny-P-Unfadeable"}}, {"@type": "ListItem", "position": 37, "item": {"@type": "MusicAlbum", "name": "The Rap Game", "byArtist": {"@type": "MusicGroup", "name": "OTR Clique"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/9219179-OTR-Clique-The-Rap-Game"}}, {"@type": "ListItem", "position": 38, "item": {"@type": "MusicAlbum", "name": "The Crookedest Crooks In The Country", "byArtist": {"@type": "MusicGroup", "name": "Convicted Felons"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/9462538-Convicted-Felons-The-Crookedest-Crooks-In-The-Country"}}, {"@type": "ListItem", "position": 39, "item": {"@type": "MusicAlbum", "name": "Streets Deeper Than The Grave", "byArtist": {"@type": "MusicGroup", "name": "OTR Clique"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/1492044-OTR-Clique-Streets-Deeper-Than-The-Grave"}}, {"@type": "ListItem", "position": 40, "item": {"@type": "MusicAlbum", "name": "Streight Frum Da Pen", "byArtist": {"@type": "MusicGroup", "name": "Sha Slim"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/8037442-Sha-Slim-Streight-Frum-Da-Pen"}}, {"@type": "ListItem", "position": 41, "item": {"@type": "MusicAlbum", "name": "Catch The Flavor", "byArtist": {"@type": "MusicGroup", "name": "EZP"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/11125965-EZP-Catch-The-Flavor"}}, {"@type": "ListItem", "position": 42, "item": {"@type": "MusicAlbum", "name": "$$Living For The Money$$", "byArtist": {"@type": "MusicGroup", "name": "Players At Large"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/32217774-Players-At-Large-Living-For-The-Money"}}, {"@type": "ListItem", "position": 43, "item": {"@type": "MusicAlbum", "name": "The Year Of The Ho Niggas Is Over", "byArtist": {"@type": "MusicGroup", "name": "Convicted Felons"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/705704-Convicted-Felons-The-Year-Of-The-Ho-Niggas-Is-Over"}}, {"@type": "ListItem", "position": 44, "item": {"@type": "MusicAlbum", "name": "This Is Rude", "byArtist": {"@type": "MusicGroup", "name": "M.C. Rude"}, "datePublished": "1992", "sameAs": "https://www.discogs.com/release/2857407-MC-Rude-This-Is-Rude"}}]}]</script>
-<style>body{margin:0;background:#e8e4d9;color:#14120f;font-family:'Helvetica Neue',Helvetica,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;line-height:1.6}
-header{background:#14120f;color:#e8e4d9;padding:18px 20px;border-bottom:3px solid #c1272d}
-header a{color:#e8e4d9;text-decoration:none}
-header .brand{font-weight:800;letter-spacing:.14em;font-size:15px}
-main{max-width:860px;margin:0 auto;padding:20px 16px 56px}
-h1{font-size:22px;margin:14px 0 4px}
-.area{color:#4a453c;margin:0 0 14px;font-size:14px}
-.cta{display:inline-block;background:#c1272d;color:#fff;padding:9px 16px;border-radius:3px;text-decoration:none;font-weight:700;margin:8px 0 20px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border-bottom:1px solid #cfc9ba;padding:7px 8px;text-align:left;vertical-align:top}
-th{background:#dcd6c6;font-size:12px;letter-spacing:.08em}
-td a{color:#8a1f24}
-.regions li{margin:3px 0}
-.regions a{color:#8a1f24}
-.grp{margin:18px 0 6px;font-size:15px;border-left:4px solid #c1272d;padding-left:8px}
-footer{max-width:860px;margin:0 auto;padding:18px 16px;color:#4a453c;font-size:12px;border-top:1px solid #cfc9ba}
-nav.bc{font-size:12px;color:#4a453c;margin-top:6px}
-nav.bc a{color:#8a1f24}</style>
+<meta name="twitter:title" content="CincinnatiのG-RAPディスコグラフィ 44枚｜GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Cincinnati(Ohio)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全44枚。Bootsy Collins、Tocka、Bottom Line、Insanity、Ant D.O.G.、Double O、Natural Born Hustlaz、UFLほか。試聴・ジャケ写は地図から。">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Cincinnati", "item": "https://g.rap-atlas.com/r/cincinnati/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "CincinnatiのG-RAPディスコグラフィ", "numberOfItems": 44, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Album Of The Year #1 Funkateer", "byArtist": {"@type": "MusicGroup", "name": "Bootsy Collins"}, "datePublished": "2025", "sameAs": "https://www.discogs.com/release/33749415-Bootsy-Collins-Album-Of-The-Year-1-Funkateer"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "As Is.", "byArtist": {"@type": "MusicGroup", "name": "Tocka"}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/28755850-Tocka-As-Is"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Cognition", "byArtist": {"@type": "MusicGroup", "name": "Bottom Line"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/24875498"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "The Introduction", "byArtist": {"@type": "MusicGroup", "name": "Insanity"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/11965379-Insanity-7-The-Introduction"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Life On Wax Vol. 1", "byArtist": {"@type": "MusicGroup", "name": "Ant D.O.G."}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/8059909"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Project Nigga", "byArtist": {"@type": "MusicGroup", "name": "Double O"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/11486994-Double-O-12-Project-Nigga"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "Platinum Hustle", "byArtist": {"@type": "MusicGroup", "name": "Natural Born Hustlaz"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/7553380-Natural-Born-Hustlaz-Platinum-Hustle"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Familia", "byArtist": {"@type": "MusicGroup", "name": "UFL"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/7873087-UFL-Familia"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "Tonight The Ghetto, Tomorrow The World", "byArtist": {"@type": "MusicGroup", "name": "Convicted Felons"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/13889899"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "The Religion Is Crime...The Belief Is Crime Pay's", "byArtist": {"@type": "MusicGroup", "name": "Criminyles"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/9934254-Criminyles-The-Religion-Is-CrimeThe-Belief-Is-Crime-Pays"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Off Track", "byArtist": {"@type": "MusicGroup", "name": "F.E.V.A."}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/22067905-FEVA-Off-Track"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "The Tot Lot Family Vol. 1", "byArtist": {"@type": "MusicGroup", "name": "Fat Eye Records"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/13944279-Fat-Eye-Records-The-Tot-Lot-Family-Vol-1"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Gettin Paid", "byArtist": {"@type": "MusicGroup", "name": "Kenny P"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11294420-Kenny-P-Gettin-Paid"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "Hillside Bound City Of All Seasons", "byArtist": {"@type": "MusicGroup", "name": "Notorious Solja'z & Gangsta'z"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/13931456-Notorious-Soljaz-Gangstaz-Hillside-Bound-City-Of-All-Seasons"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "South Side", "byArtist": {"@type": "MusicGroup", "name": "GP Soldiers"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9953570-GP-Soldiers-South-Side"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Fallen Angels", "byArtist": {"@type": "MusicGroup", "name": "Hoodlum Klub"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/6411673-Hoodlum-Klub-Fallen-Angels"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Setbacks", "byArtist": {"@type": "MusicGroup", "name": "Jay Money"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/23227160-Jay-Money-3-Setbacks"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "The Legacy", "byArtist": {"@type": "MusicGroup", "name": "LES-DOC"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/11758550-LES-DOC-The-Legacy"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Dead Presidents", "byArtist": {"@type": "MusicGroup", "name": "Money Playa$"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/9229448-Money-Playa-Dead-Presidents"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "Bangin Str8 Melt", "byArtist": {"@type": "MusicGroup", "name": "Natural Born Hustlers"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/15921933-Natural-Born-Hustlers-2-Bangin-Str8-Melt"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Uptown International", "byArtist": {"@type": "MusicGroup", "name": "Terrell"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/23372777"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Hell Town", "byArtist": {"@type": "MusicGroup", "name": "Tone Capone"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/8178533-Capone-Da-Don-Figga-Hell-Town"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Tricky Situation", "byArtist": {"@type": "MusicGroup", "name": "B.C.O."}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/11111028"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "Destructive Communication", "byArtist": {"@type": "MusicGroup", "name": "Bombthreat"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/8069463-Bombthreat-4-Destructive-Communication"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Cpt. Black", "byArtist": {"@type": "MusicGroup", "name": "Cpt. Black"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/37568883-CB-Cpt-Black"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "Death Becomes All Of 'Em", "byArtist": {"@type": "MusicGroup", "name": "Cutty B. Spooky"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/11310134-Cutty-B-Spooky-Death-Becomes-All-Of-Em"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "Livin' That Ghetto Life", "byArtist": {"@type": "MusicGroup", "name": "Fifteen"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/5830019-15-Livin-That-Ghetto-Life"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "Plead Insanity", "byArtist": {"@type": "MusicGroup", "name": "Insanity"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/10816729-Insanity-23-Plead-Insanity"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "The Allmighty K-Riley", "byArtist": {"@type": "MusicGroup", "name": "K-Riley"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/14690394-K-Riley-2-The-Allmighty-K-Riley"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "Maintain", "byArtist": {"@type": "MusicGroup", "name": "KompoZur"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/13164281-KompoZur-Maintain"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "As The World Turns", "byArtist": {"@type": "MusicGroup", "name": "OTR Clique"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/18910129-OTR-Clique-As-The-World-Turns"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "B.S. Factor", "byArtist": {"@type": "MusicGroup", "name": "The Nati"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/3290429-The-Nati-BS-Factor"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "Uncle Sam's Comin'", "byArtist": {"@type": "MusicGroup", "name": "Convicted Felons"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/7344476-Convicted-Felons-2-Uncle-Sams-Comin"}}, {"@type": "ListItem", "position": 34, "item": {"@type": "MusicAlbum", "name": "Playin 4 Real", "byArtist": {"@type": "MusicGroup", "name": "Players For Life"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/17456359-Players-For-Life-Playin-4-Real"}}, {"@type": "ListItem", "position": 35, "item": {"@type": "MusicAlbum", "name": "R-Turn", "byArtist": {"@type": "MusicGroup", "name": "Gangstas & Pimps"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/4701728-Gangstas-Pimps-R-Turn"}}, {"@type": "ListItem", "position": 36, "item": {"@type": "MusicAlbum", "name": "Unfadeable", "byArtist": {"@type": "MusicGroup", "name": "Kenny P"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/3766885-Kenny-P-Unfadeable"}}, {"@type": "ListItem", "position": 37, "item": {"@type": "MusicAlbum", "name": "The Rap Game", "byArtist": {"@type": "MusicGroup", "name": "OTR Clique"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/9219179-OTR-Clique-The-Rap-Game"}}, {"@type": "ListItem", "position": 38, "item": {"@type": "MusicAlbum", "name": "The Crookedest Crooks In The Country", "byArtist": {"@type": "MusicGroup", "name": "Convicted Felons"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/9462538-Convicted-Felons-The-Crookedest-Crooks-In-The-Country"}}, {"@type": "ListItem", "position": 39, "item": {"@type": "MusicAlbum", "name": "Streets Deeper Than The Grave", "byArtist": {"@type": "MusicGroup", "name": "OTR Clique"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/1492044-OTR-Clique-Streets-Deeper-Than-The-Grave"}}, {"@type": "ListItem", "position": 40, "item": {"@type": "MusicAlbum", "name": "Streight Frum Da Pen", "byArtist": {"@type": "MusicGroup", "name": "Sha Slim"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/8037442-Sha-Slim-Streight-Frum-Da-Pen"}}, {"@type": "ListItem", "position": 41, "item": {"@type": "MusicAlbum", "name": "Catch The Flavor", "byArtist": {"@type": "MusicGroup", "name": "EZP"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/11125965-EZP-Catch-The-Flavor"}}, {"@type": "ListItem", "position": 42, "item": {"@type": "MusicAlbum", "name": "$$Living For The Money$$", "byArtist": {"@type": "MusicGroup", "name": "Players At Large"}, "datePublished": "1994", "sameAs": "https://www.discogs.com/release/32217774-Players-At-Large-Living-For-The-Money"}}, {"@type": "ListItem", "position": 43, "item": {"@type": "MusicAlbum", "name": "The Year Of The Ho Niggas Is Over", "byArtist": {"@type": "MusicGroup", "name": "Convicted Felons"}, "datePublished": "1993", "sameAs": "https://www.discogs.com/release/705704-Convicted-Felons-The-Year-Of-The-Ho-Niggas-Is-Over"}}, {"@type": "ListItem", "position": 44, "item": {"@type": "MusicAlbum", "name": "This Is Rude", "byArtist": {"@type": "MusicGroup", "name": "M.C. Rude"}, "datePublished": "1992", "sameAs": "https://www.discogs.com/release/2857407-MC-Rude-This-Is-Rude"}}]}]</script>
 </head>
 <body>
-<header>
-  <a class="brand" href="../../">◉ GANGSTA RAP ATLAS</a>
-  <nav class="bc"><a href="../../">ホーム</a> › <a href="../">地域一覧</a> › Cincinnati</nav>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Cincinnati のG-RAPディスコグラフィ</h1>
+    <p>Ohio — 全44枚収録。Cincinnati出身・拠点のアーティストによる
+    G-RAP/ギャングスタラップのディスコグラフィです。地図アプリの表示にはJavaScriptが必要です。</p>
+    <p><a href="/">GANGSTA RAP ATLAS ホーム</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th></tr></thead>
+      <tbody>
+<tr><td>Bootsy Collins</td><td><a href="https://www.discogs.com/release/33749415-Bootsy-Collins-Album-Of-The-Year-1-Funkateer" rel="noopener nofollow">Album Of The Year #1 Funkateer</a></td><td>2025</td><td>Bootzilla Productions</td></tr>
+<tr><td>Tocka</td><td><a href="https://www.discogs.com/release/28755850-Tocka-As-Is" rel="noopener nofollow">As Is.</a></td><td>2005</td><td>Garnett Entertainment</td></tr>
+<tr><td>Bottom Line</td><td><a href="https://www.discogs.com/release/24875498" rel="noopener nofollow">Cognition</a></td><td>2004</td><td>Celebrity Records</td></tr>
+<tr><td>Insanity</td><td><a href="https://www.discogs.com/release/11965379-Insanity-7-The-Introduction" rel="noopener nofollow">The Introduction</a></td><td>2004</td><td>MURDA LAB MUSIC</td></tr>
+<tr><td>Ant D.O.G.</td><td><a href="https://www.discogs.com/release/8059909" rel="noopener nofollow">Life On Wax Vol. 1</a></td><td>2003</td><td>Big Eddie Recordings</td></tr>
+<tr><td>Double O</td><td><a href="https://www.discogs.com/release/11486994-Double-O-12-Project-Nigga" rel="noopener nofollow">Project Nigga</a></td><td>2002</td><td>Money Playa Records</td></tr>
+<tr><td>Natural Born Hustlaz</td><td><a href="https://www.discogs.com/release/7553380-Natural-Born-Hustlaz-Platinum-Hustle" rel="noopener nofollow">Platinum Hustle</a></td><td>2002</td><td>Go Records</td></tr>
+<tr><td>UFL</td><td><a href="https://www.discogs.com/release/7873087-UFL-Familia" rel="noopener nofollow">Familia</a></td><td>2002</td><td>Trynesty Entertainment</td></tr>
+<tr><td>Convicted Felons</td><td><a href="https://www.discogs.com/release/13889899" rel="noopener nofollow">Tonight The Ghetto, Tomorrow The World</a></td><td>2001</td><td>Not On Label</td></tr>
+<tr><td>Criminyles</td><td><a href="https://www.discogs.com/release/9934254-Criminyles-The-Religion-Is-CrimeThe-Belief-Is-Crime-Pays" rel="noopener nofollow">The Religion Is Crime...The Belief Is Crime Pay&#x27;s</a></td><td>2001</td><td>Melodyc Records</td></tr>
+<tr><td>F.E.V.A.</td><td><a href="https://www.discogs.com/release/22067905-FEVA-Off-Track" rel="noopener nofollow">Off Track</a></td><td>2001</td><td>Get It Down Records</td></tr>
+<tr><td>Fat Eye Records</td><td><a href="https://www.discogs.com/release/13944279-Fat-Eye-Records-The-Tot-Lot-Family-Vol-1" rel="noopener nofollow">The Tot Lot Family Vol. 1</a></td><td>2001</td><td>Fat Eye Records (2)</td></tr>
+<tr><td>Kenny P</td><td><a href="https://www.discogs.com/release/11294420-Kenny-P-Gettin-Paid" rel="noopener nofollow">Gettin Paid</a></td><td>2001</td><td>Diversity Records (9)</td></tr>
+<tr><td>Notorious Solja&#x27;z &amp; Gangsta&#x27;z</td><td><a href="https://www.discogs.com/release/13931456-Notorious-Soljaz-Gangstaz-Hillside-Bound-City-Of-All-Seasons" rel="noopener nofollow">Hillside Bound City Of All Seasons</a></td><td>2001</td><td>Po Hustlaz Records</td></tr>
+<tr><td>GP Soldiers</td><td><a href="https://www.discogs.com/release/9953570-GP-Soldiers-South-Side" rel="noopener nofollow">South Side</a></td><td>2000</td><td>Not On Label</td></tr>
+<tr><td>Hoodlum Klub</td><td><a href="https://www.discogs.com/release/6411673-Hoodlum-Klub-Fallen-Angels" rel="noopener nofollow">Fallen Angels</a></td><td>2000</td><td>Blessed Records (5)</td></tr>
+<tr><td>Jay Money</td><td><a href="https://www.discogs.com/release/23227160-Jay-Money-3-Setbacks" rel="noopener nofollow">Setbacks</a></td><td>2000</td><td>Jay Money Records</td></tr>
+<tr><td>LES-DOC</td><td><a href="https://www.discogs.com/release/11758550-LES-DOC-The-Legacy" rel="noopener nofollow">The Legacy</a></td><td>2000</td><td>Democrack Records</td></tr>
+<tr><td>Money Playa$</td><td><a href="https://www.discogs.com/release/9229448-Money-Playa-Dead-Presidents" rel="noopener nofollow">Dead Presidents</a></td><td>2000</td><td>Money Playa Records</td></tr>
+<tr><td>Natural Born Hustlers</td><td><a href="https://www.discogs.com/release/15921933-Natural-Born-Hustlers-2-Bangin-Str8-Melt" rel="noopener nofollow">Bangin Str8 Melt</a></td><td>2000</td><td>Expedicion Records</td></tr>
+<tr><td>Terrell</td><td><a href="https://www.discogs.com/release/23372777" rel="noopener nofollow">Uptown International</a></td><td>2000</td><td>IQ Records</td></tr>
+<tr><td>Tone Capone</td><td><a href="https://www.discogs.com/release/8178533-Capone-Da-Don-Figga-Hell-Town" rel="noopener nofollow">Hell Town</a></td><td>2000</td><td>MelodyC Records</td></tr>
+<tr><td>B.C.O.</td><td><a href="https://www.discogs.com/release/11111028" rel="noopener nofollow">Tricky Situation</a></td><td>1999</td><td>Ruff &amp; Ruggit Productions</td></tr>
+<tr><td>Bombthreat</td><td><a href="https://www.discogs.com/release/8069463-Bombthreat-4-Destructive-Communication" rel="noopener nofollow">Destructive Communication</a></td><td>1998</td><td>Powerblast Recordings</td></tr>
+<tr><td>Cpt. Black</td><td><a href="https://www.discogs.com/release/37568883-CB-Cpt-Black" rel="noopener nofollow">Cpt. Black</a></td><td>1998</td><td>Not On Label (Cpt. Black Self-released)</td></tr>
+<tr><td>Cutty B. Spooky</td><td><a href="https://www.discogs.com/release/11310134-Cutty-B-Spooky-Death-Becomes-All-Of-Em" rel="noopener nofollow">Death Becomes All Of &#x27;Em</a></td><td>1998</td><td>Powerblast Recordings</td></tr>
+<tr><td>Fifteen</td><td><a href="https://www.discogs.com/release/5830019-15-Livin-That-Ghetto-Life" rel="noopener nofollow">Livin&#x27; That Ghetto Life</a></td><td>1998</td><td>Big J Records</td></tr>
+<tr><td>Insanity</td><td><a href="https://www.discogs.com/release/10816729-Insanity-23-Plead-Insanity" rel="noopener nofollow">Plead Insanity</a></td><td>1998</td><td>True Reality Productions</td></tr>
+<tr><td>K-Riley</td><td><a href="https://www.discogs.com/release/14690394-K-Riley-2-The-Allmighty-K-Riley" rel="noopener nofollow">The Allmighty K-Riley</a></td><td>1998</td><td>Mo&#x27; Money Records</td></tr>
+<tr><td>KompoZur</td><td><a href="https://www.discogs.com/release/13164281-KompoZur-Maintain" rel="noopener nofollow">Maintain</a></td><td>1998</td><td>All Net Records</td></tr>
+<tr><td>OTR Clique</td><td><a href="https://www.discogs.com/release/18910129-OTR-Clique-As-The-World-Turns" rel="noopener nofollow">As The World Turns</a></td><td>1998</td><td>Abandoned Haus Records</td></tr>
+<tr><td>The Nati</td><td><a href="https://www.discogs.com/release/3290429-The-Nati-BS-Factor" rel="noopener nofollow">B.S. Factor</a></td><td>1998</td><td>MSENT/Moodswings, Inc.</td></tr>
+<tr><td>Convicted Felons</td><td><a href="https://www.discogs.com/release/7344476-Convicted-Felons-2-Uncle-Sams-Comin" rel="noopener nofollow">Uncle Sam&#x27;s Comin&#x27;</a></td><td>1997</td><td>Incarcerated Entertainment</td></tr>
+<tr><td>Players For Life</td><td><a href="https://www.discogs.com/release/17456359-Players-For-Life-Playin-4-Real" rel="noopener nofollow">Playin 4 Real</a></td><td>1997</td><td>Big J Records</td></tr>
+<tr><td>Gangstas &amp; Pimps</td><td><a href="https://www.discogs.com/release/4701728-Gangstas-Pimps-R-Turn" rel="noopener nofollow">R-Turn</a></td><td>1996</td><td>Jewel Records (4)</td></tr>
+<tr><td>Kenny P</td><td><a href="https://www.discogs.com/release/3766885-Kenny-P-Unfadeable" rel="noopener nofollow">Unfadeable</a></td><td>1996</td><td>Big Boi Records</td></tr>
+<tr><td>OTR Clique</td><td><a href="https://www.discogs.com/release/9219179-OTR-Clique-The-Rap-Game" rel="noopener nofollow">The Rap Game</a></td><td>1996</td><td>All Net Records</td></tr>
+<tr><td>Convicted Felons</td><td><a href="https://www.discogs.com/release/9462538-Convicted-Felons-The-Crookedest-Crooks-In-The-Country" rel="noopener nofollow">The Crookedest Crooks In The Country</a></td><td>1995</td><td>Rock-A-Fella Records</td></tr>
+<tr><td>OTR Clique</td><td><a href="https://www.discogs.com/release/1492044-OTR-Clique-Streets-Deeper-Than-The-Grave" rel="noopener nofollow">Streets Deeper Than The Grave</a></td><td>1995</td><td>All Net Records</td></tr>
+<tr><td>Sha Slim</td><td><a href="https://www.discogs.com/release/8037442-Sha-Slim-Streight-Frum-Da-Pen" rel="noopener nofollow">Streight Frum Da Pen</a></td><td>1995</td><td>Dault Records</td></tr>
+<tr><td>EZP</td><td><a href="https://www.discogs.com/release/11125965-EZP-Catch-The-Flavor" rel="noopener nofollow">Catch The Flavor</a></td><td>1994</td><td>EZP Co.</td></tr>
+<tr><td>Players At Large</td><td><a href="https://www.discogs.com/release/32217774-Players-At-Large-Living-For-The-Money" rel="noopener nofollow">$$Living For The Money$$</a></td><td>1994</td><td>Not On Label</td></tr>
+<tr><td>Convicted Felons</td><td><a href="https://www.discogs.com/release/705704-Convicted-Felons-The-Year-Of-The-Ho-Niggas-Is-Over" rel="noopener nofollow">The Year Of The Ho Niggas Is Over</a></td><td>1993</td><td>Rock-A-Fella Records</td></tr>
+<tr><td>M.C. Rude</td><td><a href="https://www.discogs.com/release/2857407-MC-Rude-This-Is-Rude" rel="noopener nofollow">This Is Rude</a></td><td>1992</td><td>Kill &#x27;Em All Records</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
 </header>
-<main>
-  <h1>Cincinnati のG-RAPディスコグラフィ</h1>
-  <p class="area">Ohio — 全44枚収録</p>
-  <p>Cincinnati(Ohio)出身・拠点のアーティストによるG-RAP/ギャングスタラップのディスコグラフィ。
-  インタラクティブ地図では試聴・ジャケ写・スタンプ検索が使えます。</p>
-  <a class="cta" href="../../#r/cincinnati">🗺 地図でこの地域を開く</a>
-  <table>
-    <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th><th></th></tr></thead>
-    <tbody>
-<tr><td>Bootsy Collins</td><td><a href="https://www.discogs.com/release/33749415-Bootsy-Collins-Album-Of-The-Year-1-Funkateer" rel="noopener nofollow" target="_blank">Album Of The Year #1 Funkateer</a></td><td>2025</td><td>Bootzilla Productions</td><td><a href="../../#r/cincinnati/1006036">地図で開く</a></td></tr>
-<tr><td>Tocka</td><td><a href="https://www.discogs.com/release/28755850-Tocka-As-Is" rel="noopener nofollow" target="_blank">As Is.</a></td><td>2005</td><td>Garnett Entertainment</td><td><a href="../../#r/cincinnati/1005888">地図で開く</a></td></tr>
-<tr><td>Bottom Line</td><td><a href="https://www.discogs.com/release/24875498" rel="noopener nofollow" target="_blank">Cognition</a></td><td>2004</td><td>Celebrity Records</td><td><a href="../../#r/cincinnati/2204">地図で開く</a></td></tr>
-<tr><td>Insanity</td><td><a href="https://www.discogs.com/release/11965379-Insanity-7-The-Introduction" rel="noopener nofollow" target="_blank">The Introduction</a></td><td>2004</td><td>MURDA LAB MUSIC</td><td><a href="../../#r/cincinnati/1002356">地図で開く</a></td></tr>
-<tr><td>Ant D.O.G.</td><td><a href="https://www.discogs.com/release/8059909" rel="noopener nofollow" target="_blank">Life On Wax Vol. 1</a></td><td>2003</td><td>Big Eddie Recordings</td><td><a href="../../#r/cincinnati/2059">地図で開く</a></td></tr>
-<tr><td>Double O</td><td><a href="https://www.discogs.com/release/11486994-Double-O-12-Project-Nigga" rel="noopener nofollow" target="_blank">Project Nigga</a></td><td>2002</td><td>Money Playa Records</td><td><a href="../../#r/cincinnati/1004547">地図で開く</a></td></tr>
-<tr><td>Natural Born Hustlaz</td><td><a href="https://www.discogs.com/release/7553380-Natural-Born-Hustlaz-Platinum-Hustle" rel="noopener nofollow" target="_blank">Platinum Hustle</a></td><td>2002</td><td>Go Records</td><td><a href="../../#r/cincinnati/1004745">地図で開く</a></td></tr>
-<tr><td>UFL</td><td><a href="https://www.discogs.com/release/7873087-UFL-Familia" rel="noopener nofollow" target="_blank">Familia</a></td><td>2002</td><td>Trynesty Entertainment</td><td><a href="../../#r/cincinnati/1004917">地図で開く</a></td></tr>
-<tr><td>Convicted Felons</td><td><a href="https://www.discogs.com/release/13889899" rel="noopener nofollow" target="_blank">Tonight The Ghetto, Tomorrow The World</a></td><td>2001</td><td>Not On Label</td><td><a href="../../#r/cincinnati/1392">地図で開く</a></td></tr>
-<tr><td>Criminyles</td><td><a href="https://www.discogs.com/release/9934254-Criminyles-The-Religion-Is-CrimeThe-Belief-Is-Crime-Pays" rel="noopener nofollow" target="_blank">The Religion Is Crime...The Belief Is Crime Pay&#x27;s</a></td><td>2001</td><td>Melodyc Records</td><td><a href="../../#r/cincinnati/1003886">地図で開く</a></td></tr>
-<tr><td>F.E.V.A.</td><td><a href="https://www.discogs.com/release/22067905-FEVA-Off-Track" rel="noopener nofollow" target="_blank">Off Track</a></td><td>2001</td><td>Get It Down Records</td><td><a href="../../#r/cincinnati/1003929">地図で開く</a></td></tr>
-<tr><td>Fat Eye Records</td><td><a href="https://www.discogs.com/release/13944279-Fat-Eye-Records-The-Tot-Lot-Family-Vol-1" rel="noopener nofollow" target="_blank">The Tot Lot Family Vol. 1</a></td><td>2001</td><td>Fat Eye Records (2)</td><td><a href="../../#r/cincinnati/1003931">地図で開く</a></td></tr>
-<tr><td>Kenny P</td><td><a href="https://www.discogs.com/release/11294420-Kenny-P-Gettin-Paid" rel="noopener nofollow" target="_blank">Gettin Paid</a></td><td>2001</td><td>Diversity Records (9)</td><td><a href="../../#r/cincinnati/1001463">地図で開く</a></td></tr>
-<tr><td>Notorious Solja&#x27;z &amp; Gangsta&#x27;z</td><td><a href="https://www.discogs.com/release/13931456-Notorious-Soljaz-Gangstaz-Hillside-Bound-City-Of-All-Seasons" rel="noopener nofollow" target="_blank">Hillside Bound City Of All Seasons</a></td><td>2001</td><td>Po Hustlaz Records</td><td><a href="../../#r/cincinnati/1004071">地図で開く</a></td></tr>
-<tr><td>GP Soldiers</td><td><a href="https://www.discogs.com/release/9953570-GP-Soldiers-South-Side" rel="noopener nofollow" target="_blank">South Side</a></td><td>2000</td><td>Not On Label</td><td><a href="../../#r/cincinnati/1003332">地図で開く</a></td></tr>
-<tr><td>Hoodlum Klub</td><td><a href="https://www.discogs.com/release/6411673-Hoodlum-Klub-Fallen-Angels" rel="noopener nofollow" target="_blank">Fallen Angels</a></td><td>2000</td><td>Blessed Records (5)</td><td><a href="../../#r/cincinnati/1003356">地図で開く</a></td></tr>
-<tr><td>Jay Money</td><td><a href="https://www.discogs.com/release/23227160-Jay-Money-3-Setbacks" rel="noopener nofollow" target="_blank">Setbacks</a></td><td>2000</td><td>Jay Money Records</td><td><a href="../../#r/cincinnati/1003365">地図で開く</a></td></tr>
-<tr><td>LES-DOC</td><td><a href="https://www.discogs.com/release/11758550-LES-DOC-The-Legacy" rel="noopener nofollow" target="_blank">The Legacy</a></td><td>2000</td><td>Democrack Records</td><td><a href="../../#r/cincinnati/1003394">地図で開く</a></td></tr>
-<tr><td>Money Playa$</td><td><a href="https://www.discogs.com/release/9229448-Money-Playa-Dead-Presidents" rel="noopener nofollow" target="_blank">Dead Presidents</a></td><td>2000</td><td>Money Playa Records</td><td><a href="../../#r/cincinnati/1003427">地図で開く</a></td></tr>
-<tr><td>Natural Born Hustlers</td><td><a href="https://www.discogs.com/release/15921933-Natural-Born-Hustlers-2-Bangin-Str8-Melt" rel="noopener nofollow" target="_blank">Bangin Str8 Melt</a></td><td>2000</td><td>Expedicion Records</td><td><a href="../../#r/cincinnati/1003457">地図で開く</a></td></tr>
-<tr><td>Terrell</td><td><a href="https://www.discogs.com/release/23372777" rel="noopener nofollow" target="_blank">Uptown International</a></td><td>2000</td><td>IQ Records</td><td><a href="../../#r/cincinnati/1393">地図で開く</a></td></tr>
-<tr><td>Tone Capone</td><td><a href="https://www.discogs.com/release/8178533-Capone-Da-Don-Figga-Hell-Town" rel="noopener nofollow" target="_blank">Hell Town</a></td><td>2000</td><td>MelodyC Records</td><td><a href="../../#r/cincinnati/1003563">地図で開く</a></td></tr>
-<tr><td>B.C.O.</td><td><a href="https://www.discogs.com/release/11111028" rel="noopener nofollow" target="_blank">Tricky Situation</a></td><td>1999</td><td>Ruff &amp; Ruggit Productions</td><td><a href="../../#r/cincinnati/1394">地図で開く</a></td></tr>
-<tr><td>Bombthreat</td><td><a href="https://www.discogs.com/release/8069463-Bombthreat-4-Destructive-Communication" rel="noopener nofollow" target="_blank">Destructive Communication</a></td><td>1998</td><td>Powerblast Recordings</td><td><a href="../../#r/cincinnati/1002475">地図で開く</a></td></tr>
-<tr><td>Cpt. Black</td><td><a href="https://www.discogs.com/release/37568883-CB-Cpt-Black" rel="noopener nofollow" target="_blank">Cpt. Black</a></td><td>1998</td><td>Not On Label (Cpt. Black Self-released)</td><td><a href="../../#r/cincinnati/1002497">地図で開く</a></td></tr>
-<tr><td>Cutty B. Spooky</td><td><a href="https://www.discogs.com/release/11310134-Cutty-B-Spooky-Death-Becomes-All-Of-Em" rel="noopener nofollow" target="_blank">Death Becomes All Of &#x27;Em</a></td><td>1998</td><td>Powerblast Recordings</td><td><a href="../../#r/cincinnati/1002505">地図で開く</a></td></tr>
-<tr><td>Fifteen</td><td><a href="https://www.discogs.com/release/5830019-15-Livin-That-Ghetto-Life" rel="noopener nofollow" target="_blank">Livin&#x27; That Ghetto Life</a></td><td>1998</td><td>Big J Records</td><td><a href="../../#r/cincinnati/1002543">地図で開く</a></td></tr>
-<tr><td>Insanity</td><td><a href="https://www.discogs.com/release/10816729-Insanity-23-Plead-Insanity" rel="noopener nofollow" target="_blank">Plead Insanity</a></td><td>1998</td><td>True Reality Productions</td><td><a href="../../#r/cincinnati/1002355">地図で開く</a></td></tr>
-<tr><td>K-Riley</td><td><a href="https://www.discogs.com/release/14690394-K-Riley-2-The-Allmighty-K-Riley" rel="noopener nofollow" target="_blank">The Allmighty K-Riley</a></td><td>1998</td><td>Mo&#x27; Money Records</td><td><a href="../../#r/cincinnati/1002599">地図で開く</a></td></tr>
-<tr><td>KompoZur</td><td><a href="https://www.discogs.com/release/13164281-KompoZur-Maintain" rel="noopener nofollow" target="_blank">Maintain</a></td><td>1998</td><td>All Net Records</td><td><a href="../../#r/cincinnati/1002605">地図で開く</a></td></tr>
-<tr><td>OTR Clique</td><td><a href="https://www.discogs.com/release/18910129-OTR-Clique-As-The-World-Turns" rel="noopener nofollow" target="_blank">As The World Turns</a></td><td>1998</td><td>Abandoned Haus Records</td><td><a href="../../#r/cincinnati/1000997">地図で開く</a></td></tr>
-<tr><td>The Nati</td><td><a href="https://www.discogs.com/release/3290429-The-Nati-BS-Factor" rel="noopener nofollow" target="_blank">B.S. Factor</a></td><td>1998</td><td>MSENT/Moodswings, Inc.</td><td><a href="../../#r/cincinnati/1002721">地図で開く</a></td></tr>
-<tr><td>Convicted Felons</td><td><a href="https://www.discogs.com/release/7344476-Convicted-Felons-2-Uncle-Sams-Comin" rel="noopener nofollow" target="_blank">Uncle Sam&#x27;s Comin&#x27;</a></td><td>1997</td><td>Incarcerated Entertainment</td><td><a href="../../#r/cincinnati/1000343">地図で開く</a></td></tr>
-<tr><td>Players For Life</td><td><a href="https://www.discogs.com/release/17456359-Players-For-Life-Playin-4-Real" rel="noopener nofollow" target="_blank">Playin 4 Real</a></td><td>1997</td><td>Big J Records</td><td><a href="../../#r/cincinnati/1002150">地図で開く</a></td></tr>
-<tr><td>Gangstas &amp; Pimps</td><td><a href="https://www.discogs.com/release/4701728-Gangstas-Pimps-R-Turn" rel="noopener nofollow" target="_blank">R-Turn</a></td><td>1996</td><td>Jewel Records (4)</td><td><a href="../../#r/cincinnati/1001562">地図で開く</a></td></tr>
-<tr><td>Kenny P</td><td><a href="https://www.discogs.com/release/3766885-Kenny-P-Unfadeable" rel="noopener nofollow" target="_blank">Unfadeable</a></td><td>1996</td><td>Big Boi Records</td><td><a href="../../#r/cincinnati/1001462">地図で開く</a></td></tr>
-<tr><td>OTR Clique</td><td><a href="https://www.discogs.com/release/9219179-OTR-Clique-The-Rap-Game" rel="noopener nofollow" target="_blank">The Rap Game</a></td><td>1996</td><td>All Net Records</td><td><a href="../../#r/cincinnati/1000996">地図で開く</a></td></tr>
-<tr><td>Convicted Felons</td><td><a href="https://www.discogs.com/release/9462538-Convicted-Felons-The-Crookedest-Crooks-In-The-Country" rel="noopener nofollow" target="_blank">The Crookedest Crooks In The Country</a></td><td>1995</td><td>Rock-A-Fella Records</td><td><a href="../../#r/cincinnati/1000342">地図で開く</a></td></tr>
-<tr><td>OTR Clique</td><td><a href="https://www.discogs.com/release/1492044-OTR-Clique-Streets-Deeper-Than-The-Grave" rel="noopener nofollow" target="_blank">Streets Deeper Than The Grave</a></td><td>1995</td><td>All Net Records</td><td><a href="../../#r/cincinnati/1000995">地図で開く</a></td></tr>
-<tr><td>Sha Slim</td><td><a href="https://www.discogs.com/release/8037442-Sha-Slim-Streight-Frum-Da-Pen" rel="noopener nofollow" target="_blank">Streight Frum Da Pen</a></td><td>1995</td><td>Dault Records</td><td><a href="../../#r/cincinnati/1001229">地図で開く</a></td></tr>
-<tr><td>EZP</td><td><a href="https://www.discogs.com/release/11125965-EZP-Catch-The-Flavor" rel="noopener nofollow" target="_blank">Catch The Flavor</a></td><td>1994</td><td>EZP Co.</td><td><a href="../../#r/cincinnati/1000791">地図で開く</a></td></tr>
-<tr><td>Players At Large</td><td><a href="https://www.discogs.com/release/32217774-Players-At-Large-Living-For-The-Money" rel="noopener nofollow" target="_blank">$$Living For The Money$$</a></td><td>1994</td><td>Not On Label</td><td><a href="../../#r/cincinnati/1000848">地図で開く</a></td></tr>
-<tr><td>Convicted Felons</td><td><a href="https://www.discogs.com/release/705704-Convicted-Felons-The-Year-Of-The-Ho-Niggas-Is-Over" rel="noopener nofollow" target="_blank">The Year Of The Ho Niggas Is Over</a></td><td>1993</td><td>Rock-A-Fella Records</td><td><a href="../../#r/cincinnati/1000341">地図で開く</a></td></tr>
-<tr><td>M.C. Rude</td><td><a href="https://www.discogs.com/release/2857407-MC-Rude-This-Is-Rude" rel="noopener nofollow" target="_blank">This Is Rude</a></td><td>1992</td><td>Kill &#x27;Em All Records</td><td><a href="../../#r/cincinnati/1000291">地図で開く</a></td></tr>
-    </tbody>
-  </table>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
 </main>
-<footer>© GANGSTA RAP ATLAS — <a href="../../">地図から掘る、地域別G-RAPディスコグラフィ</a> ／ <a href="../">全地域一覧</a></footer>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
 </body>
 </html>

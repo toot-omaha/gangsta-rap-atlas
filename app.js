@@ -525,6 +525,12 @@ async function loadPublishedReleases() {
     });
     refreshMarkers();
     refreshActiveListView();
+    // 共有リンク/静的地域URLがSupabase由来のcustom地域を指していた場合、
+    // 起動直後のopenFromHash()時点ではREGIONS未登録で開けていない。
+    // 地域が出揃ったここで一度だけ再試行する(開いていれば何もしない)。
+    // location.hashは起動処理(navGoto周りのreplaceState)で消えているため、
+    // 起動時に捕捉済みのinitialShareHashを使う。
+    if (!activeRegion && initialShareHash.startsWith('#r/')) openFromHash(initialShareHash);
   } catch { /* オフラインでもローカルだけで動く */ }
 }
 
@@ -1138,6 +1144,15 @@ let navLevel = 0;
 // 開いてしまう(閉じても閉じても同じページが復活するように見えるバグだった)。
 // 元のハッシュはopenFromHash()に渡すため先に控えておき、level 0のURLからは
 // 消しておく。
+// SEO用の静的地域URL(/r/<地域ID>/)で本体アプリが起動された場合の入口。
+// パスを通常のハッシュ共有リンク形式に置き換えてから、直後のinitialShareHash
+// 経由で既存のopenFromHash()の流れに乗せる(処理を二重に持たないため)。
+(function openFromPath() {
+  const m = location.pathname.match(/\/r\/([A-Za-z0-9._-]+)\/?$/);
+  if (!m) return;
+  const base = location.pathname.replace(/r\/[A-Za-z0-9._-]+\/?$/, '');
+  history.replaceState(null, '', base + location.search + '#r/' + m[1]);
+})();
 const initialShareHash = location.hash;
 history.replaceState({ level: 0 }, '', location.pathname + location.search);
 function navGoto(level, hash) {
@@ -3144,6 +3159,6 @@ window.addEventListener('hashchange', () => openFromHash());
 // PWAとしてインストール可能にするための最小Service Worker登録
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
 }

@@ -2,6 +2,65 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+// 独自ドメイン移行(pages.dev → g.rap-atlas.com)のlocalStorage引き継ぎ。
+// 当初はiframe+postMessage方式だったが、最近のブラウザはサードパーティiframeの
+// ストレージを分離する(Storage Partitioning)ため旧オリジンの実データが読めない。
+// そこでトップレベルの往復リダイレクトで運ぶ:
+//   新(初訪問・データ無し) → 旧/?gra-handoff → 旧が全gra.*キーをURLフラグメントに
+//   載せて新/#gra-import=... へ戻す → 新が取り込んでURLを掃除、アプリ起動続行。
+// フラグメントはサーバーに送信されないためデータが外部へ出ることはない。
+// ループ防止はsessionStorage、bot(クローラー)はUAで除外、既存キーは上書きしない。
+(function () {
+  var OLD = 'https://gangsta-rap-atlas.pages.dev';
+  var NEW = 'https://g.rap-atlas.com';
+  var FLAG = 'gra.migrated.v2';
+  function collect() {
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+  function dec(t) { return JSON.parse(decodeURIComponent(escape(atob(t)))); }
+  try {
+    if (location.origin === OLD && location.search.indexOf('gra-handoff') >= 0) {
+      var p = enc(collect());
+      // フラグメント長の保険(通常は遠く及ばない)
+      if (p.length > 800000) p = enc({ 'gra.streetName': localStorage.getItem('gra.streetName') || '', 'gra.lang': localStorage.getItem('gra.lang') || 'ja' });
+      // 注意: ここでwindow.stop()を呼ぶと開始したばかりのナビゲーション自体が
+      // キャンセルされる(実際にそれで引き継ぎが止まるバグになった)。
+      // ナビゲーションがページを破棄するので後続読み込みの抑止は不要。
+      location.replace(NEW + '/#gra-import=' + p);
+      return;
+    }
+    if (location.origin !== NEW) return;
+    if (location.hash.indexOf('#gra-import=') === 0) {
+      var data = dec(location.hash.slice('#gra-import='.length));
+      for (var k in data) {
+        if (k.indexOf('gra.') === 0 && k.indexOf('gra.migrated') !== 0 && typeof data[k] === 'string' && localStorage.getItem(k) == null) localStorage.setItem(k, data[k]);
+      }
+      localStorage.setItem(FLAG, '1');
+      // 引き継ぎ用フラグメントを消し、来訪時のURL(静的地域ページのパスや
+      // 共有リンクのハッシュ)を復元する。後続のapp.jsがこのURLを読んで
+      // 該当地域を開くので、往復を挟んでも着地体験は変わらない。
+      var resume = sessionStorage.getItem('gra.resumePath') || (location.pathname + location.search);
+      sessionStorage.removeItem('gra.resumePath');
+      history.replaceState(null, '', resume);
+      return;
+    }
+    if (localStorage.getItem(FLAG)) return;
+    if (localStorage.getItem('gra.streetName')) { localStorage.setItem(FLAG, '1'); return; }
+    if (/bot|crawler|spider|crawling|lighthouse/i.test(navigator.userAgent)) return;
+    if (sessionStorage.getItem('gra.bounceTried')) { localStorage.setItem(FLAG, '1'); return; }
+    sessionStorage.setItem('gra.bounceTried', '1');
+    sessionStorage.setItem('gra.resumePath', location.pathname + location.search + location.hash);
+    location.replace(OLD + '/?gra-handoff');
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ColumbusのG-RAPディスコグラフィ 33枚｜GANGSTA RAP ATLAS</title>
 <meta name="description" content="Columbus(Ohio)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全33枚。Bizzy Bone、Doobie、Lil Jazz、Ballers Ona Mission、L.O.G.、Crimanal &amp; Hazell、All Inほか。試聴・ジャケ写は地図から。">
@@ -13,78 +72,182 @@
 <meta property="og:url" content="https://g.rap-atlas.com/r/columbus/">
 <meta property="og:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary">
-<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon/icon-32.png">
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "地域一覧", "item": "https://g.rap-atlas.com/r/"}, {"@type": "ListItem", "position": 3, "name": "Columbus", "item": "https://g.rap-atlas.com/r/columbus/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "ColumbusのG-RAPディスコグラフィ", "numberOfItems": 33, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Bizzy Bone ", "byArtist": {"@type": "MusicGroup", "name": "Bizzy Bone"}, "datePublished": "2024", "sameAs": "https://www.discogs.com/release/35199007-Bizzy-Bone-Bizzy-Bone-"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "King Of The Trill", "byArtist": {"@type": "MusicGroup", "name": "Doobie"}, "datePublished": "2014", "sameAs": "https://www.discogs.com/release/25534357-Doobie-King-Of-The-Trill"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Gemini Files: East Side Story", "byArtist": {"@type": "MusicGroup", "name": "Lil Jazz"}, "datePublished": "2009", "sameAs": "https://www.discogs.com/release/3102723"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "B.O.M. Threat", "byArtist": {"@type": "MusicGroup", "name": "Ballers Ona Mission"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/2974721"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Evolution Of Elevation", "byArtist": {"@type": "MusicGroup", "name": "Bizzy Bone"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/950168-Bizzy-Bone-Evolution-Of-Elevation"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Zoo Orleans (The Entrance)", "byArtist": {"@type": "MusicGroup", "name": "L.O.G."}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/5824144"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "S/T", "byArtist": {"@type": "MusicGroup", "name": "Crimanal & Hazell"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/6433287-Crimanal-Hazell-feat-Lil-Hollywood-ST"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Street Hitz", "byArtist": {"@type": "MusicGroup", "name": "L.O.G."}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/12740878"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "From Tha Streets To Da Pen", "byArtist": {"@type": "MusicGroup", "name": "All In"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/14257658-All-In-9-From-Tha-Streets-To-Da-Pen"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Good Nda Hood", "byArtist": {"@type": "MusicGroup", "name": "Big Daddy Sound Artists"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/3828618-Big-Daddy-Sound-Good-Nda-Hood"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Lookin For A Major Deal", "byArtist": {"@type": "MusicGroup", "name": "L.G."}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/25588756-LG-16-Lookin-For-A-Major-Deal"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "The Gift", "byArtist": {"@type": "MusicGroup", "name": "Bizzy Bone"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/6212141"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Hydroboniks", "byArtist": {"@type": "MusicGroup", "name": "D.C.Y.F.A.H.S"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/12275920-DCYFAHS-Hydroboniks"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "GStars", "byArtist": {"@type": "MusicGroup", "name": "Mshalla"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11953668-Mshalla-GStars"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Volume 1", "byArtist": {"@type": "MusicGroup", "name": "Paystyle Records"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/10992591-Paystyle-Records-Volume-1"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Survivin' Da Game", "byArtist": {"@type": "MusicGroup", "name": "Corleone"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/11951138"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Ain't Nuthin'", "byArtist": {"@type": "MusicGroup", "name": "Dollah"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/6411954-Dollah-Aint-Nuthin"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "Somewhere Between N.Y. & L.A.", "byArtist": {"@type": "MusicGroup", "name": "Trey-Sum"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/10792170-Trey-Sum-Somewhere-Between-NY-LA"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Rap Life", "byArtist": {"@type": "MusicGroup", "name": "Tash"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/1202325-Tash-Rap-Life"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "City Style", "byArtist": {"@type": "MusicGroup", "name": "Bingo"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/5737498-Bingo-16-City-Style"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Heaven'z Movie", "byArtist": {"@type": "MusicGroup", "name": "Bizzy Bone"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/32921166-Bizzy-Bone-Heavenz-Movie"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Street Life", "byArtist": {"@type": "MusicGroup", "name": "Mekka Born Sound"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/24713099-Mekka-Born-Sound-Street-Life"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Da Last Resort", "byArtist": {"@type": "MusicGroup", "name": "Rythum & Ghetto"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/3234252-Rythum-Ghetto-Da-Last-Resort"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "The Stepping Stone", "byArtist": {"@type": "MusicGroup", "name": "Black Menagerie"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/6417553-Black-Menagerie-The-Stepping-Stone"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Midwest Funk Volume II", "byArtist": {"@type": "MusicGroup", "name": "Columbus Mob"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/9131259-Columbus-Mob-Midwest-Funk-Volume-II"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "The Dobe's Comming", "byArtist": {"@type": "MusicGroup", "name": "K9/OG The Dobe"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/11448096-The-Dobe-The-Dobes-Comming"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "EnVious", "byArtist": {"@type": "MusicGroup", "name": "L.N.O."}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/14355397-LNO-EnVious"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "$till $truggling", "byArtist": {"@type": "MusicGroup", "name": "Big Hustler"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/3803913-Big-Hutler-till-truggling"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "Ill Funk Fl-Oz & Trax", "byArtist": {"@type": "MusicGroup", "name": "Most Ill Crew"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/7832090-Most-Ill-Crew-Ill-Funk-Fl-Oz-Trax"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "It's In My Nature - A Real-Life Soundtrack", "byArtist": {"@type": "MusicGroup", "name": "Big Daddy Sound Artists"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/11448885-Big-Daddy-Sound-Its-In-My-Nature-A-Real-Life-Soundtrack"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "Unleashed In The Hoods", "byArtist": {"@type": "MusicGroup", "name": "K9/OG The Dobe"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/1856865-K9OG-The-Dobe-Unleashed-In-The-Hoods"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "The Rise-The Fall-The Rise", "byArtist": {"@type": "MusicGroup", "name": "Tai-pan"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/14482784-Tai-Pan-The-Rise-The-Fall-The-Rise"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "Straight Butta", "byArtist": {"@type": "MusicGroup", "name": "Tavaris"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/3375098-Tavaris-Straight-Butta"}}]}]</script>
-<style>body{margin:0;background:#e8e4d9;color:#14120f;font-family:'Helvetica Neue',Helvetica,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;line-height:1.6}
-header{background:#14120f;color:#e8e4d9;padding:18px 20px;border-bottom:3px solid #c1272d}
-header a{color:#e8e4d9;text-decoration:none}
-header .brand{font-weight:800;letter-spacing:.14em;font-size:15px}
-main{max-width:860px;margin:0 auto;padding:20px 16px 56px}
-h1{font-size:22px;margin:14px 0 4px}
-.area{color:#4a453c;margin:0 0 14px;font-size:14px}
-.cta{display:inline-block;background:#c1272d;color:#fff;padding:9px 16px;border-radius:3px;text-decoration:none;font-weight:700;margin:8px 0 20px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border-bottom:1px solid #cfc9ba;padding:7px 8px;text-align:left;vertical-align:top}
-th{background:#dcd6c6;font-size:12px;letter-spacing:.08em}
-td a{color:#8a1f24}
-.regions li{margin:3px 0}
-.regions a{color:#8a1f24}
-.grp{margin:18px 0 6px;font-size:15px;border-left:4px solid #c1272d;padding-left:8px}
-footer{max-width:860px;margin:0 auto;padding:18px 16px;color:#4a453c;font-size:12px;border-top:1px solid #cfc9ba}
-nav.bc{font-size:12px;color:#4a453c;margin-top:6px}
-nav.bc a{color:#8a1f24}</style>
+<meta name="twitter:title" content="ColumbusのG-RAPディスコグラフィ 33枚｜GANGSTA RAP ATLAS">
+<meta name="twitter:description" content="Columbus(Ohio)出身アーティストのG-RAP/ギャングスタラップ ディスコグラフィ全33枚。Bizzy Bone、Doobie、Lil Jazz、Ballers Ona Mission、L.O.G.、Crimanal &amp; Hazell、All Inほか。試聴・ジャケ写は地図から。">
+<meta name="twitter:image" content="https://g.rap-atlas.com/assets/icon/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GANGSTA RAP ATLAS",
+  "alternateName": "G-RAP ATLAS",
+  "url": "https://g.rap-atlas.com/",
+  "description": "90年代を中心としたG-RAP/ギャングスタラップを全米地図から発掘できる地域別ディスコグラフィ",
+  "inLanguage": ["ja", "en"]
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14120f">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/icon-180.png">
+<link rel="preconnect" href="https://xqtoyvhupioztljkejnw.supabase.co">
+<link rel="preconnect" href="https://tiles.openfreemap.org">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://s.ytimg.com">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="/style.css?v=78">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GANGSTA RAP ATLAS", "item": "https://g.rap-atlas.com/"}, {"@type": "ListItem", "position": 2, "name": "Columbus", "item": "https://g.rap-atlas.com/r/columbus/"}]}, {"@context": "https://schema.org", "@type": "ItemList", "name": "ColumbusのG-RAPディスコグラフィ", "numberOfItems": 33, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "MusicAlbum", "name": "Bizzy Bone ", "byArtist": {"@type": "MusicGroup", "name": "Bizzy Bone"}, "datePublished": "2024", "sameAs": "https://www.discogs.com/release/35199007-Bizzy-Bone-Bizzy-Bone-"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "MusicAlbum", "name": "King Of The Trill", "byArtist": {"@type": "MusicGroup", "name": "Doobie"}, "datePublished": "2014", "sameAs": "https://www.discogs.com/release/25534357-Doobie-King-Of-The-Trill"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "MusicAlbum", "name": "Gemini Files: East Side Story", "byArtist": {"@type": "MusicGroup", "name": "Lil Jazz"}, "datePublished": "2009", "sameAs": "https://www.discogs.com/release/3102723"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "MusicAlbum", "name": "B.O.M. Threat", "byArtist": {"@type": "MusicGroup", "name": "Ballers Ona Mission"}, "datePublished": "2007", "sameAs": "https://www.discogs.com/release/2974721"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "MusicAlbum", "name": "Evolution Of Elevation", "byArtist": {"@type": "MusicGroup", "name": "Bizzy Bone"}, "datePublished": "2006", "sameAs": "https://www.discogs.com/release/950168-Bizzy-Bone-Evolution-Of-Elevation"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "MusicAlbum", "name": "Zoo Orleans (The Entrance)", "byArtist": {"@type": "MusicGroup", "name": "L.O.G."}, "datePublished": "2005", "sameAs": "https://www.discogs.com/release/5824144"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "MusicAlbum", "name": "S/T", "byArtist": {"@type": "MusicGroup", "name": "Crimanal & Hazell"}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/6433287-Crimanal-Hazell-feat-Lil-Hollywood-ST"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "MusicAlbum", "name": "Street Hitz", "byArtist": {"@type": "MusicGroup", "name": "L.O.G."}, "datePublished": "2004", "sameAs": "https://www.discogs.com/release/12740878"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "MusicAlbum", "name": "From Tha Streets To Da Pen", "byArtist": {"@type": "MusicGroup", "name": "All In"}, "datePublished": "2003", "sameAs": "https://www.discogs.com/release/14257658-All-In-9-From-Tha-Streets-To-Da-Pen"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "MusicAlbum", "name": "Good Nda Hood", "byArtist": {"@type": "MusicGroup", "name": "Big Daddy Sound Artists"}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/3828618-Big-Daddy-Sound-Good-Nda-Hood"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "MusicAlbum", "name": "Lookin For A Major Deal", "byArtist": {"@type": "MusicGroup", "name": "L.G."}, "datePublished": "2002", "sameAs": "https://www.discogs.com/release/25588756-LG-16-Lookin-For-A-Major-Deal"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "MusicAlbum", "name": "The Gift", "byArtist": {"@type": "MusicGroup", "name": "Bizzy Bone"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/6212141"}}, {"@type": "ListItem", "position": 13, "item": {"@type": "MusicAlbum", "name": "Hydroboniks", "byArtist": {"@type": "MusicGroup", "name": "D.C.Y.F.A.H.S"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/12275920-DCYFAHS-Hydroboniks"}}, {"@type": "ListItem", "position": 14, "item": {"@type": "MusicAlbum", "name": "GStars", "byArtist": {"@type": "MusicGroup", "name": "Mshalla"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/11953668-Mshalla-GStars"}}, {"@type": "ListItem", "position": 15, "item": {"@type": "MusicAlbum", "name": "Volume 1", "byArtist": {"@type": "MusicGroup", "name": "Paystyle Records"}, "datePublished": "2001", "sameAs": "https://www.discogs.com/release/10992591-Paystyle-Records-Volume-1"}}, {"@type": "ListItem", "position": 16, "item": {"@type": "MusicAlbum", "name": "Survivin' Da Game", "byArtist": {"@type": "MusicGroup", "name": "Corleone"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/11951138"}}, {"@type": "ListItem", "position": 17, "item": {"@type": "MusicAlbum", "name": "Ain't Nuthin'", "byArtist": {"@type": "MusicGroup", "name": "Dollah"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/6411954-Dollah-Aint-Nuthin"}}, {"@type": "ListItem", "position": 18, "item": {"@type": "MusicAlbum", "name": "Somewhere Between N.Y. & L.A.", "byArtist": {"@type": "MusicGroup", "name": "Trey-Sum"}, "datePublished": "2000", "sameAs": "https://www.discogs.com/release/10792170-Trey-Sum-Somewhere-Between-NY-LA"}}, {"@type": "ListItem", "position": 19, "item": {"@type": "MusicAlbum", "name": "Rap Life", "byArtist": {"@type": "MusicGroup", "name": "Tash"}, "datePublished": "1999", "sameAs": "https://www.discogs.com/release/1202325-Tash-Rap-Life"}}, {"@type": "ListItem", "position": 20, "item": {"@type": "MusicAlbum", "name": "City Style", "byArtist": {"@type": "MusicGroup", "name": "Bingo"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/5737498-Bingo-16-City-Style"}}, {"@type": "ListItem", "position": 21, "item": {"@type": "MusicAlbum", "name": "Heaven'z Movie", "byArtist": {"@type": "MusicGroup", "name": "Bizzy Bone"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/32921166-Bizzy-Bone-Heavenz-Movie"}}, {"@type": "ListItem", "position": 22, "item": {"@type": "MusicAlbum", "name": "Street Life", "byArtist": {"@type": "MusicGroup", "name": "Mekka Born Sound"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/24713099-Mekka-Born-Sound-Street-Life"}}, {"@type": "ListItem", "position": 23, "item": {"@type": "MusicAlbum", "name": "Da Last Resort", "byArtist": {"@type": "MusicGroup", "name": "Rythum & Ghetto"}, "datePublished": "1998", "sameAs": "https://www.discogs.com/release/3234252-Rythum-Ghetto-Da-Last-Resort"}}, {"@type": "ListItem", "position": 24, "item": {"@type": "MusicAlbum", "name": "The Stepping Stone", "byArtist": {"@type": "MusicGroup", "name": "Black Menagerie"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/6417553-Black-Menagerie-The-Stepping-Stone"}}, {"@type": "ListItem", "position": 25, "item": {"@type": "MusicAlbum", "name": "Midwest Funk Volume II", "byArtist": {"@type": "MusicGroup", "name": "Columbus Mob"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/9131259-Columbus-Mob-Midwest-Funk-Volume-II"}}, {"@type": "ListItem", "position": 26, "item": {"@type": "MusicAlbum", "name": "The Dobe's Comming", "byArtist": {"@type": "MusicGroup", "name": "K9/OG The Dobe"}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/11448096-The-Dobe-The-Dobes-Comming"}}, {"@type": "ListItem", "position": 27, "item": {"@type": "MusicAlbum", "name": "EnVious", "byArtist": {"@type": "MusicGroup", "name": "L.N.O."}, "datePublished": "1997", "sameAs": "https://www.discogs.com/release/14355397-LNO-EnVious"}}, {"@type": "ListItem", "position": 28, "item": {"@type": "MusicAlbum", "name": "$till $truggling", "byArtist": {"@type": "MusicGroup", "name": "Big Hustler"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/3803913-Big-Hutler-till-truggling"}}, {"@type": "ListItem", "position": 29, "item": {"@type": "MusicAlbum", "name": "Ill Funk Fl-Oz & Trax", "byArtist": {"@type": "MusicGroup", "name": "Most Ill Crew"}, "datePublished": "1996", "sameAs": "https://www.discogs.com/release/7832090-Most-Ill-Crew-Ill-Funk-Fl-Oz-Trax"}}, {"@type": "ListItem", "position": 30, "item": {"@type": "MusicAlbum", "name": "It's In My Nature - A Real-Life Soundtrack", "byArtist": {"@type": "MusicGroup", "name": "Big Daddy Sound Artists"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/11448885-Big-Daddy-Sound-Its-In-My-Nature-A-Real-Life-Soundtrack"}}, {"@type": "ListItem", "position": 31, "item": {"@type": "MusicAlbum", "name": "Unleashed In The Hoods", "byArtist": {"@type": "MusicGroup", "name": "K9/OG The Dobe"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/1856865-K9OG-The-Dobe-Unleashed-In-The-Hoods"}}, {"@type": "ListItem", "position": 32, "item": {"@type": "MusicAlbum", "name": "The Rise-The Fall-The Rise", "byArtist": {"@type": "MusicGroup", "name": "Tai-pan"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/14482784-Tai-Pan-The-Rise-The-Fall-The-Rise"}}, {"@type": "ListItem", "position": 33, "item": {"@type": "MusicAlbum", "name": "Straight Butta", "byArtist": {"@type": "MusicGroup", "name": "Tavaris"}, "datePublished": "1995", "sameAs": "https://www.discogs.com/release/3375098-Tavaris-Straight-Butta"}}]}]</script>
 </head>
 <body>
-<header>
-  <a class="brand" href="../../">◉ GANGSTA RAP ATLAS</a>
-  <nav class="bc"><a href="../../">ホーム</a> › <a href="../">地域一覧</a> › Columbus</nav>
+
+<noscript>
+  <div style="padding:24px;max-width:860px;margin:0 auto;font-family:sans-serif">
+    <h1>Columbus のG-RAPディスコグラフィ</h1>
+    <p>Ohio — 全33枚収録。Columbus出身・拠点のアーティストによる
+    G-RAP/ギャングスタラップのディスコグラフィです。地図アプリの表示にはJavaScriptが必要です。</p>
+    <p><a href="/">GANGSTA RAP ATLAS ホーム</a></p>
+    <table border="1" cellpadding="4" cellspacing="0">
+      <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th></tr></thead>
+      <tbody>
+<tr><td>Bizzy Bone</td><td><a href="https://www.discogs.com/release/35199007-Bizzy-Bone-Bizzy-Bone-" rel="noopener nofollow">Bizzy Bone </a></td><td>2024</td><td>JAM TV</td></tr>
+<tr><td>Doobie</td><td><a href="https://www.discogs.com/release/25534357-Doobie-King-Of-The-Trill" rel="noopener nofollow">King Of The Trill</a></td><td>2014</td><td>Skreet Muzik</td></tr>
+<tr><td>Lil Jazz</td><td><a href="https://www.discogs.com/release/3102723" rel="noopener nofollow">Gemini Files: East Side Story</a></td><td>2009</td><td>Cashflow420 Records</td></tr>
+<tr><td>Ballers Ona Mission</td><td><a href="https://www.discogs.com/release/2974721" rel="noopener nofollow">B.O.M. Threat</a></td><td>2007</td><td>Not On Label</td></tr>
+<tr><td>Bizzy Bone</td><td><a href="https://www.discogs.com/release/950168-Bizzy-Bone-Evolution-Of-Elevation" rel="noopener nofollow">Evolution Of Elevation</a></td><td>2006</td><td>Mob Life Records</td></tr>
+<tr><td>L.O.G.</td><td><a href="https://www.discogs.com/release/5824144" rel="noopener nofollow">Zoo Orleans (The Entrance)</a></td><td>2005</td><td>Green Gang Production</td></tr>
+<tr><td>Crimanal &amp; Hazell</td><td><a href="https://www.discogs.com/release/6433287-Crimanal-Hazell-feat-Lil-Hollywood-ST" rel="noopener nofollow">S/T</a></td><td>2004</td><td>Westside R&amp;G/Red Galaxy Records</td></tr>
+<tr><td>L.O.G.</td><td><a href="https://www.discogs.com/release/12740878" rel="noopener nofollow">Street Hitz</a></td><td>2004</td><td>Greenboyz Entertainment</td></tr>
+<tr><td>All In</td><td><a href="https://www.discogs.com/release/14257658-All-In-9-From-Tha-Streets-To-Da-Pen" rel="noopener nofollow">From Tha Streets To Da Pen</a></td><td>2003</td><td>Dirty Money Records (3)</td></tr>
+<tr><td>Big Daddy Sound Artists</td><td><a href="https://www.discogs.com/release/3828618-Big-Daddy-Sound-Good-Nda-Hood" rel="noopener nofollow">Good Nda Hood</a></td><td>2002</td><td>Cazillac Entertainment Group</td></tr>
+<tr><td>L.G.</td><td><a href="https://www.discogs.com/release/25588756-LG-16-Lookin-For-A-Major-Deal" rel="noopener nofollow">Lookin For A Major Deal</a></td><td>2002</td><td>Tower Entertainment</td></tr>
+<tr><td>Bizzy Bone</td><td><a href="https://www.discogs.com/release/6212141" rel="noopener nofollow">The Gift</a></td><td>2001</td><td>AMC American Music</td></tr>
+<tr><td>D.C.Y.F.A.H.S</td><td><a href="https://www.discogs.com/release/12275920-DCYFAHS-Hydroboniks" rel="noopener nofollow">Hydroboniks</a></td><td>2001</td><td>Ball Yo Fist Up And Swing</td></tr>
+<tr><td>Mshalla</td><td><a href="https://www.discogs.com/release/11953668-Mshalla-GStars" rel="noopener nofollow">GStars</a></td><td>2001</td><td>GhettoStar Records (2)</td></tr>
+<tr><td>Paystyle Records</td><td><a href="https://www.discogs.com/release/10992591-Paystyle-Records-Volume-1" rel="noopener nofollow">Volume 1</a></td><td>2001</td><td>Paystyle Records</td></tr>
+<tr><td>Corleone</td><td><a href="https://www.discogs.com/release/11951138" rel="noopener nofollow">Survivin&#x27; Da Game</a></td><td>2000</td><td>Sour Cream Records</td></tr>
+<tr><td>Dollah</td><td><a href="https://www.discogs.com/release/6411954-Dollah-Aint-Nuthin" rel="noopener nofollow">Ain&#x27;t Nuthin&#x27;</a></td><td>2000</td><td>Choppin Game Records</td></tr>
+<tr><td>Trey-Sum</td><td><a href="https://www.discogs.com/release/10792170-Trey-Sum-Somewhere-Between-NY-LA" rel="noopener nofollow">Somewhere Between N.Y. &amp; L.A.</a></td><td>2000</td><td>The Konglomerate, Inc.</td></tr>
+<tr><td>Tash</td><td><a href="https://www.discogs.com/release/1202325-Tash-Rap-Life" rel="noopener nofollow">Rap Life</a></td><td>1999</td><td>Loud Records</td></tr>
+<tr><td>Bingo</td><td><a href="https://www.discogs.com/release/5737498-Bingo-16-City-Style" rel="noopener nofollow">City Style</a></td><td>1998</td><td>On The Real Records (2)</td></tr>
+<tr><td>Bizzy Bone</td><td><a href="https://www.discogs.com/release/32921166-Bizzy-Bone-Heavenz-Movie" rel="noopener nofollow">Heaven&#x27;z Movie</a></td><td>1998</td><td>8 Ball Recordz</td></tr>
+<tr><td>Mekka Born Sound</td><td><a href="https://www.discogs.com/release/24713099-Mekka-Born-Sound-Street-Life" rel="noopener nofollow">Street Life</a></td><td>1998</td><td>Mekka Born Sound Studios</td></tr>
+<tr><td>Rythum &amp; Ghetto</td><td><a href="https://www.discogs.com/release/3234252-Rythum-Ghetto-Da-Last-Resort" rel="noopener nofollow">Da Last Resort</a></td><td>1998</td><td>Burnside Records (3)</td></tr>
+<tr><td>Black Menagerie</td><td><a href="https://www.discogs.com/release/6417553-Black-Menagerie-The-Stepping-Stone" rel="noopener nofollow">The Stepping Stone</a></td><td>1997</td><td>Stepping Stone Entertainment</td></tr>
+<tr><td>Columbus Mob</td><td><a href="https://www.discogs.com/release/9131259-Columbus-Mob-Midwest-Funk-Volume-II" rel="noopener nofollow">Midwest Funk Volume II</a></td><td>1997</td><td>Ratti Records</td></tr>
+<tr><td>K9/OG The Dobe</td><td><a href="https://www.discogs.com/release/11448096-The-Dobe-The-Dobes-Comming" rel="noopener nofollow">The Dobe&#x27;s Comming</a></td><td>1997</td><td>Old School Gamester Records</td></tr>
+<tr><td>L.N.O.</td><td><a href="https://www.discogs.com/release/14355397-LNO-EnVious" rel="noopener nofollow">EnVious</a></td><td>1997</td><td>L-Hearted Records</td></tr>
+<tr><td>Big Hustler</td><td><a href="https://www.discogs.com/release/3803913-Big-Hutler-till-truggling" rel="noopener nofollow">$till $truggling</a></td><td>1996</td><td>Black Cartel Records</td></tr>
+<tr><td>Most Ill Crew</td><td><a href="https://www.discogs.com/release/7832090-Most-Ill-Crew-Ill-Funk-Fl-Oz-Trax" rel="noopener nofollow">Ill Funk Fl-Oz &amp; Trax</a></td><td>1996</td><td>18th Street Music</td></tr>
+<tr><td>Big Daddy Sound Artists</td><td><a href="https://www.discogs.com/release/11448885-Big-Daddy-Sound-Its-In-My-Nature-A-Real-Life-Soundtrack" rel="noopener nofollow">It&#x27;s In My Nature - A Real-Life Soundtrack</a></td><td>1995</td><td>Big Daddy Sound</td></tr>
+<tr><td>K9/OG The Dobe</td><td><a href="https://www.discogs.com/release/1856865-K9OG-The-Dobe-Unleashed-In-The-Hoods" rel="noopener nofollow">Unleashed In The Hoods</a></td><td>1995</td><td>Old School Gamester Records</td></tr>
+<tr><td>Tai-pan</td><td><a href="https://www.discogs.com/release/14482784-Tai-Pan-The-Rise-The-Fall-The-Rise" rel="noopener nofollow">The Rise-The Fall-The Rise</a></td><td>1995</td><td>Keep On Rising Productions</td></tr>
+<tr><td>Tavaris</td><td><a href="https://www.discogs.com/release/3375098-Tavaris-Straight-Butta" rel="noopener nofollow">Straight Butta</a></td><td>1995</td><td>Trak Records</td></tr>
+      </tbody>
+    </table>
+  </div>
+</noscript>
+
+<header id="topbar">
+  <div class="brand" id="brandHome" title="再読み込み" role="button">
+    <span class="brand-mark">◉</span>
+    <div>
+      <h1>GANGSTA RAP ATLAS</h1>
+      <p>地図カラ掘ル、地域別ディスコグラフィ</p>
+    </div>
+  </div>
+  <div id="drawer" class="drawer">
+    <div id="eraFilter" class="era-filter"></div>
+    <div id="stampFilter" class="stamp-filter"></div>
+    <div id="tagFilter" class="tag-filter"></div>
+    <p id="filterHintText" class="filter-hint">こちらから他のユーザーがスタンプしたDISCを検索できます。曲探しの情報源になりますので＋ボタンをClickしてスタンプにご協力ください。</p>
+    <div id="autoplayFilter" class="autoplay-filter"></div>
+    <div id="drawerActions" class="drawer-actions"></div>
+  </div>
+  <div class="top-actions">
+    <button id="searchBtn" class="fav-toggle search" title="検索">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="favBtn" class="fav-toggle" title="お気に入りリスト">★ <span id="favCount">0</span></button>
+    <button id="stampMenuBtn" class="stamp-menu-btn" title="絞り込み(年代・タグ・スタンプ)">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M5 22 V10 a7 7 0 0 1 14 0 V22 Z" fill="currentColor"/>
+        <rect x="3" y="21" width="18" height="2.5" fill="currentColor"/>
+        <path d="M11 7.5 h2 v2.5 h2.8 v2 h-2.8 v6 h-2 v-6 H8.2 v-2 H11 Z" fill="var(--paper)"/>
+      </svg>
+    </button>
+    <button id="submitBtn" class="fav-toggle submit" title="ディスク情報を投稿">✚ 投稿</button>
+    <button id="langBtn" class="fav-toggle lang" title="Language">EN</button>
+  </div>
 </header>
-<main>
-  <h1>Columbus のG-RAPディスコグラフィ</h1>
-  <p class="area">Ohio — 全33枚収録</p>
-  <p>Columbus(Ohio)出身・拠点のアーティストによるG-RAP/ギャングスタラップのディスコグラフィ。
-  インタラクティブ地図では試聴・ジャケ写・スタンプ検索が使えます。</p>
-  <a class="cta" href="../../#r/columbus">🗺 地図でこの地域を開く</a>
-  <table>
-    <thead><tr><th>アーティスト</th><th>タイトル</th><th>年</th><th>レーベル</th><th></th></tr></thead>
-    <tbody>
-<tr><td>Bizzy Bone</td><td><a href="https://www.discogs.com/release/35199007-Bizzy-Bone-Bizzy-Bone-" rel="noopener nofollow" target="_blank">Bizzy Bone </a></td><td>2024</td><td>JAM TV</td><td><a href="../../#r/columbus/1002273">地図で開く</a></td></tr>
-<tr><td>Doobie</td><td><a href="https://www.discogs.com/release/25534357-Doobie-King-Of-The-Trill" rel="noopener nofollow" target="_blank">King Of The Trill</a></td><td>2014</td><td>Skreet Muzik</td><td><a href="../../#r/columbus/4127">地図で開く</a></td></tr>
-<tr><td>Lil Jazz</td><td><a href="https://www.discogs.com/release/3102723" rel="noopener nofollow" target="_blank">Gemini Files: East Side Story</a></td><td>2009</td><td>Cashflow420 Records</td><td><a href="../../#r/columbus/2948">地図で開く</a></td></tr>
-<tr><td>Ballers Ona Mission</td><td><a href="https://www.discogs.com/release/2974721" rel="noopener nofollow" target="_blank">B.O.M. Threat</a></td><td>2007</td><td>Not On Label</td><td><a href="../../#r/columbus/2904">地図で開く</a></td></tr>
-<tr><td>Bizzy Bone</td><td><a href="https://www.discogs.com/release/950168-Bizzy-Bone-Evolution-Of-Elevation" rel="noopener nofollow" target="_blank">Evolution Of Elevation</a></td><td>2006</td><td>Mob Life Records</td><td><a href="../../#r/columbus/1002272">地図で開く</a></td></tr>
-<tr><td>L.O.G.</td><td><a href="https://www.discogs.com/release/5824144" rel="noopener nofollow" target="_blank">Zoo Orleans (The Entrance)</a></td><td>2005</td><td>Green Gang Production</td><td><a href="../../#r/columbus/2388">地図で開く</a></td></tr>
-<tr><td>Crimanal &amp; Hazell</td><td><a href="https://www.discogs.com/release/6433287-Crimanal-Hazell-feat-Lil-Hollywood-ST" rel="noopener nofollow" target="_blank">S/T</a></td><td>2004</td><td>Westside R&amp;G/Red Galaxy Records</td><td><a href="../../#r/columbus/1005604">地図で開く</a></td></tr>
-<tr><td>L.O.G.</td><td><a href="https://www.discogs.com/release/12740878" rel="noopener nofollow" target="_blank">Street Hitz</a></td><td>2004</td><td>Greenboyz Entertainment</td><td><a href="../../#r/columbus/2247">地図で開く</a></td></tr>
-<tr><td>All In</td><td><a href="https://www.discogs.com/release/14257658-All-In-9-From-Tha-Streets-To-Da-Pen" rel="noopener nofollow" target="_blank">From Tha Streets To Da Pen</a></td><td>2003</td><td>Dirty Money Records (3)</td><td><a href="../../#r/columbus/1005040">地図で開く</a></td></tr>
-<tr><td>Big Daddy Sound Artists</td><td><a href="https://www.discogs.com/release/3828618-Big-Daddy-Sound-Good-Nda-Hood" rel="noopener nofollow" target="_blank">Good Nda Hood</a></td><td>2002</td><td>Cazillac Entertainment Group</td><td><a href="../../#r/columbus/1001022">地図で開く</a></td></tr>
-<tr><td>L.G.</td><td><a href="https://www.discogs.com/release/25588756-LG-16-Lookin-For-A-Major-Deal" rel="noopener nofollow" target="_blank">Lookin For A Major Deal</a></td><td>2002</td><td>Tower Entertainment</td><td><a href="../../#r/columbus/1004662">地図で開く</a></td></tr>
-<tr><td>Bizzy Bone</td><td><a href="https://www.discogs.com/release/6212141" rel="noopener nofollow" target="_blank">The Gift</a></td><td>2001</td><td>AMC American Music</td><td><a href="../../#r/columbus/1436">地図で開く</a></td></tr>
-<tr><td>D.C.Y.F.A.H.S</td><td><a href="https://www.discogs.com/release/12275920-DCYFAHS-Hydroboniks" rel="noopener nofollow" target="_blank">Hydroboniks</a></td><td>2001</td><td>Ball Yo Fist Up And Swing</td><td><a href="../../#r/columbus/1003893">地図で開く</a></td></tr>
-<tr><td>Mshalla</td><td><a href="https://www.discogs.com/release/11953668-Mshalla-GStars" rel="noopener nofollow" target="_blank">GStars</a></td><td>2001</td><td>GhettoStar Records (2)</td><td><a href="../../#r/columbus/1004066">地図で開く</a></td></tr>
-<tr><td>Paystyle Records</td><td><a href="https://www.discogs.com/release/10992591-Paystyle-Records-Volume-1" rel="noopener nofollow" target="_blank">Volume 1</a></td><td>2001</td><td>Paystyle Records</td><td><a href="../../#r/columbus/1004084">地図で開く</a></td></tr>
-<tr><td>Corleone</td><td><a href="https://www.discogs.com/release/11951138" rel="noopener nofollow" target="_blank">Survivin&#x27; Da Game</a></td><td>2000</td><td>Sour Cream Records</td><td><a href="../../#r/columbus/1437">地図で開く</a></td></tr>
-<tr><td>Dollah</td><td><a href="https://www.discogs.com/release/6411954-Dollah-Aint-Nuthin" rel="noopener nofollow" target="_blank">Ain&#x27;t Nuthin&#x27;</a></td><td>2000</td><td>Choppin Game Records</td><td><a href="../../#r/columbus/1003299">地図で開く</a></td></tr>
-<tr><td>Trey-Sum</td><td><a href="https://www.discogs.com/release/10792170-Trey-Sum-Somewhere-Between-NY-LA" rel="noopener nofollow" target="_blank">Somewhere Between N.Y. &amp; L.A.</a></td><td>2000</td><td>The Konglomerate, Inc.</td><td><a href="../../#r/columbus/1003568">地図で開く</a></td></tr>
-<tr><td>Tash</td><td><a href="https://www.discogs.com/release/1202325-Tash-Rap-Life" rel="noopener nofollow" target="_blank">Rap Life</a></td><td>1999</td><td>Loud Records</td><td><a href="../../#r/columbus/1002923">地図で開く</a></td></tr>
-<tr><td>Bingo</td><td><a href="https://www.discogs.com/release/5737498-Bingo-16-City-Style" rel="noopener nofollow" target="_blank">City Style</a></td><td>1998</td><td>On The Real Records (2)</td><td><a href="../../#r/columbus/1002466">地図で開く</a></td></tr>
-<tr><td>Bizzy Bone</td><td><a href="https://www.discogs.com/release/32921166-Bizzy-Bone-Heavenz-Movie" rel="noopener nofollow" target="_blank">Heaven&#x27;z Movie</a></td><td>1998</td><td>8 Ball Recordz</td><td><a href="../../#r/columbus/1002271">地図で開く</a></td></tr>
-<tr><td>Mekka Born Sound</td><td><a href="https://www.discogs.com/release/24713099-Mekka-Born-Sound-Street-Life" rel="noopener nofollow" target="_blank">Street Life</a></td><td>1998</td><td>Mekka Born Sound Studios</td><td><a href="../../#r/columbus/1002633">地図で開く</a></td></tr>
-<tr><td>Rythum &amp; Ghetto</td><td><a href="https://www.discogs.com/release/3234252-Rythum-Ghetto-Da-Last-Resort" rel="noopener nofollow" target="_blank">Da Last Resort</a></td><td>1998</td><td>Burnside Records (3)</td><td><a href="../../#r/columbus/1002692">地図で開く</a></td></tr>
-<tr><td>Black Menagerie</td><td><a href="https://www.discogs.com/release/6417553-Black-Menagerie-The-Stepping-Stone" rel="noopener nofollow" target="_blank">The Stepping Stone</a></td><td>1997</td><td>Stepping Stone Entertainment</td><td><a href="../../#r/columbus/1002025">地図で開く</a></td></tr>
-<tr><td>Columbus Mob</td><td><a href="https://www.discogs.com/release/9131259-Columbus-Mob-Midwest-Funk-Volume-II" rel="noopener nofollow" target="_blank">Midwest Funk Volume II</a></td><td>1997</td><td>Ratti Records</td><td><a href="../../#r/columbus/1002039">地図で開く</a></td></tr>
-<tr><td>K9/OG The Dobe</td><td><a href="https://www.discogs.com/release/11448096-The-Dobe-The-Dobes-Comming" rel="noopener nofollow" target="_blank">The Dobe&#x27;s Comming</a></td><td>1997</td><td>Old School Gamester Records</td><td><a href="../../#r/columbus/1001060">地図で開く</a></td></tr>
-<tr><td>L.N.O.</td><td><a href="https://www.discogs.com/release/14355397-LNO-EnVious" rel="noopener nofollow" target="_blank">EnVious</a></td><td>1997</td><td>L-Hearted Records</td><td><a href="../../#r/columbus/1002105">地図で開く</a></td></tr>
-<tr><td>Big Hustler</td><td><a href="https://www.discogs.com/release/3803913-Big-Hutler-till-truggling" rel="noopener nofollow" target="_blank">$till $truggling</a></td><td>1996</td><td>Black Cartel Records</td><td><a href="../../#r/columbus/1001526">地図で開く</a></td></tr>
-<tr><td>Most Ill Crew</td><td><a href="https://www.discogs.com/release/7832090-Most-Ill-Crew-Ill-Funk-Fl-Oz-Trax" rel="noopener nofollow" target="_blank">Ill Funk Fl-Oz &amp; Trax</a></td><td>1996</td><td>18th Street Music</td><td><a href="../../#r/columbus/1001642">地図で開く</a></td></tr>
-<tr><td>Big Daddy Sound Artists</td><td><a href="https://www.discogs.com/release/11448885-Big-Daddy-Sound-Its-In-My-Nature-A-Real-Life-Soundtrack" rel="noopener nofollow" target="_blank">It&#x27;s In My Nature - A Real-Life Soundtrack</a></td><td>1995</td><td>Big Daddy Sound</td><td><a href="../../#r/columbus/1001021">地図で開く</a></td></tr>
-<tr><td>K9/OG The Dobe</td><td><a href="https://www.discogs.com/release/1856865-K9OG-The-Dobe-Unleashed-In-The-Hoods" rel="noopener nofollow" target="_blank">Unleashed In The Hoods</a></td><td>1995</td><td>Old School Gamester Records</td><td><a href="../../#r/columbus/1001059">地図で開く</a></td></tr>
-<tr><td>Tai-pan</td><td><a href="https://www.discogs.com/release/14482784-Tai-Pan-The-Rise-The-Fall-The-Rise" rel="noopener nofollow" target="_blank">The Rise-The Fall-The Rise</a></td><td>1995</td><td>Keep On Rising Productions</td><td><a href="../../#r/columbus/1001241">地図で開く</a></td></tr>
-<tr><td>Tavaris</td><td><a href="https://www.discogs.com/release/3375098-Tavaris-Straight-Butta" rel="noopener nofollow" target="_blank">Straight Butta</a></td><td>1995</td><td>Trak Records</td><td><a href="../../#r/columbus/1001242">地図で開く</a></td></tr>
-    </tbody>
-  </table>
+
+<main id="stage">
+  <div id="mapWrap">
+    <div id="map"></div>
+  </div>
+
+  <div class="intro">
+    <p>撃チ込メ ─ 地図ヲ クリック</p>
+  </div>
+
+  <div id="mask"></div>
+  <div id="shot"><img src="/assets/bullet-ink.png" alt=""></div>
+  <section id="list"></section>
+
+  <div id="searchOverlay" class="search-overlay">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="アーティスト・タイトルで検索" autocomplete="off">
+      <button id="searchClose" class="close" title="閉じる">✕</button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="stampOverlay" class="search-overlay stamp-overlay">
+    <div class="stamp-box">
+      <div class="stamp-box-head">
+        <span id="stampOverlayTitle" class="stamp-overlay-title"></span>
+        <button id="stampOverlayClose" class="close" title="閉じる">✕</button>
+      </div>
+      <div id="stampOverlayList" class="stamp-overlay-list"></div>
+      <div id="stampOverlayTags" class="stamp-overlay-tags"></div>
+    </div>
+  </div>
+
 </main>
-<footer>© GANGSTA RAP ATLAS — <a href="../../">地図から掘る、地域別G-RAPディスコグラフィ</a> ／ <a href="../">全地域一覧</a></footer>
+
+<footer id="player" class="player">
+  <div class="player-now">
+    <div class="player-art">♪</div>
+    <div class="player-meta">
+      <strong id="playerTitle" class="scroll-box"><span class="scroll-inner">再生キューハ空</span></strong>
+      <span id="playerArtist">アルバムノ ▶ ヲ押ストキューニ入ル</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button id="playerStampBtn" class="icon-btn" aria-label="この曲にスタンプ" title="この曲にスタンプ">＋</button>
+    <button id="prevBtn" class="icon-btn" aria-label="前へ">⏮</button>
+    <button id="playBtn" class="icon-btn play" aria-label="再生">▶</button>
+    <button id="nextBtn" class="icon-btn" aria-label="次へ">⏭</button>
+  </div>
+  <div class="player-queue">
+    <span id="queueCount">0 曲</span>
+    <button id="clearQueue" class="text-btn">クリア</button>
+    <span class="credit">試聴・ジャケ写: Apple Music</span>
+  </div>
+  <div id="ytHost" class="yt-host"></div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="/data.js?v=96"></script>
+<script src="/enrich.js?v=74"></script>
+<script src="/rarity.js?v=65"></script>
+<script src="/youtube.js?v=1"></script>
+<script src="/app.js?v=151"></script>
 </body>
 </html>
