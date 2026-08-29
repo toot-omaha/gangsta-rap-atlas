@@ -531,7 +531,28 @@ async function loadPublishedReleases() {
     // location.hashは起動処理(navGoto周りのreplaceState)で消えているため、
     // 起動時に捕捉済みのinitialShareHashを使う。
     if (!activeRegion && initialShareHash.startsWith('#r/')) openFromHash(initialShareHash);
-  } catch { /* オフラインでもローカルだけで動く */ }
+    finishDeferredQueueRestore(false);
+  } catch {
+    // オフラインでもローカルだけで動く。復元保留のままだと保存も止まった
+    // ままになるので、解決できる分だけで復元して保留を解く
+    finishDeferredQueueRestore(true);
+  }
+}
+
+// 公開盤の読込完了(または断念)後に、保留していたキュー復元をやり直す。
+// 保留中にユーザーが新しく再生を始めていた場合はそちらを優先し、
+// 保留だけ解いて以後の保存を再開する。
+function finishDeferredQueueRestore(forcePartial) {
+  if (!queueRestoreDeferred) return;
+  if (queue.length) { queueRestoreDeferred = false; saveQueue(); return; }
+  restoreQueue(forcePartial);
+  if (queueRestoreDeferred) {
+    // 読込後も解決できない盤が残る場合(DB側で削除された等)は、
+    // 保留を引きずって保存が止まり続けるより、解決分だけで復元して先へ進む
+    restoreQueue(true);
+    queueRestoreDeferred = false;
+  }
+  paint();
 }
 
 // ページ読込時: 既にStreet Nameがあればサーバー側の内容で置き換える
@@ -844,6 +865,7 @@ function buildFilterBar() {
       const wasOn = activeFilters.has(s.id);
       activeFilters.clear();
       if (!wasOn) activeFilters.add(s.id);
+      pruneShuffleQueue(); // 連結済み・先読み済みのランダム盤も新しい条件に従わせる
       refreshMarkers();
       if (activeRegion) renderList(activeRegion);
       // タグ側の絞り込み表示に連動するので、双方作り直す
@@ -871,6 +893,7 @@ function buildEraBar() {
       label.classList.toggle('on', ev.target.checked);
       saveEras();
       pushFavSync(); // チェック状態もStreet Nameに載せて他端末と同期
+      pruneShuffleQueue(); // 連結済み・先読み済みのランダム盤も新しい条件に従わせる
       refreshMarkers();
       if (activeRegion) renderList(activeRegion);
       if (searchOverlay.classList.contains('open')) runSearch(searchInput.value);
@@ -896,6 +919,7 @@ function buildAutoplayBar() {
     label.innerHTML = `<input type="checkbox"${autoplayExclude[k] ? ' checked' : ''}><span>${lab}</span>`;
     label.querySelector('input').addEventListener('change', (ev) => {
       autoplayExclude[k] = ev.target.checked;
+      pruneShuffleQueue(); // 連結済み・先読み済みのランダム盤も新しい条件に従わせる
       label.classList.toggle('on', ev.target.checked);
       saveAutoplayExclude();
     });
@@ -918,6 +942,7 @@ function buildTagBar() {
     label.querySelector('input').addEventListener('change', (ev) => {
       if (ev.target.checked) tagFilters.add(tg.id); else tagFilters.delete(tg.id);
       saveTagFilters();
+      pruneShuffleQueue(); // 連結済み・先読み済みのランダム盤も新しい条件に従わせる
       refreshMarkers();
       if (activeRegion) renderList(activeRegion);
       if (searchOverlay.classList.contains('open')) runSearch(searchInput.value);
@@ -2191,6 +2216,7 @@ function albumById(id) {
   return null;
 }
 function saveQueue() {
+  if (queueRestoreDeferred) return; // 復元待ちの保存データを上書き破壊しない
   const items = queue.map((q) => (q.album
     ? { albumId: q.album.id, idx: q.idx ?? 0, ...(q.shuffleAuto ? { auto: 1 } : {}) }
     : null));
@@ -2204,10 +2230,23 @@ function saveQueue() {
 // 自動再生はブラウザの制約で通らないことが多く、鳴りっぱなしも望ましくないため、
 // 現在曲を「▶を押せばすぐ鳴る」状態(試聴はsrcセット、YouTubeはcue)まで
 // 準備した上で一時停止のまま待つ。
-function restoreQueue() {
+// キュー復元の保留中フラグ。保存キューにSupabase由来の公開盤(albumId>=
+// PUBLISHED_ID_OFFSET)が含まれる場合、起動直後はまだREGIONSに居らず
+// albumById()で解決できない。以前はその盤を黙って捨てて不完全なキューを
+// 復元し(=位置がズレて「定点の曲に戻る」)、直後のpaint()→saveQueue()が
+// その壊れたキューで正しい保存データを上書き破壊していた。
+// 解決できない盤があるうちは復元を保留し、loadPublishedReleases()完了後に
+// やり直す。保留中はsaveQueue()を抑止して保存データを守る。
+let queueRestoreDeferred = false;
+function restoreQueue(force = false) {
   let saved;
   try { saved = JSON.parse(localStorage.getItem(QUEUE_KEY) || 'null'); } catch { saved = null; }
   if (!saved || !Array.isArray(saved.items) || !saved.items.length) return;
+  if (!force && saved.items.some((it) => it && !albumById(it.albumId))) {
+    queueRestoreDeferred = true;
+    return;
+  }
+  queueRestoreDeferred = false;
   const restored = [];
   for (const it of saved.items) {
     if (!it) continue;
@@ -2686,6 +2725,9 @@ function playCurrent() {
   // 先のアルバムまで含めるため。iTunes側もqueue[cursor+1]が常に居る状態になり
   // 先読み・前倒し曲送りがアルバム境界でも機能する)
   ensureShuffleRunway();
+  // 再生位置(cursor)を曲が変わるたびに保存する。以前は連結時にしか保存して
+  // おらず、リロード後に「最後に連結が起きた時点の曲」へ戻ってしまっていた
+  saveQueue();
   const q = queue[cursor];
   if (q?.preview) {
     if (ytReady) ytPlayer.stopVideo();
@@ -2799,6 +2841,9 @@ function next() {
     pendingShuffleAlbum = null;
     if (album) {
       const items = trackItemsOf(album);
+      // 他の連結経路と同様に印を付ける(exitShuffle/pruneShuffleQueueの対象にする)。
+      // ここだけ付け漏れており、フィルター変更後も残り続ける原因になっていた
+      items.forEach((it) => { it.shuffleAuto = true; });
       queue.push(...items);
       cursor++;
       playCurrent();
@@ -2830,10 +2875,48 @@ function prev() { if (cursor > 0) { cursor--; playCurrent(); } }
 // 地域内シャッフル中(shuffleRegionあり)はその地域の盤に限定する。
 function randomPlayableAlbum() {
   const regions = shuffleRegion ? [shuffleRegion] : REGIONS;
-  const pool = regions.flatMap((r) => albumsOf(r))
+  const base = regions.flatMap((r) => albumsOf(r))
     .filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
+  // 手動クリアするまで、一度キューに載った盤(再生済み含む)は再登場させない
+  // (ユーザー要望: 同じアルバムがすぐ戻ってくるのを防ぐ)。キューはクリアまで
+  // 履歴を保持し続けるので、その全体を既出集合として使う。候補を聴き尽くした
+  // 場合だけ繰り返しを許す(地域内シャッフルの小さな地域で無音になるよりまし)。
+  const seen = new Set(queue.map((it) => it.album));
+  const fresh = base.filter((a) => !seen.has(a));
+  const pool = fresh.length ? fresh : base;
   if (!pool.length) return null;
   return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// この盤が「今の絞り込み条件で」シャッフル継ぎ足し対象になり得るか。
+// randomPlayableAlbum()の選盤条件(albumsOfの絞り込み+自動再生除外)と
+// 同じ条件を、キューに積んだ後から再判定するために切り出したもの。
+function shuffleEligibleNow(a) {
+  return eraFilters.has(eraOf(a)) && matchesTagFilter(a)
+    && (!activeFilters.size || [...activeFilters].every((f) => hasStamp(a, f)))
+    && autoplayEligible(a);
+}
+
+// 絞り込み(年代・タグ・スタンプ・自動再生除外)が変わった時に呼ぶ。
+// 変更前の条件で選定済みの先読み盤と、キューに連結済みでまだ再生していない
+// ランダム盤(shuffleAuto印)のうち新条件に合わないものを取り除く。
+// これをしないと「2010年代を外したのに2010年の盤が流れてくる」ように見える
+// (選盤時のフィルター自体は正しくても、選定済み分が生き残るため)。
+// ユーザーが自分で並べた分(印なし)は消さない。
+function pruneShuffleQueue() {
+  if (pendingShuffleAlbum && !shuffleEligibleNow(pendingShuffleAlbum)) pendingShuffleAlbum = null;
+  let removed = false;
+  for (let i = queue.length - 1; i > cursor; i--) {
+    if (queue[i].shuffleAuto && !shuffleEligibleNow(queue[i].album)) {
+      queue.splice(i, 1);
+      removed = true;
+    }
+  }
+  if (removed) {
+    // キューから消した分だけYouTubeプレイリスト側とズレるので載せ直させる
+    resetYtPlaylist();
+    saveQueue();
+  }
 }
 
 // シャッフル中、キューの残りが少なくなったら次のランダムなアルバムを
@@ -2890,7 +2973,11 @@ function ensureShuffleRunway() {
 // 地域一覧ヘッダーのシャッフルボタン: その地域の再生可能な盤から1枚選んで
 // 再生を始め、聴き終えたら同じ地域内の別のランダムな盤へ連結し続ける。
 function startRegionShuffle(region) {
-  const pool = albumsOf(region).filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
+  const base = albumsOf(region).filter((a) => autoplayEligible(a) && trackItemsOf(a).length > 0);
+  // 初回の1枚も既出(クリア前に聴いた盤)を避ける。尽きていたら繰り返し許可
+  const seen = new Set(queue.map((it) => it.album));
+  const fresh = base.filter((a) => !seen.has(a));
+  const pool = fresh.length ? fresh : base;
   if (!pool.length) return;
   const album = pool[Math.floor(Math.random() * pool.length)];
   playAlbum(album); // 中のexitShuffle()でshuffleRegionは一旦クリアされる
