@@ -2215,6 +2215,10 @@ function albumById(id) {
   }
   return null;
 }
+// 自分(このウィンドウ)が最後に書いた/取り込んだ保存キューの生文字列。
+// TWAアプリ⇄ブラウザタブのように同じlocalStorageを共有する別コンテキストが
+// 書いた変更かどうかを、これとの差分で判定する(adoptExternalQueue参照)。
+let lastQueueSnapshot = null;
 function saveQueue() {
   if (queueRestoreDeferred) return; // 復元待ちの保存データを上書き破壊しない
   const items = queue.map((q) => (q.album
@@ -2224,7 +2228,8 @@ function saveQueue() {
   // 直前が再生中だったか一時停止中だったかも記録する。リロード後、
   // 一時停止中だったのに問答無用で再生し始めてしまうのを防ぐため。
   const playing = q ? (q.youtube ? ytIsPlaying() : !audio.paused) : false;
-  localStorage.setItem(QUEUE_KEY, JSON.stringify({ cursor, items, playing }));
+  lastQueueSnapshot = JSON.stringify({ cursor, items, playing });
+  localStorage.setItem(QUEUE_KEY, lastQueueSnapshot);
 }
 // リロード直後: キューの構成とカーソル位置だけ復元し曲情報を表示する。
 // 自動再生はブラウザの制約で通らないことが多く、鳴りっぱなしも望ましくないため、
@@ -2238,9 +2243,10 @@ function saveQueue() {
 // 解決できない盤があるうちは復元を保留し、loadPublishedReleases()完了後に
 // やり直す。保留中はsaveQueue()を抑止して保存データを守る。
 let queueRestoreDeferred = false;
-function restoreQueue(force = false) {
+function restoreQueue(force = false, allowAutoplay = true) {
   let saved;
-  try { saved = JSON.parse(localStorage.getItem(QUEUE_KEY) || 'null'); } catch { saved = null; }
+  const raw = localStorage.getItem(QUEUE_KEY);
+  try { saved = JSON.parse(raw || 'null'); } catch { saved = null; }
   if (!saved || !Array.isArray(saved.items) || !saved.items.length) return;
   if (!force && saved.items.some((it) => it && !albumById(it.albumId))) {
     queueRestoreDeferred = true;
@@ -2259,10 +2265,11 @@ function restoreQueue(force = false) {
     }
   }
   if (!restored.length) return;
+  lastQueueSnapshot = raw;
   queue = restored;
   cursor = Math.max(0, Math.min(saved.cursor, queue.length - 1));
   const q = queue[cursor];
-  const wasPlaying = !!saved.playing;
+  const wasPlaying = allowAutoplay && !!saved.playing;
   if (q?.preview) {
     assignTrack(audio, q.preview);
     if (wasPlaying) {
@@ -3249,3 +3256,29 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
 }
+
+// ---------- 別コンテキスト(TWAアプリ⇄ブラウザ)とのキュー同期 ----------
+// アプリとブラウザは同じlocalStorageを共有するが、TWAは再開時にページを
+// 再読み込みしないため、起動時に読んだ状態を表示し続ける(ブラウザ側の変更が
+// 「アプリに伝わらない」ように見える原因)。他コンテキストが保存キューを
+// 書き換えたことを、storageイベント(生きている間のライブ通知)と
+// 前面復帰(visibilitychange/pageshow)の両方で拾って取り込む。
+// 自分が再生中の時は自分を正として取り込まない(音が突然別の曲へ飛ぶのを
+// 防ぐ。こちらの次のsaveQueue()が最新として他コンテキストへ伝わる)。
+function adoptExternalQueue() {
+  if (queueRestoreDeferred) return;
+  const raw = localStorage.getItem(QUEUE_KEY);
+  if (raw == null || raw === lastQueueSnapshot) return; // 自分の書いた内容なら何もしない
+  const q = queue[cursor];
+  const playingNow = q ? (q.youtube ? ytIsPlaying() : !audio.paused) : false;
+  if (playingNow) return;
+  audio.pause();
+  restoreQueue(true, false); // 取り込み時は自動再生しない(両方で鳴るのを防ぐ)
+}
+window.addEventListener('storage', (e) => {
+  if (e.key === QUEUE_KEY) adoptExternalQueue();
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') adoptExternalQueue();
+});
+window.addEventListener('pageshow', () => adoptExternalQueue());
