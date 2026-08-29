@@ -50,6 +50,7 @@ const I18N = {
     qAutoTag: '自動',
     histNote: '直近50曲。再生履歴ヲクリアスルト、コレマデニ再生シタDISCガ再ビ自動再生ニ登場スルヨウニナル。',
     qCount: (n) => `${n} 曲`,
+    regionShuffleConfirm: 'イマノ再生キューヲ破棄シテ、コノ地域ノシャッフルヲ始メル。ヨロシイ？',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -98,6 +99,7 @@ const I18N = {
     qAutoTag: 'AUTO',
     histNote: 'Last 50 tracks. Clearing the history lets previously played discs show up in autoplay again.',
     qCount: (n) => `${n} TRACKS`,
+    regionShuffleConfirm: 'Discard the current queue and start shuffling this region. Continue?',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -3119,6 +3121,14 @@ function startRegionShuffle(region) {
   const fresh = unseen.filter((a) => !playedAlbumIds.has(a.id));
   const pool = fresh.length ? fresh : (unseen.length ? unseen : base);
   if (!pool.length) return;
+  // 既存のキューが残ったまま始めると、1枚目が終わった時点で旧キューへ
+  // 戻ってしまい「地域シャッフルのはずが別の曲が流れる」挙動になる。
+  // 確認を取って破棄し、まっさらな状態から地域シャッフルを始める(ユーザー指定)
+  if (queue.length) {
+    if (!confirm(t('regionShuffleConfirm'))) return;
+    queue = []; cursor = -1; pendingShuffleAlbum = null;
+    resetYtPlaylist();
+  }
   const album = pool[Math.floor(Math.random() * pool.length)];
   playAlbum(album); // 中のexitShuffle()でshuffleRegionは一旦クリアされる
   shuffleMode = true;
