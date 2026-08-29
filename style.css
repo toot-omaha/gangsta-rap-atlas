@@ -274,7 +274,9 @@ body.detail #mask { opacity: 1; pointer-events: auto; }
 /* 地名は密集地帯で潰れるので、寄ったときとホバー時だけ出す */
 .marker .nm {
   position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-  margin-top: 4px; white-space: nowrap;
+  /* 墓石PNGの下余白+影のぶん見た目の間隔が開くため、負マージンで詰める
+     (「地名が墓石から離れすぎ」というユーザー指摘で4px→-4pxに) */
+  margin-top: -4px; white-space: nowrap;
   font-size: 10px; font-weight: 900; letter-spacing: .1em;
   color: var(--ink);
   text-shadow: -1px -1px 0 var(--paper), 1px -1px 0 var(--paper), -1px 1px 0 var(--paper), 1px 1px 0 var(--paper);

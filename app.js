@@ -823,7 +823,11 @@ function refreshMarkers() {
     // 以前は Math.min(n, 6) で6枚以降が全部同じサイズになっていた。
     const size = 22 + Math.min(Math.round(Math.log2(n + 1) * 8), 40);
     el.style.width = el.style.height = `${size}px`;
-    el.querySelector('.n').textContent = n || '';
+    const nEl = el.querySelector('.n');
+    nEl.textContent = n || '';
+    // 数字は墓石サイズに比例させる。固定11pxだと小さい墓石(1桁台)では
+    // 数字が相対的に大きすぎ、大きい墓石では小さすぎてバランスが崩れる
+    nEl.style.fontSize = `${Math.max(9, Math.round(size * 0.24))}px`;
     // 0件の墓標は非表示(フィルター中に該当なしの地域も消える)。
     // 未確認情報の置き場も同様に0件なら隠す。
     el.classList.toggle('hidden', n === 0);
