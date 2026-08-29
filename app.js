@@ -44,6 +44,8 @@ const I18N = {
     histEmpty: 'まだ空。曲を再生するとここに並ぶ。',
     histClear: '履歴ト再生済ミヲクリア',
     histClearConfirm: 'クリアスルト再生済ミノ盤ガマタシャッフルニ登場スルヨウニナル。ヨロシイ？',
+    hist: '履歴',
+    clearQueueConfirm: '再生キューヲ空ニスル。ヨロシイ？(再生済ミノ記録ハ残ル)',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -86,6 +88,8 @@ const I18N = {
     histEmpty: 'Empty. Play a track to see it here.',
     histClear: 'Clear history & played discs',
     histClearConfirm: 'Cleared discs will start showing up in shuffle again. Continue?',
+    hist: 'HISTORY',
+    clearQueueConfirm: 'Empty the play queue? (Played discs stay recorded)',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -2350,7 +2354,6 @@ function restoreQueue(force = false, allowAutoplay = true) {
 const $title = document.getElementById('playerTitle');
 const $titleInner = $title.querySelector('.scroll-inner');
 const $artist = document.getElementById('playerArtist');
-const $count = document.getElementById('queueCount');
 const $art = document.querySelector('.player-art');
 const $play = document.getElementById('playBtn');
 // 再生バーの▶/⏸/シャッフルは絵文字グリフだと環境によって太さ・位置が
@@ -2904,7 +2907,8 @@ function syncMediaSession(q) {
 function paint() {
   const q = queue[cursor];
   saveQueue();
-  $count.textContent = `${Math.max(0, queue.length - Math.max(cursor, 0))} 曲`;
+  // 残り曲数は表示しない(キューはシャッフル/同地域継ぎ足しで自動補充されるため
+  // 数字に意味が薄い)。代わりに再生履歴を開くボタンにした(ユーザー要望)
   // キューが空の間は、押すと年代・スタンプの絞り込み範囲内からランダム再生が
   // 始まることが見た目で分かるよう、シャッフルアイコンにする(配色は通常の
   // ▶と同じまま)。
@@ -3199,6 +3203,8 @@ document.querySelector('.player-now').addEventListener('click', () => {
   renderDisc(album);
 });
 document.getElementById('clearQueue').addEventListener('click', () => {
+  // 隣の「履歴」ボタンと押し間違えてキューが飛ぶと面倒なので確認を挟む
+  if (queue.length && !confirm(t('clearQueueConfirm'))) return;
   queue = []; cursor = -1; shuffleMode = false; shuffleRegion = null; pendingShuffleAlbum = null;
   audio.pause(); clearTrack(audio);
   clearTimeout(audioStartCheckTimer);
@@ -3340,6 +3346,7 @@ function applyLang() {
   document.querySelector('.brand p').textContent = t('sub');
   document.querySelector('.intro p').textContent = t('intro');
   document.getElementById('clearQueue').textContent = t('clear');
+  document.getElementById('queueCount').textContent = t('hist');
   document.querySelector('.player-queue .credit').textContent = t('credit');
   document.getElementById('langBtn').textContent = lang === 'ja' ? 'EN' : 'JA';
   document.getElementById('submitBtn').textContent = t('submit');

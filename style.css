@@ -732,8 +732,9 @@ body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); 
   .player-controls { flex: 0 0 auto; gap: 6px; }
 }
 
-/* ---------- 再生履歴(プレイヤーの「N曲」タップで開く) ---------- */
-#queueCount { cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+/* ---------- 再生履歴(プレイヤーの「履歴」ボタンで開く) ---------- */
+/* 履歴/クリアは指で押すボタンなのでタップ領域を広げる(見た目は小さな文字のまま) */
+.player-queue .text-btn { padding: 12px 8px; font-size: 11px; }
 .hist-list { list-style: none; margin: 0; padding: 0 4px; }
 .hist-row {
   display: flex; gap: 10px; align-items: baseline;
