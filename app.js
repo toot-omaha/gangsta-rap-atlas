@@ -3279,8 +3279,10 @@ function renderQueueView(push = true, tab = queueViewTab) {
 
   let body = '';
   if (tab === 'queue') {
-    const rows = queue.map((it, i) => `<li class="hist-row${i === cursor ? ' now' : ''}">
-      <span class="hist-time">${i === cursor ? '▶' : i + 1}</span>
+    // 再生済み(cursorより前)は表示しない。プレイヤーの「N曲」と数を一致させる
+    const from = Math.max(cursor, 0);
+    const rows = queue.slice(from).map((it, i) => `<li class="hist-row${from + i === cursor ? ' now' : ''}">
+      <span class="hist-time">${from + i === cursor ? '▶' : i + 1}</span>
       <span class="hist-main"><b>${esc(it.title)}${it.shuffleAuto ? `<span class="qv-auto">${t('qAutoTag')}</span>` : ''}</b><span class="hist-sub">${esc(it.artist)}${it.album?.title && it.album.title !== it.title ? ` ─ ${esc(it.album.title)}` : ''}</span></span>
     </li>`).join('');
     body = rows
