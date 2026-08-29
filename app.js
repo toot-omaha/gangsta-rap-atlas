@@ -2408,14 +2408,31 @@ function playAlbum(album, startIndex = 0) {
   playCurrent();
 }
 
-// 単曲の▶: その1曲だけでなく、そのアルバム内でその曲以降の曲も続けて
-// キューに積む(この曲が終わったら元のキュー/前の曲に戻ってしまい
-// 使い勝手が悪かったため。この曲番号から先のキューは丸ごと置き換える)。
+// 単曲の▶:
+// - 再生が進行中(シャッフル・通常問わず)の場合は、選んだ1曲だけを現在位置の
+//   直後へ割り込ませ、聴き終えたら元のキューの続きへ自然に戻る(ユーザー要望)。
+//   シャッフル状態も連結済みキューもそのまま維持する。割り込まれていた曲は
+//   cursorの後ろに残る=再生済み扱いになり、シャッフルの再選定からも
+//   除外され続ける(randomPlayableAlbumはキュー全体を既出とみなすため)。
+// - 何も再生していない場合は従来どおり、その曲以降をアルバム順で並べて
+//   通常再生を始める(1曲で止まると使い勝手が悪いため)。
 function playSingle(item) {
-  exitShuffle(); // 同上、単曲を選んで▶した場合も通常再生に戻す
   const items = trackItemsOf(item.album);
   const idx = items.findIndex((it) =>
     (item.preview && it.preview === item.preview) || (item.youtube && it.youtube === item.youtube));
+  const cur = queue[cursor];
+  if (cur && (cur.preview || cur.youtube)) {
+    // 今流れている曲そのものをタップした場合は頭から流し直すだけ
+    if ((item.preview && cur.preview === item.preview)
+      || (item.youtube && cur.youtube === item.youtube)) { playCurrent(); return; }
+    const one = idx >= 0 ? items[idx] : { ...item };
+    queue.splice(cursor + 1, 0, one);
+    cursor++;
+    resetYtPlaylist(); // 途中挿入でYouTubeプレイリスト側とズレるので載せ直させる
+    playCurrent();
+    return;
+  }
+  exitShuffle(); // 通常再生に戻す(進行中の再生が無い時だけ)
   const rest = idx >= 0 ? items.slice(idx) : [item];
   const insertPos = Math.max(cursor, 0);
   queue.splice(insertPos, queue.length - insertPos, ...rest);
