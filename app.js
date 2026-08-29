@@ -3183,9 +3183,14 @@ const BASE_ZOOM = 3.6;
 function syncMarkerScale() {
   const z = map.getZoom();
   const s = Math.max(0.6, Math.min(2.1, Math.pow(2, (z - BASE_ZOOM) * 0.45)));
-  Object.values(markers).forEach((el) => el.style.setProperty('--s', s.toFixed(3)));
+  // --sは全マーカー共通なのでルートに1回だけ書き、継承で全.mkへ効かせる。
+  // 以前は645個のマーカーへ毎ズームイベントで個別に書き込んでおり、全マーカーの
+  // スタイル再計算が毎フレーム走って地図がちらついていた(墓石の大型化で顕在化)
+  document.documentElement.style.setProperty('--s', s.toFixed(3));
   document.body.classList.toggle('zoomed-in', z >= 4.6);
 }
+// rAFでの間引きはしない: 書き込みが1回になった今は十分軽く、逆に非表示タブでは
+// rAFが発火せずスケールが固まったままになる(実際に起きた)
 map.on('zoom', syncMarkerScale);
 syncMarkerScale();
 
