@@ -107,14 +107,18 @@ def fetch_all(path: str):
 
 
 def merge_supabase(regions, order):
-    for r in fetch_all("published_regions?select=id,name,area,lat,lng&order=id"):
+    """Supabaseの公開盤をSEO用データへマージし、生の行(published.js焼き込み用)も返す。"""
+    pub_regions = fetch_all("published_regions?select=id,name,area,lat,lng&order=id")
+    pub_albums = fetch_all(
+        "published_albums?select=id,title,artist,year,label,discogs_url,region_id,"
+        "youtube_ids,youtube_full_album_id,discogs_art&order=id"
+    )
+    for r in pub_regions:
         if r["id"] in regions:
             continue
         regions[r["id"]] = {"id": r["id"], "name": r["name"], "area": r["area"] or "", "albums": []}
         order.append(r["id"])
-    for a in fetch_all(
-        "published_albums?select=id,title,artist,year,label,discogs_url,region_id&order=id"
-    ):
+    for a in pub_albums:
         region = regions.get(a["region_id"])
         if region is None:
             continue
@@ -131,6 +135,37 @@ def merge_supabase(regions, order):
                 "discogsUrl": a["discogs_url"] or "",
             }
         )
+    return pub_regions, pub_albums
+
+
+def write_published_snapshot(pub_regions, pub_albums):
+    """公開盤をpublished.jsとしてサイトに焼き込む。
+
+    起動時にこのスナップショットを即適用することで、初回描画から最終的な
+    枚数でマーカーが出る(以前はSupabase読み足し完了時に数字が跳ねる
+    2段階表示だった)。実行後のSupabase読み足しは差分の補完になる。
+    値がnull/空の列は落としてファイルを小さくする(app.js側は欠けていてよい)。
+    """
+    def slim(row):
+        return {k: v for k, v in row.items() if v not in (None, "", [])}
+
+    payload = {
+        "regions": [slim(r) for r in pub_regions],
+        "albums": [slim(a) for a in pub_albums],
+    }
+    js = "const PUBLISHED_SNAPSHOT = " + json.dumps(
+        payload, ensure_ascii=False, separators=(",", ":")
+    ) + ";\n"
+    (ROOT / "published.js").write_text(js, encoding="utf-8")
+    # キャッシュバスター: 内容ハッシュをindex.htmlの?v=に刻む
+    import hashlib
+    h = hashlib.md5(js.encode("utf-8")).hexdigest()[:8]
+    idx = ROOT / "index.html"
+    src = idx.read_text(encoding="utf-8")
+    new = re.sub(r"published\.js\?v=[0-9a-fv]*", f"published.js?v={h}", src)
+    if new != src:
+        idx.write_text(new, encoding="utf-8")
+    return len(js)
 
 
 def esc(s):
@@ -373,7 +408,9 @@ def en_root_page(template):
 
 def main():
     regions, order = parse_data_js()
-    merge_supabase(regions, order)
+    pub_regions, pub_albums = merge_supabase(regions, order)
+    snapshot_bytes = write_published_snapshot(pub_regions, pub_albums)
+    # published.jsの?v=書き換え後に読む(生成ページにも新しい参照が入る)
     template = (ROOT / "index.html").read_text(encoding="utf-8")
 
     targets = [

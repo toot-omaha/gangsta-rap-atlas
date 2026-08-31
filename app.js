@@ -563,33 +563,48 @@ async function fetchAllRows(url) {
   }
   return rows;
 }
+// 公開盤(published_regions/published_albums形式の行)をREGIONSへ反映する。
+// デプロイ時焼き込みのスナップショット(published.js)とSupabase読み足しの
+// 両方から呼ばれる。既に居る地域・盤はスキップし、追加数を返す。
+function applyPublishedData(pubRegions, pubAlbums) {
+  let added = 0;
+  (pubRegions || []).forEach((r) => {
+    if (REGIONS.some((rr) => rr.id === r.id)) return;
+    const region = { id: r.id, name: r.name, area: r.area || '', lng: r.lng, lat: r.lat, albums: [] };
+    REGIONS.push(region);
+    createMarkerForRegion(region); // マーカーも作らないとrefreshMarkers()が例外で死ぬ
+    added++;
+  });
+  (pubAlbums || []).forEach((a) => {
+    const region = REGIONS.find((r) => r.id === a.region_id);
+    if (!region) return; // 地域側の反映がまだ届いていない/削除された等
+    const id = PUBLISHED_ID_OFFSET + a.id;
+    if (region.albums.some((al) => al.id === id)) return;
+    region.albums.push({
+      id, artist: a.artist, title: a.title, year: a.year, label: a.label,
+      youtubeId: null, youtubeIds: a.youtube_ids || undefined,
+      youtubeFullAlbumId: a.youtube_full_album_id || undefined,
+      discogsArt: a.discogs_art || undefined,
+      discogsUrl: a.discogs_url, stampSeed: {},
+    });
+    added++;
+  });
+  return added;
+}
+
 async function loadPublishedReleases() {
   try {
     const [pubRegions, pubAlbums] = await Promise.all([
       fetchAllRows(`${SB_URL}/published_regions?select=id,name,area,lat,lng`),
       fetchAllRows(`${SB_URL}/published_albums?select=id,title,artist,year,label,discogs_url,region_id,youtube_ids,youtube_full_album_id,discogs_art`),
     ]);
-    pubRegions.forEach((r) => {
-      if (REGIONS.some((rr) => rr.id === r.id)) return;
-      const region = { id: r.id, name: r.name, area: r.area, lng: r.lng, lat: r.lat, albums: [] };
-      REGIONS.push(region);
-      createMarkerForRegion(region); // マーカーも作らないとrefreshMarkers()が例外で死ぬ
-    });
-    pubAlbums.forEach((a) => {
-      const region = REGIONS.find((r) => r.id === a.region_id);
-      if (!region) return; // 地域側の反映がまだ届いていない/削除された等
-      const id = PUBLISHED_ID_OFFSET + a.id;
-      if (region.albums.some((al) => al.id === id)) return;
-      region.albums.push({
-        id, artist: a.artist, title: a.title, year: a.year, label: a.label,
-        youtubeId: null, youtubeIds: a.youtube_ids || undefined,
-        youtubeFullAlbumId: a.youtube_full_album_id || undefined,
-        discogsArt: a.discogs_art || undefined,
-        discogsUrl: a.discogs_url, stampSeed: {},
-      });
-    });
-    refreshMarkers();
-    refreshActiveListView();
+    // スナップショット適用済みの分はスキップされ、デプロイ後に増えた差分だけが
+    // 加わる。差分ゼロ(普段)なら描き直さないので、起動時に数字が跳ねない
+    const added = applyPublishedData(pubRegions, pubAlbums);
+    if (added) {
+      refreshMarkers();
+      refreshActiveListView();
+    }
     // 共有リンク/静的地域URLがSupabase由来のcustom地域を指していた場合、
     // 起動直後のopenFromHash()時点ではREGIONS未登録で開けていない。
     // 地域が出揃ったここで一度だけ再試行する(開いていれば何もしない)。
@@ -879,6 +894,13 @@ function createMarkerForRegion(region) {
   new maplibregl.Marker({ element: el }).setLngLat([region.lng, region.lat]).addTo(map);
 }
 REGIONS.forEach(createMarkerForRegion);
+// デプロイ時に焼き込んだ公開盤スナップショット(published.js)をここで即適用する。
+// 初回描画から最終的な枚数でマーカーが出て、以前のような
+// 「data.js分→数秒後にSupabase分が届いて数字が跳ねる」2段階表示にならない。
+// Supabaseからの読み足し(loadPublishedReleases)はスナップショット以降の差分補完。
+if (typeof PUBLISHED_SNAPSHOT !== 'undefined') {
+  try { applyPublishedData(PUBLISHED_SNAPSHOT.regions, PUBLISHED_SNAPSHOT.albums); } catch { /* 壊れていてもSupabase読み足しで復旧する */ }
+}
 
 function refreshMarkers() {
   // フォントサイズ主導のサイズ設計(ユーザー指定):
