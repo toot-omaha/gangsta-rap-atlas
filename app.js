@@ -421,13 +421,40 @@ const SN_NOUN = ['REAPER', 'HUSTLA', 'PHANTOM', 'OUTLAW', 'RIDER', 'PREACHER', '
 const randPick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const genStreetNameCandidate = () => `${randPick(SN_ADJ)}-${randPick(SN_NOUN)}`;
 
+// 粗い地域情報(国レベル)。IPは使わず、ブラウザのタイムゾーンと言語設定のみ。
+// どの国で使われているかの集計用で、匿名のStreet Nameにしか紐づかない。
+function geoHintFields() {
+  try {
+    return {
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+      locale: navigator.language || '',
+    };
+  } catch { return { tz: '', locale: '' }; }
+}
+// 1日1回、既存行のtz/localeを最新化する(行作成時にも入るが、
+// キュー同期しか使わない人や引っ越した端末も拾えるように)
+async function pushGeoHint() {
+  if (!streetName) return;
+  const today = new Date().toISOString().slice(0, 10);
+  if (localStorage.getItem('gra.geoHint.day') === today) return;
+  try {
+    const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+      body: JSON.stringify(geoHintFields()),
+    });
+    // 列のマイグレーション未実施(400)でも静かに諦めるだけで実害なし
+    if (res.ok) localStorage.setItem('gra.geoHint.day', today);
+  } catch { /* オフライン時は翌回に */ }
+}
+
 // DBのunique制約が衝突を弾く(重複登録の防止だけが目的。衝突自体は稀で許容)
 async function reserveStreetName(name) {
   try {
     let res = await fetch(`${SB_URL}/fav_sync`, {
       method: 'POST',
       headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant], nope: [...favsNope], eras: [...eraFilters], mystamps: myStamps }),
+      body: JSON.stringify({ gangsta_name: name, have: [...favsHave], want: [...favsWant], nope: [...favsNope], eras: [...eraFilters], mystamps: myStamps, ...geoHintFields() }),
     });
     if (res.status === 400) {
       // mystamps列のマイグレーション未実施のDBへのフォールバック
@@ -614,6 +641,7 @@ async function loadPublishedReleases() {
     finishDeferredQueueRestore(false);
     // 端末間キュー同期の初回プル(公開盤が揃いalbumIdが全て解決できる状態で)
     pullQueueSync();
+    pushGeoHint(); // 地域情報(tz/locale)の1日1回の最新化
   } catch {
     // オフラインでもローカルだけで動く。復元保留のままだと保存も止まった
     // ままになるので、解決できる分だけで復元して保留を解く
