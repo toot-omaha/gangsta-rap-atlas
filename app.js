@@ -711,7 +711,14 @@ function refreshActiveListView() {
 // サーバー行のmystamps(自分のチェック済みスタンプ)をローカルへ反映する。
 // 列が無ければ何もしない(have/want同様、サーバー側を正とするlast-write-wins)。
 function applyMyStampsFromRow(row) {
-  if (!row.mystamps || typeof row.mystamps !== 'object') return;
+  if (!row.mystamps || typeof row.mystamps !== 'object') {
+    // サーバー側が空でローカルに記録がある場合は押し上げて復旧する。
+    // (eras/nope列の作成漏れで本命PATCHが400になり、mystampsが一度も
+    //  保存されていなかった実障害からの自動リカバリ。列が直った後の
+    //  初回起動でここを通り、端末に残っていたチェック履歴が同期に乗る)
+    if (Object.keys(myStamps).length) pushFavSync();
+    return;
+  }
   const same = JSON.stringify(row.mystamps) === JSON.stringify(myStamps);
   if (same) return;
   Object.keys(myStamps).forEach((k) => delete myStamps[k]);
