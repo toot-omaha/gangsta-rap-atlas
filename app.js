@@ -1750,7 +1750,14 @@ function renderDisc(album, push = true) {
         } else if (otherRegion === activeRegion) {
           renderDisc(other, true);
         } else {
-          openRegion(otherRegion, true);
+          // 別地域へのジャンプは履歴を積まず現在のエントリを差し替える。
+          // ここでpush=true(階層1として積む)にすると、階層2に居るのに
+          // navLevelだけ1へ下がり履歴と食い違う。そのままディスクBを積むと
+          // 壊れたエントリが挟まり、「戻る」で地図まで辿り着く前にアプリごと
+          // 閉じる実バグになっていた。差し替えなら履歴は常に
+          // [地図→地域→ディスク]の3段で、戻るはB→地域Y一覧→地図と正しく辿る
+          // (activeRegionはopenRegion()がYへ更新するので戻り先の一覧もYになる)。
+          openRegion(otherRegion, false);
           setTimeout(() => { saveListScrollBeforeDisc(); renderDisc(other, true); }, 460);
         }
       });
@@ -3596,7 +3603,16 @@ function openFromHash(rawHash) {
 openFromHash(initialShareHash);
 // Android版アプリ(TWA)がバックグラウンド起動中に共有リンクを開いた場合など、
 // hashchangeとして届くケースをここで拾う。
-window.addEventListener('hashchange', () => openFromHash());
+// ただし「戻る/進む」の履歴移動でもhashchangeは発火する。自アプリが積んだ
+// エントリ(state.levelあり)への移動なら描画はpopstateハンドラの担当なので
+// ここでは何もしない。以前はこの区別が無く、ディスクから戻るたびに
+// openFromHash()が「共有リンクを開いた」と誤解して前の地域を開き直し、
+// その遅延タイマーがdetail表示を付け直すため、地図まで戻っても画面が
+// 閉じず、もう一度戻るとアプリごと終了する実バグになっていた。
+window.addEventListener('hashchange', () => {
+  if (history.state && typeof history.state.level === 'number') return;
+  openFromHash();
+});
 
 // PWAとしてインストール可能にするための最小Service Worker登録
 if ('serviceWorker' in navigator) {
