@@ -2202,7 +2202,7 @@ function exitShuffle() {
   }
   // キューから消した分だけYouTubeプレイヤー上のプレイリストと中身がズレる
   // ので、控えを破棄して次の再生時に載せ直させる
-  if (removed) resetYtPlaylist();
+  if (removed) resetYtPlaylist({ keepIntent: true });
 }
 
 // キューの次の曲(シャッフル中で盤の末尾まで来ている場合は、先読み済み/
@@ -2609,7 +2609,7 @@ function playSingle(item) {
     const one = idx >= 0 ? items[idx] : { ...item };
     queue.splice(cursor + 1, 0, one);
     cursor++;
-    resetYtPlaylist(); // 途中挿入でYouTubeプレイリスト側とズレるので載せ直させる
+    resetYtPlaylist({ keepIntent: true }); // 途中挿入でYouTubeプレイリスト側とズレるので載せ直させる
     playCurrent();
     return;
   }
@@ -2637,7 +2637,7 @@ function enqueueAlbum(album) {
     if (queue[i].shuffleAuto) { pos = i; break; }
   }
   queue.splice(pos, 0, ...items);
-  resetYtPlaylist(); // 途中挿入でYouTubeプレイリスト側とズレるので載せ直させる
+  resetYtPlaylist({ keepIntent: true }); // 途中挿入でYouTubeプレイリスト側とズレるので載せ直させる
   saveQueue();
   paint();
 }
@@ -2666,16 +2666,29 @@ let ytPendingPlaylist = null; // プレイヤー準備前に再生要求が来�
 // indexを載せたonStateChangeが遅れて届くことがある。移動先のindexを控えて
 // おき、それが観測されるまで同期を保留する(cursorの一瞬の巻き戻り防止)。
 let ytExpectedIndex = null;
+// nextVideo()/onErrorスキップで曲送りを指示した後の遷移の控え {to, at, kicked}。
+// 遷移がBUFFERING以外で止まったまま一定時間経ったら、非破壊のplayVideoAtで
+// 一度だけ蹴る(30秒見張り参照)。
+let ytTransition = null;
+// 最後に実際にPLAYINGを観測した時刻。「再生中か」の判定(playbackActive)で、
+// 意図フラグが立ちっぱなしのまま固まった状態(自動再生拒否後のリロード等)を
+// 再生中と誤認しないための証拠に使う。
+let ytLastPlayingAt = 0;
 // ユーザーが再生を意図しているか(cueだけの時はfalse)。リロード復元直後の
 // エラーで勝手に鳴り出したりしないよう、onErrorの自動スキップを制御する。
 let ytPlaybackIntended = false;
 let ytErrorSkippedKey = null; // 同じ動画のonError連続発火で二重スキップしないための控え
 let ytAutoResumeUsedKey = null; // システム起因PAUSEDの自動復帰を動画ごとに1回に制限する印
-function resetYtPlaylist() {
+// keepIntent: キュー編集(＋追加・挿入・絞り込み整理)で控えだけ捨て、再生自体は
+// 続く場合に指定する。以前は無条件に再生意図を落としていたため、30秒見張りと
+// 自動復帰が止まり、その動画がフル尺で流れる実バグになっていた。
+function resetYtPlaylist({ keepIntent = false } = {}) {
   ytPlaylistIds = null;
   ytPlaylistBase = -1;
   ytPendingPlaylist = null; // 保留中の載せ込みも破棄(放置するとonReady時にゴースト再生される)
   ytExpectedIndex = null;
+  ytTransition = null;
+  if (keepIntent) return;
   ytPlaybackIntended = false;
   clearTimeout(ytStartCheckTimer); // YouTube再生をやめたので開始見張りも止める
 }
@@ -2707,6 +2720,7 @@ function initYtPlayer() {
         if (e.data === YT.PlayerState.PLAYING) {
           ytStartRetryDelay = 3000;
           clearTimeout(ytStartCheckTimer);
+          ytLastPlayingAt = Date.now();
         }
         // システム起因で止められた場合の自動復帰(iTunes側と同じ規約)。
         // ユーザー操作の一時停止はuserPaused=trueが先に立つので、falseのままの
@@ -2737,11 +2751,23 @@ function initYtPlayer() {
           // 最後の1本を終えた時だけ、こちらで次のアルバムへ送る。
           // 実物と控えがズレている間(背面で載せ直しが拒否された等)のENDEDは
           // 虚構の位置でnext()しないよう無視する(前面復帰時に立て直す)。
+          // next()が進めなかった(キューの続きが無い)場合は停止扱いにする。
+          // 意図フラグが立ったままだと、何も鳴っていないのに「再生中」と
+          // 判定され続け、端末間同期の取り込みが永久にブロックされる
+          const endedBefore = cursor;
+          let advanced = false; // こちらからnext()を試みたか(YouTube側の自動曲送りや控え不一致時は対象外)
           if (!ytPlaylistIds) {
             next();
+            advanced = true;
           } else if (ytShadowMatchesActual()) {
             const i = ytPlayer.getPlaylistIndex ? ytPlayer.getPlaylistIndex() : -1;
-            if (i < 0 || i >= ytPlaylistIds.length - 1) next();
+            if (i < 0 || i >= ytPlaylistIds.length - 1) { next(); advanced = true; }
+          }
+          if (advanced && cursor === endedBefore && queue[cursor]?.youtube) {
+            userPaused = true;
+            // 控えが無い=プレイヤー側には古いプレイリストが載ったまま。止めないと
+            // キューから消したはずの次の動画へYouTubeが自動で進んで鳴り続ける
+            if (!ytPlaylistIds) ytPlayer.stopVideo();
           }
         }
         paint();
@@ -2757,8 +2783,12 @@ function initYtPlayer() {
         const key = ytPlaylistIds && i >= 0 ? `${ytPlaylistBase}:${i}:${ytPlaylistIds[i]}` : 'single';
         if (ytErrorSkippedKey === key) return; // 同じ動画での連続発火による二重スキップ防止
         ytErrorSkippedKey = key;
-        if (ytPlaylistIds && i >= 0 && i < ytPlaylistIds.length - 1) ytPlayer.nextVideo();
-        else next();
+        if (ytPlaylistIds && i >= 0 && i < ytPlaylistIds.length - 1) { noteYtTransition(i + 1); ytPlayer.nextVideo(); }
+        else {
+          const before = cursor;
+          next();
+          if (cursor === before) userPaused = true; // 進めなかった=停止扱い(意図の立ちっぱなし防止)
+        }
       },
     },
   });
@@ -2817,6 +2847,7 @@ function playYtForCursor(cueOnly = false) {
   const q = queue[cursor];
   if (!q?.youtube) return;
   ytErrorSkippedKey = null; // 明示的な再生指示が来たのでエラースキップの抑止は解除
+  ytTransition = null; // 明示的な再生/頭出し指示は、保留中の曲送り遷移の控えを無効にする
   ytPlaybackIntended = !cueOnly;
   // まず、プレイヤーに実際に載っているプレイリストの範囲内に今のcursorが
   // 収まっているなら、載せ直さず頭出し・再開だけで済ませる(載せ直し=
@@ -2883,8 +2914,70 @@ function playYtForCursor(cueOnly = false) {
 // キー(プレイリスト位置)で抑止する。
 const YT_CLIP_SECONDS = 30;
 let ytClipFiredKey = null;
+const YT_TRANSITION_KICK_MS = 8000;
+function noteYtTransition(to) { ytTransition = { to, at: Date.now(), kicked: false }; }
+// 30秒に達した動画をキュー上の次へ送る。キューに続きが無ければnext()は何もしない
+// ので、その場合はフル尺再生が続かないようこちらで止める(旧endSeconds相当)。
+// userPausedも立てて、前面復帰時の自動再開で鳴り直さないようにする。
+function cutYtClipToNext() {
+  const before = cursor;
+  next();
+  if (cursor === before && queue[cursor]?.youtube) { userPaused = true; ytPlayer.pauseVideo(); }
+}
 setInterval(() => {
-  if (!ytReady || !ytPlaylistIds || !ytIsPlaying()) return;
+  if (!ytReady) return;
+  // 曲送り後の遷移停滞の見張り。以前は遷移がBUFFERING/UNSTARTEDのまま止まると
+  // 自己復帰の経路が無く、前面復帰かAndroid Autoの▶まで無音のままだった。
+  // 非破壊のplayVideoAtで一度だけ蹴る(フル再構築はしない: 背面での載せ直しは
+  // 拒否されて復帰不能に陥り得るため、それは前面復帰/明示的な▶に委ねる)
+  if (ytTransition) {
+    const idx = ytPlayer.getPlaylistIndex ? ytPlayer.getPlaylistIndex() : -1;
+    const playing = ytIsPlaying();
+    if (playing) ytLastPlayingAt = Date.now();
+    if (playing && (idx === ytTransition.to || !ytShadowMatchesActual())) {
+      ytTransition = null; // 遷移先で鳴り始めた(控えが別物になった時も追わない)
+    } else if (!ytTransition.kicked && Date.now() - ytTransition.at > YT_TRANSITION_KICK_MS
+      && ytPlaybackIntended && !userPaused && ytExpectedIndex === null && ytShadowMatchesActual()
+      && ytTransition.to < ytPlaylistIds.length) {
+      const st = ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : null;
+      // 蹴るのは「開始待ちで止まっている」(UNSTARTED/CUED)か「nextVideoが無視され
+      // 旧動画が鳴り続けている」場合だけ。BUFFERINGは読み込み中なので待ち、
+      // PAUSED/ENDEDは本物の停止(2回目の一時停止など)なので逆らわない
+      const stalled = st === YT.PlayerState.UNSTARTED || st === YT.PlayerState.CUED
+        || (st === YT.PlayerState.PLAYING && idx !== ytTransition.to);
+      if (stalled && ytPlayer.playVideoAt) {
+        ytTransition.kicked = true;
+        ytExpectedIndex = ytTransition.to;
+        ytPlayer.playVideoAt(ytTransition.to);
+      }
+    }
+  }
+  if (!ytIsPlaying()) return;
+  ytLastPlayingAt = Date.now();
+  if (!ytPlaylistIds) {
+    // 控えを捨てた直後(キュー編集)で再生自体は続いている: プレイリストの曲送りは
+    // 使えないので30秒でnext()に渡し、新しいキューから載せ直させる。
+    // 以前はここで見張りが止まり、その動画がフル尺で流れていた
+    if (!ytPlaybackIntended || userPaused) return;
+    const vd = ytPlayer.getVideoData && ytPlayer.getVideoData();
+    const key = `stale:${vd?.video_id || ''}`;
+    if (ytClipFiredKey === key) return;
+    const t = ytPlayer.getCurrentTime ? ytPlayer.getCurrentTime() : 0;
+    if (t < YT_CLIP_SECONDS) return;
+    ytClipFiredKey = key;
+    // 曲送りの遷移中に控えを捨てた場合、YouTube側は次の動画へ進んでいるのに
+    // cursorが前の曲を指したままのことがある。実際に鳴っている動画に
+    // cursorを合わせてから次へ送る(同じ曲が二度流れるのを防ぐ)
+    // 合わせるのは「直後の1曲」に限る。それより先まで飛ぶと、遷移中に手動追加
+    // された盤を跨いで取りこぼす(同じ曲が二度流れるより目立つ)
+    if (vd?.video_id && queue[cursor]?.youtube !== vd.video_id
+      && queue[cursor + 1]?.youtube === vd.video_id) {
+      cursor += 1;
+      paint();
+    }
+    cutYtClipToNext();
+    return;
+  }
   if (ytExpectedIndex !== null) return; // 明示的な曲移動の完了待ち中は手を出さない
   if (!ytShadowMatchesActual()) return; // 実物と控えがズレている間は誤射しない
   const i = ytPlayer.getPlaylistIndex ? ytPlayer.getPlaylistIndex() : -1;
@@ -2896,14 +2989,10 @@ setInterval(() => {
   if (t < YT_CLIP_SECONDS) return;
   ytClipFiredKey = key;
   if (i < ytPlaylistIds.length - 1) {
+    noteYtTransition(i + 1);
     ytPlayer.nextVideo();
   } else {
-    // キューに続きが無ければnext()は何もしないので、その場合は
-    // 30秒でフル尺再生が続かないようこちらで止める(旧endSeconds相当)。
-    // userPausedも立てて、前面復帰時の自動再開で鳴り直さないようにする。
-    const before = cursor;
-    next();
-    if (cursor === before && queue[cursor]?.youtube) { userPaused = true; ytPlayer.pauseVideo(); }
+    cutYtClipToNext();
   }
 }, 1000);
 
@@ -3174,7 +3263,7 @@ function pruneShuffleQueue() {
   }
   if (removed) {
     // キューから消した分だけYouTubeプレイリスト側とズレるので載せ直させる
-    resetYtPlaylist();
+    resetYtPlaylist({ keepIntent: true });
     saveQueue();
   }
 }
@@ -3261,7 +3350,6 @@ async function startRegionShuffle(region) {
     // 30秒ごとに通知へ'paused'を公表するフラッピングになり、Android側の
     // 通知再構築(=消える機会)を誘発するので、endedに任せて何もしない。
     if (audio.ended) return;
-    paint();
     // システム起因で直接止められた場合の自動復帰。ユーザー操作の一時停止は
     // 必ずuserPaused=trueが先に立つので、userPausedがfalseのままのpauseは
     // すべてシステム起因(アルバム切替後のオーディオフォーカス再交渉、
@@ -3275,6 +3363,11 @@ async function startRegionShuffle(region) {
         audio.play().catch(() => {});
       }
     }
+    // 公表は復帰を試みた後で行う。play()は同期的にpaused=falseにするので、
+    // 復帰する分岐では'playing'のまま(以前は先に'paused'を公表してから
+    // 復帰していたため、通知/Android Autoが一瞬⏸に変わって戻っていた)。
+    // 復帰しない分岐(2回目の本物の喪失)は従来どおり'paused'になる
+    paint();
   });
 });
 document.getElementById('nextBtn').addEventListener('click', next);
@@ -3629,13 +3722,30 @@ if ('serviceWorker' in navigator) {
 // 前面復帰(visibilitychange/pageshow)の両方で拾って取り込む。
 // 自分が再生中の時は自分を正として取り込まない(音が突然別の曲へ飛ぶのを
 // 防ぐ。こちらの次のsaveQueue()が最新として他コンテキストへ伝わる)。
+// 「自分が再生中(または再生継続の意図がある)か」。YouTubeは30秒送りの読み込み中
+// (BUFFERING等)にytIsPlaying()が偽になるため、意図フラグも見る。以前はここを
+// 停止中と誤判定して他端末のキューを取り込み、再生を止めてしまう経路があった。
+// 意図フラグ単独では「再生を試みたが始まらないまま固まった」状態(自動再生
+// 拒否後のリロード等)まで再生中扱いになり同期が永久に止まるので、
+// 「読み込み中(BUFFERING)」か「直近15秒以内に実際に鳴っていた」証拠で縛る
+const YT_ACTIVE_GRACE_MS = 15000;
+function playbackActive() {
+  const q = queue[cursor];
+  if (!q) return false;
+  if (!q.youtube) return !audio.paused;
+  if (ytIsPlaying()) return true;
+  if (!ytPlaybackIntended || userPaused) return false;
+  // YT.PlayerStateはIFrame API到着後にしか存在しない(オフライン/遮断環境では永久に
+  // 来ない)ので、ytReadyが真の時だけ比較する
+  const buffering = ytReady && ytPlayer.getPlayerState
+    && ytPlayer.getPlayerState() === YT.PlayerState.BUFFERING;
+  return !!buffering || Date.now() - ytLastPlayingAt < YT_ACTIVE_GRACE_MS;
+}
 function adoptExternalQueue() {
   if (queueRestoreDeferred) return;
   const raw = localStorage.getItem(QUEUE_KEY);
   if (raw == null || raw === lastQueueSnapshot) return; // 自分の書いた内容なら何もしない
-  const q = queue[cursor];
-  const playingNow = q ? (q.youtube ? ytIsPlaying() : !audio.paused) : false;
-  if (playingNow) return;
+  if (playbackActive()) return;
   audio.pause();
   restoreQueue(true, false); // 取り込み時は自動再生しない(両方で鳴るのを防ぐ)
 }
@@ -3827,7 +3937,5 @@ document.addEventListener('visibilitychange', () => {
 // 相手のキューへ飛ばされるフラつきを防ぐ。
 setInterval(() => {
   if (document.visibilityState !== 'visible') return;
-  const q = queue[cursor];
-  const active = q && (q.youtube ? ytIsPlaying() : !audio.paused);
-  if (!active) pullQueueSync();
+  if (!playbackActive()) pullQueueSync();
 }, 20000);
