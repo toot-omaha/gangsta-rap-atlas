@@ -59,6 +59,8 @@ const I18N = {
     qCount: (n) => `${n} 曲`,
     regionShuffleConfirm: 'イマノ再生キューヲ破棄シテ、コノ地域ノシャッフルヲ始メル。ヨロシイ？',
     dlgOk: 'ヨロシイ', dlgCancel: 'ヤメル',
+    keepalive: '無音アンカー(車載/通知ノ途切レ対策)',
+    keepaliveHint: '曲間や読み込み中も再生セッションを保ち、Android Autoの「オーディオオフ」の一瞬表示を防ぐ(Android限定)',
   },
   en: {
     sub: 'DIG THE MAP — REGIONAL DISCOGRAPHIES',
@@ -116,6 +118,8 @@ const I18N = {
     qCount: (n) => `${n} TRACKS`,
     regionShuffleConfirm: 'Discard the current queue and start shuffling this region. Continue?',
     dlgOk: 'OK', dlgCancel: 'CANCEL',
+    keepalive: 'Silent anchor (car / notification continuity)',
+    keepaliveHint: 'Keeps the media session alive between tracks and while loading, so Android Auto does not flash "audio off" (Android only)',
   },
 };
 let lang = localStorage.getItem('gra.lang') || 'ja';
@@ -135,6 +139,12 @@ const CLIENT_ID = (() => {
   if (!v) { v = crypto.randomUUID(); localStorage.setItem('gra.client', v); }
   return v;
 })();
+
+// 無音アンカー(keepalive)の設定キーとAndroid判定。本体はaudio要素定義の近く参照。
+// URLに ?keepalive=0|1|force を付けると設定を書き換えられる(実機A/B用の隠しスイッチ)
+const KEEPALIVE_KEY = 'gra.keepalive';
+const isAndroidUA = /Android/i.test(navigator.userAgent);
+{ const m = location.search.match(/[?&]keepalive=(0|1|force)\b/); if (m) localStorage.setItem(KEEPALIVE_KEY, m[1]); }
 
 // YouTube動画のタイトルはoEmbedで非同期に解決するまで曲名が分からないため、
 // 判明したものを{videoId: title}でキャッシュしておく。再生バーにアルバム名
@@ -1066,6 +1076,24 @@ function buildAutoplayBar() {
     });
     chkRow.appendChild(label);
   });
+  // 無音アンカーの隠しトグル(Android限定表示)。実機A/B用
+  if (isAndroidUA) {
+    const row = document.createElement('div');
+    row.className = 'autoplay-chks keepalive-row';
+    const label = document.createElement('label');
+    const on = keepaliveEnabled();
+    label.className = 'era-chk' + (on ? ' on' : '');
+    label.title = t('keepaliveHint');
+    label.innerHTML = `<input type="checkbox"${on ? ' checked' : ''}><span>${t('keepalive')}</span>`;
+    label.querySelector('input').addEventListener('change', (ev) => {
+      localStorage.setItem(KEEPALIVE_KEY, ev.target.checked ? '1' : '0');
+      label.classList.toggle('on', ev.target.checked);
+      if (!ev.target.checked) keepaliveOff();
+      else if (playbackActive()) keepaliveStart();
+    });
+    row.appendChild(label);
+    autoplayBar.appendChild(row);
+  }
 }
 buildAutoplayBar();
 
@@ -2186,7 +2214,98 @@ audioA.preload = 'auto';
 audioB.preload = 'auto';
 let audio = audioA;        // 再生役
 let preloadAudio = audioB; // 先読み役(playCurrentのスワップで入れ替わる)
-[audioA, audioB].forEach((el) => el.addEventListener('ended', () => { if (el === audio) next(); }));
+[audioA, audioB].forEach((el) => el.addEventListener('ended', () => {
+  if (el !== audio) return;
+  const before = cursor;
+  next();
+  // 進めなかった(キューが尽きた)=停止扱い。YouTube側のENDED空振りと同じ規約で、
+  // 無音アンカーだけが鳴り続ける状態を作らない
+  if (cursor === before) { userPaused = true; keepaliveHold(); }
+}));
+
+// ---------- 無音アンカー(keepalive) ----------
+// Android(Chrome/TWA)向け。本体文書に「実際に鳴っている(無音サンプル)」<audio>を
+// 再生意図がある間だけ常駐させ、YouTubeの30秒送りやiTunes⇄YouTube切替で実プレイヤーが
+// 一瞬0個になる瞬間を作らない。Chrome Androidはプレイヤーが0個になった瞬間に
+// メディアセッションを破棄(端末ロック中は猶予ゼロ)→再生成するため、その隙間が
+// Android Autoに「オーディオオフ」として一瞬見える。playbackState='playing'の宣言は
+// Androidでは通知存続の判定に使われないので、宣言では塞げない層への対策。
+// 規律: (1) 自分から音声フォーカスを取りに行かない(開始は実プレイヤーが鳴る/鳴った時と
+//   ユーザーの再生操作だけ。paint()等からは呼ばない)
+//   (2) アプリが再生を諦めた瞬間(userPaused、意図取り下げ、YT再構築エスカレーション)に
+//   必ず止める=「無音なのに再生中」を長引かせない
+//   (3) 実再生の証拠が180秒無ければ破棄する安全弁
+// 無音は必ずゼロサンプル・volume=1・muted=falseで作る(muted/volume=0はChromeが
+// セッション参加者から外す)。5秒以下のファイルは通知が出ない(kTransient)ので30秒。
+let keepAudio = null;
+let keepAudioUrl = null;
+let keepaliveLastRealAt = 0;
+const KEEPALIVE_ORPHAN_MS = 180000;
+function keepaliveEnabled() {
+  const v = localStorage.getItem(KEEPALIVE_KEY);
+  if (v === '0') return false;
+  return isAndroidUA || v === 'force';
+}
+function buildSilentWav(seconds = 30, rate = 8000) {
+  const n = seconds * rate; // 16bit PCM mono、データ部は0埋め=無音
+  const buf = new ArrayBuffer(44 + n * 2);
+  const dv = new DataView(buf);
+  const str = (o, t) => { for (let i = 0; i < t.length; i++) dv.setUint8(o + i, t.charCodeAt(i)); };
+  str(0, 'RIFF'); dv.setUint32(4, 36 + n * 2, true); str(8, 'WAVE');
+  str(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+  dv.setUint32(24, rate, true); dv.setUint32(28, rate * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true);
+  str(36, 'data'); dv.setUint32(40, n * 2, true);
+  return new Blob([buf], { type: 'audio/wav' });
+}
+// アプリに「鳴らす意図」があるか(アンカーを維持してよい条件)
+function keepaliveDesired() {
+  const q = queue[cursor];
+  if (!q || userPaused) return false;
+  if (q.preview) return true;
+  if (q.youtube) return ytPlaybackIntended;
+  return false;
+}
+function keepaliveStart() {
+  if (!keepaliveEnabled() || !keepaliveDesired()) return;
+  if (!keepAudio) {
+    keepAudio = new Audio();
+    keepAudio.loop = true;
+    keepAudio.preload = 'auto';
+    keepAudio.volume = 1;
+    keepAudio.muted = false;
+  }
+  if (!keepAudio.src) {
+    keepAudioUrl = URL.createObjectURL(buildSilentWav());
+    keepAudio.src = keepAudioUrl;
+  }
+  // 孤児判定の時計は「実際に(再)起動した時」だけ戻す(鳴っている間の延長は
+  // 実再生の証拠(playing/PLAYING/interval)にだけ任せる)
+  if (keepAudio.paused) {
+    keepaliveLastRealAt = Date.now();
+    keepAudio.play().catch(() => {});
+  }
+}
+function keepaliveHold() { if (keepAudio && !keepAudio.paused) keepAudio.pause(); }
+function keepaliveOff() {
+  if (!keepAudio) return;
+  keepAudio.pause();
+  keepAudio.removeAttribute('src');
+  keepAudio.load(); // src除去だけではプレイヤーが残るのでload()まで呼んで破棄する
+  if (keepAudioUrl) { URL.revokeObjectURL(keepAudioUrl); keepAudioUrl = null; }
+}
+// 安全弁と自己修復(1秒ごと): 意図が無いのに鳴っていれば止める、実再生の証拠が
+// 180秒無ければ破棄する、実プレイヤーが鳴っているのにアンカーだけ止まっていれば立て直す
+setInterval(() => {
+  if (!keepAudio) return;
+  const real = ytIsPlaying() || (!audio.paused && audio.readyState >= 3);
+  if (real) keepaliveLastRealAt = Date.now();
+  if (keepAudio.paused) {
+    if (real && keepaliveDesired() && keepaliveEnabled()) keepaliveStart();
+    return;
+  }
+  if (!keepaliveEnabled() || !keepaliveDesired()) { keepaliveHold(); return; }
+  if (Date.now() - keepaliveLastRealAt > KEEPALIVE_ORPHAN_MS) keepaliveOff();
+}, 1000);
 
 // シャッフルをやめてユーザー選択の再生に切り替える。プレイリスト連結の
 // 先読みでキューに実体化していた未再生のランダムアルバム(shuffleAuto印)は
@@ -2276,7 +2395,7 @@ function scheduleAudioStartCheck() {
     if (!audio.paused && !audio.ended && audio.readyState >= 3) { audioStartRetryDelay = 3000; return; } // 鳴っている
     if (!audio.error && audio.networkState === HTMLMediaElement.NETWORK_LOADING) { scheduleAudioStartCheck(); return; } // まだ読み込み中
     audioStartRetryDelay = Math.min(audioStartRetryDelay * 2, 60000);
-    if (audio.error && ++audioErrorRetries > 2) { next(); return; } // src再設定でも失敗が続く=失効URL等。スキップ
+    if (audio.error && ++audioErrorRetries > 2) { const before = cursor; next(); if (cursor === before) keepaliveHold(); return; } // src再設定でも失敗が続く=失効URL等。スキップ
     playAudioForCursor();
   }, audioStartRetryDelay);
 }
@@ -2297,7 +2416,11 @@ function playAudioForCursor() {
   scheduleAudioStartCheck();
 }
 [audioA, audioB].forEach((el) => {
-  el.addEventListener('playing', () => { if (el !== audio) return; audioStartRetryDelay = 3000; audioErrorRetries = 0; clearTimeout(audioStartCheckTimer); });
+  el.addEventListener('playing', () => {
+    if (el !== audio) return;
+    audioStartRetryDelay = 3000; audioErrorRetries = 0; clearTimeout(audioStartCheckTimer);
+    keepaliveStart(); // 実再生が確認できた=アンカーを立てる/立て直す
+  });
   // 再生途中の失敗(回線断等)も見張りに拾わせる(先読み役の失敗は対象外)
   el.addEventListener('error', () => { if (el === audio) scheduleAudioStartCheck(); });
 });
@@ -2679,6 +2802,7 @@ let ytLastPlayingAt = 0;
 let ytPlaybackIntended = false;
 let ytErrorSkippedKey = null; // 同じ動画のonError連続発火で二重スキップしないための控え
 let ytAutoResumeUsedKey = null; // システム起因PAUSEDの自動復帰を動画ごとに1回に制限する印
+let ytAutoResumeCheck = false; // 自動復帰が仕掛けた開始見張りか(2回目=本物の停止に従う時に取り消す)
 // keepIntent: キュー編集(＋追加・挿入・絞り込み整理)で控えだけ捨て、再生自体は
 // 続く場合に指定する。以前は無条件に再生意図を落としていたため、30秒見張りと
 // 自動復帰が止まり、その動画がフル尺で流れる実バグになっていた。
@@ -2721,6 +2845,8 @@ function initYtPlayer() {
           ytStartRetryDelay = 3000;
           clearTimeout(ytStartCheckTimer);
           ytLastPlayingAt = Date.now();
+          ytAutoResumeCheck = false;
+          keepaliveStart();
         }
         // システム起因で止められた場合の自動復帰(iTunes側と同じ規約)。
         // ユーザー操作の一時停止はuserPaused=trueが先に立つので、falseのままの
@@ -2732,8 +2858,16 @@ function initYtPlayer() {
           if (ytAutoResumeUsedKey !== key) {
             ytAutoResumeUsedKey = key;
             ytPlayer.playVideo();
+            ytAutoResumeCheck = true;
+            scheduleYtStartCheck(); // 背面で握り潰された時に見張り→再構築→(停滞なら)アンカー停止まで繋げる
+          } else {
+            keepaliveHold(); // 2回目=本物の停止に従う。アンカーも止めて⏸表示に戻す
+            // 1回目が仕掛けた見張りも取り下げる(残すと「従う」はずが背面で載せ直しを
+            // 繰り返し、通話後に勝手に鳴り出す)。ユーザー/明示起動の見張りは残す
+            if (ytAutoResumeCheck) { clearTimeout(ytStartCheckTimer); ytAutoResumeCheck = false; }
           }
         }
+        if (e.data === YT.PlayerState.PAUSED && userPaused) keepaliveHold();
         // YouTubeが自動で次の動画へ進んだ分を、こちらの再生位置へ反映する
         // (曲送りをYouTube側に任せているので、cursorは後追いで合わせる)
         syncCursorToYtPlaylist();
@@ -2765,6 +2899,7 @@ function initYtPlayer() {
           }
           if (advanced && cursor === endedBefore && queue[cursor]?.youtube) {
             userPaused = true;
+            keepaliveHold();
             // 控えが無い=プレイヤー側には古いプレイリストが載ったまま。止めないと
             // キューから消したはずの次の動画へYouTubeが自動で進んで鳴り続ける
             if (!ytPlaylistIds) ytPlayer.stopVideo();
@@ -2787,7 +2922,7 @@ function initYtPlayer() {
         else {
           const before = cursor;
           next();
-          if (cursor === before) userPaused = true; // 進めなかった=停止扱い(意図の立ちっぱなし防止)
+          if (cursor === before) { userPaused = true; keepaliveHold(); } // 進めなかった=停止扱い(意図の立ちっぱなし防止)
         }
       },
     },
@@ -2833,7 +2968,13 @@ function scheduleYtStartCheck() {
     // 「載っているから頭出しだけ」の高速パスを通り続けると永遠に無反応な
     // ままなので(▶を押しても直らない報告の原因)、控えを捨てて
     // フル再構築(loadPlaylist)へエスカレーションする。
-    if (ytStartRetryDelay >= 6000) resetYtPlaylist();
+    if (ytStartRetryDelay >= 6000) {
+      resetYtPlaylist();
+      // 2回目以降の再構築(約9秒経っても始まらない)=本当に停滞している。アンカーを止めて
+      // 通知を▶に戻し、1タップ復帰が効く状態にする。1回目(3秒)は単に遅いだけの
+      // 起動も多いので止めない(止めると切替のたびに一瞬⏸表示が出る)
+      if (ytStartRetryDelay >= 12000) keepaliveHold();
+    }
     playYtForCursor(); // 状態を見て再開/載せ直しを判断してくれる
   }, ytStartRetryDelay);
 }
@@ -2848,7 +2989,9 @@ function playYtForCursor(cueOnly = false) {
   if (!q?.youtube) return;
   ytErrorSkippedKey = null; // 明示的な再生指示が来たのでエラースキップの抑止は解除
   ytTransition = null; // 明示的な再生/頭出し指示は、保留中の曲送り遷移の控えを無効にする
+  ytAutoResumeCheck = false; // 明示的な指示の見張りは「従う」対象にしない
   ytPlaybackIntended = !cueOnly;
+  if (cueOnly) keepaliveHold(); // 意図の取り下げ(cueだけ)ではアンカーも止める
   // まず、プレイヤーに実際に載っているプレイリストの範囲内に今のcursorが
   // 収まっているなら、載せ直さず頭出し・再開だけで済ませる(載せ直し=
   // 「新規再生」は背面で拒否されるため、できる限り避ける)。
@@ -2922,7 +3065,7 @@ function noteYtTransition(to) { ytTransition = { to, at: Date.now(), kicked: fal
 function cutYtClipToNext() {
   const before = cursor;
   next();
-  if (cursor === before && queue[cursor]?.youtube) { userPaused = true; ytPlayer.pauseVideo(); }
+  if (cursor === before && queue[cursor]?.youtube) { userPaused = true; ytPlayer.pauseVideo(); keepaliveHold(); }
 }
 setInterval(() => {
   if (!ytReady) return;
@@ -3033,6 +3176,7 @@ function playCurrent() {
   // おらず、リロード後に「最後に連結が起きた時点の曲」へ戻ってしまっていた
   saveQueue();
   const q = queue[cursor];
+  userPaused = false; // 新しい曲の再生を始めたので、以前の一時停止状態は解除(アンカー起動条件のため分岐より先に)
   // 再生履歴(直近50曲)。プレイヤーの「N曲」タップで一覧表示できる。
   // キューが同期事故等で失われても「さっき聴いていた曲」を辿れる保険も兼ねる。
   if (q?.title) {
@@ -3047,6 +3191,7 @@ function playCurrent() {
     markAlbumPlayed(q.album);
   }
   if (q?.preview) {
+    keepaliveStart(); // 実プレイヤーを差し替える前に立てておく(0個の瞬間を作らない)
     if (ytReady) ytPlayer.stopVideo();
     resetYtPlaylist();
     // 先読み役に同じ曲がバッファ済みなら要素ごと入れ替え、すき間なく鳴らす
@@ -3061,16 +3206,18 @@ function playCurrent() {
     audioErrorRetries = 0;
     playAudioForCursor(); // 再生開始は見張りつき(自動再生ブロック時はユーザーの▶待ち)
   } else if (q?.youtube) {
+    ytPlaybackIntended = true; // 直後のplayYtForCursorでも立つが、アンカー起動の条件(意図あり)を先に満たす
+    keepaliveStart();
     audio.pause(); clearTrack(audio);
     clearTimeout(audioStartCheckTimer);
     playYtForCursor();
   } else {
+    keepaliveOff(); // 鳴らすものが無い
     audio.pause(); clearTrack(audio);
     clearTimeout(audioStartCheckTimer);
     if (ytReady) ytPlayer.stopVideo();
     resetYtPlaylist();
   }
-  userPaused = false; // 新しい曲の再生を始めたので、以前の一時停止状態は解除
   preloadNextTrack();
   paint();
 }
@@ -3088,6 +3235,7 @@ if ('mediaSession' in navigator) {
     // playVideo()直呼びだと壊れたプレイヤーには無反応のままなので、
     // 見張りつきのplayYtForCursor経由にする(リトライ→フル再構築へ繋がる)
     else if (q?.youtube && ytReady) playYtForCursor();
+    keepaliveStart(); // ユーザーの再生操作(playYtForCursorが意図を立てた後に判定させる)
   });
   navigator.mediaSession.setActionHandler('pause', () => {
     // 曲の切り替わり直後(<1秒)に届くpauseは、OS/Chromeのセッション再構築
@@ -3101,6 +3249,7 @@ if ('mediaSession' in navigator) {
     userPaused = true;
     audio.pause();
     if (ytReady) ytPlayer.pauseVideo();
+    keepaliveHold();
   });
   navigator.mediaSession.setActionHandler('previoustrack', prev);
   navigator.mediaSession.setActionHandler('nexttrack', next);
@@ -3363,6 +3512,10 @@ async function startRegionShuffle(region) {
         audio.play().catch(() => {});
       }
     }
+    // 復帰しない(本物の停止)ならアンカーも止める。ただし今の曲がYouTubeに
+    // 切り替わった直後のpause(playCurrentの切替処理が出す)は対象外
+    // (ここで止めると、切替中に実プレイヤー0個の瞬間が復活してしまう)
+    if (audio.paused && queue[cursor]?.preview) keepaliveHold();
     // 公表は復帰を試みた後で行う。play()は同期的にpaused=falseにするので、
     // 復帰する分岐では'playing'のまま(以前は先に'paused'を公表してから
     // 復帰していたため、通知/Android Autoが一瞬⏸に変わって戻っていた)。
@@ -3391,12 +3544,12 @@ $play.addEventListener('click', () => {
     // 読み込み失敗時はpaused=falseのまま音が出ていない(audio.errorが立つ)。
     // その状態の1タップ目が「止まっている再生をさらにpauseする」逆動作に
     // ならないよう、エラー時も再生側に倒す(src再設定から復帰する)。
-    if (audio.paused || audio.error) { userPaused = false; playAudioForCursor(); }
-    else { userPaused = true; audio.pause(); }
+    if (audio.paused || audio.error) { userPaused = false; playAudioForCursor(); keepaliveStart(); }
+    else { userPaused = true; audio.pause(); keepaliveHold(); }
   } else if (q?.youtube && ytReady) {
-    if (ytIsPlaying()) { userPaused = true; ytPlayer.pauseVideo(); }
+    if (ytIsPlaying()) { userPaused = true; ytPlayer.pauseVideo(); keepaliveHold(); }
     // 同上: playVideo()直呼びは壊れたプレイヤーに無反応。見張りつき経由で復帰させる
-    else { userPaused = false; playYtForCursor(); }
+    else { userPaused = false; playYtForCursor(); keepaliveStart(); }
   }
   // 再生/一時停止はユーザーの再生操作なので端末間同期の「最終再生時刻」を主張する
   // (キューの中身は変わらないためsaveQueue()内の自動更新には掛からない)。
@@ -3441,6 +3594,7 @@ document.getElementById('clearQueue').addEventListener('click', async () => {
   // 隣の「履歴」ボタンと押し間違えてキューが飛ぶと面倒なので確認を挟む
   if (queue.length && !(await confirmDialog(t('clearQueueConfirm')))) return;
   queue = []; cursor = -1; shuffleMode = false; shuffleRegion = null; pendingShuffleAlbum = null;
+  keepaliveOff();
   audio.pause(); clearTrack(audio);
   clearTimeout(audioStartCheckTimer);
   if (ytReady) ytPlayer.stopVideo();
@@ -3746,6 +3900,7 @@ function adoptExternalQueue() {
   const raw = localStorage.getItem(QUEUE_KEY);
   if (raw == null || raw === lastQueueSnapshot) return; // 自分の書いた内容なら何もしない
   if (playbackActive()) return;
+  keepaliveHold(); // 取り込みは自動再生しないので、アンカーも止める
   audio.pause();
   restoreQueue(true, false); // 取り込み時は自動再生しない(両方で鳴るのを防ぐ)
 }

@@ -785,3 +785,6 @@ body.stamps-open .stamp-menu-btn { background: var(--ink); color: var(--paper); 
 .confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
 .confirm-actions .tr-toggle { margin-top: 0; font-size: 12px; padding: 8px 18px; }
 .confirm-yes { background: var(--ink); color: var(--paper); }
+
+/* 無音アンカーのトグル行(Android限定表示、絞り込みパネル内) */
+.keepalive-row { margin-top: 8px; padding-top: 8px; border-top: 1px dotted var(--ink-2); }
