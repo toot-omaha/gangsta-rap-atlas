@@ -2293,19 +2293,114 @@ function keepaliveOff() {
   keepAudio.load(); // src除去だけではプレイヤーが残るのでload()まで呼んで破棄する
   if (keepAudioUrl) { URL.revokeObjectURL(keepAudioUrl); keepAudioUrl = null; }
 }
-// 安全弁と自己修復(1秒ごと): 意図が無いのに鳴っていれば止める、実再生の証拠が
-// 180秒無ければ破棄する、実プレイヤーが鳴っているのにアンカーだけ止まっていれば立て直す
-setInterval(() => {
+// ---------- 実再生の生存監視(1秒ごと) ----------
+// 「実際に鳴っているか」の証拠は再生位置の進行で取る。状態(PLAYING)だけでは、
+// 背面でYouTubeのiframeが凍結/死亡してgetPlayerState()がキャッシュ値のPLAYINGを
+// 返し続ける状態を見抜けず、無音アンカーが「再生中」を覆い隠したまま延々と無音になる
+// (端末を閉じていると復帰せず、アプリを開くと鳴り出す — 実際に報告された)。
+// 位置が進まないまま一定時間経ったら段階的に復旧する:
+//   8秒: 載せ直し(YouTubeはプレイリスト再構築、iTunesはsrc読み直し)
+//  20秒: YouTubeプレイヤー自体を破棄して作り直す(凍結したiframeは載せ直しにも無反応)
+//  32秒: 諦めてアンカーを止める(通知が⏸に戻り、ユーザーの▶/前面復帰で立て直す)
+let liveLast = null; // { src, pos }
+let liveStalledSince = 0;
+let liveStallStage = 0;
+const STALL_MS = { rebuild: 8000, recreate: 20000, giveUp: 32000 };
+function stallLog(msg) {
+  try {
+    const log = JSON.parse(localStorage.getItem('gra.stall.log') || '[]');
+    log.push({ at: new Date().toISOString(), msg, hidden: document.hidden });
+    localStorage.setItem('gra.stall.log', JSON.stringify(log.slice(-30)));
+  } catch { /* 診断用なので失敗しても無視 */ }
+}
+function observeProgress() {
+  const q = queue[cursor];
+  let claimed = false, pos = 0, src = null;
+  if (q?.youtube) {
+    claimed = ytIsPlaying();
+    pos = ytReady && ytPlayer.getCurrentTime ? ytPlayer.getCurrentTime() : 0;
+    src = `yt:${(ytReady && ytPlayer.getVideoData && ytPlayer.getVideoData()?.video_id) || ''}`;
+  } else if (q?.preview) {
+    // データがある状態(readyState>=3)で位置が止まる時だけ「再生中と主張」扱い。
+    // 初回読み込み中や通常の再バッファは停滞ではない(既存の開始見張りが待つ)
+    claimed = !audio.paused && !audio.ended && audio.readyState >= 3;
+    pos = audio.currentTime;
+    src = `au:${audio._previewUrl || ''}`;
+  }
+  // 「進行」は同じソースで再生位置が前に進んだ時だけ。ソース切替直後は比較対象が
+  // 無いので進行とも停滞とも扱わない(comparable=false)。後退(load()での0リセット等)は
+  // 進行に数えない
+  const comparable = !!(liveLast && src && liveLast.src === src);
+  const progressing = comparable && pos > liveLast.pos + 0.05;
+  liveLast = src ? { src, pos } : null;
+  return { claimed, comparable, progressing };
+}
+function recreateYtPlayer() {
+  try { ytPlayer && ytPlayer.destroy && ytPlayer.destroy(); } catch { /* 壊れたiframeのdestroyは失敗しても構わない */ }
+  ytPlayer = null;
+  ytReady = false;
+  resetYtPlaylist({ keepIntent: true });
+  // destroy()の成否に依らず残骸(死んだiframeがid=ytHostで残る場合)を必ず除去して
+  // 作り直す。残っていると new YT.Player がその死んだiframeに紐づきonReadyが来ない
+  const old = document.getElementById('ytHost');
+  const parent = old?.parentNode || document.body;
+  if (old) old.remove();
+  const host = document.createElement('div');
+  host.id = 'ytHost';
+  host.className = 'yt-host';
+  parent.appendChild(host);
+  if (typeof YT !== 'undefined' && YT.Player) initYtPlayer();
+}
+function liveTick(now = Date.now()) {
+  const q = queue[cursor];
+  const { claimed, comparable, progressing } = observeProgress();
+  const real = claimed && progressing;
+  if (real) keepaliveLastRealAt = now;
+
+  // --- 停滞の検知と段階的復旧(アンカーの有無に関わらず動く) ---
+  // 段階のリセットは「実際に進行した」時だけ。ソース切替の猶予や、復旧中に
+  // 状態が非再生(読み込み中/準備前)になった時は時計を止めない。そうしないと
+  // 再生成のたびに段階が戻り、凍結が続く限り再生成を繰り返して最終段階
+  // (アンカー停止)に辿り着けない
+  const wantsPlay = !userPaused && (q?.youtube ? ytPlaybackIntended : !!q?.preview);
+  if (real || !wantsPlay) {
+    liveStalledSince = 0;
+    liveStallStage = 0;
+  } else if (liveStallStage === 0 && liveStalledSince && !claimed) {
+    // まだ復旧前で、状態がPLAYING以外(BUFFERING/UNSTARTED/PAUSED)を報告してきた=
+    // iframeは生きて応答している。凍結はキャッシュのPLAYINGから一切動かないので、
+    // これは本物の遷移。時計を捨てて正常な遷移処理(見張り/キック)に任せる
+    liveStalledSince = 0;
+  } else if (liveStalledSince || (claimed && comparable && !progressing)) {
+    if (!liveStalledSince) liveStalledSince = now;
+    // 各段階は前段階からの相対時間で測る(間引き/凍結明けの連続tickで
+    // 3段が一気に発火し、載せ直しの効果を確かめる猶予がゼロになるのを防ぐ)
+    const stalled = now - liveStalledSince;
+    if (liveStallStage === 0 && stalled >= STALL_MS.rebuild) {
+      liveStallStage = 1; liveStalledSince = now;
+      stallLog(`stage1 rebuild (${q?.youtube ? 'yt' : 'audio'})`);
+      if (q?.youtube) { resetYtPlaylist({ keepIntent: true }); playYtForCursor(); }
+      else if (q?.preview) { audio.load(); playAudioForCursor(); }
+    } else if (liveStallStage === 1 && stalled >= STALL_MS.recreate - STALL_MS.rebuild) {
+      liveStallStage = 2; liveStalledSince = now;
+      if (q?.youtube) { stallLog('stage2 recreate player'); recreateYtPlayer(); playYtForCursor(); }
+    } else if (liveStallStage === 2 && stalled >= STALL_MS.giveUp - STALL_MS.recreate) {
+      liveStallStage = 3;
+      stallLog('stage3 give up (hold anchor)');
+      keepaliveHold(); // 意図は残す: 前面復帰/▶で立て直せる
+    }
+  }
+
+  // --- アンカーの安全弁と自己修復 ---
   if (!keepAudio) return;
-  const real = ytIsPlaying() || (!audio.paused && audio.readyState >= 3);
-  if (real) keepaliveLastRealAt = Date.now();
   if (keepAudio.paused) {
-    if (real && keepaliveDesired() && keepaliveEnabled()) keepaliveStart();
+    if (real && liveStallStage < 3 && keepaliveDesired() && keepaliveEnabled()) keepaliveStart();
     return;
   }
   if (!keepaliveEnabled() || !keepaliveDesired()) { keepaliveHold(); return; }
-  if (Date.now() - keepaliveLastRealAt > KEEPALIVE_ORPHAN_MS) keepaliveOff();
-}, 1000);
+  if (now - keepaliveLastRealAt > KEEPALIVE_ORPHAN_MS) keepaliveOff();
+}
+setInterval(() => liveTick(), 1000);
 
 // シャッフルをやめてユーザー選択の再生に切り替える。プレイリスト連結の
 // 先読みでキューに実体化していた未再生のランダムアルバム(shuffleAuto印)は
@@ -2473,7 +2568,7 @@ document.addEventListener('visibilitychange', () => {
   // 必要なら載せ直しからやり直す(playYtForCursorが両方を判断する)。
   // 「鳴ってはいるが控えと別のプレイリスト」という乖離も直したいので、
   // 再生中かどうかに関わらず通す(一致していれば何もしないので無害)。
-  else if (q.youtube && ytReady) playYtForCursor();
+  else if (q.youtube && (ytReady || ytPlayer)) playYtForCursor(); // 準備中/固まったプレイヤーも(必要なら再生成して)立て直す
 });
 
 // ---------- キューの永続化(リロードしても再生が「ゼロから」にならないように) ----------
@@ -2825,8 +2920,10 @@ function ytShadowMatchesActual() {
   return !!(actual && actual.length === ytPlaylistIds.length
     && ytPlaylistIds.every((v, i) => v === actual[i]));
 }
+let ytCreatedAt = 0;
 function initYtPlayer() {
   if (ytPlayer) return;
+  ytCreatedAt = Date.now();
   ytPlayer = new YT.Player('ytHost', {
     height: '1', width: '1',
     playerVars: { controls: 0, disablekb: 1, playsinline: 1 },
@@ -2836,7 +2933,7 @@ function initYtPlayer() {
         if (ytPendingPlaylist) {
           const p = ytPendingPlaylist;
           ytPendingPlaylist = null;
-          loadYtPlaylist(p.ids, p.index, p.cueOnly);
+          loadYtPlaylist(p.ids, p.index, p.cueOnly || userPaused); // 準備中に⏸されていたらcueに落とす
         }
       },
       onStateChange: (e) => {
@@ -2862,6 +2959,7 @@ function initYtPlayer() {
             scheduleYtStartCheck(); // 背面で握り潰された時に見張り→再構築→(停滞なら)アンカー停止まで繋げる
           } else {
             keepaliveHold(); // 2回目=本物の停止に従う。アンカーも止めて⏸表示に戻す
+            liveStalledSince = 0; liveStallStage = 0; // 停滞復旧も止める(従うと決めた停止に逆らわない)
             // 1回目が仕掛けた見張りも取り下げる(残すと「従う」はずが背面で載せ直しを
             // 繰り返し、通話後に勝手に鳴り出す)。ユーザー/明示起動の見張りは残す
             if (ytAutoResumeCheck) { clearTimeout(ytStartCheckTimer); ytAutoResumeCheck = false; }
@@ -2973,7 +3071,9 @@ function scheduleYtStartCheck() {
       // 2回目以降の再構築(約9秒経っても始まらない)=本当に停滞している。アンカーを止めて
       // 通知を▶に戻し、1タップ復帰が効く状態にする。1回目(3秒)は単に遅いだけの
       // 起動も多いので止めない(止めると切替のたびに一瞬⏸表示が出る)
-      if (ytStartRetryDelay >= 12000) keepaliveHold();
+      // 停滞復旧(liveTick)が担当中はそちらのstage3に一本化(ここで止めると
+      // 再生成が「鳴っているプレイヤー0個」の状態で走り成功率を下げる)
+      if (ytStartRetryDelay >= 12000 && !(liveStallStage === 1 || liveStallStage === 2)) keepaliveHold();
     }
     playYtForCursor(); // 状態を見て再開/載せ直しを判断してくれる
   }, ytStartRetryDelay);
@@ -2990,6 +3090,9 @@ function playYtForCursor(cueOnly = false) {
   ytErrorSkippedKey = null; // 明示的な再生指示が来たのでエラースキップの抑止は解除
   ytTransition = null; // 明示的な再生/頭出し指示は、保留中の曲送り遷移の控えを無効にする
   ytAutoResumeCheck = false; // 明示的な指示の見張りは「従う」対象にしない
+  // 再生成したプレイヤーのonReadyが来ないまま固まっている(iframe読み込み失敗等)なら
+  // 作り直す。以前はytReady=falseで全復旧経路が沈黙し、リロードしか無かった
+  if (!ytReady && ytPlayer && ytCreatedAt && Date.now() - ytCreatedAt > 15000) recreateYtPlayer();
   ytPlaybackIntended = !cueOnly;
   if (cueOnly) keepaliveHold(); // 意図の取り下げ(cueだけ)ではアンカーも止める
   // まず、プレイヤーに実際に載っているプレイリストの範囲内に今のcursorが
@@ -3048,6 +3151,7 @@ function playYtForCursor(cueOnly = false) {
   ytExpectedIndex = index;
   ytPlaylistIds = ids;
   ytPlaylistBase = start;
+  ytClipFiredKey = null; // 載せ直しは頭から鳴るので、直前の30秒カットのガードは持ち越さない
   loadYtPlaylist(ids, index, cueOnly);
 }
 
@@ -3234,7 +3338,7 @@ if ('mediaSession' in navigator) {
     if (q?.preview) playAudioForCursor(); // エラー状態でもsrc再設定から復帰できるように
     // playVideo()直呼びだと壊れたプレイヤーには無反応のままなので、
     // 見張りつきのplayYtForCursor経由にする(リトライ→フル再構築へ繋がる)
-    else if (q?.youtube && ytReady) playYtForCursor();
+    else if (q?.youtube && (ytReady || ytPlayer)) playYtForCursor();
     keepaliveStart(); // ユーザーの再生操作(playYtForCursorが意図を立てた後に判定させる)
   });
   navigator.mediaSession.setActionHandler('pause', () => {
@@ -3546,7 +3650,7 @@ $play.addEventListener('click', () => {
     // ならないよう、エラー時も再生側に倒す(src再設定から復帰する)。
     if (audio.paused || audio.error) { userPaused = false; playAudioForCursor(); keepaliveStart(); }
     else { userPaused = true; audio.pause(); keepaliveHold(); }
-  } else if (q?.youtube && ytReady) {
+  } else if (q?.youtube && (ytReady || ytPlayer)) {
     if (ytIsPlaying()) { userPaused = true; ytPlayer.pauseVideo(); keepaliveHold(); }
     // 同上: playVideo()直呼びは壊れたプレイヤーに無反応。見張りつき経由で復帰させる
     else { userPaused = false; playYtForCursor(); keepaliveStart(); }
