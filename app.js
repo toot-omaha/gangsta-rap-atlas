@@ -217,20 +217,14 @@ function bumpShared(key, id) {
   saveServerStamp();
   // UPSERT: (client_id, target_key)が既にあれば上書き、無ければ新規作成
   // (on_conflict方式はSELECT権限が必要になり、生データ公開につながるため使わない)
-  // RPC(SECURITY DEFINER)経由。POST /stamps のupsertはanonにUPDATE権限が無く
-  // 401で沈黙failingしていた(2026-09-12にPixel Watch開発中に発覚)。
-  // 関数未作成(404)のDBでは従来のPOSTにフォールバック(その環境では従来どおり失敗する)
-  fetch(`${SB_URL}/rpc/bump_stamp`, {
+  // 単純なINSERT。以前の Prefer: resolution=merge-duplicates(upsert)は anon に
+  // UPDATE権限が無く 401 で沈黙failingしていた(2026-09-12に発覚)。テーブルの
+  // 一意制約は (client_id, target_key, stamp_id) なので、同じ組の再送は 409 になる
+  // だけで実害なし(=集計は端末×曲×スタンプで1票)。
+  fetch(`${SB_URL}/stamps`, {
     method: 'POST',
     headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-    body: JSON.stringify({ p_client_id: CLIENT_ID, p_target_key: key, p_stamp_id: id }),
-  }).then((res) => {
-    if (res.status !== 404) return;
-    return fetch(`${SB_URL}/stamps`, {
-      method: 'POST',
-      headers: { ...SB_HEADERS, Prefer: 'resolution=merge-duplicates,return=minimal' },
-      body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, stamp_id: id }),
-    });
+    body: JSON.stringify({ client_id: CLIENT_ID, target_key: key, stamp_id: id }),
   }).catch(() => {});
 }
 
