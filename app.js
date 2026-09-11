@@ -252,6 +252,7 @@ function toggleStampAt(key, id) {
     bumpShared(key, id); // みんなの集計へ反映
   }
   if (!cur.length) delete myStamps[key];
+  lastFavLocalChangeAt = Date.now();
   saveStamps();
   pushFavSync();
 }
@@ -409,7 +410,10 @@ const saveFavs = () => {
   localStorage.setItem(WANT_KEY, JSON.stringify([...favsWant]));
   localStorage.setItem(NOPE_KEY, JSON.stringify([...favsNope]));
 };
-const toggleFav = (set, key) => { set.has(key) ? set.delete(key) : set.add(key); saveFavs(); pushFavSync(); };
+// 自分がローカルで持ってる/ほしい/スタンプを変えた直後は、定期プル(サーバー優先の
+// 置き換え)でその変更が一瞬巻き戻って見えないよう、少しの間プルを見送る
+let lastFavLocalChangeAt = 0;
+const toggleFav = (set, key) => { set.has(key) ? set.delete(key) : set.add(key); lastFavLocalChangeAt = Date.now(); saveFavs(); pushFavSync(); };
 const updateFavCount = () => {
   const all = new Set([...favsHave, ...favsWant]);
   document.getElementById('favCount').textContent = all.size;
@@ -4045,19 +4049,48 @@ function schedulePushQueueSync() {
   clearTimeout(queueSyncPushTimer);
   queueSyncPushTimer = setTimeout(pushQueueSync, 2000);
 }
+// Pixel Watch(Wear OSアプリ)向けの「いま鳴っている曲」。時計はキュー本体を
+// 解決できない(data.js/published.jsを持たない)ので、表示に必要な情報と
+// 持ってる/ほしい/スタンプ用のキーをこちらで解決して fav_sync.now_playing に書く。
+function nowPlayingPayload() {
+  const q = queue[cursor];
+  if (!q?.album) return null;
+  const a = q.album;
+  const tk = q.youtube ? trackKey(a, `yt:${q.youtube}`) : (q.preview ? trackKey(a, q.title) : null);
+  const region = REGIONS.find((r) => r.albums.includes(a));
+  return {
+    albumKey: albumKey(a), trackKey: tk,
+    artist: q.artist || a.artist, title: q.title, album: a.title,
+    art: artUrl(enrichOf(a), 300, a),
+    region: region?.name || null,
+    playing: q.youtube ? (ytIsPlaying() || (ytPlaybackIntended && !userPaused)) : !audio.paused,
+    at: Date.now(),
+  };
+}
+var nowPlayingSyncEnabled = true; // now_playing列のマイグレーション未実施なら自動で外す
 async function pushQueueSync() {
   if (!queueSyncEnabled || !streetName || lastQueueSnapshot == null) return;
   if (lastQueueSnapshot === lastQueuePushedSnapshot) return;
   const snapshot = lastQueueSnapshot;
   try {
-    const res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+    const base = {
+      queue: JSON.parse(snapshot),
+      queue_updated_at: new Date(lastQueueLocalTs || Date.now()).toISOString(),
+    };
+    let res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
       method: 'PATCH',
       headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
-      body: JSON.stringify({
-        queue: JSON.parse(snapshot),
-        queue_updated_at: new Date(lastQueueLocalTs || Date.now()).toISOString(),
-      }),
+      body: JSON.stringify(nowPlayingSyncEnabled ? { ...base, now_playing: nowPlayingPayload() } : base),
     });
+    if (res.status === 400 && nowPlayingSyncEnabled) {
+      // now_playing列が無いDB: 時計連携だけ諦めてキュー同期は続ける
+      nowPlayingSyncEnabled = false;
+      res = await fetch(`${SB_URL}/fav_sync?gangsta_name=eq.${encodeURIComponent(streetName)}`, {
+        method: 'PATCH',
+        headers: { ...SB_HEADERS, Prefer: 'return=minimal' },
+        body: JSON.stringify(base),
+      });
+    }
     if (res.status === 400) { queueSyncEnabled = false; return; }
     if (res.ok) lastQueuePushedSnapshot = snapshot;
   } catch { /* オフライン時は次の変更時に再試行 */ }
@@ -4198,3 +4231,10 @@ setInterval(() => {
   if (document.visibilityState !== 'visible') return;
   if (!playbackActive()) pullQueueSync();
 }, 20000);
+// Pixel Watch等の別端末で押した「持ってる/ほしい/スタンプ」を、開きっぱなしの
+// 画面にも反映する(30秒ごと)。自分の変更直後(8秒)はプッシュとの競合を避けて見送る
+setInterval(() => {
+  if (document.visibilityState !== 'visible' || !streetName) return;
+  if (Date.now() - lastFavLocalChangeAt < 8000) return;
+  autoPullFavSync();
+}, 30000);
