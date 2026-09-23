@@ -94,7 +94,10 @@ Prefer: resolution=merge-duplicates,return=minimal
 ```
 
 region_idの決め方: `admin/regions.json` を読み、特定した都市名と一致する既存地域(unclassified以外)が
-あればそのid。無ければregion_id=null、custom_regionに都市名(例: "Stockton")。
+あればそのid。**照合はアクセント記号と大文字小文字を無視し、name だけでなく area も見る**
+(例: 「São Paulo」は既存の `saopaulo`、「Hollis, Queens」なら `jamaicaqueens` 等の近隣フッド地域が
+無いか確認)。既存地域があるのに custom_region を作るのは重複地域になるので禁止。
+次に `published_regions?select=id,name` も同様に照合し、同名があればそのidを使う。無ければregion_id=null、custom_regionに都市名(例: "Stockton")。
 同名都市が複数州にある場合は州まで確認し、確信が持てなければcustom_regionに "Columbia, SC" 形式で書く。
 
 ### A確度のみ追加: 地図へ自動公開
