@@ -54,9 +54,25 @@ def main():
         ys = [r.get("year") for r in cands[artist]["releases"] if r.get("year")]
         return min(ys) if ys else 9999
 
-    todo.sort(key=lambda s: (earliest(s["artist"]), -len(cands[s["artist"]]["releases"])))
+    # 非G-RAPの誤タグ疑い(コアスタイルを持たず、周辺ジャンルのみ)は後回しにする。
+    # 第3波以降、フランス語ラップ/ユーロハウス/ポップ等のGangstaタグ誤りが増え、特定しても
+    # 地図に載せる価値が低いため。除外はせず末尾へ(すべて処理した後で必要なら回す)
+    CORE = {"G-Funk", "Thug Rap", "Hardcore Hip-Hop", "Horrorcore", "Crunk", "Screw", "Bounce", "Memphis Rap", "Gangsta"}
+    PERIPHERAL = {"Electro", "Ragga HipHop", "Gospel", "Contemporary R&B", "RnB/Swing", "Instrumental",
+                  "Cut-up/DJ", "Cloud Rap", "Pop Rap", "Trap", "Bass Music", "Funk", "Conscious", "Jazzy Hip-Hop", "Boom Bap"}
+
+    def deferred(artist):
+        st = {x for r in cands[artist]["releases"] for x in (r.get("styles") or [])}
+        if st & (CORE - {"Gangsta"}):
+            return 0
+        if st & PERIPHERAL:
+            return 1   # Gangstaタグ+周辺ジャンルだけ = 誤タグの疑い
+        return 0
+
+    todo.sort(key=lambda s: (deferred(s["artist"]), earliest(s["artist"]), -len(cands[s["artist"]]["releases"])))
     if stats:
-        print(json.dumps({"C_total": len(c_rows), "second_pass_done": len(done2), "remaining": len(todo)}, ensure_ascii=False))
+        print(json.dumps({"C_total": len(c_rows), "second_pass_done": len(done2), "remaining": len(todo),
+                          "deferred_suspect_mistag": sum(deferred(s["artist"]) for s in todo)}, ensure_ascii=False))
         return
     batch = [{"artist": s["artist"], "first_pass_note": s.get("note"), "releases": cands[s["artist"]]["releases"]}
              for s in todo[:n]]
