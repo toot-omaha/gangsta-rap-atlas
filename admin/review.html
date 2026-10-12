@@ -58,6 +58,8 @@
     <option value="undone">未確認のみ</option>
     <option value="checked">採用にした分のみ</option>
     <option value="suggested">AI提案あり(未確認)</option>
+    <option value="sugg-ok">AI提案: 承認候補のみ(未確認)</option>
+    <option value="sugg-hold">AI提案: 保留推奨のみ(未確認)</option>
   </select>
   <select id="publishFilter">
     <option value="unpublished">未公開</option>
@@ -326,6 +328,16 @@ function render() {
     const sug = SUGGESTIONS[a.artist];
     return sug && (sug.region_id || sug.custom_region) && !state[a.artist];
   });
+  // 確度Bの提案には、AIの根拠の強さで【承認候補】/【保留推奨】のタグがnoteの先頭に付いている
+  // (2026-10-12、深掘り再調査の後処理)。承認候補=特定の市+G-RAP系の状況証拠、
+  // 保留推奨=広域のみ・両論併記・非G-RAP疑い・タイトル/ジャンルタグだけの推定など
+  if (mode === 'sugg-ok' || mode === 'sugg-hold') {
+    const tag = mode === 'sugg-ok' ? '【承認候補】' : '【保留推奨】';
+    items = items.filter((a) => {
+      const sug = SUGGESTIONS[a.artist];
+      return sug && sug.confidence === 'B' && (sug.note || '').startsWith(tag) && !state[a.artist];
+    });
+  }
   // Phonk等、ジャンルが派生して境界が曖昧になった後の年代を除外して、
   // まず古い(=ガンスタ色がはっきりしてる)年代だけレビューできるように。
   // どちらか1つのリリースでも範囲内ならそのアーティストごと表示する。
