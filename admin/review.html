@@ -38,6 +38,18 @@
   .row .sug { margin-top: 6px; font-size: 11px; color: var(--ink-2); background: rgba(184,145,47,.12); border-left: 3px solid var(--gold); padding: 4px 8px; }
   .row .sug b { color: var(--ink); }
   .row .sug a { color: var(--ink-2); margin-left: 6px; }
+  .row .rel { margin: 3px 0 0; font-size: 11px; line-height: 1.7; color: var(--ink-2); }
+  .row .rel a { color: var(--ink); font-weight: 700; }
+  .row .rel .lab { color: var(--ink-2); font-style: italic; }
+  .tag { display: inline-block; font-size: 10px; line-height: 1.4; padding: 0 5px; margin: 0 2px 0 0; border: 1px solid var(--ink); border-radius: 2px; background: var(--ink); color: var(--paper); white-space: nowrap; }
+  .tag.peri { background: transparent; color: var(--red); border-color: var(--red); }
+  .tag.plain { background: transparent; color: var(--ink-2); border-color: rgba(20,18,15,.35); }
+  .badges { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .badge { font-size: 10px; padding: 1px 6px; border-radius: 9px; background: rgba(193,39,45,.12); color: var(--red); border: 1px solid rgba(193,39,45,.4); }
+  .badge.info { background: rgba(20,18,15,.07); color: var(--ink-2); border-color: rgba(20,18,15,.25); }
+  .badge.ok { background: rgba(60,130,60,.14); color: #2f6a2f; border-color: rgba(60,130,60,.45); }
+  .links { margin-top: 5px; font-size: 11px; }
+  .links a { color: var(--ink-2); margin-right: 10px; }
   .empty { padding: 40px; text-align: center; color: var(--ink-2); font-size: 13px; }
   footer { position: fixed; left: 0; right: 0; bottom: 0; background: var(--ink); color: var(--paper); padding: 10px 16px; display: flex; gap: 10px; align-items: center; border-top: 3px solid var(--red); font-size: 12px; }
   footer button { font: inherit; font-weight: 800; padding: 8px 16px; border: 2px solid var(--paper); background: transparent; color: var(--paper); cursor: pointer; }
@@ -55,7 +67,7 @@
   <input type="text" id="search" placeholder="アーティスト名で絞り込み">
   <select id="filterMode">
     <option value="all">すべて表示</option>
-    <option value="undone">未確認のみ</option>
+    <option value="undone" selected>未確認のみ</option>
     <option value="checked">採用にした分のみ</option>
     <option value="suggested">AI提案あり(未確認)</option>
     <option value="sugg-ok">AI提案: 承認候補のみ(未確認)</option>
@@ -66,11 +78,28 @@
     <option value="published">公開済み</option>
     <option value="allPublish">公開状態: すべて</option>
   </select>
-  <span class="stat">年代</span>
+  <select id="aiFilter">
+    <option value="">AI調査: すべて</option>
+    <option value="B-ok">B 承認候補</option>
+    <option value="B-hold">B 保留推奨</option>
+    <option value="C-deep">C 深掘り済(不明のまま)</option>
+    <option value="C-first">C 初回のみ(未深掘り)</option>
+    <option value="none">AI調査なし</option>
+  </select>
+  <select id="yearGroup"><option value="">最古リリース年: すべて</option></select>
+  <select id="sortBy">
+    <option value="">並び順: 既定</option>
+    <option value="year">最古リリース年(古い順)</option>
+    <option value="yeard">最古リリース年(新しい順)</option>
+    <option value="nrel">リリース数(多い順)</option>
+    <option value="name">名前順</option>
+  </select>
+  <span class="stat">年代(任意)</span>
   <input type="number" id="yearMin" placeholder="下限" style="width:70px">
   〜
   <input type="number" id="yearMax" placeholder="上限(例: 1999)" style="width:110px">
   <select id="styleFilter"><option value="">スタイルタグ: すべて</option></select>
+  <span class="stat" id="hitStat" style="font-weight:800"></span>
   <span class="stat" id="stat"></span>
   <span class="stat" id="saveStatus"></span>
   <button id="exportBtn">⬇ 選択結果を書き出す</button>
@@ -264,12 +293,63 @@ async function boot() {
   ]);
   ARTISTS = await artistsRes.json();
   REGIONS = await regionsRes.json();
+  deriveArtistFields();
   populateStyleFilter();
+  populateYearGroups();
   buildRegionOptionsHtml();
   render();
   await Promise.all([loadServerState(), loadPublishedState(), loadSuggestions()]);
   render(); // サーバー側の最新状態(他の人の入力分・公開状態も含む)で再描画
 }
+
+// ---- 判断材料の派生フィールド(アーティスト単位) ----
+const CORE_STYLES = new Set(['G-Funk', 'Thug Rap', 'Hardcore Hip-Hop', 'Horrorcore', 'Crunk', 'Screw', 'Bounce', 'Memphis Rap']);
+const PERIPHERAL_STYLES = new Set(['Electro', 'Ragga HipHop', 'Gospel', 'Contemporary R&B', 'RnB/Swing', 'Instrumental',
+  'Cut-up/DJ', 'Cloud Rap', 'Pop Rap', 'Trap', 'Bass Music', 'Funk', 'Conscious', 'Jazzy Hip-Hop', 'Boom Bap', 'Euro House',
+  'Europop', 'Pop', 'Reggae', 'Dancehall', 'Heavy Metal', 'Hardcore', 'Rock', 'Soul', 'Disco', 'House', 'Techno']);
+const NON_ENGLISH_RE = /[\u0400-\u04FF\u0370-\u03FF\u3040-\u30FF\u4E00-\u9FFF\uAC00-\uD7AF\u0600-\u06FF\u0E00-\u0E7F]|[ąćęłńóśźżğşıİüöäßéèêëñçãõâôàíìúùœåøæšžčřěůďťň]/i;
+function deriveArtistFields() {
+  ARTISTS.forEach((a) => {
+    const ys = a.releases.map((r) => r.year).filter(Boolean);
+    a._y = ys.length ? Math.min(...ys) : null;
+    a._yMax = ys.length ? Math.max(...ys) : null;
+    const st = new Set();
+    a.releases.forEach((r) => (r.styles || []).forEach((x) => st.add(x)));
+    a._styles = [...st];
+    const hasCore = a._styles.some((x) => CORE_STYLES.has(x));
+    const hasPeri = a._styles.some((x) => PERIPHERAL_STYLES.has(x));
+    a._peri = !hasCore && hasPeri;           // 周辺ジャンルしか付いていない=誤タグ疑い
+    a._nonEn = NON_ENGLISH_RE.test(a.artist + ' ' + a.releases.map((r) => r.title + ' ' + (r.label || '')).join(' '));
+    a._span = (a._y && a._yMax) ? a._yMax - a._y : 0;  // 年代の幅が広い=同名別人の疑い
+  });
+}
+function yearGroupOf(a) {
+  const y = a._y;
+  if (!y) return '不明';
+  if (y <= 1996) return '〜1996';
+  if (y <= 2002) return String(y);
+  if (y <= 2005) return '2003〜2005';
+  return '2006〜';
+}
+const YEAR_GROUP_ORDER = ['〜1996', '1997', '1998', '1999', '2000', '2001', '2002', '2003〜2005', '2006〜', '不明'];
+function populateYearGroups() {
+  const cnt = {};
+  ARTISTS.forEach((a) => { const g = yearGroupOf(a); cnt[g] = (cnt[g] || 0) + 1; });
+  const sel = document.getElementById('yearGroup');
+  YEAR_GROUP_ORDER.forEach((g) => {
+    if (!cnt[g]) return;
+    const o = document.createElement('option'); o.value = g; o.textContent = `${g}(${cnt[g]})`; sel.appendChild(o);
+  });
+}
+const aiState = (a) => {
+  const sug = SUGGESTIONS[a.artist];
+  if (!sug) return 'none';
+  const note = sug.note || '';
+  if (sug.confidence === 'B') return note.startsWith('【承認候補】') ? 'B-ok' : 'B-hold';
+  if (sug.confidence === 'C') return note.includes('[第2回]') ? 'C-deep' : 'C-first';
+  return sug.confidence || 'none';
+};
+const escHtml = (t) => String(t ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 // 各リリースに付いてるDiscogsスタイルタグを集計し、頻度順でドロップダウンに出す。
 // Memphis Rap/Phonkのように、Gangsta/G-Funkと重なるが必ずしもガンスタ色が
@@ -357,6 +437,21 @@ function render() {
   if (publishMode === 'unpublished') items = items.filter((a) => !publishedMap[a.artist]);
   else if (publishMode === 'published') items = items.filter((a) => !!publishedMap[a.artist]);
 
+  const ai = document.getElementById('aiFilter').value;
+  if (ai) items = items.filter((a) => aiState(a) === ai);
+  const yg = document.getElementById('yearGroup').value;
+  if (yg) items = items.filter((a) => yearGroupOf(a) === yg);
+  const sortBy = document.getElementById('sortBy').value;
+  if (sortBy) {
+    items = items.slice();
+    const yv = (a) => a._y ?? 9999;
+    if (sortBy === 'year') items.sort((x, y) => yv(x) - yv(y) || x.artist.localeCompare(y.artist));
+    else if (sortBy === 'yeard') items.sort((x, y) => (y._y ?? 0) - (x._y ?? 0) || x.artist.localeCompare(y.artist));
+    else if (sortBy === 'nrel') items.sort((x, y) => y.releases.length - x.releases.length || yv(x) - yv(y));
+    else if (sortBy === 'name') items.sort((x, y) => x.artist.localeCompare(y.artist));
+  }
+  document.getElementById('hitStat').textContent = `表示${items.length}組`;
+
   const doneCount = Object.keys(state).length;
   document.getElementById('stat').textContent = `${doneCount}/${ARTISTS.length} 確認済み`;
   const checkedCount = Object.values(state).filter((s) => s.include).length;
@@ -375,9 +470,33 @@ function render() {
     const s = state[a.artist] || {};
     const row = document.createElement('div');
     row.className = 'row' + (state[a.artist] ? ' done' : '');
-    const releasesHtml = a.releases.map((r) =>
-      `<a href="${r.url}" target="_blank" rel="noopener">${r.title}</a>${r.year ? ` (${r.year})` : ''}`
-    ).join(' / ');
+    const releasesHtml = a.releases.map((r) => {
+      const lab = (r.label || '').replace(/\s*\(\d+\)$/, '');
+      const tags = (r.styles || []).map((t) =>
+        `<span class="tag ${CORE_STYLES.has(t) ? '' : (PERIPHERAL_STYLES.has(t) ? 'peri' : 'plain')}">${escHtml(t)}</span>`).join('');
+      return `<div class="rel"><a href="${r.url}" target="_blank" rel="noopener">${escHtml(r.title)}</a>${r.year ? ` (${r.year})` : ''}${
+        lab ? ` <span class="lab">${escHtml(lab)}</span>` : ''} ${tags}</div>`;
+    }).join('');
+    const badges = [];
+    const st0 = aiState(a);
+    if (st0 === 'B-ok') badges.push('<span class="badge ok">AI: B 承認候補</span>');
+    else if (st0 === 'B-hold') badges.push('<span class="badge">AI: B 保留推奨</span>');
+    else if (st0 === 'C-deep') badges.push('<span class="badge info">AI: C 深掘り済(不明のまま)</span>');
+    else if (st0 === 'C-first') badges.push('<span class="badge info">AI: C 初回のみ(未深掘り)</span>');
+    else if (st0 === 'none') badges.push('<span class="badge info">AI調査なし</span>');
+    badges.push(`<span class="badge info">${a.releases.length}リリース${a._y ? ` / ${a._y}${a._yMax !== a._y ? `〜${a._yMax}` : ''}` : ''}</span>`);
+    if (a._peri) badges.push('<span class="badge" title="Gangstaタグ以外が周辺ジャンルのみ。Discogsの誤タグの可能性">⚠ 周辺ジャンルのみ(誤タグ疑い)</span>');
+    if (a._nonEn) badges.push('<span class="badge" title="タイトル/レーベル/アーティスト名に非英語の文字。米国外の可能性">🌍 非英語表記</span>');
+    if (a._span >= 8) badges.push('<span class="badge" title="リリース年の幅が広い。同名の別アーティストが混ざっている可能性">⚠ 年代の幅が広い(同名別人?)</span>');
+    const q1 = encodeURIComponent(a.artist);
+    const t1 = encodeURIComponent(`${a.artist} ${a.releases[0]?.title || ''}`);
+    const linksHtml = `<div class="links">検索: ` +
+      `<a href="https://www.google.com/search?q=${q1}+rapper+from" target="_blank" rel="noopener">Google「出身」</a>` +
+      `<a href="https://www.google.com/search?q=${t1}" target="_blank" rel="noopener">Google「アーティスト+盤」</a>` +
+      `<a href="https://www.discogs.com/search/?q=${q1}&type=artist" target="_blank" rel="noopener">Discogs</a>` +
+      `<a href="https://www.youtube.com/results?search_query=${t1}" target="_blank" rel="noopener">YouTube</a>` +
+      `<a href="https://www.thegoodoldayz.com/search?q=${q1}" target="_blank" rel="noopener">GoodOldDayz</a>` +
+      `<a href="https://rateyourmusic.com/search?searchtype=a&searchterm=${q1}" target="_blank" rel="noopener">RYM</a></div>`;
     // AI調査の提案があれば、確度・特定地域・根拠リンクを表示する
     const sug = SUGGESTIONS[a.artist];
     const sugPlace = sug
@@ -391,9 +510,11 @@ function render() {
     row.innerHTML = `
       <input type="checkbox" ${s.include ? 'checked' : ''}>
       <div class="main">
-        <div class="artist">${a.artist}</div>
-        <p class="releases">${releasesHtml}</p>
+        <div class="artist">${escHtml(a.artist)}</div>
+        <div class="releases">${releasesHtml}</div>
+        <div class="badges">${badges.join('')}</div>
         ${sugHtml}
+        ${linksHtml}
         <div class="region">
           <select>${REGION_OPTIONS_HTML}</select>
           <input type="text" class="custom" list="regionNames" placeholder="候補に無ければ地名を直接入力" value="${s.custom || ''}">
@@ -468,6 +589,7 @@ function render() {
 
 document.getElementById('search').addEventListener('input', resetPageAndRender);
 document.getElementById('filterMode').addEventListener('change', resetPageAndRender);
+['aiFilter', 'yearGroup', 'sortBy'].forEach((id) => document.getElementById(id).addEventListener('change', resetPageAndRender));
 document.getElementById('yearMin').addEventListener('input', resetPageAndRender);
 document.getElementById('yearMax').addEventListener('input', resetPageAndRender);
 document.getElementById('styleFilter').addEventListener('change', resetPageAndRender);
